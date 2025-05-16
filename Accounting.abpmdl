@@ -1,0 +1,105 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "4.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "9.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.1.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.1.1",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Accounting.Application": {
+      "path": "src/Accounting.Application/Accounting.Application.abppkg",
+      "folder": "src"
+    },
+    "Accounting.Application.Tests": {
+      "path": "test/Accounting.Application.Tests/Accounting.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Accounting.Domain.Shared": {
+      "path": "src/Accounting.Domain.Shared/Accounting.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Accounting.Application.Contracts": {
+      "path": "src/Accounting.Application.Contracts/Accounting.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Accounting.HttpApi": {
+      "path": "src/Accounting.HttpApi/Accounting.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Accounting.HttpApi.Client": {
+      "path": "src/Accounting.HttpApi.Client/Accounting.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Accounting.Web": {
+      "path": "src/Accounting.Web/Accounting.Web.abppkg",
+      "folder": "src"
+    },
+    "Accounting.Web.Tests": {
+      "path": "test/Accounting.Web.Tests/Accounting.Web.Tests.abppkg",
+      "folder": "test"
+    },
+    "Accounting.EntityFrameworkCore.Tests": {
+      "path": "test/Accounting.EntityFrameworkCore.Tests/Accounting.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Accounting.EntityFrameworkCore": {
+      "path": "src/Accounting.EntityFrameworkCore/Accounting.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Accounting.TestBase": {
+      "path": "test/Accounting.TestBase/Accounting.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Accounting.Domain.Tests": {
+      "path": "test/Accounting.Domain.Tests/Accounting.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Accounting.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Accounting.HttpApi.Client.ConsoleTestApp/Accounting.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "Accounting.DbMigrator": {
+      "path": "src/Accounting.DbMigrator/Accounting.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "Accounting.Domain": {
+      "path": "src/Accounting.Domain/Accounting.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

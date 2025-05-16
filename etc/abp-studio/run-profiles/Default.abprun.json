@@ -1,0 +1,15 @@
+﻿{
+  "applications": {
+    "Accounting.Web": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44367",
+      "path": "../../../src/Accounting.Web/Accounting.Web.csproj",
+      "kubernetesService": ".*-web$",
+      "healthCheckEndpoint": "/health-status",
+      "healthUiEndpoint": "/health-ui",
+      "execution": {
+        "order": 2
+      }
+    }
+  }
+}
