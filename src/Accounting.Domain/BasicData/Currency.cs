@@ -37,7 +37,7 @@ namespace Accounting.BasicData
             SourceCurrency = sourceCurrency;
             TargetCurrency = targetCurrency;
         }
-        public void SetAmountAndRate(decimal sourceAmount, decimal targetAmount, decimal rate)
+        public Currency SetAmountAndRate(decimal sourceAmount, decimal targetAmount, decimal rate)
         {
             if (sourceAmount <= 0 || targetAmount <= 0 || rate <= 0)
             {
@@ -50,7 +50,21 @@ namespace Accounting.BasicData
             SourceAmount = sourceAmount;
             TargetAmount = targetAmount;
             ExchangeRate = rate;
+
+            return this;
         }
+        public Currency SetEffectiveDate(DateOnly effectiveDate)
+        {
+            EffectiveDate = effectiveDate;
+
+            return this;
+        }
+        public Currency SetIsActive(bool isActive)
+        {
+            IsActive = isActive;
+            return this;
+        }
+
         public override object?[] GetKeys()
         {
            return [SourceCurrency, TargetCurrency];
