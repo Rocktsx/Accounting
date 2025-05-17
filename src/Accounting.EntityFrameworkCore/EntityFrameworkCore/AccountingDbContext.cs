@@ -14,6 +14,9 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using System.Collections.Generic;
+using Accounting.BasicData;
+using System;
 
 namespace Accounting.EntityFrameworkCore;
 
@@ -57,6 +60,8 @@ public class AccountingDbContext :
 
     #endregion
 
+    public DbSet<Currency> Currencies { get; set; }
+
     public AccountingDbContext(DbContextOptions<AccountingDbContext> options)
         : base(options)
     {
@@ -78,14 +83,21 @@ public class AccountingDbContext :
         builder.ConfigureOpenIddict();
         builder.ConfigureTenantManagement();
         builder.ConfigureBlobStoring();
-        
-        /* Configure your own tables/entities inside here */
 
-        //builder.Entity<YourEntity>(b =>
-        //{
-        //    b.ToTable(AccountingConsts.DbTablePrefix + "YourEntities", AccountingConsts.DbSchema);
-        //    b.ConfigureByConvention(); //auto configure for the base class props
-        //    //...
-        //});
+        /* Configure your own tables/entities inside here */
+        
+        //currency
+        builder.Entity<Currency>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "Currencies", AccountingConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.SourceCurrency).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
+            b.Property(x => x.TargetCurrency).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
+            b.Property(x => x.SourceAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
+            b.Property(x => x.TargetAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision,AccountingCommonConsts.AmountScale);
+            b.Property(x => x.ExchangeRate).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
+            b.Property(x => x.EffectiveDate).HasColumnType("date").HasDefaultValue(new DateOnly(1900,1,1));
+            b.HasKey(x => new{ x.SourceCurrency, x.TargetCurrency});
+        });
     }
 }

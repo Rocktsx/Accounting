@@ -11,24 +11,7 @@ using Xunit;
 namespace Accounting.BasicData
 {
     public abstract class Currency_Tests
-    {
-        [Fact]
-        public void ShouldThrowException_WhenTheSourceAndTargetCurrencyIsSame()
-        {
-            // Arrange
-            string sourceCurrency = "USD";
-            string targetCurrency = "USD";
-            decimal sourceAmount = 100;
-            decimal targetAmount = 80;
-            decimal exchangeRate = 1.25m;
-            DateOnly effectiveDate = DateOnly.FromDateTime(DateTime.Now);
-            bool isActive = true;
-            // Act
-            var exception = Assert.Throws<BusinessException>(() =>
-                new Currency(sourceCurrency, targetCurrency, sourceAmount, targetAmount, exchangeRate, effectiveDate, isActive));
-            //Assert
-            exception.Code.ShouldBe(AccountingDomainErrorCodes.SourceAndTargetCurrencyMustNotBeSame);
-        }
+    { 
         [Theory]
         [InlineData(0, 100, 1.25)]
         [InlineData(100, 0, 1.25)]

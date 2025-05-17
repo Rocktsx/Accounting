@@ -1,13 +1,14 @@
 ﻿using System; 
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
 
 namespace Accounting.BasicData
 {
     /// <summary>
     ///货币
     /// </summary>
-    public class Currency : Entity
+    public class Currency : Entity, IMultiTenant
     {
         public string SourceCurrency {get; private set; }
         public string TargetCurrency { get; private set; }
@@ -16,6 +17,8 @@ namespace Accounting.BasicData
         public decimal ExchangeRate { get; private set; }
         public DateOnly EffectiveDate { get; private set; }
         public bool IsActive { get; private set; }
+
+        public Guid? TenantId { get; set; }
 
         private Currency() { } // For EF Core
         public Currency(string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, decimal exchangeRate, DateOnly effectiveDate, bool isActive)
@@ -30,10 +33,7 @@ namespace Accounting.BasicData
         {
             Check.NotNullOrWhiteSpace(sourceCurrency, nameof(sourceCurrency), CurrencyConsts.MaxCurrencyLength);
             Check.NotNullOrWhiteSpace(targetCurrency, nameof(targetCurrency), CurrencyConsts.MaxCurrencyLength);
-            if(sourceCurrency.Equals(targetCurrency, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new BusinessException(AccountingDomainErrorCodes.SourceAndTargetCurrencyMustNotBeSame);
-            }
+           
             SourceCurrency = sourceCurrency;
             TargetCurrency = targetCurrency;
         }

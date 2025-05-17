@@ -37,8 +37,7 @@
     "Unspecified": "System",
     "SeeAllUsers": "查看所有用户",
     "TakePhoto": "拍摄照片",
-    "ChoosePhoto": "选择照片",
-    "SourceAndTargetCurrencyMustNotBeSame": "本币和外币不能是相同的。", 
+    "ChoosePhoto": "选择照片", 
     "AmountsMustNotBeZero": "金额或者汇率必须大于0。",
     "ExchangeRateMatchAmounts": "汇率必须等于本币除以外币的值"
   }
