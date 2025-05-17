@@ -4,6 +4,9 @@
     "AppName": "Accounting",
     "Menu:Home": "Home",
     "LongWelcomeMessage": "Welcome to the application.",
-    "Welcome": "Welcome"
+    "Welcome": "Welcome",
+    "SourceAndTargetCurrencyMustNotBeSame": "Source currency and target currency cannot be same.", 
+    "AmountsMustNotBeZero": "Amounts and rate must be greater than zero.",
+    "ExchangeRateMatchAmounts": "The exchange rate does not match the amounts provided."
   }
 }
