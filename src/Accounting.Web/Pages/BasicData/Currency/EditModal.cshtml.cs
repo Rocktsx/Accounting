@@ -1,0 +1,31 @@
+using Accounting.BasicData;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
+namespace Accounting.Web.Pages.BasicData.Currency
+{
+    public class EditCurrencyModalModel : AccountingPageModel
+    {
+        private readonly ICurrencyAppService _currencyAppService;
+        [BindProperty(SupportsGet =true)]
+        public CurrencyKey id { get; set; }
+
+       [BindProperty]
+        public CreateEditCurrencyViewModel Currency { get; set; }
+
+        public EditCurrencyModalModel(ICurrencyAppService currencyAppService)
+        {
+            _currencyAppService = currencyAppService;
+        }
+        public async Task OnGet()
+        {
+            var dto = await _currencyAppService.GetAsync(id);
+            Currency = ObjectMapper.Map<CurrencyDto, CreateEditCurrencyViewModel>(dto);
+        }
+        public async Task<IActionResult> OnPostAsync()
+        {
+            await _currencyAppService.UpdateAsync(id, ObjectMapper.Map<CreateEditCurrencyViewModel, CurrencyUpdateDto>(Currency));
+            return NoContent();
+        }
+    }
+}
