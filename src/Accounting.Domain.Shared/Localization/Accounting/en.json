@@ -4,8 +4,21 @@
     "AppName": "Accounting",
     "Menu:Home": "Home",
     "LongWelcomeMessage": "Welcome to the application.",
-    "Welcome": "Welcome", 
+    "Welcome": "Welcome",
     "AmountsMustNotBeZero": "Amounts and rate must be greater than zero.",
-    "ExchangeRateMatchAmounts": "The exchange rate does not match the amounts provided."
+    "ExchangeRateMatchAmounts": "The exchange rate does not match the amounts provided.",
+    "SuccessfullyDeleted": "Successfully deleted!",
+    "SavedSuccessfully": "Successfully saved",
+    "Menu:Currency": "Currency",
+    "NewCurrency": "New Currency",
+    "CurrencyDeletionConfirmationMessage": "Are you sure to delete this currency: {0}",
+    "SourceCurrency": "Source Currency",
+    "TargetCurrency": "Target Currency",
+    "ExchangeRate": "Exchange Rate",
+    "SourceAmount": "Source Amount",
+    "TargetAmount": "Target Amount",
+    "EffectiveDate": "Effective Date",
+    "IsActive": "Is Active",
+    "EditCurrency": "Edit Currency"
   }
 }

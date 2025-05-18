@@ -37,8 +37,21 @@
     "Unspecified": "System",
     "SeeAllUsers": "查看所有用户",
     "TakePhoto": "拍摄照片",
-    "ChoosePhoto": "选择照片", 
+    "ChoosePhoto": "选择照片",
+    "SuccessfullyDeleted": "删除成功！",
+    "SavedSuccessfully": "保存成功！",
     "AmountsMustNotBeZero": "金额或者汇率必须大于0。",
-    "ExchangeRateMatchAmounts": "汇率必须等于本币除以外币的值"
+    "ExchangeRateMatchAmounts": "汇率必须等于本币除以外币的值",
+    "Menu:Currency": "货币",
+    "NewCurrency": "添加货币",
+    "CurrencyDeletionConfirmationMessage": "你确定删除这个货币: {0}",
+    "SourceCurrency": "本币",
+    "TargetCurrency": "外币",
+    "ExchangeRate": "汇率",
+    "SourceAmount": "本币金额",
+    "TargetAmount": "外币金额",
+    "EffectiveDate": "有效日期",
+    "IsActive": "活动",
+    "EditCurrency" : " 编辑货币"
   }
 }

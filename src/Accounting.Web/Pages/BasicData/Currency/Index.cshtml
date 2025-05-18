@@ -1,0 +1,37 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+
+@model Accounting.Web.Pages.BasicData.Currency.IndexModel
+@section scripts
+{
+    <abp-script src="/Pages/BasicData/Currency/Index.cshtml.js" />
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Menu:Currency"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+               @*  @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.ProductManagementPermissions.ProductCreation))
+                {
+                    <abp-button id="NewProductButton"
+                                text="@L["NewProduct"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                } *@
+                <abp-button id="newCurrencyButton"
+                            text="@L["NewCurrency"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table id="currencyTable" striped-rows="true" />
+    </abp-card-body>
+</abp-card>

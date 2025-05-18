@@ -11,6 +11,6 @@ public class AccountingApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
         CreateMap<Currency, CurrencyDto>();
-        CreateMap<CurrencyCreateDato, Currency>();
+        CreateMap<CurrencyCreateDto, Currency>();
     }
 }
