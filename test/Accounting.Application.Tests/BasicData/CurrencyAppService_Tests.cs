@@ -43,7 +43,7 @@ namespace Accounting.BasicData
             await WithUnitOfWorkAsync(async () =>
             {
                 // arrange
-                var dto = new CurrencyCreateDato()
+                var dto = new CurrencyCreateDto()
                 {
                     SourceCurrency = "RMB",
                     TargetCurrency = "EUR",
@@ -91,12 +91,23 @@ namespace Accounting.BasicData
             });
         }
         [Fact]
-        public async Task Can_Get_All_Currencies()
+        public async Task Can_Get_Active_Currencies()
         {
             // arrange
-           
+            var dto = new CurrencyCreateDto()
+            {
+                SourceCurrency = "RMB",
+                TargetCurrency = "EUR",
+                SourceAmount = 750m,
+                TargetAmount = 100m,
+                ExchangeRate = 7.5m,
+                EffectiveDate = DateOnly.FromDateTime(DateTime.Now),
+                IsActive = false
+            };
+            await currencyAppService.CreateAsync(dto);
+
             // act
-            var list = await currencyAppService.GetAllAsync();
+            var list = await currencyAppService.GetActiveListAsync();
 
             // assert
             list.Count().ShouldBe(2); 

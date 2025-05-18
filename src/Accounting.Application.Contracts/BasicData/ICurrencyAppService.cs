@@ -12,7 +12,7 @@ namespace Accounting.BasicData
 {
     public interface ICurrencyAppService : IApplicationService
     {
-        Task CreateAsync(CurrencyCreateDato input);
+        Task CreateAsync(CurrencyCreateDto input);
         Task DeleteAsync(CurrencyKey id);
 
         Task<CurrencyDto> GetAsync(CurrencyKey id);
@@ -20,6 +20,6 @@ namespace Accounting.BasicData
         Task<PagedResultDto<CurrencyDto>> GetListAsync(PagedAndSortedResultRequestDto input);
 
         Task UpdateAsync(CurrencyKey id, CurrencyUpdateDto input);
-        Task<IEnumerable<CurrencyDto>> GetAllAsync();
+        Task<IEnumerable<CurrencyDto>> GetActiveListAsync();
     }
 }

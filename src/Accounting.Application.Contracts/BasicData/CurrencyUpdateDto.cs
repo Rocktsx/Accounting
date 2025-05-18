@@ -9,6 +9,7 @@ namespace Accounting.BasicData
 {
     public class CurrencyUpdateDto
     {
+        [Required]
         public decimal SourceAmount { get; set; }
         [Required]
         public decimal TargetAmount { get; set; }

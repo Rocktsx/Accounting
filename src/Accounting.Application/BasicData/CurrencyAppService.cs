@@ -18,7 +18,7 @@ namespace Accounting.BasicData
             _currencyRepository = repository;
         }
 
-        public async Task CreateAsync(CurrencyCreateDato input)
+        public async Task CreateAsync(CurrencyCreateDto input)
         {
             var newCurrency = new Currency(input.SourceCurrency, input.TargetCurrency,
           input.SourceAmount, input.TargetAmount, input.ExchangeRate, input.EffectiveDate, input.IsActive);
@@ -30,9 +30,10 @@ namespace Accounting.BasicData
             await _currencyRepository.DeleteAsync(item => item.SourceCurrency == id.SourceCurrency && item.TargetCurrency == id.TargetCurrency);
         }
 
-        public async Task<IEnumerable<CurrencyDto>> GetAllAsync()
+        public async Task<IEnumerable<CurrencyDto>> GetActiveListAsync()
         {
-            var list = await AsyncExecuter.ToListAsync(await _currencyRepository.GetQueryableAsync());
+            var queryable = await _currencyRepository.GetQueryableAsync();
+            var list = await AsyncExecuter.ToListAsync(queryable.Where(item => item.IsActive == true)); 
             return ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list);
         }
 

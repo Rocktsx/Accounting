@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.BasicData
 {
-    public class CurrencyCreateDato
+    public class CurrencyCreateDto
     {
         [Required]
         [MaxLength(CurrencyConsts.MaxCurrencyLength)]
