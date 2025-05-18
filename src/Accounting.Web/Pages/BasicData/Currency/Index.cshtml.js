@@ -23,11 +23,11 @@
                                     action: function (data) {
                                         editModal.open({ sourceCurrency: data.record.sourceCurrency, targetCurrency: data.record.targetCurrency });
                                     },
-                                    //visible: abp.auth.isGranted('Accounting.CurrencyEdit')
+                                    visible: abp.auth.isGranted('Accounting.BasicData.Currency.Edit')
                                 },
                                 {
                                     text: l('Delete'),
-                                    //visible: abp.auth.isGranted('Accounting.CurrencyDeletion'),
+                                    visible: abp.auth.isGranted('Accounting.BasicData.Currency.Deletion'),
                                     confirmMessage: function (data) {
                                         return l('CurrencyDeletionConfirmationMessage',
                                             data.record.targetCurrency);

@@ -44,7 +44,7 @@
     "ExchangeRateMatchAmounts": "汇率必须等于本币除以外币的值",
     "Menu:Currency": "货币",
     "NewCurrency": "添加货币",
-    "CurrencyDeletionConfirmationMessage": "你确定删除这个货币: {0}",
+    "CurrencyDeletionConfirmationMessage": "你确定删除这个货币: {0}？",
     "SourceCurrency": "本币",
     "TargetCurrency": "外币",
     "ExchangeRate": "汇率",
@@ -52,6 +52,11 @@
     "TargetAmount": "外币金额",
     "EffectiveDate": "有效日期",
     "IsActive": "活动",
-    "EditCurrency" : " 编辑货币"
+    "EditCurrency": " 编辑货币",
+    "Menu:BasicData": "基本数据",
+    "Permission:Currency": "货币",
+    "Permission:Creation": "创建",
+    "Permission:Deletion": "删除",
+    "Permission:Edit": " 编辑"
   }
 }

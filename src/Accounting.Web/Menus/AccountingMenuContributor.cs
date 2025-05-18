@@ -20,7 +20,7 @@ public class AccountingMenuContributor : IMenuContributor
         }
     }
 
-    private static Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private static async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var l = context.GetLocalizer<AccountingResource>();
 
@@ -42,7 +42,7 @@ public class AccountingMenuContributor : IMenuContributor
 
         //Administration->Identity
         administration.SetSubItemOrder(IdentityMenuNames.GroupName, 1);
-    
+
         if (MultiTenancyConsts.IsEnabled)
         {
             administration.SetSubItemOrder(TenantManagementMenuNames.GroupName, 1);
@@ -51,12 +51,32 @@ public class AccountingMenuContributor : IMenuContributor
         {
             administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
         }
-        
+
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
 
         //Administration->Settings
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 7);
-        
-        return Task.CompletedTask;
+
+        var basicDataMenu = new ApplicationMenuItem(
+         "Accounting.BasicData",
+         l["Menu:BasicData"],
+         icon: "fas fa-gears"
+         );
+        if (await context.IsGrantedAsync(AccountingPermissions.Currency))
+        {
+            basicDataMenu.AddItem(
+              new ApplicationMenuItem(
+              "Accounting.BasicData.Currency",
+              l["Menu:Currency"],
+                icon: "fas fa-dollar-sign",
+              url: "/BasicData/Currency"
+              )
+          );
+        }
+        if (basicDataMenu.Items.Count > 0)
+        {
+            context.Menu.AddItem(basicDataMenu);
+
+        }
     }
 }

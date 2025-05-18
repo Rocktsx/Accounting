@@ -9,10 +9,12 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(AccountingPermissions.GroupName);
-
-        //Define your own permissions here. Example:
-        //myGroup.AddPermission(AccountingPermissions.MyPermission1, L("Permission:MyPermission1"));
+        var currencyDisplayName = L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.Currency));
+        var currencyGroup = context.AddGroup(AccountingPermissions.Currency, currencyDisplayName); 
+        var currency = currencyGroup.AddPermission(AccountingPermissions.Currency, currencyDisplayName);
+        currency.AddChild(AccountingPermissions.CurrencyCreation, L(AccountingPermissions.CreationDisplayName));
+        currency.AddChild(AccountingPermissions.CurrencyDeletion, L(AccountingPermissions.DeletionDisplayName));
+        currency.AddChild(AccountingPermissions.CurrencyEdit, L(AccountingPermissions.EditDisplayName));
     }
 
     private static LocalizableString L(string name)

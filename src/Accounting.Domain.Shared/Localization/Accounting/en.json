@@ -11,7 +11,7 @@
     "SavedSuccessfully": "Successfully saved",
     "Menu:Currency": "Currency",
     "NewCurrency": "New Currency",
-    "CurrencyDeletionConfirmationMessage": "Are you sure to delete this currency: {0}",
+    "CurrencyDeletionConfirmationMessage": "Are you sure to delete this currency: {0}?",
     "SourceCurrency": "Source Currency",
     "TargetCurrency": "Target Currency",
     "ExchangeRate": "Exchange Rate",
@@ -19,6 +19,11 @@
     "TargetAmount": "Target Amount",
     "EffectiveDate": "Effective Date",
     "IsActive": "Is Active",
-    "EditCurrency": "Edit Currency"
+    "EditCurrency": "Edit Currency",
+    "Menu:BasicData": "Basic Data",
+    "Permission:Currency": "Currency",
+    "Permission:Creation": "Creation",
+    "Permission:Deletion": "Deletion", 
+    "Permission:Edit": " Edit"
   }
 }
