@@ -4,11 +4,11 @@
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @inject IStringLocalizer<AccountingResource> L
-@model Accounting.Web.Pages.BasicData.Currency.EditCurrencyModalModel
+@model Accounting.Web.Pages.BasicData.Currency.EditModal
 @{
     Layout = null;
 }
-<abp-dynamic-form abp-model="Currency" id="currencyForm" data-ajaxForm="true"
+<abp-dynamic-form abp-model="Currency" id="currencyForm" data-ajaxForm="true" data-edit="true"
                   asp-page="~/BasicData/Currency/EditModal">
     <abp-modal>
         <abp-modal-header title="@L["EditCurrency"].Value">

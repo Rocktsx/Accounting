@@ -17,4 +17,8 @@
             }
         }
     });
+    var isEdit = $('#currencyForm').attr('data-edit');
+    if (Boolean(isEdit)) {
+        $('[name="Currency.SourceCurrency"],[name="Currency.TargetCurrency"]').attr('disabled', 'disabled');
+    }
 });

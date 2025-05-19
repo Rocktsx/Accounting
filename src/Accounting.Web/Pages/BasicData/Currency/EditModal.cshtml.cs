@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.BasicData.Currency
 {
-    public class EditCurrencyModalModel : AccountingPageModel
+    public class EditModal : AccountingPageModel
     {
         private readonly ICurrencyAppService _currencyAppService;
         [BindProperty(SupportsGet =true)]
@@ -13,7 +13,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
        [BindProperty]
         public CreateEditCurrencyViewModel Currency { get; set; }
 
-        public EditCurrencyModalModel(ICurrencyAppService currencyAppService)
+        public EditModal(ICurrencyAppService currencyAppService)
         {
             _currencyAppService = currencyAppService;
         }
