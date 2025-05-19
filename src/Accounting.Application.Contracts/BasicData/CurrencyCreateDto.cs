@@ -23,7 +23,7 @@ namespace Accounting.BasicData
         public decimal TargetAmount { get; set; }
         [Required]
         public decimal ExchangeRate { get; set; }
-        public DateOnly EffectiveDate { get; set; }
+        public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }
     }
 }

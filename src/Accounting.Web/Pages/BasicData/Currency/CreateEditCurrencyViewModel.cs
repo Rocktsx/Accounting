@@ -23,7 +23,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = CurrencyConsts.AmountFormat)]
         public decimal ExchangeRate { get; set; }
         [DataType(DataType.Date)]
-        public DateOnly EffectiveDate { get; set; }
+        public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }
 
         public CreateEditCurrencyViewModel()

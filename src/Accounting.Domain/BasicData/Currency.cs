@@ -15,13 +15,13 @@ namespace Accounting.BasicData
         public decimal SourceAmount { get; private set; }
         public decimal TargetAmount { get; private set; }
         public decimal ExchangeRate { get; private set; }
-        public DateOnly EffectiveDate { get; private set; }
+        public DateOnly? EffectiveDate { get; private set; }
         public bool IsActive { get; private set; }
 
         public Guid? TenantId { get; set; }
 
         private Currency() { } // For EF Core
-        public Currency(string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, decimal exchangeRate, DateOnly effectiveDate, bool isActive)
+        public Currency(string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, decimal exchangeRate, DateOnly? effectiveDate, bool isActive)
         {
             SetCurrency(sourceCurrency, targetCurrency);
              
@@ -53,7 +53,7 @@ namespace Accounting.BasicData
 
             return this;
         }
-        public Currency SetEffectiveDate(DateOnly effectiveDate)
+        public Currency SetEffectiveDate(DateOnly? effectiveDate)
         {
             EffectiveDate = effectiveDate;
 
@@ -67,7 +67,7 @@ namespace Accounting.BasicData
 
         public override object?[] GetKeys()
         {
-           return [SourceCurrency, TargetCurrency];
+           return [TenantId, SourceCurrency, TargetCurrency];
         }
     }
 }
