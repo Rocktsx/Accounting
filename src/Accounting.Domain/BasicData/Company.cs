@@ -25,6 +25,8 @@ namespace Accounting.BasicData
 
         public Guid? TenantId { get; set; }
 
+        public ICollection<CompanyAddress> Addresses { get; set; } = new List<CompanyAddress>();
+        public ICollection<CompanyContact> Contacts { get; set; } = new List<CompanyContact>();
         public Company() { }
         public Company(string name, string otherName, string nickName, string currency, decimal creditLimit, string paymentTerm, string tradeTerm, bool isClient, bool isVendor)
         { 
