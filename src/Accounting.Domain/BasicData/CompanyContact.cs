@@ -11,7 +11,7 @@ namespace Accounting.BasicData
     {
         public Guid CompanyId { get; private set; }
         public Guid ContactId { get; private set; }
-        public string Name { get; private set; }
+        public string ContactName { get; private set; }
         public string Department { get; private set; }
         public string Position { get; private set; }
         public string DirectLine { get; private set; }
@@ -20,12 +20,12 @@ namespace Accounting.BasicData
         public string Email { get; private set; }
         public string Remark { get; private set; }
 
-        public CompanyContact() { }
-        public CompanyContact(Guid companyId, Guid contactId, string name, string department, string position, string directLine, string telephone, string fax, string email, string remark)
+        private CompanyContact() { }
+        internal CompanyContact(Guid companyId, Guid contactId, string contractName, string department, string position, string directLine, string telephone, string fax, string email, string remark)
         {
             CompanyId = companyId;
             ContactId = contactId;
-            SetName(name);
+            SetContactName(contractName);
             SetDepartment(department);
             SetPosition(position);
             SetDirectLine(directLine);
@@ -35,9 +35,9 @@ namespace Accounting.BasicData
             SetRemark(remark);
         }
 
-        public CompanyContact SetName(string name)
+        public CompanyContact SetContactName(string name)
         {
-            Name = name ?? string.Empty;
+            ContactName = name ?? string.Empty;
             return this;
         }
         public CompanyContact SetDepartment(string department)

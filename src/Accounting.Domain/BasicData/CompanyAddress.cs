@@ -23,8 +23,8 @@ namespace Accounting.BasicData
         public string Region { get; private set; }
         public string District { get; private set; } 
 
-        public CompanyAddress() { }
-        public CompanyAddress(Guid companyId, Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
+        private CompanyAddress() { }
+        internal CompanyAddress(Guid companyId, Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
         {
             CompanyId = companyId;
             AddressId = addressId;

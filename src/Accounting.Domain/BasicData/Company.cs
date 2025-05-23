@@ -16,7 +16,7 @@ namespace Accounting.BasicData
         public string OtherName { get; private set; }
 
         public string NickName { get; private set; }
-        public string Currency {  get; private set; }
+        public string Currency { get; private set; }
         public decimal CreditLimit { get; private set; }
         public string PaymentTerm { get; private set; }
         public string TradeTerm { get; private set; }
@@ -27,9 +27,11 @@ namespace Accounting.BasicData
 
         public ICollection<CompanyAddress> Addresses { get; set; } = new List<CompanyAddress>();
         public ICollection<CompanyContact> Contacts { get; set; } = new List<CompanyContact>();
-        public Company() { }
-        public Company(string name, string otherName, string nickName, string currency, decimal creditLimit, string paymentTerm, string tradeTerm, bool isClient, bool isVendor)
-        { 
+        private Company() { }
+        public Company(Guid id, string name, string otherName, string nickName, string currency, decimal creditLimit, string paymentTerm, string tradeTerm, bool isClient, bool isVendor)
+        {
+            Check.NotNull(id, nameof(id));
+            Id = id;
             SetName(name);
             SetNickName(nickName);
             SetOtherName(otherName);
@@ -38,31 +40,37 @@ namespace Accounting.BasicData
             SetCurrency(currency);
             CreditLimit = creditLimit;
             IsClient = isClient;
-            IsVendor = isVendor; 
+            IsVendor = isVendor;
         }
-        public Company SetName(string name) { 
+        public Company SetName(string name)
+        {
             Check.NotNullOrWhiteSpace(name, nameof(name));
-            Name = name; 
+            Name = name;
             return this;
         }
-        public Company SetOtherName(string otherName) { 
-            OtherName = otherName?? string.Empty;
+        public Company SetOtherName(string otherName)
+        {
+            OtherName = otherName ?? string.Empty;
             return this;
         }
-        public Company SetNickName(string nickName) { 
-            NickName=nickName?? string.Empty;
+        public Company SetNickName(string nickName)
+        {
+            NickName = nickName ?? string.Empty;
             return this;
         }
-        public Company SetCurrency(string currency) { 
+        public Company SetCurrency(string currency)
+        {
             Currency = currency ?? string.Empty;
             return this;
         }
-        public Company SetPaymentTerm(string paymentTerm) { 
-            PaymentTerm = paymentTerm ?? string.Empty; 
-            return this; 
+        public Company SetPaymentTerm(string paymentTerm)
+        {
+            PaymentTerm = paymentTerm ?? string.Empty;
+            return this;
         }
-        public Company SetTradeTerm(string tradeTerm) { 
-            TradeTerm=tradeTerm ?? string.Empty;
+        public Company SetTradeTerm(string tradeTerm)
+        {
+            TradeTerm = tradeTerm ?? string.Empty;
             return this;
         }
         public Company SetCreditLimit(decimal creditLimit)
@@ -80,5 +88,60 @@ namespace Accounting.BasicData
             IsVendor = isVendor;
             return this;
         }
-    } 
+        public Company AddAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
+        {
+            var companyAddress = new CompanyAddress(Id, addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district);
+            Addresses.Add(companyAddress);
+            return this;
+        }
+        public Company SetAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
+        {
+            var companyAddress = Addresses.FirstOrDefault(a => a.AddressId == addressId);
+            if (companyAddress == null)
+            {
+                AddAddress(addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district);
+            }
+            else
+            {
+                companyAddress.SetName(name)
+                    .SetAddress(address)
+                    .SetContactPerson(contactPerson)
+                    .SetTelephone(telephone)
+                    .SetEmail(email)
+                    .SetRemark(remark)
+                    .SetCountry(country)
+                    .SetRegion(region)
+                    .SetDistrict(district)
+                    .SetIsBilling(isBilling)
+                    .SetIsShipping(isShipping);
+            }
+            return this;
+        }
+        public Company AddContact(Guid contactId, string name, string department, string position, string directLine, string telephone, string fax, string email, string remark)
+        {
+            var companyContact = new CompanyContact(Id, contactId, name, department, position, directLine, telephone, fax, email, remark);
+            Contacts.Add(companyContact);
+            return this;
+        }
+        public Company SetContact(Guid contactId, string name, string department, string position, string directLine, string telephone, string fax, string email, string remark)
+        {
+            var companyContact = Contacts.FirstOrDefault(c => c.ContactId == contactId);
+            if (companyContact == null)
+            {
+                AddContact(contactId, name, department, position, directLine, telephone, fax, email, remark);
+            }
+            else
+            {
+                companyContact.SetContactName(name)
+                    .SetDepartment(department)
+                    .SetPosition(position)
+                    .SetDirectLine(directLine)
+                    .SetTelephone(telephone)
+                    .SetFax(fax)
+                    .SetEmail(email)
+                    .SetRemark(remark);
+            }
+            return this;
+        }
+    }
 }
