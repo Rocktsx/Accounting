@@ -10,5 +10,7 @@ namespace Accounting
     {
         public const int AmountPrecision = 20;
         public const int AmountScale = 7;
+        public const int MaxCodeLength = 30;
+        public const int MaxPrefixLength = 20;
     }
 }

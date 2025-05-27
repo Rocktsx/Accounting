@@ -61,6 +61,9 @@ public class AccountingDbContext :
     #endregion
 
     public DbSet<Currency> Currencies { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    public DbSet<CompanyAddress> CompanyAddresses { get; set; }
+    public DbSet<CompanyContact> CompanyContacts { get; set; }
 
     public AccountingDbContext(DbContextOptions<AccountingDbContext> options)
         : base(options)
@@ -98,6 +101,55 @@ public class AccountingDbContext :
             b.Property(x => x.ExchangeRate).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
             b.Property(x => x.EffectiveDate).HasColumnType("date").HasDefaultValue(new DateOnly(1900,1,1));
             b.HasKey(x => new{ x.TenantId, x.SourceCurrency, x.TargetCurrency});
+        });
+
+        //company
+        builder.Entity<Company>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "Companies", AccountingConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x =>x.Prefix).IsRequired().HasMaxLength(AccountingCommonConsts.MaxPrefixLength);
+            b.Property(x => x.Name).IsRequired().HasMaxLength(CompanyConsts.MaxNameLength);
+            b.Property(x => x.OtherName).HasMaxLength(CompanyConsts.MaxNameLength);
+            b.Property(x => x.NickName).HasMaxLength(CompanyConsts.MaxNameLength);
+            b.Property(x => x.Currency).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
+            b.Property(x => x.PaymentTerm).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.TradeTerm).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.HasMany(x => x.Addresses).WithOne().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade);
+            b.HasMany(x => x.Contacts).WithOne().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        //company address
+        builder.Entity<CompanyAddress>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "CompanyAddresses", AccountingConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Name).IsRequired().HasMaxLength(CompanyConsts.MaxNameLength);
+            b.Property(x => x.Address).HasMaxLength(CompanyAddressConsts.MaxAddressLength);
+            b.Property(x => x.ContactPerson).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Telephone).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Email).HasMaxLength(CompanyConsts.MaxEmailLength);
+            b.Property(x => x.Remark).HasMaxLength(CompanyConsts.MaxRemarkLength);
+            b.Property(x => x.Country).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Region).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.District).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Fax).HasMaxLength(CompanyConsts.CommonMaxLength);
+        });
+
+        //company contact
+        builder.Entity<CompanyContact>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "CompanyContacts", AccountingConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.ContactName).IsRequired().HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Department).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Position).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.DirectLine).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Telephone).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Fax).HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Email).HasMaxLength(CompanyConsts.MaxEmailLength);
+            b.Property(x => x.Remark).HasMaxLength(CompanyConsts.MaxRemarkLength);
         });
     }
 }
