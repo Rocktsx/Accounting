@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
 
 namespace Accounting
 {
@@ -14,17 +15,20 @@ namespace Accounting
     {
         private readonly IRepository<Currency> _currencyRepository;
         private readonly IRepository<Company, Guid> _companyRepository;
-        public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository)
+        private IGuidGenerator _guidGenerator;
+        public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository ,
+            IGuidGenerator guidGenerator)
         {
             _currencyRepository = currencyRepository;
             _companyRepository = companyRepository;
+            _guidGenerator = guidGenerator;
         }
         public async Task SeedAsync(DataSeedContext context)
         {
             if (!await _currencyRepository.AnyAsync())
             {
-                await _currencyRepository.InsertAsync(new Currency("RMB", "RMB", 1, 1, 1, DateOnly.FromDateTime(DateTime.Now), true)); 
-                await _currencyRepository.InsertAsync(new Currency("RMB", "USD", 720, 100, 7.2m, DateOnly.FromDateTime(DateTime.Now), true)); 
+                await _currencyRepository.InsertAsync(new Currency(_guidGenerator.Create(),"RMB", "RMB", 1, 1, 1, DateOnly.FromDateTime(DateTime.Now), true)); 
+                await _currencyRepository.InsertAsync(new Currency(_guidGenerator.Create(), "RMB", "USD", 720, 100, 7.2m, DateOnly.FromDateTime(DateTime.Now), true)); 
             }
             if(!await _companyRepository.AnyAsync())
             { 

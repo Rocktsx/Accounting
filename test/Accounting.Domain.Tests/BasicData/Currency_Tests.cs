@@ -25,7 +25,7 @@ namespace Accounting.BasicData
             bool isActive = true;
             // Act
             var exception = Assert.Throws<BusinessException>(() =>
-                new Currency(sourceCurrency, targetCurrency, sourceAmount, targetAmount, rate, effectiveDate, isActive));
+                new Currency(Guid.NewGuid(), sourceCurrency, targetCurrency, sourceAmount, targetAmount, rate, effectiveDate, isActive));
             //Assert
             exception.Code.ShouldBe(AccountingDomainErrorCodes.AmountsMustNotBeZero);
         }
@@ -42,7 +42,7 @@ namespace Accounting.BasicData
             bool isActive = true;
 
             // Act
-            var currency = new Currency(sourceCurrency, targetCurrency, sourceAmount, targetAmount, exchangeRate, effectiveDate, isActive);
+            var currency = new Currency(Guid.NewGuid(), sourceCurrency, targetCurrency, sourceAmount, targetAmount, exchangeRate, effectiveDate, isActive);
 
             //Assert
             currency.SourceCurrency.ShouldBe(sourceCurrency);

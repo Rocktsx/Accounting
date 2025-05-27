@@ -10,6 +10,7 @@ namespace Accounting.BasicData
     /// </summary>
     public class Currency : Entity, IMultiTenant
     {
+        public Guid Id { get; private set; }
         public string SourceCurrency {get; private set; }
         public string TargetCurrency { get; private set; }
         public decimal SourceAmount { get; private set; }
@@ -21,8 +22,9 @@ namespace Accounting.BasicData
         public Guid? TenantId { get; set; }
 
         private Currency() { } // For EF Core
-        public Currency(string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, decimal exchangeRate, DateOnly? effectiveDate, bool isActive)
+        public Currency(Guid id, string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, decimal exchangeRate, DateOnly? effectiveDate, bool isActive)
         {
+            Id = id;
             SetCurrency(sourceCurrency, targetCurrency);
              
             SetAmountAndRate(sourceAmount, targetAmount, exchangeRate); 

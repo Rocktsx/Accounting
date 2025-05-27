@@ -100,7 +100,7 @@ public class AccountingDbContext :
             b.Property(x => x.TargetAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision,AccountingCommonConsts.AmountScale);
             b.Property(x => x.ExchangeRate).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
             b.Property(x => x.EffectiveDate).HasColumnType("date").HasDefaultValue(new DateOnly(1900,1,1));
-            b.HasKey(x => new{ x.TenantId, x.SourceCurrency, x.TargetCurrency});
+            b.HasIndex(x => new{ x.TenantId, x.SourceCurrency, x.TargetCurrency}).IsUnique();
         });
 
         //company

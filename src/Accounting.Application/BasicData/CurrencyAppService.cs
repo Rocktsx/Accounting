@@ -9,20 +9,23 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
 
 namespace Accounting.BasicData
 {
     public class CurrencyAppService : ApplicationService, ICurrencyAppService
     {
         private IRepository<Currency> _currencyRepository;
-        public CurrencyAppService(IRepository<Currency> repository)
+        private IGuidGenerator _guidGenerator;
+        public CurrencyAppService(IRepository<Currency> repository, IGuidGenerator guidGenerator)
         {
             _currencyRepository = repository;
+            _guidGenerator = guidGenerator;
         }
         [Authorize(AccountingPermissions.CurrencyCreation)]
         public async Task CreateAsync(CurrencyCreateDto input)
         {
-            var newCurrency = new Currency(input.SourceCurrency, input.TargetCurrency,
+            var newCurrency = new Currency(_guidGenerator.Create(), input.SourceCurrency, input.TargetCurrency,
           input.SourceAmount, input.TargetAmount, input.ExchangeRate, input.EffectiveDate, input.IsActive);
             await _currencyRepository.InsertAsync(newCurrency);
         }
