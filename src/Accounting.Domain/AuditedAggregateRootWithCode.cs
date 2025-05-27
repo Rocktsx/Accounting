@@ -8,7 +8,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace Accounting
 {
-    public class FullAuditedAggregateRootWithCode<T> : FullAuditedAggregateRoot<T>, IGenerateCode
+    public class AuditedAggregateRootWithCode<T> : AuditedAggregateRoot<T>, IGenerateCode
     {
         public string Code { get; private set; }
         public string Prefix { get; private set; }

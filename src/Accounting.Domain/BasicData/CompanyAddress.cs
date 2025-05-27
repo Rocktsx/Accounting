@@ -17,6 +17,7 @@ namespace Accounting.BasicData
         public string Address { get; private set; }
         public string ContactPerson { get; private set; }
         public string Telephone { get; private set; }
+        public string Fax { get; private set; }
         public string Email { get; private set; }
         public string Remark { get; private set; }
         public string Country { get; private set; }
@@ -24,7 +25,9 @@ namespace Accounting.BasicData
         public string District { get; private set; } 
 
         private CompanyAddress() { }
-        internal CompanyAddress(Guid companyId, Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
+        internal CompanyAddress(Guid companyId, Guid addressId, bool isBilling, bool isShipping,
+            string name, string address, string contactPerson, string telephone, string email,
+            string remark, string country, string region, string district, string fax)
         {
             CompanyId = companyId;
             AddressId = addressId;
@@ -40,6 +43,7 @@ namespace Accounting.BasicData
             SetTelephone(telephone);
             SetEmail(email);
             SetRemark(remark); 
+            SetFax(fax);
         } 
         public CompanyAddress SetIsBilling(bool isBilling)
         {
@@ -94,6 +98,11 @@ namespace Accounting.BasicData
         public CompanyAddress SetDistrict(string district)
         {
             District = district??string.Empty;
+            return this;
+        }
+        public CompanyAddress SetFax(string fax)
+        {
+            Fax = fax ?? string.Empty;
             return this;
         }
     }

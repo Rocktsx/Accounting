@@ -10,7 +10,7 @@ using Volo.Abp.SettingManagement;
 
 namespace Accounting.BasicData
 {
-    public class Company : FullAuditedAggregateRoot<Guid>, IMultiTenant
+    public class Company : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     {
         public string Name { get; private set; }
         public string OtherName { get; private set; }
@@ -88,18 +88,18 @@ namespace Accounting.BasicData
             IsVendor = isVendor;
             return this;
         }
-        public Company AddAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
+        public Company AddAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district, string fax)
         {
-            var companyAddress = new CompanyAddress(Id, addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district);
+            var companyAddress = new CompanyAddress(Id, addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district, fax);
             Addresses.Add(companyAddress);
             return this;
         }
-        public Company SetAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district)
+        public Company SetAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district,  string fax)
         {
             var companyAddress = Addresses.FirstOrDefault(a => a.AddressId == addressId);
             if (companyAddress == null)
             {
-                AddAddress(addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district);
+                AddAddress(addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district, fax);
             }
             else
             {
@@ -113,7 +113,8 @@ namespace Accounting.BasicData
                     .SetRegion(region)
                     .SetDistrict(district)
                     .SetIsBilling(isBilling)
-                    .SetIsShipping(isShipping);
+                    .SetIsShipping(isShipping)
+                    .SetFax(fax);
             }
             return this;
         }
