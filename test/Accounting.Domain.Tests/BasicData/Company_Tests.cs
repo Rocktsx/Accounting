@@ -40,7 +40,7 @@ namespace Accounting.BasicData
             // arrange
             var company = new Company(Guid.NewGuid(), "Test", null, null, null, 0, null, null, true, false);
             //act
-            company.AddAddress(Guid.NewGuid(),true,false,"Test",null, null, null, null, null, null, null,null);
+            company.AddAddress(Guid.NewGuid(),true,false,"Test",null, null, null, null, null, null, null,null, null);
             //assert
             company.Addresses.Count.ShouldBe(1);
             CompanyAddress address = company.Addresses.First();
@@ -64,10 +64,10 @@ namespace Accounting.BasicData
             // arrange
             var company = new Company(Guid.NewGuid(), "Test", null, null, null, 0, null, null, true, false);
             var addressId = Guid.NewGuid();
-            company.AddAddress(addressId, true, false, "Test", null, null, null, null, null, null, null, null);
+            company.AddAddress(addressId, true, false, "Test", null, null, null, null, null, null, null, null, null);
             string addr = "1 block";
             //act
-            company.SetAddress(addressId, true, true, "Test", addr, null, null, null, null, null, null, null);
+            company.SetAddress(addressId, true, true, "Test", addr, null, null, null, null, null, null, null, null);
             //assert
             company.Addresses.Count.ShouldBe(1);
             CompanyAddress address = company.Addresses.First();
@@ -79,10 +79,10 @@ namespace Accounting.BasicData
         {
             // arrange
             var company = new Company(Guid.NewGuid(), "Test", null, null, null, 0, null, null, true, false); 
-            company.AddAddress(Guid.NewGuid(), true, false, "Test", null, null, null, null, null, null, null, null);
+            company.AddAddress(Guid.NewGuid(), true, false, "Test", null, null, null, null, null, null, null, null, null);
             string addr = "1 block";
             //act
-            company.SetAddress(Guid.NewGuid(), true, true, "Test2", addr, null, null, null, null, null, null, null);
+            company.SetAddress(Guid.NewGuid(), true, true, "Test2", addr, null, null, null, null, null, null, null, null);
             //assert
             company.Addresses.Count.ShouldBe(2); 
             company.Addresses.ShouldContain(a => a.Name == "Test2");

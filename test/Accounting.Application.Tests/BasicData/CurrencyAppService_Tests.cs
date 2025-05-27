@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Accounting.BasicData
 {
-    public class CurrencyAppService_Tests<TStartupModule> : AccountingApplicationTestBase<TStartupModule>
+    public abstract class CurrencyAppService_Tests<TStartupModule> : AccountingApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
     {
         private readonly ICurrencyAppService currencyAppService;
