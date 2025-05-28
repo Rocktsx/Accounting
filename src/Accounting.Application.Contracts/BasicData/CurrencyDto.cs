@@ -4,6 +4,7 @@ namespace Accounting.BasicData
 {
     public class CurrencyDto
     {
+        public Guid Id { get; set; }
         public string SourceCurrency { get; set; }
         public string TargetCurrency { get; set; }
         public decimal SourceAmount { get; set; }

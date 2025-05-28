@@ -21,7 +21,7 @@
                                     text: l('Edit'),
                                     iconClass: '',
                                     action: function (data) {
-                                        editModal.open({ sourceCurrency: data.record.sourceCurrency, targetCurrency: data.record.targetCurrency });
+                                        editModal.open({ id: data.record.id});
                                     },
                                     visible: abp.auth.isGranted('Accounting.BasicData.Currency.Edit')
                                 },
@@ -34,7 +34,7 @@
                                     },
                                     action: function (data) {
                                         accounting.basicData.currency
-                                            .delete({ sourceCurrency: data.record.sourceCurrency, targetCurrency: data.record.targetCurrency })
+                                            .delete(data.record.id)
                                             .then(function () {
                                                 abp.notify.success(l('SuccessfullyDeleted'));
                                                 dataTable.ajax.reload();

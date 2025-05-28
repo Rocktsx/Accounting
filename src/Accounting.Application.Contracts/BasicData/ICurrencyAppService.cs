@@ -12,14 +12,14 @@ namespace Accounting.BasicData
 {
     public interface ICurrencyAppService : IApplicationService
     {
-        Task CreateAsync(CurrencyCreateDto input);
-        Task DeleteAsync(CurrencyKey id);
+        Task<CurrencyDto> CreateAsync(CurrencyCreateDto input);
+        Task DeleteAsync(Guid id);
 
-        Task<CurrencyDto> GetAsync(CurrencyKey id);
+        Task<CurrencyDto> GetAsync(Guid id);
 
         Task<PagedResultDto<CurrencyDto>> GetListAsync(PagedAndSortedResultRequestDto input);
 
-        Task UpdateAsync(CurrencyKey id, CurrencyUpdateDto input);
+        Task UpdateAsync(Guid id, CurrencyUpdateDto input);
         Task<IEnumerable<CurrencyDto>> GetActiveListAsync();
     }
 }

@@ -23,28 +23,29 @@ namespace Accounting.BasicData
             _guidGenerator = guidGenerator;
         }
         [Authorize(AccountingPermissions.CurrencyCreation)]
-        public async Task CreateAsync(CurrencyCreateDto input)
+        public async Task<CurrencyDto> CreateAsync(CurrencyCreateDto input)
         {
             var newCurrency = new Currency(_guidGenerator.Create(), input.SourceCurrency, input.TargetCurrency,
-          input.SourceAmount, input.TargetAmount, input.ExchangeRate, input.EffectiveDate, input.IsActive);
-            await _currencyRepository.InsertAsync(newCurrency);
+                input.SourceAmount, input.TargetAmount, input.ExchangeRate, input.EffectiveDate, input.IsActive);
+            var entity = await _currencyRepository.InsertAsync(newCurrency);
+            return ObjectMapper.Map<Currency, CurrencyDto>(entity);
         }
         [Authorize(AccountingPermissions.CurrencyDeletion)]
-        public async Task DeleteAsync(CurrencyKey id)
+        public async Task DeleteAsync(Guid id)
         {
-            await _currencyRepository.DeleteAsync(item => item.SourceCurrency == id.SourceCurrency && item.TargetCurrency == id.TargetCurrency);
+            await _currencyRepository.DeleteAsync(item => item.Id == id);
         }
         [Authorize(AccountingPermissions.Currency)]
         public async Task<IEnumerable<CurrencyDto>> GetActiveListAsync()
         {
             var queryable = await _currencyRepository.GetQueryableAsync();
-            var list = await AsyncExecuter.ToListAsync(queryable.Where(item => item.IsActive == true)); 
+            var list = await AsyncExecuter.ToListAsync(queryable.Where(item => item.IsActive == true));
             return ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list);
         }
         [Authorize(AccountingPermissions.Currency)]
-        public async Task<CurrencyDto> GetAsync(CurrencyKey id)
+        public async Task<CurrencyDto> GetAsync(Guid id)
         {
-            var entity = await _currencyRepository.GetAsync(item => item.SourceCurrency == id.SourceCurrency && item.TargetCurrency == id.TargetCurrency);
+            var entity = await _currencyRepository.GetAsync(item => item.Id == id);
             return ObjectMapper.Map<Currency, CurrencyDto>(entity);
         }
         [Authorize(AccountingPermissions.Currency)]
@@ -60,9 +61,9 @@ namespace Accounting.BasicData
             return new PagedResultDto<CurrencyDto>(count, ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list));
         }
         [Authorize(AccountingPermissions.CurrencyEdit)]
-        public async Task UpdateAsync(CurrencyKey id, CurrencyUpdateDto input)
+        public async Task UpdateAsync(Guid id, CurrencyUpdateDto input)
         {
-            var entity = await _currencyRepository.GetAsync(item => item.SourceCurrency == id.SourceCurrency && item.TargetCurrency == id.TargetCurrency);
+            var entity = await _currencyRepository.GetAsync(item => item.Id == id);
             entity.SetAmountAndRate(input.SourceAmount, input.TargetAmount, input.ExchangeRate);
             entity.SetEffectiveDate(input.EffectiveDate).SetIsActive(input.IsActive);
         }

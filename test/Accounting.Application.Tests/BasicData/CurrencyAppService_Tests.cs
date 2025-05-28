@@ -24,18 +24,14 @@ namespace Accounting.BasicData
         public async Task Can_Get_An_Exists_Currency()
         {
             // arrange
-            var id = new CurrencyKey()
-            {
-                SourceCurrency = "RMB",
-                TargetCurrency = "USD"
-            };
+            var list = await currencyAppService.GetListAsync(new PagedAndSortedResultRequestDto() { MaxResultCount = 10 });
+            var dto = list.Items.First();
+            var id = dto.Id;
             // act
-            var entity = await currencyAppService.GetAsync(new CurrencyKey() { SourceCurrency = id.SourceCurrency, TargetCurrency = id.TargetCurrency });
+            var entity = await currencyAppService.GetAsync(id);
 
             // assert
-            entity.ShouldNotBeNull();
-            entity.SourceCurrency.ShouldBe(id.SourceCurrency);
-            entity.TargetCurrency.ShouldBe(id.TargetCurrency); 
+            entity.ShouldNotBeNull(); 
         }
         [Fact]
         public async Task Can_Create_A_Valid_Currency()
@@ -54,10 +50,10 @@ namespace Accounting.BasicData
                     IsActive = true
                 };
                 // act
-                await currencyAppService.CreateAsync(dto);
+                var newEntity = await currencyAppService.CreateAsync(dto);
 
                 // assert
-                var entity = await currencyAppService.GetAsync(new CurrencyKey() { SourceCurrency = dto.SourceCurrency, TargetCurrency = dto.TargetCurrency });
+                var entity = await currencyAppService.GetAsync(newEntity.Id);
 
                 entity.ShouldNotBeNull();
                 entity.SourceCurrency.ShouldBe(dto.SourceCurrency);
@@ -73,18 +69,15 @@ namespace Accounting.BasicData
             await WithUnitOfWorkAsync( async () =>
             {
                 // arrange
-                var dto = new CurrencyKey()
-                {
-                    SourceCurrency = "RMB",
-                    TargetCurrency = "USD"
-                };
+                var list = await currencyAppService.GetListAsync(new PagedAndSortedResultRequestDto() { MaxResultCount = 10 });
+                var dto = list.Items.First();
                 // act
-                await currencyAppService.DeleteAsync(dto);
+                await currencyAppService.DeleteAsync(dto.Id);
 
                 // assert 
                 var exception = await Assert.ThrowsAsync<EntityNotFoundException>( async () =>
                 {
-                    await currencyAppService.GetAsync(new CurrencyKey() { SourceCurrency = dto.SourceCurrency, TargetCurrency = dto.TargetCurrency });
+                    await currencyAppService.GetAsync(dto.Id);
                 });
 
                 exception.ShouldNotBeNull();

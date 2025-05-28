@@ -1,5 +1,6 @@
 using Accounting.BasicData;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.BasicData.Currency
@@ -8,7 +9,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
     {
         private readonly ICurrencyAppService _currencyAppService;
         [BindProperty(SupportsGet =true)]
-        public CurrencyKey id { get; set; }
+        public Guid id { get; set; }
 
        [BindProperty]
         public CreateEditCurrencyViewModel Currency { get; set; }
