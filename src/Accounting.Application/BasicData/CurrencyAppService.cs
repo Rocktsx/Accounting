@@ -15,17 +15,15 @@ namespace Accounting.BasicData
 {
     public class CurrencyAppService : ApplicationService, ICurrencyAppService
     {
-        private IRepository<Currency> _currencyRepository;
-        private IGuidGenerator _guidGenerator;
-        public CurrencyAppService(IRepository<Currency> repository, IGuidGenerator guidGenerator)
+        private IRepository<Currency> _currencyRepository; 
+        public CurrencyAppService(IRepository<Currency> repository)
         {
-            _currencyRepository = repository;
-            _guidGenerator = guidGenerator;
+            _currencyRepository = repository; 
         }
         [Authorize(AccountingPermissions.CurrencyCreation)]
         public async Task<CurrencyDto> CreateAsync(CurrencyCreateDto input)
         {
-            var newCurrency = new Currency(_guidGenerator.Create(), input.SourceCurrency, input.TargetCurrency,
+            var newCurrency = new Currency(GuidGenerator.Create(), input.SourceCurrency, input.TargetCurrency,
                 input.SourceAmount, input.TargetAmount, input.ExchangeRate, input.EffectiveDate, input.IsActive);
             var entity = await _currencyRepository.InsertAsync(newCurrency);
             return ObjectMapper.Map<Currency, CurrencyDto>(entity);
