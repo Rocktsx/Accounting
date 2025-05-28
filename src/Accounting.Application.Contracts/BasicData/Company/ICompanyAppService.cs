@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
-namespace Accounting.BasicData.Company
+namespace Accounting.BasicData
 {
     public interface ICompanyAppService :  IApplicationService
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Accounting.BasicData.Company
+namespace Accounting.BasicData
 {
     public class CompanyAddressDto
     {

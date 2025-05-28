@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Accounting.BasicData;
+using System.Threading.Tasks; 
 
-namespace Accounting.BasicData.Company
+namespace Accounting.BasicData
 {
     public class CompanyDto
     {
