@@ -8,10 +8,10 @@ namespace Accounting.BasicData
 {
     public interface ICompanyAppService :  IApplicationService
     {
-        Task<CompanyDto> GetAsync(Guid companyId);
+        Task<CompanyDto> GetAsync(Guid id);
         Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto);
         Task<CompanyDto> CreateAsync(CompanyCreateOrEditDto input);
-        Task<CompanyDto> UpdateAsync(Guid companyId,  CompanyCreateOrEditDto input);
-        Task DeleteAsync(Guid companyId);
+        Task<CompanyDto> UpdateAsync(Guid id,  CompanyCreateOrEditDto input);
+        Task DeleteAsync(Guid id);
     } 
 }

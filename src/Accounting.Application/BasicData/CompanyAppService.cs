@@ -48,14 +48,14 @@ namespace Accounting.BasicData
             return ObjectMapper.Map<Company, CompanyDto>(createdCompany);
         }
 
-        public async Task DeleteAsync(Guid companyId)
+        public async Task DeleteAsync(Guid id)
         {
-            await _companyRepository.DeleteAsync(companyId);
+            await _companyRepository.DeleteAsync(id);
         }
 
-        public async Task<CompanyDto> GetAsync(Guid companyId)
+        public async Task<CompanyDto> GetAsync(Guid id)
         { 
-            var entity = await GetItemWithDetailsAsync(companyId);
+            var entity = await GetItemWithDetailsAsync(id);
             return ObjectMapper.Map<Company, CompanyDto>(entity);
         }
         private async Task<Company> GetItemWithDetailsAsync(Guid companyId)
@@ -73,7 +73,8 @@ namespace Accounting.BasicData
         public async Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
         {
             var queryable = await _companyRepository.GetQueryableAsync();
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(dto.Filter), item => item.Name.Contains(dto.Filter) || item.Code.Contains(dto.Filter));
+            var filter = dto.Filter ?? string.Empty;
+            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(filter), item => item.Name.Contains(filter) || item.Code.Contains(filter));
             queryable = queryable.WhereIf(dto.IsClient.HasValue && dto.IsClient == true, item => item.IsClient == true);
             queryable = queryable.WhereIf(dto.IsVendor.HasValue && dto.IsVendor == true, item => item.IsVendor == true);
 
@@ -83,9 +84,9 @@ namespace Accounting.BasicData
             return new PagedResultDto<CompanyDto>(count, ObjectMapper.Map<List<Company>, List<CompanyDto>>(list));
         }
 
-        public async Task<CompanyDto> UpdateAsync(Guid companyId, CompanyCreateOrEditDto input)
+        public async Task<CompanyDto> UpdateAsync(Guid id, CompanyCreateOrEditDto input)
         {
-            var entity = await GetItemWithDetailsAsync(companyId); ;
+            var entity = await GetItemWithDetailsAsync(id); ;
             entity.SetCreditLimit(input.CreditLimit)
                 .SetCurrency(input.Currency)
                 .SetIsClient(input.IsClient)
