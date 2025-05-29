@@ -1,0 +1,247 @@
+﻿using Shouldly;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Modularity;
+using Xunit;
+
+namespace Accounting.BasicData
+{
+    public abstract class CompanyAppServiceTests<TStartupModule> : AccountingApplicationTestBase<TStartupModule>
+    where TStartupModule : IAbpModule
+    {
+        private readonly ICompanyAppService _companyAppService;
+
+        public CompanyAppServiceTests() {
+            _companyAppService = GetRequiredService<ICompanyAppService>();
+        }
+        private CompanyCreateOrEditDto GetCompanyCreateOrEditDto()
+        {
+            var input = new CompanyCreateOrEditDto
+            {
+                Name = "Test Company",
+                OtherName = "Test Co.",
+                NickName = "TC",
+                Currency = "USD",
+                CreditLimit = 10000,
+                PaymentTerm = "Net 30",
+                TradeTerm = "FOB",
+                IsClient = true,
+                IsVendor = false,
+                Prefix = "C"
+            };
+            AddDetails(input, string.Empty);
+
+            return input;
+        }
+        private void AddDetails(CompanyCreateOrEditDto input, string suf)
+        {
+            input.Addresses.Add(new CompanyAddressCreateOrEditDto
+            {
+                IsBilling = true,
+                IsShipping = false,
+                Name = "Main Office" + suf,
+                Address = "123 Main St." + suf,
+                ContactPerson = "John Doe" + suf,
+                Telephone = "123-456-7890"
+            });
+            input.Contacts.Add(new CompanyContactCreateOrEditDto
+            {
+                ContactName = "Jane Smith" + suf,
+                Department = "Sales" + suf,
+                Position = "Manager" + suf,
+                DirectLine = "123-456-7891",
+                Telephone = "123-456-7892",
+                Fax = "123-456-7893"
+            });
+        }
+        [Fact]
+        public async Task Should_Create_Company()
+        {
+            // Arrange
+            var input = GetCompanyCreateOrEditDto();
+            // Act
+            var entity = await _companyAppService.CreateAsync(input);
+            // Assert
+            var target = await _companyAppService.GetAsync(entity.Id);
+            target.ShouldNotBeNull();
+            target.Id.ShouldBe(entity.Id);
+            target.Name.ShouldBe(input.Name);
+            target.OtherName.ShouldBe(input.OtherName);
+            target.NickName.ShouldBe(input.NickName);
+            target.Addresses.ShouldNotBeNull();
+            target.Addresses.Count().ShouldBe(1);
+            target.Contacts.ShouldNotBeNull();
+            target.Contacts.Count().ShouldBe(1);
+        }
+        [Fact]
+        public async Task Should_Update_Company()
+        {
+            // Arrange
+            var input = GetCompanyCreateOrEditDto();
+            var entity = await _companyAppService.CreateAsync(input);
+            input.Name = "Rock Company";
+            input.NickName = "Rock";
+            input.OtherName = "othRock";
+            var address = input.Addresses.First();
+            address.Id = entity.Addresses.First().Id;
+            address.Name = "Home";
+            address.Address = "east way big street, sz";
+            var contact = input.Contacts.First();
+            contact.Id = entity.Contacts.First().Id;
+            contact.ContactName = "Rock";
+            contact.Position = "CTO";
+            contact.Telephone = "135222244444";
+            // Act
+            await _companyAppService.UpdateAsync(entity.Id, input);
+            // Assert
+            var target = await _companyAppService.GetAsync(entity.Id);
+            target.Name.ShouldBe(input.Name);
+            target.OtherName.ShouldBe(input.OtherName);
+            target.NickName.ShouldBe(input.NickName);
+            var targetAddress = target.Addresses.First();
+            targetAddress.Name.ShouldBe(address.Name);
+            targetAddress.Address.ShouldBe(address.Address);
+            var targetContact = target.Contacts.First();
+            targetContact.ContactName.ShouldBe(contact.ContactName);
+            targetContact.Position.ShouldBe(contact.Position);
+            targetContact.Telephone.ShouldBe(contact.Telephone);
+        }
+        [Fact]
+        public async Task Should_Add_Address_Contact_When_Update_Company()
+        {
+            // Arrange
+            var input = GetCompanyCreateOrEditDto();
+            var entity = await _companyAppService.CreateAsync(input);
+
+            var address = input.Addresses.First();
+            address.Id = entity.Addresses.First().Id;
+            var contact = input.Contacts.First();
+            contact.Id = entity.Contacts.First().Id;
+            var suf = "22";
+            AddDetails(input, suf);
+            // Act
+            await _companyAppService.UpdateAsync(entity.Id, input);
+            // Assert
+            var target = await _companyAppService.GetAsync(entity.Id);
+            target.Addresses.Count().ShouldBe(2);
+            target.Addresses.ShouldContain(item => item.Name == address.Name + suf);
+            target.Addresses.ShouldContain(item => item.Address == address.Address + suf);
+            target.Contacts.Count().ShouldBe(2);
+            target.Contacts.ShouldContain(item => item.ContactName == contact.ContactName + suf);
+            target.Contacts.ShouldContain(item => item.Department == contact.Department + suf);
+            target.Contacts.ShouldContain(item => item.Position == contact.Position + suf);
+        }
+        [Fact]
+        public async Task Should_Get_Company()
+        {
+            // Arrange
+            var input = GetCompanyCreateOrEditDto();
+            var entity = await _companyAppService.CreateAsync(input);
+            // Act 
+            var target = await _companyAppService.GetAsync(entity.Id);
+            // Assert
+            target.ShouldNotBeNull();
+            target.Id.ShouldBe(entity.Id);
+            target.Addresses.ShouldNotBeNull();
+            target.Addresses.Count().ShouldBe(1);
+            target.Contacts.ShouldNotBeNull();
+            target.Contacts.Count().ShouldBe(1);
+        }
+        [Fact]
+        public async Task Should_Delete_Company()
+        {
+            // Arrange
+            var input = GetCompanyCreateOrEditDto();
+            var entity = await _companyAppService.CreateAsync(input);
+            // Act 
+            await _companyAppService.DeleteAsync(entity.Id);
+            // Assert
+            var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            {
+                await _companyAppService.GetAsync(entity.Id);
+            });
+            exception.ShouldNotBeNull();
+        }
+        [Fact]
+        public async Task Should_Get_Companies()
+        {
+            // arrange
+            var dto = new CompanySearchDto();
+            //act
+            var result = await _companyAppService.GetListAsync(dto);
+
+            // assert
+            result.TotalCount.ShouldBe(1);
+            result.Items.Count().ShouldBe(1);
+        }
+        [Fact]
+        public async Task Should_Get_Client_Companies()
+        {
+            // arrange
+            var input = GetCompanyCreateOrEditDto();
+            input.IsClient = false;
+            await _companyAppService.CreateAsync(input);
+            input = GetCompanyCreateOrEditDto();
+            input.IsClient = false;
+            await _companyAppService.CreateAsync(input);
+            var dto = new CompanySearchDto()
+            {
+                IsClient = true
+            };
+            //act
+            var result = await _companyAppService.GetListAsync(dto);
+
+            // assert
+            result.TotalCount.ShouldBe(1);
+            result.Items.Count().ShouldBe(1);
+        }
+        [Fact]
+        public async Task Should_Get_Vendor_Companies()
+        {
+            // arrange
+            var input = GetCompanyCreateOrEditDto();
+            input.IsVendor = true;
+            input.IsClient = false;
+            await _companyAppService.CreateAsync(input);
+            input = GetCompanyCreateOrEditDto();
+            input.IsVendor = true;
+            input.IsClient = false;
+            await _companyAppService.CreateAsync(input);
+            var dto = new CompanySearchDto()
+            {
+                IsVendor = true
+            };
+            //act
+            var result = await _companyAppService.GetListAsync(dto);
+
+            // assert
+            result.TotalCount.ShouldBe(2);
+            result.Items.Count().ShouldBe(2);
+        }
+        [Fact]
+        public async Task Should_Get_Filter_Companies()
+        {
+            // arrange
+            var input = GetCompanyCreateOrEditDto();
+            input.Name = "Rock";
+            await _companyAppService.CreateAsync(input);
+            input = GetCompanyCreateOrEditDto();
+            input.Name = "Ben";
+            await _companyAppService.CreateAsync(input);
+            var dto = new CompanySearchDto()
+            {
+                Filter = "Rock"
+            };
+            //act
+            var result = await _companyAppService.GetListAsync(dto);
+
+            // assert
+            result.TotalCount.ShouldBe(1);
+            result.Items.Count().ShouldBe(1);
+        }
+    }
+}
