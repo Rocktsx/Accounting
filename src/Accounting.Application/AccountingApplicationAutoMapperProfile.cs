@@ -12,5 +12,12 @@ public class AccountingApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         CreateMap<Currency, CurrencyDto>();
         CreateMap<CurrencyCreateDto, Currency>();
+
+        CreateMap<Company, CompanyDto>();
+        CreateMap<CompanyCreateOrEditDto, Company>();
+        CreateMap<CompanyAddress, CompanyAddressDto>();
+        CreateMap<CompanyAddressCreateOrEditDto, CompanyAddress>();
+        CreateMap<CompanyContact, CompanyContactDto>();
+        CreateMap<CompanyContactCreateOrEditDto, CompanyContact>();
     }
 }
