@@ -9,8 +9,7 @@ namespace Accounting.BasicData
 {
     public class CompanyAddress : Entity<Guid>
     {
-        public Guid CompanyId { get; private set; }
-        public Guid AddressId { get; private set; }
+        public Guid CompanyId { get; private set; } 
         public bool IsBilling { get; private set; }
         public bool IsShipping { get; private set; }
         public string Name { get; private set; }
@@ -30,7 +29,7 @@ namespace Accounting.BasicData
             string remark, string country, string region, string district, string fax)
         {
             CompanyId = companyId;
-            AddressId = addressId;
+            Id = addressId;
             IsBilling = isBilling;
             IsShipping = isShipping;
 

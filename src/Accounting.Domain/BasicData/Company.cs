@@ -25,8 +25,8 @@ namespace Accounting.BasicData
 
         public Guid? TenantId { get; set; }
 
-        public ICollection<CompanyAddress> Addresses { get; set; } = new List<CompanyAddress>();
-        public ICollection<CompanyContact> Contacts { get; set; } = new List<CompanyContact>();
+        public ICollection<CompanyAddress> Addresses { get; private  set; } = new List<CompanyAddress>();
+        public ICollection<CompanyContact> Contacts { get; private set; } = new List<CompanyContact>();
         private Company() { }
         public Company(Guid id, string name, string otherName, string nickName, string currency, decimal creditLimit, string paymentTerm, string tradeTerm, bool isClient, bool isVendor)
         {
@@ -94,16 +94,14 @@ namespace Accounting.BasicData
             Addresses.Add(companyAddress);
             return this;
         }
-        public Company SetAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district,  string fax)
+        public Company SetAddress(Guid addressId, bool isBilling, bool isShipping, string name, string address, string contactPerson, string telephone, string email, string remark, string country, string region, string district, string fax)
         {
-            var companyAddress = Addresses.FirstOrDefault(a => a.AddressId == addressId);
+            var companyAddress = Addresses.FirstOrDefault(a => a.Id == addressId);
             if (companyAddress == null)
             {
-                AddAddress(addressId, isBilling, isShipping, name, address, contactPerson, telephone, email, remark, country, region, district, fax);
+                return this;
             }
-            else
-            {
-                companyAddress.SetName(name)
+            companyAddress.SetName(name)
                     .SetAddress(address)
                     .SetContactPerson(contactPerson)
                     .SetTelephone(telephone)
@@ -115,7 +113,6 @@ namespace Accounting.BasicData
                     .SetIsBilling(isBilling)
                     .SetIsShipping(isShipping)
                     .SetFax(fax);
-            }
             return this;
         }
         public Company AddContact(Guid contactId, string name, string department, string position, string directLine, string telephone, string fax, string email, string remark)
@@ -126,22 +123,19 @@ namespace Accounting.BasicData
         }
         public Company SetContact(Guid contactId, string name, string department, string position, string directLine, string telephone, string fax, string email, string remark)
         {
-            var companyContact = Contacts.FirstOrDefault(c => c.ContactId == contactId);
+            var companyContact = Contacts.FirstOrDefault(c => c.Id == contactId);
             if (companyContact == null)
             {
-                AddContact(contactId, name, department, position, directLine, telephone, fax, email, remark);
+                return this;
             }
-            else
-            {
-                companyContact.SetContactName(name)
-                    .SetDepartment(department)
-                    .SetPosition(position)
-                    .SetDirectLine(directLine)
-                    .SetTelephone(telephone)
-                    .SetFax(fax)
-                    .SetEmail(email)
-                    .SetRemark(remark);
-            }
+            companyContact.SetContactName(name)
+                     .SetDepartment(department)
+                     .SetPosition(position)
+                     .SetDirectLine(directLine)
+                     .SetTelephone(telephone)
+                     .SetFax(fax)
+                     .SetEmail(email)
+                     .SetRemark(remark);
             return this;
         }
     }

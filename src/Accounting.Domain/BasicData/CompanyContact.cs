@@ -9,8 +9,7 @@ namespace Accounting.BasicData
 {
     public class CompanyContact : Entity<Guid>
     {
-        public Guid CompanyId { get; private set; }
-        public Guid ContactId { get; private set; }
+        public Guid CompanyId { get; private set; } 
         public string ContactName { get; private set; }
         public string Department { get; private set; }
         public string Position { get; private set; }
@@ -24,7 +23,7 @@ namespace Accounting.BasicData
         internal CompanyContact(Guid companyId, Guid contactId, string contractName, string department, string position, string directLine, string telephone, string fax, string email, string remark)
         {
             CompanyId = companyId;
-            ContactId = contactId;
+            Id = contactId;
             SetContactName(contractName);
             SetDepartment(department);
             SetPosition(position);
