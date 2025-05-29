@@ -12,8 +12,8 @@ namespace Accounting
     {
         public string Code { get; private set; }
         public string Prefix { get; private set; }
-        public int GenNo { get; private set; } 
-       
+        public int GenNo { get; private set; }
+
         public void SetCode(string code, string prefix, int genNo)
         {
             Check.NotNullOrWhiteSpace(code, nameof(code));
@@ -23,5 +23,13 @@ namespace Accounting
             Prefix = prefix;
             GenNo = genNo;
         }
-    } 
+        public void SetPrefix(string prefix)
+        {
+            Prefix = prefix;
+        }
+        public void SetGenNo(int genNo)
+        {
+            GenNo = genNo;
+        }
+    }
 }
