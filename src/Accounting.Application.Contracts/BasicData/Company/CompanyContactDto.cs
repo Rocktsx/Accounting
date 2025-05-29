@@ -8,8 +8,8 @@ namespace Accounting.BasicData
 {
     public class CompanyContactDto
     {
+        public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
-        public Guid ContactId { get; set; }
         public string ContactName { get; set; }
         public string Department { get; set; }
         public string Position { get; set; }

@@ -9,7 +9,7 @@ namespace Accounting.BasicData
 {
     public class CompanyAddressCreateOrEditDto
     { 
-        public Guid AddressId { get; set; }
+        public Guid Id { get; set; }
         public bool IsBilling { get; set; }
         public bool IsShipping { get; set; }
         [MaxLength(CompanyConsts.MaxNameLength)]

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.BasicData
 {
-    public class CompanyDto
+    public class CompanyDto: GenerateCodeDto
     {
         public Guid Id { get; set; } 
         public string Name { get; set; } 

@@ -9,7 +9,7 @@ namespace Accounting.BasicData
 {
     public class CompanyContactCreateOrEditDto
     { 
-        public Guid ContactId { get; set; }
+        public Guid Id { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string ContactName { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
