@@ -23,7 +23,15 @@
     "Menu:BasicData": "Basic Data",
     "Permission:Currency": "Currency",
     "Permission:Creation": "Creation",
-    "Permission:Deletion": "Deletion", 
-    "Permission:Edit": " Edit"
+    "Permission:Deletion": "Deletion",
+    "Permission:Edit": " Edit",
+    "Menu:Client": "Client",
+    "NewClient": "New Client",
+    "ClientDeletionConfirmationMessage": "Are you sure to delete this client: {0}?",
+    "Name": "Name",
+    "OtherName": "Other Name",
+    "NickName": "Nick Name",
+    "Filter": "Filter",
+    "Code": "Code"
   }
 }

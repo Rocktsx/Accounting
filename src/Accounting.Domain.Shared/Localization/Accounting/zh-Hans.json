@@ -57,6 +57,14 @@
     "Permission:Currency": "货币",
     "Permission:Creation": "创建",
     "Permission:Deletion": "删除",
-    "Permission:Edit": " 编辑"
+    "Permission:Edit": " 编辑",
+    "Menu:Client": "客户",
+    "NewClient": "添加客户",
+    "ClientDeletionConfirmationMessage": "你确定删除这个客户: {0}?",
+    "Name": "名称",
+    "OtherName": "其他名称",
+    "NickName": "简称",
+    "Filter": "搜索",
+    "Code": "编号"
   }
 }

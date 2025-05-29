@@ -73,6 +73,14 @@ public class AccountingMenuContributor : IMenuContributor
               )
           );
         }
+        basicDataMenu.AddItem(
+             new ApplicationMenuItem(
+             "Accounting.BasicData.Client",
+             l["Menu:Client"],
+               icon: "fas fa-medal",
+             url: "/BasicData/Client"
+             )
+         );
         if (basicDataMenu.Items.Count > 0)
         {
             context.Menu.AddItem(basicDataMenu);
