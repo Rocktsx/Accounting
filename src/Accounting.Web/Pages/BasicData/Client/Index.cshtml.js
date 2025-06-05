@@ -1,9 +1,5 @@
 ﻿$(function () {
-    var l = abp.localization.getResource('Accounting'); 
-    var getList = function (dto, ajaxParams) { 
-        dto.isClient = true;
-        return accounting.basicData.company.getList(dto, ajaxParams)
-    }
+    var l = abp.localization.getResource('Accounting');  
     var dataTable = $('#clientTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
@@ -11,7 +7,7 @@
             order: [[1, "asc"]],
             searching: true,
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(getList),
+            ajax: abp.libs.datatables.createAjax(accounting.basicData.company.getList, { isClient : true }),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -70,12 +66,13 @@
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
-    $('#neClientButton').click(function (e) {
+    $(document).on('click', '#neClientButton', function (e) {
         e.preventDefault();
         //createModal.open();
-    });
+    }) 
 
     var editModal = new abp.ModalManager(abp.appPath + 'BasicData/Client/EditModal');
+    
     editModal.onResult(function () {
         dataTable.ajax.reload();
     });

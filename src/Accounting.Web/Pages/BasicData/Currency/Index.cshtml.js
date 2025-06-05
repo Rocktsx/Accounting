@@ -1,5 +1,6 @@
 ﻿$(function () {
-    var l = abp.localization.getResource('Accounting');
+    var l = abp.localization.getResource('Accounting'); 
+    var editModal = new abp.ModalManager(abp.appPath + 'BasicData/Currency/EditModal');
     var amountRender = DataTable.render.number(null, null, 7, '', '');
     var dataTable = $('#currencyTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -89,12 +90,11 @@
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
-    $('#newCurrencyButton').click(function (e) {
+    $(document).on('click', '#newCurrencyButton', function (e) {
         e.preventDefault();
         createModal.open();
-    });
+    }); 
 
-    var editModal = new abp.ModalManager(abp.appPath + 'BasicData/Currency/EditModal');
     editModal.onResult(function () {
         dataTable.ajax.reload();
     });
