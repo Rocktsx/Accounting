@@ -1,5 +1,4 @@
 ﻿@page
-@using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
@@ -9,7 +8,7 @@
     Layout = null;
 }
 <abp-dynamic-form abp-model="Currency" id="currencyForm" data-ajaxForm="true" data-edit="true"
-                  asp-page="~/BasicData/Currency/EditModal">
+                  asp-page="/BasicData/Currency/EditModal">
     <abp-modal>
         <abp-modal-header title="@L["EditCurrency"].Value">
         </abp-modal-header>

@@ -1,4 +1,5 @@
 ﻿using Accounting.BasicData;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +7,8 @@ namespace Accounting.Web.Pages.BasicData.Currency
 {
     public class CreateEditCurrencyViewModel
     {
+        [HiddenInput]
+        public Guid Id { get; set; }
         [Required]
         [MaxLength(CurrencyConsts.MaxCurrencyLength)]
         public string SourceCurrency { get; set; }

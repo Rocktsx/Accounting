@@ -90,7 +90,7 @@
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
-    $(document).on('click', '#newCurrencyButton', function (e) {
+    $('#newCurrencyButton').click(function (e) {
         e.preventDefault();
         createModal.open();
     }); 

@@ -25,7 +25,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            await _currencyAppService.UpdateAsync(id, ObjectMapper.Map<CreateEditCurrencyViewModel, CurrencyUpdateDto>(Currency));
+            await _currencyAppService.UpdateAsync(Currency.Id, ObjectMapper.Map<CreateEditCurrencyViewModel, CurrencyUpdateDto>(Currency));
             return NoContent();
         }
     }
