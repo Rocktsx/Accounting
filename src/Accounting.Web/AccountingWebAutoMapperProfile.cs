@@ -15,10 +15,7 @@ public class AccountingWebAutoMapperProfile : Profile
         CreateMap<CurrencyDto, CreateEditCurrencyViewModel>();
 
         CreateMap<CompanyDto, CreateCompanyViewModel>();
-        CreateMap<CompanyAddressCreateOrEditDto, CreateOrEditCompanyAddressViewModel>();
-        CreateMap<CompanyContactCreateOrEditDto, CreateOrEditCompanyContactViewModel>();
-        CreateMap<CreateCompanyViewModel, CompanyDto>();
-        CreateMap<CreateOrEditCompanyAddressViewModel, CompanyAddressCreateOrEditDto>();
-        CreateMap<CreateOrEditCompanyContactViewModel, CompanyContactCreateOrEditDto>();
+        CreateMap<CompanyAddressDto, CreateOrEditCompanyAddressViewModel>();
+        CreateMap<CompanyContactDto, CreateOrEditCompanyContactViewModel>();
     }
 }

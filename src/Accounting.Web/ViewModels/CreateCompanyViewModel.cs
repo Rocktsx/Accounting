@@ -1,4 +1,5 @@
 ﻿using Accounting.BasicData;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +7,8 @@ namespace Accounting.Web.ViewModels
 {
     public class CreateCompanyViewModel
     {
+        public Guid Id { get; set; }
+        public string Code { get; set; }
         [Required]
         [MaxLength(AccountingCommonConsts.MaxPrefixLength)]
         public string Prefix { get; set; }

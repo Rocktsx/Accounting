@@ -2,7 +2,8 @@
     var l = abp.localization.getResource('Accounting');
 
     const model = {
-        addresses: [], contacts: [], isEditAddress: false, isEditContact: false, editItem: {}
+        addresses: [], contacts: [], isEditAddress: false, isEditContact: false, editItem: {},
+        company: {}
     };
 
     const getRowId = () => {
@@ -47,7 +48,7 @@
                 name = name.replace(prefix, "");
             }
             if (name) {
-                const field = name.substring(0, 1).toLowerCase() + name.substring(1)  
+                const field = name.substring(0, 1).toLowerCase() + name.substring(1)
                 if (field.startsWith("is")) {
                     result[field] = ($this.is(':checkbox') ? $this : $this.prev()).is(":checked");
                 } else {
@@ -87,8 +88,23 @@
             initModal: initModal
         };
     };
+    function setId(items) {
+        if (!items) {
+            return [];
+        }
+        items.forEach(item => {
+            item.rid = getNewRowId();
+        });
+        return items;
+    }
     abp.modals.CreateEditCompany = function () {
         function initModal(modalManager, args) {
+            const $item = $('#item');
+            if ($item.length) {
+                model.company = JSON.parse($item.text() || '{}');
+                model.addresses = setId(model.company.addresses || []);
+                model.contacts = setId(model.company.contacts || []);
+            }
             const addressModal = new abp.ModalManager(
                 {
                     viewUrl: abp.appPath + 'BasicData/Client/CreateAddressModal',
@@ -315,11 +331,14 @@
         };
     };
 
-    var createModal = new abp.ModalManager({
+    const createModal = new abp.ModalManager({
         viewUrl: abp.appPath + 'BasicData/Client/CreateModal',
         modalClass: 'CreateEditCompany'
     });
-    var editModal = new abp.ModalManager(abp.appPath + 'BasicData/Client/EditModal');
+    const editModal = new abp.ModalManager({
+        viewUrl: abp.appPath + 'BasicData/Client/EditModal',
+        modalClass: 'CreateEditCompany'
+    });
 
     var dataTable = $('#clientTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -340,7 +359,7 @@
                                     text: l('Edit'),
                                     iconClass: '',
                                     action: function (data) {
-                                        //editModal.open({ id: data.record.id });
+                                        editModal.open({ id: data.record.id });
                                     },
                                     //visible: abp.auth.isGranted('Accounting.BasicData.Client.Edit')
                                 },
@@ -401,17 +420,24 @@
         if (!form.valid()) {
             return;
         }
-        const data = getFormValues(form,'Client.');
-        data.addresses = model.addresses
-        data.contacts = model.contacts
-        data.code = '';
-        data.genNo = data.genNo.trim() || 0
-
-        accounting.basicData.company.create(data).then(function () { 
+        const fromData = getFormValues(form, 'Client.');
+        fromData.addresses = model.addresses;
+        fromData.contacts = model.contacts;
+        const isEdit = model.company && model.company.id;
+        const data = isEdit ? { ...model.company, ...fromData } : fromData;
+        const action = () => {
             abp.notify.success(l('SavedSuccessfully'));
-            createModal.close();
+            (isEdit ? editModal : createModal).close();
             dataTable.ajax.reload();
-        })
+        }
+        if (isEdit) {
+            accounting.basicData.company.update(data.id, data).then(action) 
+        } else {
+            data.code = '';
+            data.genNo = data.genNo.trim() || 0
+
+            accounting.basicData.company.create(data).then(action)
+        } 
         return false;
     });
 });
