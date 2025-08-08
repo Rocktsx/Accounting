@@ -243,5 +243,43 @@ namespace Accounting.BasicData
             result.TotalCount.ShouldBe(1);
             result.Items.Count().ShouldBe(1);
         }
+        [Fact]
+        public async Task Should_Clear_Address_And_Contact()
+        {
+            // arrange
+            var input = GetCompanyCreateOrEditDto();
+            var entry = await _companyAppService.CreateAsync(input);
+
+            var dto = GetCompanyCreateOrEditDto();
+            dto.Contacts.Clear();
+            dto.Addresses.Clear();
+
+            // act
+            await _companyAppService.UpdateAsync(entry.Id, dto);
+
+            // assert
+            var target = await _companyAppService.GetAsync(entry.Id);
+            target.Addresses.ShouldBeEmpty();
+            target.Contacts.ShouldBeEmpty();
+        }
+        [Fact]
+        public async Task Should_Clear_Null_Address_And_Contact()
+        {
+            // arrange
+            var input = GetCompanyCreateOrEditDto();
+            var entry = await _companyAppService.CreateAsync(input);
+
+            var dto = GetCompanyCreateOrEditDto();
+            dto.Contacts = null;
+            dto.Addresses = null;
+
+            // act
+            await _companyAppService.UpdateAsync(entry.Id, dto);
+
+            // assert
+            var target = await _companyAppService.GetAsync(entry.Id);
+            target.Addresses.ShouldBeEmpty();
+            target.Contacts.ShouldBeEmpty();
+        }
     }
 }

@@ -54,7 +54,7 @@ namespace Accounting.BasicData
         }
 
         public async Task<CompanyDto> GetAsync(Guid id)
-        { 
+        {
             var entity = await GetItemWithDetailsAsync(id);
             return ObjectMapper.Map<Company, CompanyDto>(entity);
         }
@@ -63,7 +63,7 @@ namespace Accounting.BasicData
             var queryable = await _companyRepository.WithDetailsAsync(item => item.Addresses, item => item.Contacts);
 
             var item = await AsyncExecuter.FirstOrDefaultAsync(queryable.Where(item => item.Id == companyId));
-            if(item == null)
+            if (item == null)
             {
                 throw new EntityNotFoundException();
             }
@@ -97,8 +97,13 @@ namespace Accounting.BasicData
                 .SetPaymentTerm(input.PaymentTerm)
                 .SetTradeTerm(input.TradeTerm);
 
-            if (input.Addresses != null)
+            if (input.Addresses == null || input.Addresses.Count() == 0)
             {
+                entity.Addresses.Clear();
+            }
+            else
+            {
+                entity.Addresses.RemoveAll(address => !input.Addresses.Any(a => a.Id == address.Id));
                 foreach (var address in input.Addresses)
                 {
                     if (address.Id.Equals(Guid.Empty))
@@ -115,8 +120,13 @@ namespace Accounting.BasicData
                     }
                 }
             }
-            if (input.Contacts != null)
+            if (input.Contacts == null || input.Contacts.Count() == 0)
             {
+                entity.Contacts.Clear();
+            }
+            else
+            {
+                entity.Contacts.RemoveAll(contact => !input.Contacts.Any(c => c.Id == contact.Id));
                 foreach (var contact in input.Contacts)
                 {
                     if (contact.Id.Equals(Guid.Empty))
