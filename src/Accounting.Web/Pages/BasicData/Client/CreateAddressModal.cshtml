@@ -1,0 +1,68 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@model Accounting.Web.Pages.BasicData.Client.CreateAddressModalModel
+@{
+    Layout = null;
+}
+<form id="addressForm" data-ajaxForm="true" data-check-form-on-close="false" method="post">
+    <abp-modal size="ExtraLarge">
+        <abp-modal-header title="@(Model.HttpContext.Request.Query["isEdit"] =="true" ? L["EditAddress"].Value : L["NewAddress"].Value)">
+        </abp-modal-header>
+        <abp-modal-body>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Name"/>
+                </abp-column>
+                <abp-column>
+                    <div style="height:15px;"></div>
+                    <abp-input asp-for="@Model.Address.IsBilling" />
+                    <abp-input asp-for="@Model.Address.IsShipping" />
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column> 
+                    <abp-input asp-for="@Model.Address.ContactPerson"/>
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Telephone"/>
+                </abp-column> 
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Fax"/>
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Country"/>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Region"/>
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.District"/>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Address"/>
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Remark"/>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Address.Email"/>
+                </abp-column>
+                <abp-column> 
+                </abp-column>
+            </abp-row>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.
+                                      Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>
