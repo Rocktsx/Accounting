@@ -1,0 +1,90 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model Accounting.Web.Pages.BasicData.Client.CreateModal
+@{
+    Layout = null;
+}
+<style>
+    #clientForm .dataTable_footer {
+        display: none;
+    } 
+    #clientForm .code .col:last-child label, #clientForm .creditlimit .col:last-child label {
+        visibility: hidden;
+    }
+</style>
+<form id="clientForm" data-ajaxForm="true" asp-page="/BasicData/Client/CreateModal" method="post" data-check-form-on-close="false">
+    <abp-modal size="ExtraLarge">
+        <abp-modal-header title="@L["NewClient"].Value">
+        </abp-modal-header>
+        <abp-modal-body> 
+            <abp-row>
+                <abp-column>
+                    <abp-row class="g-0 code">
+                        <abp-column>
+                            <abp-input asp-for="@Model.Client.Prefix" label="@L["Code"].Value" title="@L["Prefix"].Value" />
+                        </abp-column>
+                        <abp-column><abp-input asp-for="@Model.Client.GenNo"/></abp-column>
+                    </abp-row>
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Client.Name" />
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Client.OtherName" />
+                </abp-column>
+                
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Client.NickName" />
+                </abp-column>
+                <abp-column>
+                    <abp-row class="g-0 creditlimit">
+                        <abp-column><abp-select asp-for="@Model.Client.Currency" asp-items="@Model.Currencies" label="@L["CreditLimit"].Value" /></abp-column>
+                        <abp-column><abp-input asp-for="@Model.Client.CreditLimit"/></abp-column>
+                    </abp-row>
+                </abp-column>
+                <abp-column>
+                    <abp-input asp-for="@Model.Client.PaymentTerm" />
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <abp-input asp-for="@Model.Client.TradeTerm" />
+                </abp-column>
+                <abp-column>
+                    <abp-row class="g-0">
+                        <abp-column>
+                            <abp-input asp-for="@Model.Client.IsClient" />
+                        </abp-column>
+                        <abp-column>
+                            <abp-input asp-for="@Model.Client.IsVendor" />
+                        </abp-column>
+                    </abp-row>
+                </abp-column>
+                <abp-column></abp-column> 
+            </abp-row>
+            <abp-tabs>
+                <abp-tab title="@L["Address"].Value" id="addresses">
+                    <div>
+                        <abp-button id="newAddressBtn" text="@L["NewAddress"].Value"
+                                    icon="plus" button-type="Primary" size="Small" />
+                    </div>
+                    <abp-table id="addressTable" striped-rows="true" />
+                </abp-tab>
+                <abp-tab title="@L["ContactPerson"].Value" id="contacts">
+                    <div>
+                        <abp-button id="newContactBtn" text="@L["NewContact"].Value"
+                                    icon="plus" button-type="Primary" size="Small" />
+                    </div>
+                    <abp-table id="contactTable" striped-rows="true" />
+                </abp-tab>
+            </abp-tabs>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

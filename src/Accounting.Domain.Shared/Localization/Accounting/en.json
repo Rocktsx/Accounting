@@ -58,7 +58,7 @@
     "DirectLine": "DirectLine",
     "Currency": "Currency",
     "ContactName": "Contact Name",
-    "EditContact": "Edit Contact"
-
+    "EditContact": "Edit Contact",
+    "Prefix": "Prefix"
   }
 }

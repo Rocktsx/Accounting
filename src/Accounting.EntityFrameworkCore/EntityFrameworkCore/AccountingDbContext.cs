@@ -118,6 +118,7 @@ public class AccountingDbContext :
             b.Property(x => x.TradeTerm).HasMaxLength(CompanyConsts.CommonMaxLength);
             b.HasMany(x => x.Addresses).WithOne().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade);
             b.HasMany(x => x.Contacts).WithOne().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade);
+            b.Property(x => x.CreditLimit).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
         });
 
         //company address
