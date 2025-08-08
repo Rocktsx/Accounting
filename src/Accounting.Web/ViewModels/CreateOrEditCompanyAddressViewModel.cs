@@ -10,6 +10,7 @@ namespace Accounting.Web.ViewModels
     {
         [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
+        public Guid CompanyId { get; private set; }
         public bool IsBilling { get; set; }
         public bool IsShipping { get; set; }
         [MaxLength(CompanyConsts.MaxNameLength)]

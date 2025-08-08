@@ -22,10 +22,14 @@
             table.row((idx, item) => item.rid === row.rid).remove().draw();
         }
     }
+    const sortTable = (table, item) => {
+        table.row.add(item);
+        table.order([{ name: 'rid', dir: 'asc' }]).draw(); 
+    }
     const addRow = (table, item, dataField) => {
         item["rid"] = getNewRowId();
         model[dataField].push(item);
-        table.row.add(item).draw();
+        sortTable(table, item);
     }
     const editRow = (table, item, dataField) => {
         const data = model[dataField];
@@ -33,10 +37,8 @@
         const index = data.findIndex(obj => editItem.rid == obj.rid);
         if (index > -1) {
             data[index] = { ...editItem, ...item };
-            const row = table.row((idx, obj) => obj.rid === editItem.rid);
-            if (row.length) {
-                row.data(data[index]).draw();
-            }
+            table.row((idx, obj) => obj.rid === editItem.rid).remove();
+            sortTable(table, data[index]);
         }
     }
     const getFormValues = ($form, prefix) => {
@@ -60,7 +62,7 @@
     }
     abp.modals.CompnayAddressAndContact = function () {
         function initModal(modalManager, args) {
-            const $form = $("#addressForm, #contactForm"); //modalManager.getForm();
+            const $form = $("#addressForm, #contactForm");
             const { isEdit, prefix } = args || {};
             const record = model.editItem;
             if (!isEdit || !$form) {
@@ -97,6 +99,18 @@
         });
         return items;
     }
+    let addressDataTable = null;
+    let contactDataTable = null;
+    const addressModal = new abp.ModalManager({
+            viewUrl: abp.appPath + 'BasicData/Client/CreateAddressModal',
+            modalClass: 'CompnayAddressAndContact'
+        });
+
+    const contactModal = new abp.ModalManager({
+        viewUrl: abp.appPath + 'BasicData/Client/CreateContactModal',
+        modalClass: 'CompnayAddressAndContact'
+    });
+    
     abp.modals.CreateEditCompany = function () {
         function initModal(modalManager, args) {
             const $item = $('#item');
@@ -105,12 +119,8 @@
                 model.addresses = setId(model.company.addresses || []);
                 model.contacts = setId(model.company.contacts || []);
             }
-            const addressModal = new abp.ModalManager(
-                {
-                    viewUrl: abp.appPath + 'BasicData/Client/CreateAddressModal',
-                    modalClass: 'CompnayAddressAndContact'
-                });
-            const addressDataTable = $('#addressTable').DataTable(
+           
+            addressDataTable = $('#addressTable').DataTable(
                 abp.libs.datatables.normalizeConfiguration({
                     serverSide: false,
                     paging: false,
@@ -201,39 +211,13 @@
                         {
                             title: l('District'),
                             data: "district"
-                        }
+                        },
+                        { name: 'rid', data: "rid", visible: false }
                     ]
                 })
             );
-
-            $('#newAddressBtn').click(function (e) {
-                e.preventDefault();
-                model.isEditAddress = false;
-                addressModal.open();
-            });
-
-            $(document).on('click', '#addressForm button[type="submit"]', function (e) {
-                e.preventDefault();
-                const form = $('#addressForm');
-                if (!form.valid()) {
-                    return;
-                }
-                const address = getFormValues(form, 'Address.');
-                if (model.isEditAddress) {
-                    editRow(addressDataTable, address, "addresses");
-                } else {
-                    addRow(addressDataTable, address, "addresses");
-                }
-                addressModal.close();
-                return false;
-            });
-
-
-            const contactModal = new abp.ModalManager({
-                viewUrl: abp.appPath + 'BasicData/Client/CreateContactModal',
-                modalClass: 'CompnayAddressAndContact'
-            });
-            const contactDataTable = $('#contactTable').DataTable(
+             
+            contactDataTable = $('#contactTable').DataTable(
                 abp.libs.datatables.normalizeConfiguration({
                     serverSide: false,
                     paging: false,
@@ -299,31 +283,11 @@
                         {
                             title: l('Remark'),
                             data: "remark"
-                        }
+                        },
+                        { name: 'rid', data: "rid", visible: false }
                     ]
                 })
-            );
-
-            $('#newContactBtn').click(function (e) {
-                e.preventDefault();
-                model.isEditContact = false;
-                contactModal.open();
-            });
-            $(document).on('click', '#contactForm button[type="submit"]', function (e) {
-                e.preventDefault();
-                const form = $('#contactForm');
-                if (!form.valid()) {
-                    return;
-                }
-                const item = getFormValues(form);
-                if (model.isEditContact) {
-                    editRow(contactDataTable, item, "contacts");
-                } else {
-                    addRow(contactDataTable, item, "contacts");
-                }
-                contactModal.close();
-                return false;
-            });
+            ); 
         };
 
         return {
@@ -339,8 +303,12 @@
         viewUrl: abp.appPath + 'BasicData/Client/EditModal',
         modalClass: 'CreateEditCompany'
     });
-
-    var dataTable = $('#clientTable').DataTable(
+    const clearData = () => {
+        model.addresses = [];
+        model.contacts = [];
+        model.company = {};
+    }
+    const dataTable = $('#clientTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
@@ -402,18 +370,13 @@
             ]
         })
     );
-
-    createModal.onResult(function () {
-        dataTable.ajax.reload();
-    });
+    
     $(document).on('click', '#newClientButton', function (e) {
         e.preventDefault();
+        clearData();
         createModal.open();
     })
-
-    editModal.onResult(function () {
-        dataTable.ajax.reload();
-    });
+ 
     $(document).on('click', '#clientForm button[type="submit"]', function (e) {
         e.preventDefault();
         const form = $('#clientForm');
@@ -429,6 +392,7 @@
             abp.notify.success(l('SavedSuccessfully'));
             (isEdit ? editModal : createModal).close();
             dataTable.ajax.reload();
+            clearData();
         }
         if (isEdit) {
             accounting.basicData.company.update(data.id, data).then(action) 
@@ -438,6 +402,47 @@
 
             accounting.basicData.company.create(data).then(action)
         } 
+        return false;
+    });
+    $(document).on('click', '#newAddressBtn', function (e) {
+        e.preventDefault();
+        model.isEditAddress = false;
+        addressModal.open();
+    });
+
+    $(document).on('click', '#addressForm button[type="submit"]', function (e) {
+        e.preventDefault();
+        const form = $('#addressForm');
+        if (!form.valid()) {
+            return;
+        }
+        const address = getFormValues(form, 'Address.');
+        if (model.isEditAddress) {
+            editRow(addressDataTable, address, "addresses");
+        } else {
+            addRow(addressDataTable, address, "addresses");
+        }
+        addressModal.close();
+        return false;
+    });
+    $(document).on('click', '#newContactBtn', function (e) {
+        e.preventDefault();
+        model.isEditContact = false;
+        contactModal.open();
+    });
+    $(document).on('click', '#contactForm button[type="submit"]', function (e) {
+        e.preventDefault();
+        const form = $('#contactForm');
+        if (!form.valid()) {
+            return;
+        }
+        const item = getFormValues(form);
+        if (model.isEditContact) {
+            editRow(contactDataTable, item, "contacts");
+        } else {
+            addRow(contactDataTable, item, "contacts");
+        }
+        contactModal.close();
         return false;
     });
 });

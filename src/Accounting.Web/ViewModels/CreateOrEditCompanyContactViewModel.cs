@@ -10,6 +10,8 @@ namespace Accounting.Web.ViewModels
     {
         [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
+        [HiddenInput(DisplayValue = false)]
+        public Guid CompanyId { get; private set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [Required]
         public string ContactName { get; set; }
