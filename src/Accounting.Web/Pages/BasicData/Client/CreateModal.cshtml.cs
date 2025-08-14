@@ -11,7 +11,7 @@ namespace Accounting.Web.Pages.BasicData.Client
 {
     public class CreateModal : PageModel
     {
-        public CreateCompanyViewModel Client { get; set; }
+        public CreateOrEditCompanyViewModel Client { get; set; }
 
         public List<SelectListItem> Currencies { get; set; }
 
@@ -22,7 +22,7 @@ namespace Accounting.Web.Pages.BasicData.Client
         }
         public async Task OnGet()
         {
-            Client = new CreateCompanyViewModel
+            Client = new CreateOrEditCompanyViewModel
             {
                 IsClient = true,
                 IsVendor = false,

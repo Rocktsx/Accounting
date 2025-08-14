@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Accounting.Web.ViewModels
 {
-    public class CreateCompanyViewModel
+    public class CreateOrEditCompanyViewModel
     {
         public Guid Id { get; set; }
         public string Code { get; set; }
