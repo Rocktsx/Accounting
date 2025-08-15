@@ -21,15 +21,15 @@ namespace Accounting.Web.Pages.BasicData.Companies
         public bool IsVendor { get; set; } = false;
 
         private readonly ICurrencyAppService _currencyAppService;
-        private readonly ICompanyAppService _companyAppService;
-        public EditModalModel(ICurrencyAppService currencyAppService, ICompanyAppService companyAppService)
+        private readonly ICompanyAppService? _companyAppService;
+        public EditModalModel(ICurrencyAppService currencyAppService, IServiceProvider serviceProvider)
         {
             _currencyAppService = currencyAppService;
-            _companyAppService = companyAppService;
+            _companyAppService = (ICompanyAppService?)serviceProvider.GetService(IsVendor ? typeof(IVendorAppService):typeof( IClientAppService));
         }
         public async Task OnGet()
         {
-            var item = await _companyAppService.GetAsync(Id);
+            var item = await _companyAppService?.GetAsync(Id);
             Company =  ObjectMapper.Map<CompanyDto, CreateOrEditCompanyViewModel> (item);
             var currencies = await _currencyAppService.GetActiveListAsync();
             Currencies = currencies.Select(c => new SelectListItem() { Text = c.TargetCurrency, Value = c.TargetCurrency })

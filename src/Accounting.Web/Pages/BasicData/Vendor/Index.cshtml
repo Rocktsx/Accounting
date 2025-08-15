@@ -1,4 +1,5 @@
 ﻿@page
+@using Accounting.Permissions
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
@@ -18,10 +19,14 @@
                 <abp-card-title>@L["Menu:Vendor"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-                <abp-button id="newCompanyBtn"
-                            text="@L["NewVendor"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+                @if (await AuthorizationService.IsGrantedAsync(AccountingPermissions.VendorCreation))
+                {
+                    <abp-button id="newCompanyBtn"
+                                text="@L["NewVendor"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                
+                }
             </abp-column>
         </abp-row>
     </abp-card-header>

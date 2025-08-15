@@ -95,6 +95,8 @@
     "Prefix": "前缀",
     "Menu:Vendor": "供应商",
     "NewVendor": "添加供应商",
-    "EditVendor": "编辑供应商"
+    "EditVendor": "编辑供应商",
+    "Permission:Client": "客户",
+    "Permission:Vendor": "供应商"
   }
 }

@@ -1,4 +1,7 @@
 ﻿using Accounting.Localization;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using System;
 using Volo.Abp.Application.Services;
 
 namespace Accounting;
@@ -10,5 +13,12 @@ public abstract class AccountingAppService : ApplicationService
     protected AccountingAppService()
     {
         LocalizationResource = typeof(AccountingResource);
+    }
+    protected async Task CheckPermissions(params string[] permissons)
+    {
+        if (!await AuthorizationService.IsGrantedAnyAsync(permissons))
+        {
+            throw new UnauthorizedAccessException();
+        }
     }
 }

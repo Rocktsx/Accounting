@@ -24,7 +24,7 @@
     }
     const sortTable = (table, item) => {
         table.row.add(item);
-        table.order([{ name: 'rid', dir: 'asc' }]).draw(); 
+        table.order([{ name: 'rid', dir: 'asc' }]).draw();
     }
     const addRow = (table, item, dataField) => {
         item["rid"] = getNewRowId();
@@ -101,16 +101,23 @@
     }
     let addressDataTable = null;
     let contactDataTable = null;
+
+    const $table = $('#companyTable');
+    const isVendor = $table.attr("data-isvendor") === "1";
+    const apiService = isVendor ? accounting.basicData.vendor : accounting.basicData.client;
+    const editGranted = abp.auth.isGranted(isVendor ? 'Accounting.BasicData.Vendor.Edit' : 'Accounting.BasicData.Client.Edit');
+    const deleteGranted = abp.auth.isGranted(isVendor ? 'Accounting.BasicData.Vendor.Deletion' : 'Accounting.BasicData.Client.Deletion');
+
     const addressModal = new abp.ModalManager({
         viewUrl: abp.appPath + 'BasicData/Companies/CreateAddressModal',
-            modalClass: 'CompnayAddressAndContact'
-        });
+        modalClass: 'CompnayAddressAndContact'
+    });
 
     const contactModal = new abp.ModalManager({
         viewUrl: abp.appPath + 'BasicData/Companies/CreateContactModal',
         modalClass: 'CompnayAddressAndContact'
     });
-    
+
     abp.modals.CreateEditCompany = function () {
         function initModal(modalManager, args) {
             const $item = $('#item');
@@ -119,7 +126,7 @@
                 model.addresses = setId(model.company.addresses || []);
                 model.contacts = setId(model.company.contacts || []);
             }
-           
+
             addressDataTable = $('#addressTable').DataTable(
                 abp.libs.datatables.normalizeConfiguration({
                     serverSide: false,
@@ -127,9 +134,6 @@
                     order: [[1, "asc"]],
                     searching: false,
                     scrollX: true,
-                    fixedHeader: {
-                        footer: false
-                    },
                     data: model.addresses,
                     columnDefs: [
                         {
@@ -145,12 +149,10 @@
                                                 model.isEditAddress = true;
                                                 model.editItem = data.record;
                                                 addressModal.open({ isEdit: true, prefix: 'Address.' });
-                                            },
-                                            //visible: abp.auth.isGranted('Accounting.BasicData.Client.Edit')
+                                            }
                                         },
                                         {
                                             text: l('Delete'),
-                                            //visible: abp.auth.isGranted('Accounting.BasicData.Client.Deletion'), 
                                             action: function (data) {
                                                 removeRow(addressDataTable, data.record, "addresses");
                                             }
@@ -216,7 +218,7 @@
                     ]
                 })
             );
-             
+
             contactDataTable = $('#contactTable').DataTable(
                 abp.libs.datatables.normalizeConfiguration({
                     serverSide: false,
@@ -239,12 +241,10 @@
                                                 model.editItem = data.record;
                                                 model.isEditContact = true;
                                                 contactModal.open({ isEdit: true });
-                                            },
-                                            //visible: abp.auth.isGranted('Accounting.BasicData.Client.Edit')
+                                            }
                                         },
                                         {
                                             text: l('Delete'),
-                                            //visible: abp.auth.isGranted('Accounting.BasicData.Client.Deletion'), 
                                             action: function (data) {
                                                 removeRow(contactDataTable, data.record, "contacts");
                                             }
@@ -287,17 +287,15 @@
                         { name: 'rid', data: "rid", visible: false }
                     ]
                 })
-            ); 
+            );
         };
 
         return {
             initModal: initModal
         };
-    }; 
+    };
 
-    const $table = $('#companyTable');
-    const isVendor = $table.attr("data-isvendor") === "1";
-    const queryString = isVendor ? '?isVendor=true': '';
+    const queryString = isVendor ? '?isVendor=true' : '';
     const createModal = new abp.ModalManager({
         viewUrl: abp.appPath + 'BasicData/Companies/CreateModal' + queryString,
         modalClass: 'CreateEditCompany'
@@ -311,14 +309,15 @@
         model.contacts = [];
         model.company = {};
     }
+
     const dataTable = $table.DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
             order: [[1, "asc"]],
             searching: true,
-            scrollX: true, 
-            ajax: abp.libs.datatables.createAjax(accounting.basicData.company.getList, isVendor ? { isVendor }: { isClient: true }),
+            scrollX: true,
+            ajax: abp.libs.datatables.createAjax(apiService.getList, isVendor ? { isVendor } : { isClient: true }),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -332,18 +331,17 @@
                                     action: function (data) {
                                         editModal.open({ id: data.record.id, isVendor });
                                     },
-                                    //visible: abp.auth.isGranted('Accounting.BasicData.Client.Edit')
+                                    visible: editGranted
                                 },
                                 {
                                     text: l('Delete'),
-                                    //visible: abp.auth.isGranted('Accounting.BasicData.Client.Deletion'),
+                                    visible: deleteGranted,
                                     confirmMessage: function (data) {
                                         return l('ClientDeletionConfirmationMessage',
                                             data.record.name);
                                     },
                                     action: function (data) {
-                                        accounting.basicData.company
-                                            .delete(data.record.id)
+                                        apiService.delete(data.record.id)
                                             .then(function () {
                                                 abp.notify.success(l('SuccessfullyDeleted'));
                                                 dataTable.ajax.reload();
@@ -373,13 +371,13 @@
             ]
         })
     );
-    
+
     $(document).on('click', '#newCompanyBtn', function (e) {
         e.preventDefault();
         clearData();
         createModal.open();
     })
- 
+
     $(document).on('click', '#companyForm button[type="submit"]', function (e) {
         e.preventDefault();
         const form = $('#companyForm');
@@ -398,13 +396,13 @@
             clearData();
         }
         if (isEdit) {
-            accounting.basicData.company.update(data.id, data).then(action) 
+            apiService.update(data.id, data).then(action)
         } else {
             data.code = '';
             data.genNo = data.genNo.trim() || 0
 
-            accounting.basicData.company.create(data).then(action)
-        } 
+            apiService.create(data).then(action)
+        }
         return false;
     });
     $(document).on('click', '#newAddressBtn', function (e) {

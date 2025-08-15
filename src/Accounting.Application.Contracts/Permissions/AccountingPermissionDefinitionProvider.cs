@@ -1,4 +1,5 @@
 using Accounting.Localization;
+using JetBrains.Annotations;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 using Volo.Abp.MultiTenancy;
@@ -9,12 +10,26 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var currencyDisplayName = L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.Currency));
-        var currencyGroup = context.AddGroup(AccountingPermissions.Currency, currencyDisplayName); 
-        var currency = currencyGroup.AddPermission(AccountingPermissions.Currency, currencyDisplayName);
-        currency.AddChild(AccountingPermissions.CurrencyCreation, L(AccountingPermissions.CreationDisplayName));
-        currency.AddChild(AccountingPermissions.CurrencyDeletion, L(AccountingPermissions.DeletionDisplayName));
-        currency.AddChild(AccountingPermissions.CurrencyEdit, L(AccountingPermissions.EditDisplayName));
+        AddPermissionGroup(context, AccountingPermissions.Currency, nameof(AccountingPermissions.Currency), AccountingPermissions.CurrencyCreation, AccountingPermissions.CurrencyDeletion, AccountingPermissions.CurrencyEdit);
+        AddPermissionGroup(context, AccountingPermissions.Client, nameof(AccountingPermissions.Client), AccountingPermissions.ClientCreation, AccountingPermissions.ClientDeletion, AccountingPermissions.ClientEdit);
+        AddPermissionGroup(context, AccountingPermissions.Vendor, nameof(AccountingPermissions.Vendor), AccountingPermissions.VendorCreation, AccountingPermissions.VendorDeletion, AccountingPermissions.VendorEdit);
+    }
+    private void AddPermission(PermissionGroupDefinition group, string permissionName, LocalizableString permissionDisplayName, string creationPermission, string deletionPermissin, string editPermission)
+    {
+        var permission = group.AddPermission(permissionName, permissionDisplayName);
+        permission.AddChild(creationPermission, L(AccountingPermissions.CreationDisplayName));
+        permission.AddChild(deletionPermissin, L(AccountingPermissions.DeletionDisplayName));
+        permission.AddChild(editPermission, L(AccountingPermissions.EditDisplayName));
+    }
+    private void AddPermissionGroup(IPermissionDefinitionContext context, string permission, LocalizableString permissionName, string creationPermission, string deletionPermissin, string editPermission)
+    {
+        var group = context.AddGroup(permission, permissionName);
+        AddPermission(group, permission, permissionName, creationPermission, deletionPermissin, editPermission); 
+    }
+    private void AddPermissionGroup(IPermissionDefinitionContext context, string permission, string permissionName, string creationPermission, string deletionPermissin, string editPermission)
+    {
+        var permissionDisplayName = L(AccountingPermissions.PermissionPrefix + permissionName);
+        AddPermissionGroup(context, permission, permissionDisplayName, creationPermission, deletionPermissin, editPermission);
     }
 
     private static LocalizableString L(string name)

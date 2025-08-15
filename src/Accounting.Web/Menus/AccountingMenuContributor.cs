@@ -58,9 +58,9 @@ public class AccountingMenuContributor : IMenuContributor
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 7);
 
         var basicDataMenu = new ApplicationMenuItem(
-         "Accounting.BasicData",
-         l["Menu:BasicData"],
-         icon: "fas fa-gears"
+             "Accounting.BasicData",
+             l["Menu:BasicData"],
+             icon: "fas fa-gears"
          );
         if (await context.IsGrantedAsync(AccountingPermissions.Currency))
         {
@@ -73,22 +73,30 @@ public class AccountingMenuContributor : IMenuContributor
               )
           );
         }
-        basicDataMenu.AddItem(
+
+        if (await context.IsGrantedAsync(AccountingPermissions.Client))
+        {
+            basicDataMenu.AddItem(
              new ApplicationMenuItem(
-             "Accounting.BasicData.Client",
-             l["Menu:Client"],
-               icon: "fas fa-credit-card",
-             url: "/BasicData/Client"
-             )
-         );
-        basicDataMenu.AddItem(
-            new ApplicationMenuItem(
-            "Accounting.BasicData.Vendor",
-            l["Menu:Vendor"],
-              icon: "fas fa-rectangle-list",
-            url: "/BasicData/Vendor"
-            )
-        );
+                 "Accounting.BasicData.Client",
+                 l["Menu:Client"],
+                   icon: "fas fa-credit-card",
+                 url: "/BasicData/Client"
+                 )
+            );
+        }
+
+        if (await context.IsGrantedAsync(AccountingPermissions.Vendor))
+        {
+            basicDataMenu.AddItem(
+                new ApplicationMenuItem(
+                "Accounting.BasicData.Vendor",
+                l["Menu:Vendor"],
+                  icon: "fas fa-rectangle-list",
+                url: "/BasicData/Vendor"
+                )
+            );
+        }
         if (basicDataMenu.Items.Count > 0)
         {
             context.Menu.AddItem(basicDataMenu);

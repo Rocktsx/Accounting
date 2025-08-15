@@ -18,4 +18,14 @@ public static class AccountingPermissions
     public const string CurrencyCreation = Currency + Creation;
     public const string CurrencyDeletion = Currency + Deletion;
     public const string CurrencyEdit = Currency + Edit;
+
+    public const string Client = BasicDataGroupName + ".Client";
+    public const string ClientCreation = Client + Creation;
+    public const string ClientDeletion = Client + Deletion;
+    public const string ClientEdit = Client + Edit;
+
+    public const string Vendor = BasicDataGroupName + ".Vendor";
+    public const string VendorCreation = Vendor + Creation;
+    public const string VendorDeletion = Vendor + Deletion;
+    public const string VendorEdit = Vendor + Edit;
 }

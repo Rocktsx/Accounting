@@ -1,11 +1,12 @@
 ﻿@page
 
+@using Accounting.Permissions
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
- @model Accounting.Web.Pages.BasicData.Client.IndexModel
+@model Accounting.Web.Pages.BasicData.Client.IndexModel
 @{
 }
 @section scripts
@@ -18,11 +19,14 @@
             <abp-column size-md="_6">
                 <abp-card-title>@L["Menu:Client"]</abp-card-title>
             </abp-column> 
-            <abp-column size-md="_6" class="text-end">  
-                <abp-button id="newCompanyBtn"
-                            text="@L["NewClient"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+            <abp-column size-md="_6" class="text-end">
+                @if(await AuthorizationService.IsGrantedAsync(AccountingPermissions.VendorCreation)) 
+                {
+                    <abp-button id="newCompanyBtn"
+                                text="@L["NewClient"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
             </abp-column>
         </abp-row> 
     </abp-card-header>

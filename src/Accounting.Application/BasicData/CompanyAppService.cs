@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
@@ -12,6 +11,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.BasicData
 {
+    [RemoteService(false, IsMetadataEnabled =false)]
     public class CompanyAppService : ApplicationService, ICompanyAppService
     {
         private readonly IRepository<Company, Guid> _companyRepository;
@@ -19,9 +19,9 @@ namespace Accounting.BasicData
         public CompanyAppService(IRepository<Company, Guid> companyRepository)
         {
             _companyRepository = companyRepository;
-        }
-        public async Task<CompanyDto> CreateAsync(CompanyCreateOrEditDto input)
-        {
+        } 
+        public virtual async Task<CompanyDto> CreateAsync(CompanyCreateOrEditDto input)
+        { 
             var company = new Company(GuidGenerator.Create(), input.Name, input.OtherName,
                 input.NickName, input.Currency, input.CreditLimit, input.PaymentTerm, input.TradeTerm,
                 input.IsClient, input.IsVendor);
@@ -48,12 +48,12 @@ namespace Accounting.BasicData
             return ObjectMapper.Map<Company, CompanyDto>(createdCompany);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             await _companyRepository.DeleteAsync(id);
         }
 
-        public async Task<CompanyDto> GetAsync(Guid id)
+        public virtual async Task<CompanyDto> GetAsync(Guid id)
         {
             var entity = await GetItemWithDetailsAsync(id);
             return ObjectMapper.Map<Company, CompanyDto>(entity);
@@ -70,7 +70,7 @@ namespace Accounting.BasicData
             return item;
         }
 
-        public async Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
+        public virtual async Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
         {
             var queryable = await _companyRepository.GetQueryableAsync();
             var filter = dto.Filter ?? string.Empty;
@@ -84,7 +84,7 @@ namespace Accounting.BasicData
             return new PagedResultDto<CompanyDto>(count, ObjectMapper.Map<List<Company>, List<CompanyDto>>(list));
         }
 
-        public async Task<CompanyDto> UpdateAsync(Guid id, CompanyCreateOrEditDto input)
+        public virtual async Task<CompanyDto> UpdateAsync(Guid id, CompanyCreateOrEditDto input)
         {
             var entity = await GetItemWithDetailsAsync(id); ;
             entity.SetCreditLimit(input.CreditLimit)
