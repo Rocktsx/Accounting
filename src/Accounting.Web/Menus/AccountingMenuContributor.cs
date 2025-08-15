@@ -58,7 +58,7 @@ public class AccountingMenuContributor : IMenuContributor
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 7);
 
         var basicDataMenu = new ApplicationMenuItem(
-             "Accounting.BasicData",
+             AccountingPermissions.BasicDataGroupName,
              l["Menu:BasicData"],
              icon: "fas fa-gears"
          );
@@ -66,7 +66,7 @@ public class AccountingMenuContributor : IMenuContributor
         {
             basicDataMenu.AddItem(
               new ApplicationMenuItem(
-              "Accounting.BasicData.Currency",
+              AccountingPermissions.Currency,
               l["Menu:Currency"],
                 icon: "fas fa-dollar-sign",
               url: "/BasicData/Currency"
@@ -78,7 +78,7 @@ public class AccountingMenuContributor : IMenuContributor
         {
             basicDataMenu.AddItem(
              new ApplicationMenuItem(
-                 "Accounting.BasicData.Client",
+                 AccountingPermissions.Client,
                  l["Menu:Client"],
                    icon: "fas fa-credit-card",
                  url: "/BasicData/Client"
@@ -90,7 +90,7 @@ public class AccountingMenuContributor : IMenuContributor
         {
             basicDataMenu.AddItem(
                 new ApplicationMenuItem(
-                "Accounting.BasicData.Vendor",
+                AccountingPermissions.Vendor,
                 l["Menu:Vendor"],
                   icon: "fas fa-rectangle-list",
                 url: "/BasicData/Vendor"

@@ -20,7 +20,7 @@
                 <abp-card-title>@L["Menu:Client"]</abp-card-title>
             </abp-column> 
             <abp-column size-md="_6" class="text-end">
-                @if(await AuthorizationService.IsGrantedAsync(AccountingPermissions.VendorCreation)) 
+                @if(await AuthorizationService.IsGrantedAsync(AccountingPermissions.ClientCreation)) 
                 {
                     <abp-button id="newCompanyBtn"
                                 text="@L["NewClient"].Value"
