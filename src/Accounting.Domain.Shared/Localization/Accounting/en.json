@@ -59,6 +59,9 @@
     "Currency": "Currency",
     "ContactName": "Contact Name",
     "EditContact": "Edit Contact",
-    "Prefix": "Prefix"
+    "Prefix": "Prefix",
+    "Menu:Vendor": "Vendor",
+    "NewVendor": "New Vendor",
+    "EditVendor": "Edit Vendor"
   }
 }

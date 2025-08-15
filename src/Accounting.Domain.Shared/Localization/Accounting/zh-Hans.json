@@ -92,6 +92,9 @@
     "Currency": "货币",
     "ContactName": "联系人姓名",
     "EditContact": "编辑联系人",
-    "Prefix": "前缀"
+    "Prefix": "前缀",
+    "Menu:Vendor": "供应商",
+    "NewVendor": "添加供应商",
+    "EditVendor": "编辑供应商"
   }
 }

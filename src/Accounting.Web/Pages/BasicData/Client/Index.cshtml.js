@@ -293,10 +293,13 @@
         return {
             initModal: initModal
         };
-    };
+    }; 
 
+    const $table = $('#clientTable');
+    const isVendor = $table.attr("data-isvendor") === "1";
+    const queryString = isVendor ? '?isVendor=true': '';
     const createModal = new abp.ModalManager({
-        viewUrl: abp.appPath + 'BasicData/Client/CreateModal',
+        viewUrl: abp.appPath + 'BasicData/Client/CreateModal' + queryString,
         modalClass: 'CreateEditCompany'
     });
     const editModal = new abp.ModalManager({
@@ -308,14 +311,14 @@
         model.contacts = [];
         model.company = {};
     }
-    const dataTable = $('#clientTable').DataTable(
+    const dataTable = $table.DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
             order: [[1, "asc"]],
             searching: true,
-            scrollX: true,
-            ajax: abp.libs.datatables.createAjax(accounting.basicData.company.getList, { isClient: true }),
+            scrollX: true, 
+            ajax: abp.libs.datatables.createAjax(accounting.basicData.company.getList, isVendor ? { isVendor }: { isClient: true }),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -327,7 +330,7 @@
                                     text: l('Edit'),
                                     iconClass: '',
                                     action: function (data) {
-                                        editModal.open({ id: data.record.id });
+                                        editModal.open({ id: data.record.id, isVendor });
                                     },
                                     //visible: abp.auth.isGranted('Accounting.BasicData.Client.Edit')
                                 },

@@ -1,0 +1,31 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+@model Accounting.Web.Pages.BasicData.Vendor.IndexModel
+@{
+}
+@section scripts
+{
+    <abp-script src="/Pages/BasicData/Client/Index.cshtml.js" />
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row class="mb-1">
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Menu:Vendor"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                <abp-button id="newClientButton"
+                            text="@L["NewVendor"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table id="clientTable" striped-rows="true" data-isvendor="1" />
+    </abp-card-body>
+</abp-card>

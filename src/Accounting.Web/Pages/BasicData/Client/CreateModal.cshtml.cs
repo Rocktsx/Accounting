@@ -16,6 +16,9 @@ namespace Accounting.Web.Pages.BasicData.Client
         public List<SelectListItem> Currencies { get; set; }
 
         private readonly ICurrencyAppService _currencyAppService;
+
+        [BindProperty(SupportsGet = true)]
+        public bool IsVendor { get; set; } = false;
         public CreateModal(ICurrencyAppService currencyAppService)
         {
             _currencyAppService = currencyAppService;
@@ -35,6 +38,12 @@ namespace Accounting.Web.Pages.BasicData.Client
             if(Currencies.Count()> 0)
             {
                 Currencies.First().Selected = true;
+            }
+            if(this.IsVendor)
+            {
+                Client.Prefix = "V";
+                Client.IsClient = false;
+                Client.IsVendor = true;
             }
         }
     }

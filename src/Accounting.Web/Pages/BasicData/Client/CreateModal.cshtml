@@ -18,7 +18,7 @@
 </style>
 <form id="clientForm" data-ajaxForm="true" asp-page="/BasicData/Client/CreateModal" method="post" data-check-form-on-close="false">
     <abp-modal size="ExtraLarge">
-        <abp-modal-header title="@L["NewClient"].Value">
+        <abp-modal-header title="@L[Model.IsVendor?"NewVendor":"NewClient"].Value">
         </abp-modal-header>
         <abp-modal-body> 
             <abp-row>

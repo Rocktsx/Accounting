@@ -77,10 +77,18 @@ public class AccountingMenuContributor : IMenuContributor
              new ApplicationMenuItem(
              "Accounting.BasicData.Client",
              l["Menu:Client"],
-               icon: "fas fa-medal",
+               icon: "fas fa-credit-card",
              url: "/BasicData/Client"
              )
          );
+        basicDataMenu.AddItem(
+            new ApplicationMenuItem(
+            "Accounting.BasicData.Vendor",
+            l["Menu:Vendor"],
+              icon: "fas fa-rectangle-list",
+            url: "/BasicData/Vendor"
+            )
+        );
         if (basicDataMenu.Items.Count > 0)
         {
             context.Menu.AddItem(basicDataMenu);

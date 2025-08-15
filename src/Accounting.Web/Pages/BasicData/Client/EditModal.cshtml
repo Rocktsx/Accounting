@@ -20,7 +20,7 @@
 </style>
 <form id="clientForm" data-ajaxForm="true" asp-page="/BasicData/Client/CreateModal" method="post" data-check-form-on-close="false">
     <abp-modal size="ExtraLarge">
-        <abp-modal-header title="@L["EditClient"].Value">
+        <abp-modal-header title="@L[Model.IsVendor?"EditVendor":"EditClient"].Value">
         </abp-modal-header>
         <abp-modal-body>
             <abp-row>

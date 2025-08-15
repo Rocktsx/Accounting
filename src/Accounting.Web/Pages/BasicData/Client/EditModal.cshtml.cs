@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Volo.Abp.ObjectMapping;
 
 namespace Accounting.Web.Pages.BasicData.Client
 {
@@ -18,6 +17,8 @@ namespace Accounting.Web.Pages.BasicData.Client
         public CreateOrEditCompanyViewModel Client { get; set; }
 
         public List<SelectListItem> Currencies { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public bool IsVendor { get; set; } = false;
 
         private readonly ICurrencyAppService _currencyAppService;
         private readonly ICompanyAppService _companyAppService;
