@@ -10,20 +10,21 @@ namespace Accounting.Web.ViewModels
     {
         [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
-        public Guid CompanyId { get; private set; }
+        [HiddenInput(DisplayValue = false)]
+        public Guid CompanyId { get; set; }
         public bool IsBilling { get; set; }
         public bool IsShipping { get; set; }
         [MaxLength(CompanyConsts.MaxNameLength)]
         public string? Name { get; set; }
-        [MaxLength(CompanyAddressConsts.MaxAddressLength)]
         [Required]
+        [MaxLength(CompanyAddressConsts.MaxAddressLength)]
         [TextArea(Rows = 3)]
         public string Address { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [Required]
         public string ContactPerson { get; set; }
-        [MaxLength(CompanyConsts.CommonMaxLength)]
         [Required]
+        [MaxLength(CompanyConsts.CommonMaxLength)]
         [DataType(DataType.PhoneNumber)]
         public string Telephone { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]

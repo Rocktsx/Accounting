@@ -11,7 +11,7 @@ namespace Accounting.Web.ViewModels
         [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
         [HiddenInput(DisplayValue = false)]
-        public Guid CompanyId { get; private set; }
+        public Guid CompanyId { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [Required]
         public string ContactName { get; set; }
@@ -32,7 +32,7 @@ namespace Accounting.Web.ViewModels
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
         [MaxLength(CompanyConsts.MaxRemarkLength)]
-        [TextArea(Rows = 3)]
+        [TextArea(Rows = 2)]
         public string? Remark { get; set; }
     }
 }

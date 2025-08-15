@@ -5,60 +5,60 @@
 @inject IStringLocalizer<AccountingResource> L
 @inject IJsonHelper JsonHelper
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
-@model Accounting.Web.Pages.BasicData.Client.EditModalModel
+@model Accounting.Web.Pages.BasicData.Companies.EditModalModel
 @{
     Layout = null;
 }
 <style>
-    #clientForm .dataTable_footer {
+    #companyForm .dataTable_footer {
         display: none;
     }
 
-    #clientForm .code .col:last-child label, #clientForm .creditlimit .col:last-child label {
+    #companyForm .code .col:last-child label, #companyForm .creditlimit .col:last-child label {
         visibility: hidden;
     }
 </style>
-<form id="clientForm" data-ajaxForm="true" asp-page="/BasicData/Client/CreateModal" method="post" data-check-form-on-close="false">
+<form id="companyForm" data-ajaxForm="true" asp-page="/BasicData/Client/CreateModal" method="post" data-check-form-on-close="false">
     <abp-modal size="ExtraLarge">
         <abp-modal-header title="@L[Model.IsVendor?"EditVendor":"EditClient"].Value">
         </abp-modal-header>
         <abp-modal-body>
             <abp-row>
                 <abp-column>
-                    <abp-input asp-for="@Model.Client.Code" disabled />
+                    <abp-input asp-for="@Model.Company.Code" disabled />
                 </abp-column>
                 <abp-column>
-                    <abp-input asp-for="@Model.Client.Name" />
+                    <abp-input asp-for="@Model.Company.Name" />
                 </abp-column>
                 <abp-column>
-                    <abp-input asp-for="@Model.Client.OtherName" />
+                    <abp-input asp-for="@Model.Company.OtherName" />
                 </abp-column> 
             </abp-row>
             <abp-row>
                 <abp-column>
-                    <abp-input asp-for="@Model.Client.NickName" />
+                    <abp-input asp-for="@Model.Company.NickName" />
                 </abp-column>
                 <abp-column>
                     <abp-row class="g-0 creditlimit">
-                        <abp-column><abp-select asp-for="@Model.Client.Currency" asp-items="@Model.Currencies" label="@L["CreditLimit"].Value" /></abp-column>
-                        <abp-column><abp-input asp-for="@Model.Client.CreditLimit" /></abp-column>
+                        <abp-column><abp-select asp-for="@Model.Company.Currency" asp-items="@Model.Currencies" label="@L["CreditLimit"].Value" /></abp-column>
+                        <abp-column><abp-input asp-for="@Model.Company.CreditLimit" /></abp-column>
                     </abp-row>
                 </abp-column>
                 <abp-column>
-                    <abp-input asp-for="@Model.Client.PaymentTerm" />
+                    <abp-input asp-for="@Model.Company.PaymentTerm" />
                 </abp-column>
             </abp-row>
             <abp-row>
                 <abp-column>
-                    <abp-input asp-for="@Model.Client.TradeTerm" />
+                    <abp-input asp-for="@Model.Company.TradeTerm" />
                 </abp-column>
                 <abp-column>
                     <abp-row class="g-0">
                         <abp-column>
-                            <abp-input asp-for="@Model.Client.IsClient" />
+                            <abp-input asp-for="@Model.Company.IsClient" />
                         </abp-column>
                         <abp-column>
-                            <abp-input asp-for="@Model.Client.IsVendor" />
+                            <abp-input asp-for="@Model.Company.IsVendor" />
                         </abp-column>
                     </abp-row>
                 </abp-column>
@@ -84,4 +84,4 @@
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>
 </form>
-<script type="application/json" id="item">@(JsonHelper.Serialize(Model.Client))</script>
+<script type="application/json" id="item">@(JsonHelper.Serialize(Model.Company))</script>

@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Accounting.Web.Pages.BasicData.Client
+namespace Accounting.Web.Pages.BasicData.Companies
 {
     public class CreateModal : PageModel
     {
-        public CreateOrEditCompanyViewModel Client { get; set; }
+        public CreateOrEditCompanyViewModel Company { get; set; }
 
         public List<SelectListItem> Currencies { get; set; }
 
@@ -25,7 +25,7 @@ namespace Accounting.Web.Pages.BasicData.Client
         }
         public async Task OnGet()
         {
-            Client = new CreateOrEditCompanyViewModel
+            Company = new CreateOrEditCompanyViewModel
             {
                 IsClient = true,
                 IsVendor = false,
@@ -41,9 +41,9 @@ namespace Accounting.Web.Pages.BasicData.Client
             }
             if(this.IsVendor)
             {
-                Client.Prefix = "V";
-                Client.IsClient = false;
-                Client.IsVendor = true;
+                Company.Prefix = "V";
+                Company.IsClient = false;
+                Company.IsVendor = true;
             }
         }
     }

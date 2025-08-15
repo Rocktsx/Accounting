@@ -10,7 +10,7 @@
 }
 @section scripts
 {
-    <abp-script src="/Pages/BasicData/Client/Index.cshtml.js" />
+    <abp-script src="/basicData/company.js" />
 }
 <abp-card>
     <abp-card-header>
@@ -19,7 +19,7 @@
                 <abp-card-title>@L["Menu:Client"]</abp-card-title>
             </abp-column> 
             <abp-column size-md="_6" class="text-end">  
-                <abp-button id="newClientButton"
+                <abp-button id="newCompanyBtn"
                             text="@L["NewClient"].Value"
                             icon="plus"
                             button-type="Primary" />
@@ -27,6 +27,6 @@
         </abp-row> 
     </abp-card-header>
     <abp-card-body>
-        <abp-table id="clientTable" striped-rows="true" />
+        <abp-table id="companyTable" striped-rows="true" />
     </abp-card-body>
 </abp-card>

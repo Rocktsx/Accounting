@@ -102,12 +102,12 @@
     let addressDataTable = null;
     let contactDataTable = null;
     const addressModal = new abp.ModalManager({
-            viewUrl: abp.appPath + 'BasicData/Client/CreateAddressModal',
+        viewUrl: abp.appPath + 'BasicData/Companies/CreateAddressModal',
             modalClass: 'CompnayAddressAndContact'
         });
 
     const contactModal = new abp.ModalManager({
-        viewUrl: abp.appPath + 'BasicData/Client/CreateContactModal',
+        viewUrl: abp.appPath + 'BasicData/Companies/CreateContactModal',
         modalClass: 'CompnayAddressAndContact'
     });
     
@@ -295,15 +295,15 @@
         };
     }; 
 
-    const $table = $('#clientTable');
+    const $table = $('#companyTable');
     const isVendor = $table.attr("data-isvendor") === "1";
     const queryString = isVendor ? '?isVendor=true': '';
     const createModal = new abp.ModalManager({
-        viewUrl: abp.appPath + 'BasicData/Client/CreateModal' + queryString,
+        viewUrl: abp.appPath + 'BasicData/Companies/CreateModal' + queryString,
         modalClass: 'CreateEditCompany'
     });
     const editModal = new abp.ModalManager({
-        viewUrl: abp.appPath + 'BasicData/Client/EditModal',
+        viewUrl: abp.appPath + 'BasicData/Companies/EditModal',
         modalClass: 'CreateEditCompany'
     });
     const clearData = () => {
@@ -374,19 +374,19 @@
         })
     );
     
-    $(document).on('click', '#newClientButton', function (e) {
+    $(document).on('click', '#newCompanyBtn', function (e) {
         e.preventDefault();
         clearData();
         createModal.open();
     })
  
-    $(document).on('click', '#clientForm button[type="submit"]', function (e) {
+    $(document).on('click', '#companyForm button[type="submit"]', function (e) {
         e.preventDefault();
-        const form = $('#clientForm');
+        const form = $('#companyForm');
         if (!form.valid()) {
             return;
         }
-        const fromData = getFormValues(form, 'Client.');
+        const fromData = getFormValues(form, 'Company.');
         fromData.addresses = model.addresses;
         fromData.contacts = model.contacts;
         const isEdit = model.company && model.company.id;

@@ -2,7 +2,7 @@ using Accounting.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Accounting.Web.Pages.BasicData.Client
+namespace Accounting.Web.Pages.BasicData.Companies
 {
     public class CreateContactModalModel : PageModel
     {
