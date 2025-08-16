@@ -1,0 +1,51 @@
+﻿using System;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
+
+namespace Accounting.Finance
+{
+    /// <summary>
+    /// 会计年度
+    /// </summary>
+    public class AccountingPeriod : Entity<Guid>, IMultiTenant
+    {
+        public Guid? TenantId { get; set; }
+        public string Code { get; private set; }
+        public DateOnly StartDate { get; private set; }
+        public DateOnly EndDate { get; private set; }
+        public bool IsCurrentPeriod { get; private set; }
+
+        private AccountingPeriod() { }
+
+        public AccountingPeriod(Guid id, string code, DateOnly startDate, DateOnly endDate, bool isCurrentPeriod)
+        {
+            Id = id;
+            SetCode(code);
+            SetStartDate(startDate);
+            SetEndDate(endDate);
+            SetIsCurrentPeriod(isCurrentPeriod);
+        }
+        public AccountingPeriod SetCode(string code)
+        {
+            Check.NotNullOrWhiteSpace(code, nameof(code));
+            Code = code;
+            return this;
+        }
+        public AccountingPeriod SetStartDate(DateOnly startDate)
+        {
+            StartDate = startDate;
+            return this;
+        }
+        public AccountingPeriod SetEndDate(DateOnly endDate)
+        {
+            EndDate = endDate;
+            return this;
+        }
+        public AccountingPeriod SetIsCurrentPeriod(bool isCurrentPeriod)
+        {
+            IsCurrentPeriod = isCurrentPeriod;
+            return this;
+        }
+    }
+}

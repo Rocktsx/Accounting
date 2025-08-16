@@ -1,4 +1,5 @@
 ﻿using Accounting.BasicData;
+using Accounting.Finance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,15 @@ namespace Accounting
     {
         private readonly IRepository<Currency> _currencyRepository;
         private readonly IRepository<Company, Guid> _companyRepository;
+        private readonly IRepository<AccountingPeriod> _accountingPeriodRepository;
         private IGuidGenerator _guidGenerator;
         public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository ,
-            IGuidGenerator guidGenerator)
+            IGuidGenerator guidGenerator, IRepository<AccountingPeriod> accountingPeriodRepository)
         {
             _currencyRepository = currencyRepository;
             _companyRepository = companyRepository;
             _guidGenerator = guidGenerator;
+            _accountingPeriodRepository = accountingPeriodRepository;
         }
         public async Task SeedAsync(DataSeedContext context)
         {
@@ -37,6 +40,12 @@ namespace Accounting
                 company.AddAddress(Guid.NewGuid(), true, false, "MANAGING DIRECTOR", "1303 BANK OF AMERICA TOWER12 HARCOURT ROADCENTRAL", "MARIA KWOK", "28453454", "SZ@SZ.COM", "SZ", "HK", "SZ", "SZ", "28453454");
                 company.AddContact(Guid.NewGuid(), "MARIA KWOK", "SZ", "SZ", "0755-01254125", "0755-01254125", "0755-01254122", "", "SZ");
                 await _companyRepository.InsertAsync(company); 
+            }
+            if(await _accountingPeriodRepository.AnyAsync())
+            {
+                var date = DateTime.Now;
+                var accountingPeriod = new AccountingPeriod(Guid.NewGuid(), date.Year.ToString(), new DateOnly(date.Year, 1, 1), new DateOnly(date.Year, 12, 31), true);
+                await _accountingPeriodRepository.InsertAsync(accountingPeriod);
             }
         }
     }
