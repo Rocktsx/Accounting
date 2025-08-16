@@ -17,6 +17,7 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using System.Collections.Generic;
 using Accounting.BasicData;
 using System;
+using Accounting.Finance;
 
 namespace Accounting.EntityFrameworkCore;
 
@@ -65,6 +66,8 @@ public class AccountingDbContext :
     public DbSet<CompanyAddress> CompanyAddresses { get; set; }
     public DbSet<CompanyContact> CompanyContacts { get; set; }
 
+    public DbSet<AccountingPeriod> AccountingPeriods { get; set; }
+
     public AccountingDbContext(DbContextOptions<AccountingDbContext> options)
         : base(options)
     {
@@ -88,28 +91,35 @@ public class AccountingDbContext :
         builder.ConfigureBlobStoring();
 
         /* Configure your own tables/entities inside here */
-        
-        //currency
+        ConfigureCurrency(builder);
+        ConfigureCompany(builder);
+        ConfigureCompanyAddress(builder);
+        ConfigureCompanyContact(builder);
+        ConfigureAccountingPeriod(builder);
+    }
+    protected static void ConfigureCurrency(ModelBuilder builder)
+    {
         builder.Entity<Currency>(b =>
         {
             b.ToTable(AccountingConsts.DbTablePrefix + "Currencies", AccountingConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
+            b.ConfigureByConvention();
             b.Property(x => x.SourceCurrency).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
             b.Property(x => x.TargetCurrency).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
             b.Property(x => x.SourceAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
-            b.Property(x => x.TargetAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision,AccountingCommonConsts.AmountScale);
+            b.Property(x => x.TargetAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
             b.Property(x => x.ExchangeRate).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
-            b.Property(x => x.EffectiveDate).HasColumnType("date").HasDefaultValue(new DateOnly(1900,1,1));
-            b.HasIndex(x => new{ x.TenantId, x.SourceCurrency, x.TargetCurrency}).IsUnique();
+            b.Property(x => x.EffectiveDate).HasColumnType("date").HasDefaultValue(new DateOnly(1900, 1, 1));
+            b.HasIndex(x => new { x.TenantId, x.SourceCurrency, x.TargetCurrency }).IsUnique();
         });
-
-        //company
+    }
+    protected static void ConfigureCompany(ModelBuilder builder)
+    {
         builder.Entity<Company>(b =>
         {
             b.ToTable(AccountingConsts.DbTablePrefix + "Companies", AccountingConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
+            b.ConfigureByConvention();
             b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
-            b.Property(x =>x.Prefix).IsRequired().HasMaxLength(AccountingCommonConsts.MaxPrefixLength);
+            b.Property(x => x.Prefix).IsRequired().HasMaxLength(AccountingCommonConsts.MaxPrefixLength);
             b.Property(x => x.Name).IsRequired().HasMaxLength(CompanyConsts.MaxNameLength);
             b.Property(x => x.OtherName).HasMaxLength(CompanyConsts.MaxNameLength);
             b.Property(x => x.NickName).HasMaxLength(CompanyConsts.MaxNameLength);
@@ -120,12 +130,12 @@ public class AccountingDbContext :
             b.HasMany(x => x.Contacts).WithOne().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade);
             b.Property(x => x.CreditLimit).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
         });
-
-        //company address
+    }
+    protected static void ConfigureCompanyAddress(ModelBuilder builder) { 
         builder.Entity<CompanyAddress>(b =>
         {
             b.ToTable(AccountingConsts.DbTablePrefix + "CompanyAddresses", AccountingConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
+            b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired().HasMaxLength(CompanyConsts.MaxNameLength);
             b.Property(x => x.Address).HasMaxLength(CompanyAddressConsts.MaxAddressLength);
             b.Property(x => x.ContactPerson).HasMaxLength(CompanyConsts.CommonMaxLength);
@@ -137,12 +147,13 @@ public class AccountingDbContext :
             b.Property(x => x.District).HasMaxLength(CompanyConsts.CommonMaxLength);
             b.Property(x => x.Fax).HasMaxLength(CompanyConsts.CommonMaxLength);
         });
-
-        //company contact
+    }
+    protected static void ConfigureCompanyContact(ModelBuilder builder)
+    {
         builder.Entity<CompanyContact>(b =>
         {
             b.ToTable(AccountingConsts.DbTablePrefix + "CompanyContacts", AccountingConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
+            b.ConfigureByConvention();
             b.Property(x => x.ContactName).IsRequired().HasMaxLength(CompanyConsts.CommonMaxLength);
             b.Property(x => x.Department).HasMaxLength(CompanyConsts.CommonMaxLength);
             b.Property(x => x.Position).HasMaxLength(CompanyConsts.CommonMaxLength);
@@ -151,6 +162,19 @@ public class AccountingDbContext :
             b.Property(x => x.Fax).HasMaxLength(CompanyConsts.CommonMaxLength);
             b.Property(x => x.Email).HasMaxLength(CompanyConsts.MaxEmailLength);
             b.Property(x => x.Remark).HasMaxLength(CompanyConsts.MaxRemarkLength);
+        });
+    }
+    protected static void ConfigureAccountingPeriod(ModelBuilder builder)
+    {
+        //company contact
+        builder.Entity<AccountingPeriod>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "AccountingPeriods", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Code).IsRequired().HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.StartDate).IsRequired().HasColumnType("date").HasDefaultValue(new DateOnly(2025, 1, 1));
+            b.Property(x => x.EndDate).IsRequired().HasColumnType("date").HasDefaultValue(new DateOnly(2025, 12, 31));
+            b.Property(x => x.IsCurrentPeriod).IsRequired().HasDefaultValue(false);
         });
     }
 }
