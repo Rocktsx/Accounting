@@ -64,6 +64,7 @@ namespace Accounting.BasicData
             var entity = await _currencyRepository.GetAsync(item => item.Id == id);
             entity.SetAmountAndRate(input.SourceAmount, input.TargetAmount, input.ExchangeRate);
             entity.SetEffectiveDate(input.EffectiveDate).SetIsActive(input.IsActive);
+            await _currencyRepository.UpdateAsync(entity);
         }
     }
 }

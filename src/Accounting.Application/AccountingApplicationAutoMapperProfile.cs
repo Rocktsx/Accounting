@@ -1,4 +1,5 @@
 using Accounting.BasicData;
+using Accounting.Finance;
 using AutoMapper;
 
 namespace Accounting;
@@ -19,5 +20,7 @@ public class AccountingApplicationAutoMapperProfile : Profile
         CreateMap<CompanyAddressCreateOrEditDto, CompanyAddress>();
         CreateMap<CompanyContact, CompanyContactDto>();
         CreateMap<CompanyContactCreateOrEditDto, CompanyContact>();
+
+        CreateMap<AccountingPeriod, AccountingPeriodDto>();
     }
 }

@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Repositories;
+
+namespace Accounting.Finance
+{
+    public class AccountingPeriodAppService : AccountingAppService, IAccountingPeriodAppService
+    {
+        private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
+        public AccountingPeriodAppService(IRepository<AccountingPeriod, Guid> accountingPeriodRepository)
+        {
+            _accountingPeriodRepository = accountingPeriodRepository;
+        }
+        public async Task<AccountingPeriodDto> CreateAsync(AccountingPeriodCreateOrEditDto input)
+        {
+            var item = new AccountingPeriod(GuidGenerator.Create(),input.Code,input.StartDate,input.EndDate,input.IsCurrentPeriod);
+            var entity = await _accountingPeriodRepository.InsertAsync(item);
+
+            return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+           await _accountingPeriodRepository.DeleteAsync(id);
+        }
+
+        public async Task<AccountingPeriodDto> GetAsync(Guid id)
+        {
+            var entity =await _accountingPeriodRepository.GetAsync(id);
+            return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);
+        }
+
+        public async Task<IEnumerable<AccountingPeriodDto>> GetCurrentPeriodsAsync()
+        {
+            var items = await _accountingPeriodRepository.GetListAsync(item => item.IsCurrentPeriod == true);
+            return ObjectMapper.Map<IEnumerable<AccountingPeriod>, IEnumerable<AccountingPeriodDto>>(items);
+        }
+
+        public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        {
+            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
+            queryable = queryable.Skip(input.SkipCount)
+                                .Take(input.MaxResultCount)
+                                .OrderBy(input.Sorting ?? nameof(AccountingPeriod.Code));
+            var list = await AsyncExecuter.ToListAsync(queryable);
+            var count = await _accountingPeriodRepository.GetCountAsync();
+
+            return new PagedResultDto<AccountingPeriodDto>(count, ObjectMapper.Map<List<AccountingPeriod>, List<AccountingPeriodDto>>(list));
+        }
+
+        public async Task UpdateAsync(Guid id, AccountingPeriodCreateOrEditDto input)
+        {
+            var entity = await _accountingPeriodRepository.GetAsync(id);
+            entity.SetCode(input.Code)
+                .SetStartDate(input.StartDate)
+                .SetEndDate(input.EndDate)
+                .SetIsCurrentPeriod(input.IsCurrentPeriod);
+            await _accountingPeriodRepository.UpdateAsync(entity);
+        }
+    }
+}
