@@ -17,7 +17,7 @@ namespace Accounting.Finance
         }
         public async Task<AccountingPeriodDto> CreateAsync(AccountingPeriodCreateOrEditDto input)
         {
-            var item = new AccountingPeriod(GuidGenerator.Create(),input.Code,input.StartDate,input.EndDate,input.IsCurrentPeriod);
+            var item = new AccountingPeriod(GuidGenerator.Create(), input.Code, input.StartDate, input.EndDate, input.IsCurrentPeriod);
             var entity = await _accountingPeriodRepository.InsertAsync(item);
 
             return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);
@@ -25,19 +25,24 @@ namespace Accounting.Finance
 
         public async Task DeleteAsync(Guid id)
         {
-           await _accountingPeriodRepository.DeleteAsync(id);
+            await _accountingPeriodRepository.DeleteAsync(id);
         }
 
         public async Task<AccountingPeriodDto> GetAsync(Guid id)
         {
-            var entity =await _accountingPeriodRepository.GetAsync(id);
+            var entity = await _accountingPeriodRepository.GetAsync(id);
             return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);
         }
 
-        public async Task<IEnumerable<AccountingPeriodDto>> GetCurrentPeriodsAsync()
+        public async Task<CurrentAccountingPeriodDto> GetCurrentPeriodAsync()
         {
-            var items = await _accountingPeriodRepository.GetListAsync(item => item.IsCurrentPeriod == true);
-            return ObjectMapper.Map<IEnumerable<AccountingPeriod>, IEnumerable<AccountingPeriodDto>>(items);
+            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
+            var newQueryable = queryable.Where(x => x.IsCurrentPeriod).GroupBy(item => 1).Select(grp => new CurrentAccountingPeriodDto()
+            {
+                StartDate = grp.Min(x => x.StartDate),
+                EndDate = grp.Max(x => x.EndDate)
+            });
+            return await AsyncExecuter.FirstOrDefaultAsync(newQueryable) ?? new CurrentAccountingPeriodDto();
         }
 
         public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(PagedAndSortedResultRequestDto input)
@@ -45,7 +50,7 @@ namespace Accounting.Finance
             var queryable = await _accountingPeriodRepository.GetQueryableAsync();
             queryable = queryable.Skip(input.SkipCount)
                                 .Take(input.MaxResultCount)
-                                .OrderBy(input.Sorting ?? nameof(AccountingPeriod.Code));
+                                .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate));
             var list = await AsyncExecuter.ToListAsync(queryable);
             var count = await _accountingPeriodRepository.GetCountAsync();
 

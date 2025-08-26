@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Modularity;
 using Xunit;
 
@@ -99,6 +98,20 @@ namespace Accounting.Finance
             // Assert 
             result.Items.Count().ShouldBeGreaterThanOrEqualTo(3);
             result.Items.ShouldContain(item => item.Code == "2024" && item.IsCurrentPeriod == true);
+        }
+        [Fact] 
+        public async Task Can_Get_Current_AccountingPeriod()
+        {
+            // Arrange 
+            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2022));
+            var dto = await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2023, true));
+            var secondDto = await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2024, true));
+            // Act 
+            var currentPeriod = await _accountingPeriodAppService.GetCurrentPeriodAsync();
+            // Assert  
+            currentPeriod.ShouldNotBeNull();
+            currentPeriod.StartDate.ShouldBe(dto.StartDate);
+            currentPeriod.EndDate.ShouldBe(secondDto.EndDate);
         }
     }
 }
