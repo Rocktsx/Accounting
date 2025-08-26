@@ -45,9 +45,10 @@ namespace Accounting.Finance
             return await AsyncExecuter.FirstOrDefaultAsync(newQueryable) ?? new CurrentAccountingPeriodDto();
         }
 
-        public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await _accountingPeriodRepository.GetQueryableAsync();
+            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), x => x.Code.Contains(input.Filter));
             queryable = queryable.Skip(input.SkipCount)
                                 .Take(input.MaxResultCount)
                                 .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate));

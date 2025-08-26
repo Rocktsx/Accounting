@@ -13,7 +13,7 @@ namespace Accounting.Finance
 
         Task<AccountingPeriodDto> GetAsync(Guid id);
 
-        Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(PagedAndSortedResultRequestDto input);
+        Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input);
 
         Task UpdateAsync(Guid id, AccountingPeriodCreateOrEditDto input);
         Task<CurrentAccountingPeriodDto> GetCurrentPeriodAsync();

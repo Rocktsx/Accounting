@@ -88,15 +88,32 @@ namespace Accounting.Finance
             // Arrange 
             await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2022));
             await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2023));
+            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2024, true));
+
+            var dto = new FilteredPagedAndSortedResultRequestDto() { };
+
+            // Act 
+            var result = await _accountingPeriodAppService.GetListAsync(dto);
+
+            // Assert 
+            result.Items.Count().ShouldBeGreaterThanOrEqualTo(3);
+            result.Items.ShouldContain(item => item.Code == "2024" && item.IsCurrentPeriod == true);
+        }
+        [Fact]
+        public async Task Can_Get_AccountingPeriods_With_Filter()
+        {
+            // Arrange 
+            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2022));
+            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2023));
             await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2024,true));
 
-            var dto = new PagedAndSortedResultRequestDto() { };
+            var dto = new FilteredPagedAndSortedResultRequestDto() { Filter ="2024" };
 
             // Act 
             var result =await _accountingPeriodAppService.GetListAsync(dto);
 
             // Assert 
-            result.Items.Count().ShouldBeGreaterThanOrEqualTo(3);
+            result.Items.Count().ShouldBe(1);
             result.Items.ShouldContain(item => item.Code == "2024" && item.IsCurrentPeriod == true);
         }
         [Fact] 
