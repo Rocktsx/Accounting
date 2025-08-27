@@ -18,7 +18,7 @@ namespace Accounting.BasicData
         public CompanyAppServiceTests() {
             _companyAppService = GetRequiredService<ICompanyAppService>();
         }
-        private CompanyCreateOrEditDto GetCompanyCreateOrEditDto()
+        private static CompanyCreateOrEditDto GetCompanyCreateOrEditDto()
         {
             var input = new CompanyCreateOrEditDto
             {
@@ -37,7 +37,7 @@ namespace Accounting.BasicData
 
             return input;
         }
-        private void AddDetails(CompanyCreateOrEditDto input, string suf)
+        private static void AddDetails(CompanyCreateOrEditDto input, string suf)
         {
             input.Addresses.Add(new CompanyAddressCreateOrEditDto
             {
@@ -176,7 +176,7 @@ namespace Accounting.BasicData
 
             // assert
             result.TotalCount.ShouldBe(1);
-            result.Items.Count().ShouldBe(1);
+            result.Items.Count.ShouldBe(1);
         }
         [Fact]
         public async Task Should_Get_Client_Companies()
@@ -197,7 +197,7 @@ namespace Accounting.BasicData
 
             // assert
             result.TotalCount.ShouldBe(1);
-            result.Items.Count().ShouldBe(1);
+            result.Items.Count.ShouldBe(1);
         }
         [Fact]
         public async Task Should_Get_Vendor_Companies()
@@ -220,7 +220,7 @@ namespace Accounting.BasicData
 
             // assert
             result.TotalCount.ShouldBe(2);
-            result.Items.Count().ShouldBe(2);
+            result.Items.Count.ShouldBe(2);
         }
         [Fact]
         public async Task Should_Get_Filter_Companies()
@@ -241,7 +241,7 @@ namespace Accounting.BasicData
 
             // assert
             result.TotalCount.ShouldBe(1);
-            result.Items.Count().ShouldBe(1);
+            result.Items.Count.ShouldBe(1);
         }
         [Fact]
         public async Task Should_Clear_Address_And_Contact()

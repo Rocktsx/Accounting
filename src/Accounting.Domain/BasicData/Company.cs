@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities.Auditing;
+using System.Linq; 
+using Volo.Abp; 
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.SettingManagement;
 
 namespace Accounting.BasicData
 {
@@ -25,8 +21,8 @@ namespace Accounting.BasicData
 
         public Guid? TenantId { get; set; }
 
-        public virtual ICollection<CompanyAddress> Addresses { get; private  set; } = new List<CompanyAddress>();
-        public virtual ICollection<CompanyContact> Contacts { get; private set; } = new List<CompanyContact>();
+        public virtual ICollection<CompanyAddress> Addresses { get; private  set; } = [];
+        public virtual ICollection<CompanyContact> Contacts { get; private set; } = [];
         private Company() { }
         public Company(Guid id, string name, string otherName, string nickName, string currency, decimal creditLimit, string paymentTerm, string tradeTerm, bool isClient, bool isVendor)
         {

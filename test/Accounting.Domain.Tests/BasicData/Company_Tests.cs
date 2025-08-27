@@ -43,8 +43,7 @@ namespace Accounting.BasicData
             company.AddAddress(Guid.NewGuid(),true,false,"Test",null, null, null, null, null, null, null,null, null);
             //assert
             company.Addresses.Count.ShouldBe(1);
-            CompanyAddress address = company.Addresses.First();
-            var firstAddress = address;
+            CompanyAddress address = company.Addresses.First(); 
             address.CompanyId.ShouldBe(company.Id);
             address.Name.ShouldBe("Test");
             address.IsBilling.ShouldBeTrue();

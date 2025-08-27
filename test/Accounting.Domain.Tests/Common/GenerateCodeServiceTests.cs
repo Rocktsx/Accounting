@@ -16,7 +16,7 @@ namespace Accounting.Common
     where TStartupModule : IAbpModule
     {
         private readonly IRepository<Company, Guid> _companyRepository;
-        private readonly GenerateCodeService _generateCodeService = new GenerateCodeService();
+        private readonly GenerateCodeService _generateCodeService = new();
         protected GenerateCodeServiceTests()
         {
             _companyRepository = GetRequiredService<IRepository<Company, Guid>>();

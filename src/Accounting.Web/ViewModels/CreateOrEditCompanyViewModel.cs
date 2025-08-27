@@ -30,7 +30,7 @@ namespace Accounting.Web.ViewModels
         public bool IsClient { get; set; }
         public bool IsVendor { get; set; }
 
-        public List<CreateOrEditCompanyAddressViewModel> Addresses { get; set; } = new List<CreateOrEditCompanyAddressViewModel>();
-        public List<CreateOrEditCompanyContactViewModel> Contacts { get; set; } = new List<CreateOrEditCompanyContactViewModel>();
+        public List<CreateOrEditCompanyAddressViewModel> Addresses { get; set; } = [];
+        public List<CreateOrEditCompanyContactViewModel> Contacts { get; set; } = [];
     }
 }
