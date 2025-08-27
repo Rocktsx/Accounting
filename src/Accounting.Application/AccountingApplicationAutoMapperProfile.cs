@@ -1,5 +1,6 @@
 using Accounting.BasicData;
 using Accounting.Finance;
+using Accounting.Finance.Dtos;
 using AutoMapper;
 
 namespace Accounting;

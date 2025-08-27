@@ -28,4 +28,10 @@ public static class AccountingPermissions
     public const string VendorCreation = Vendor + Creation;
     public const string VendorDeletion = Vendor + Deletion;
     public const string VendorEdit = Vendor + Edit;
+
+    public const string GenenalLedgerGroupName = GroupName + ".GenenalLedger";
+    public const string AccountingPeriod = GenenalLedgerGroupName + ".AccountingPeriod";
+    public const string AccountingPeriodCreation = AccountingPeriod + Creation;
+    public const string AccountingPeriodDeletion = AccountingPeriod + Deletion;
+    public const string AccountingPeriodEdit = AccountingPeriod + Edit;
 }

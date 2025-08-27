@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Accounting.Finance.Dtos;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,10 @@ namespace Accounting.Finance
             _accountingPeriodAppService = GetRequiredService<IAccountingPeriodAppService>();
         }
 
-        private AccountingPeriodCreateOrEditDto GetCreateOrEditDto(int year,bool isCurrentPeriod= false)
+        private static AccountingPeriodCreateDto GetCreateOrEditDto(int year,bool isCurrentPeriod= false)
         {
-            return new AccountingPeriodCreateOrEditDto()
-            {
-                Id = Guid.NewGuid(),
+            return new AccountingPeriodCreateDto()
+            { 
                 Code = year.ToString(),
                 StartDate = new DateOnly(year, 1, 1),
                 EndDate = new DateOnly(year, 12, 31),
@@ -96,7 +96,7 @@ namespace Accounting.Finance
             var result = await _accountingPeriodAppService.GetListAsync(dto);
 
             // Assert 
-            result.Items.Count().ShouldBeGreaterThanOrEqualTo(3);
+            result.Items.Count.ShouldBeGreaterThanOrEqualTo(3);
             result.Items.ShouldContain(item => item.Code == "2024" && item.IsCurrentPeriod == true);
         }
         [Fact]
@@ -113,7 +113,7 @@ namespace Accounting.Finance
             var result =await _accountingPeriodAppService.GetListAsync(dto);
 
             // Assert 
-            result.Items.Count().ShouldBe(1);
+            result.Items.Count.ShouldBe(1);
             result.Items.ShouldContain(item => item.Code == "2024" && item.IsCurrentPeriod == true);
         }
         [Fact] 

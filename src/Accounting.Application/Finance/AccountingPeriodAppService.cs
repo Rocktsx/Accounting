@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Accounting.Finance.Dtos;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -15,25 +18,26 @@ namespace Accounting.Finance
         {
             _accountingPeriodRepository = accountingPeriodRepository;
         }
-        public async Task<AccountingPeriodDto> CreateAsync(AccountingPeriodCreateOrEditDto input)
+        [Authorize(AccountingPermissions.AccountingPeriodCreation)]
+        public async Task<AccountingPeriodDto> CreateAsync(AccountingPeriodCreateDto input)
         {
             var item = new AccountingPeriod(GuidGenerator.Create(), input.Code, input.StartDate, input.EndDate, input.IsCurrentPeriod);
             var entity = await _accountingPeriodRepository.InsertAsync(item);
 
             return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);
         }
-
+        [Authorize(AccountingPermissions.AccountingPeriodDeletion)]
         public async Task DeleteAsync(Guid id)
         {
             await _accountingPeriodRepository.DeleteAsync(id);
         }
-
+        [Authorize(AccountingPermissions.AccountingPeriod)]
         public async Task<AccountingPeriodDto> GetAsync(Guid id)
         {
             var entity = await _accountingPeriodRepository.GetAsync(id);
             return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);
         }
-
+        [Authorize(AccountingPermissions.AccountingPeriod)]
         public async Task<CurrentAccountingPeriodDto> GetCurrentPeriodAsync()
         {
             var queryable = await _accountingPeriodRepository.GetQueryableAsync();
@@ -44,7 +48,7 @@ namespace Accounting.Finance
             });
             return await AsyncExecuter.FirstOrDefaultAsync(newQueryable) ?? new CurrentAccountingPeriodDto();
         }
-
+        [Authorize(AccountingPermissions.AccountingPeriod)]
         public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await _accountingPeriodRepository.GetQueryableAsync();
@@ -57,8 +61,8 @@ namespace Accounting.Finance
 
             return new PagedResultDto<AccountingPeriodDto>(count, ObjectMapper.Map<List<AccountingPeriod>, List<AccountingPeriodDto>>(list));
         }
-
-        public async Task UpdateAsync(Guid id, AccountingPeriodCreateOrEditDto input)
+        [Authorize(AccountingPermissions.AccountingPeriodEdit)]
+        public async Task UpdateAsync(Guid id, AccountingPeriodEditDto input)
         {
             var entity = await _accountingPeriodRepository.GetAsync(id);
             entity.SetCode(input.Code)
