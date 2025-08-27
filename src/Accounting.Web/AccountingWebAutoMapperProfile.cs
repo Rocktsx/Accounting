@@ -1,7 +1,8 @@
 using Accounting.BasicData;
+using Accounting.Finance.Dtos;
 using Accounting.Web.Pages.BasicData.Currency;
-using AutoMapper;
 using Accounting.Web.ViewModels;
+using AutoMapper;
 
 namespace Accounting.Web;
 
@@ -17,5 +18,9 @@ public class AccountingWebAutoMapperProfile : Profile
         CreateMap<CompanyDto, CreateOrEditCompanyViewModel>();
         CreateMap<CompanyAddressDto, CreateOrEditCompanyAddressViewModel>();
         CreateMap<CompanyContactDto, CreateOrEditCompanyContactViewModel>();
+
+        CreateMap<AccountingPeriodDto, EditAccountingPeriodViewModel>();
+        CreateMap<CreateAccountingPeriodViewModel, AccountingPeriodCreateDto>();
+        CreateMap<EditAccountingPeriodViewModel, AccountingPeriodEditDto>();
     }
 }

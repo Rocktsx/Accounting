@@ -100,7 +100,26 @@ public class AccountingMenuContributor : IMenuContributor
         if (basicDataMenu.Items.Count > 0)
         {
             context.Menu.AddItem(basicDataMenu);
-
+        }
+        var genenalLedgerMenu = new ApplicationMenuItem(
+           AccountingPermissions.GenenalLedgerGroupName,
+           l["Menu:GenenalLedger"],
+           icon: "fas fa-calculator"
+       );
+        if (await context.IsGrantedAsync(AccountingPermissions.AccountingPeriod))
+        {
+            genenalLedgerMenu.AddItem(
+                new ApplicationMenuItem(
+                AccountingPermissions.AccountingPeriod,
+                l["Menu:AccountingPeriod"],
+                  icon: "fas fa-bars-staggered",
+                url: "/AccGL/AccountingPeriod"
+                )
+            );
+        }
+        if (genenalLedgerMenu.Items.Count > 0)
+        {
+            context.Menu.AddItem(genenalLedgerMenu);
         }
     }
 }

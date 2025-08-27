@@ -40,6 +40,7 @@
     "ChoosePhoto": "选择照片",
     "SuccessfullyDeleted": "删除成功！",
     "SavedSuccessfully": "保存成功！",
+    "DeletionConfirmationMessage": "你确定删除这个{0}: {1}？",
     "AmountsMustNotBeZero": "金额或者汇率必须大于0。",
     "ExchangeRateMatchAmounts": "汇率必须等于本币除以外币的值",
     "Menu:Currency": "货币",
@@ -97,6 +98,15 @@
     "NewVendor": "添加供应商",
     "EditVendor": "编辑供应商",
     "Permission:Client": "客户",
-    "Permission:Vendor": "供应商"
+    "Permission:Vendor": "供应商",
+    "Menu:GenenalLedger": "总账",
+    "Menu:AccountingPeriod": "会计年度",
+    "NewAccountingPeriod": "添加会计年度",
+    "StartDate": "开始日期",
+    "EndDate": "结束日期",
+    "IsCurrentPeriod": "当前会计年度",
+    "AccPeriod": "年度",
+    "EditAccountingPeriod": "编辑会计年度",
+    "Permission:AccountingPeriod": "会计年度"
   }
 }

@@ -5,10 +5,11 @@
     "Menu:Home": "Home",
     "LongWelcomeMessage": "Welcome to the application.",
     "Welcome": "Welcome",
-    "AmountsMustNotBeZero": "Amounts and rate must be greater than zero.",
-    "ExchangeRateMatchAmounts": "The exchange rate does not match the amounts provided.",
     "SuccessfullyDeleted": "Successfully deleted!",
     "SavedSuccessfully": "Successfully saved",
+    "DeletionConfirmationMessage": "Are you sure to delete this {0}: {1}?",
+    "AmountsMustNotBeZero": "Amounts and rate must be greater than zero.",
+    "ExchangeRateMatchAmounts": "The exchange rate does not match the amounts provided.",
     "Menu:Currency": "Currency",
     "NewCurrency": "New Currency",
     "CurrencyDeletionConfirmationMessage": "Are you sure to delete this currency: {0}?",
@@ -64,6 +65,15 @@
     "NewVendor": "New Vendor",
     "EditVendor": "Edit Vendor",
     "Permission:Client": "Client",
-    "Permission:Vendor": "Vendor"
+    "Permission:Vendor": "Vendor",
+    "Menu:GenenalLedger": "General Ledger",
+    "Menu:AccountingPeriod": "Accounting Period",
+    "NewAccountingPeriod": "New Accounting Period",
+    "StartDate": "Start Date",
+    "EndDate": "End Date",
+    "IsCurrentPeriod": "Is Current Period",
+    "AccPeriod": "Period",
+    "EditAccountingPeriod": "Edit Accounting Period",
+    "Permission:AccountingPeriod": "Accounting Period"
   }
 }
