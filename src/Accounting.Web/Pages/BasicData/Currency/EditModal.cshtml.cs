@@ -9,7 +9,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
     {
         private readonly ICurrencyAppService _currencyAppService;
         [BindProperty(SupportsGet =true)]
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
        [BindProperty]
         public CreateEditCurrencyViewModel Currency { get; set; }
@@ -20,7 +20,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
         }
         public async Task OnGet()
         {
-            var dto = await _currencyAppService.GetAsync(id);
+            var dto = await _currencyAppService.GetAsync(Id);
             Currency = ObjectMapper.Map<CurrencyDto, CreateEditCurrencyViewModel>(dto);
         }
         public async Task<IActionResult> OnPostAsync()

@@ -12,7 +12,7 @@ namespace Accounting.Web.Pages.BasicData.Currency
         [BindProperty]
         public CreateEditCurrencyViewModel Currency { get; set; }
 
-        public CreateModal(CurrencyAppService currencyAppService)
+        public CreateModal(ICurrencyAppService currencyAppService)
         {
             _currencyAppService = currencyAppService;
         }
