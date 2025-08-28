@@ -74,7 +74,7 @@ namespace Accounting.BasicData
             address.IsShipping.ShouldBeTrue();
         }
         [Fact]
-        public void Can_Add_A_Not_Existsing_Address()
+        public void Can_Not_Set_A_Not_Existsing_Address()
         {
             // arrange
             var company = new Company(Guid.NewGuid(), "Test", null, null, null, 0, null, null, true, false); 
@@ -83,8 +83,8 @@ namespace Accounting.BasicData
             //act
             company.SetAddress(Guid.NewGuid(), true, true, "Test2", addr, null, null, null, null, null, null, null, null);
             //assert
-            company.Addresses.Count.ShouldBe(2); 
-            company.Addresses.ShouldContain(a => a.Name == "Test2");
+            company.Addresses.Count.ShouldBe(1); 
+            company.Addresses.ShouldContain(a => a.Name == "Test");
         }
         [Fact]
         public void Can_Add_A_Valid_Contact()
@@ -119,16 +119,16 @@ namespace Accounting.BasicData
             contact.ContactName.ShouldBe(name);
         }
         [Fact]
-        public void Can_Add_A_Not_Existsing_Contact()
+        public void Can_Not_Set_A_Not_Existsing_Contact()
         {
             // arrange
-            var company = new Company(Guid.NewGuid(), "Test", null, null, null, 0, null, null, true, false);
-            company.AddContact(Guid.NewGuid(), "Test", null, null, null, null, null, null, null);
-            string name = "Test2";
+            string name = "Test";
+            var company = new Company(Guid.NewGuid(), name, null, null, null, 0, null, null, true, false);
+            company.AddContact(Guid.NewGuid(), name, null, null, null, null, null, null, null);
             //act
             company.SetContact(Guid.NewGuid(), name, null, null, null, null, null, null, null);
             //assert
-            company.Contacts.Count.ShouldBe(2);
+            company.Contacts.Count.ShouldBe(1);
             company.Contacts.ShouldContain(c => c.ContactName == name);
         }
     }
