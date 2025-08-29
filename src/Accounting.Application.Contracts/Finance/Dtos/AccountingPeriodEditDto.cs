@@ -4,7 +4,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Dtos
 {
-    public class AccountingPeriodEditDto : EntityDto<Guid>
+    public class AccountingPeriodEditDto
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]

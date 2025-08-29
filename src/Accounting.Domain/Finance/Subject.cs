@@ -69,7 +69,7 @@ namespace Accounting.Finance
         }
         public Subject SetOtherName(string otherName)
         {
-            OtherName = otherName;
+            OtherName = otherName ?? string.Empty;
             return this;
         } 
        

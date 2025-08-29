@@ -116,7 +116,7 @@ namespace Accounting.Finance
 
         public AccountType SetOtherName(string otherName)
         {
-            OtherName = otherName;
+            OtherName = otherName?? string.Empty;
             return this;
         }
 

@@ -23,5 +23,6 @@ public class AccountingApplicationAutoMapperProfile : Profile
         CreateMap<CompanyContactCreateOrEditDto, CompanyContact>();
 
         CreateMap<AccountingPeriod, AccountingPeriodDto>();
+        CreateMap<AccountType, AccountTypeDto>();
     }
 }
