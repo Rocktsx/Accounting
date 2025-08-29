@@ -17,7 +17,7 @@ namespace Accounting.Finance
         public string OtherName { get; private set; }
         public Guid? ParentId { get; private set; }
         public CreditDebit CreditDebit { get; private set; }
-        public string AccountTypeId { get; private set; }
+        public Guid? AccountTypeId { get; private set; }
         public bool ShowDetail { get; private set; }
         public string Description { get; private set; }
 
@@ -32,7 +32,7 @@ namespace Accounting.Finance
             string otherName,
             Guid? parentId,
             CreditDebit creditDebit,
-            string accountTypeId,
+            Guid? accountTypeId,
             bool showDetail,
             string description
         ) : base(id)
@@ -74,9 +74,8 @@ namespace Accounting.Finance
             CreditDebit = creditDebit;
             return this;
         }
-        public SubjectCategory SetAccountTypeId(string accountTypeId)
-        {
-            Check.NotNullOrWhiteSpace(accountTypeId, nameof(accountTypeId));
+        public SubjectCategory SetAccountTypeId(Guid? accountTypeId)
+        { 
             AccountTypeId = accountTypeId;
             return this;
         }

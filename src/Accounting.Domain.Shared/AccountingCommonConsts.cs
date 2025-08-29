@@ -12,5 +12,7 @@ namespace Accounting
         public const int AmountScale = 7;
         public const int MaxCodeLength = 30;
         public const int MaxPrefixLength = 20;
+        public const int MaxNameLength = 250;
+        public const int MaxDescriptionLength = 1000;
     }
 }

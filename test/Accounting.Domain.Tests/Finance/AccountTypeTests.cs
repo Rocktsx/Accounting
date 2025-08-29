@@ -12,15 +12,16 @@ namespace Accounting.Finance
     {
         [Fact]
         public void Can_Create_A_Valid_AccountType()
-        {
+        { 
             // Arrange & Act
-           var entity = new AccountType("A", "資產", "Assets",string.Empty,1,0,1,1,0,1);
+            var parentId = Guid.NewGuid();
+            var entity = new AccountType(Guid.NewGuid(), "A", "資產", "Assets", parentId, 1,0,1,1,0,1);
             // Assert
             entity.ShouldNotBeNull();
-            entity.Id.ShouldBe("A");
+            entity.Code.ShouldBe("A");
             entity.Name.ShouldBe("資產");
             entity.OtherName.ShouldBe("Assets");
-            entity.ParentId.ShouldBe(string.Empty);
+            entity.ParentId.ShouldBe(parentId);
             entity.TrialBalanceSort.ShouldBe(1);
             entity.ProfitAndLossSort.ShouldBe(0);
             entity.BalanceSheetSort.ShouldBe(1);
@@ -32,7 +33,16 @@ namespace Accounting.Finance
         public void Cannot_Create_A_AccountType_Without_Name()
         {
             // Arrange & Act
-            var exception = Should.Throw<ArgumentException>(() => new AccountType("A", string.Empty, "Assets", string.Empty, 1, 0, 1, 1, 0, 1));
+            var exception = Should.Throw<ArgumentException>(() => new AccountType(Guid.NewGuid(),"A", string.Empty, "Assets", Guid.NewGuid(), 1, 0, 1, 1, 0, 1));
+            // Assert
+            exception.ShouldNotBeNull();
+            exception.ShouldBeOfType<ArgumentException>();
+        }
+        [Fact]
+        public void Cannot_Create_A_AccountType_Without_Code()
+        {
+            // Arrange & Act
+            var exception = Should.Throw<ArgumentException>(() => new AccountType(Guid.NewGuid(), string.Empty, "資產", "Assets", Guid.NewGuid(), 1, 0, 1, 1, 0, 1));
             // Assert
             exception.ShouldNotBeNull();
             exception.ShouldBeOfType<ArgumentException>();

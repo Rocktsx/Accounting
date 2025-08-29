@@ -1,14 +1,17 @@
-﻿using Volo.Abp;
+﻿using System;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance
 {
-    public class AccountType : Entity<string>
+    public class AccountType : Entity<Guid>, IMultiTenant
     {
+        public string Code { get; private set; }
         public string Name { get; private set; }
         public string OtherName { get; private set; }
 
-        public string ParentId { get; private set; }
+        public Guid? ParentId { get; private set; }
         /// <summary>
         /// 试算表排序
         /// </summary>
@@ -35,13 +38,16 @@ namespace Accounting.Finance
         /// </summary>
         public int BalanceSheetGroup { get; private set; }
 
+        public Guid? TenantId { get; set; }
+
         private AccountType() { }
          
         public AccountType(
-            string id,
+            Guid id,
+            string code,
             string name,
             string otherName,
-            string parentId,
+            Guid? parentId,
             int trialBalanceSort,
             int profitAndLossSort,
             int balanceSheetSort,
@@ -50,6 +56,7 @@ namespace Accounting.Finance
             int balanceSheetGroup
         ) : base(id)
         {
+            SetCode(code);
             SetName(name);
             SetOtherName(otherName);
             SetParentId(parentId);
@@ -60,7 +67,11 @@ namespace Accounting.Finance
             SetProfitAndLossGroup(profitAndLossGroup);
             SetBalanceSheetGroup(balanceSheetGroup);
         }
-
+        public AccountType SetCode(string code)
+        {
+            Code = Check.NotNullOrWhiteSpace(code, nameof(code));
+            return this;
+        }
         public AccountType SetBalanceSheetGroup(int balanceSheetGroup)
         {
             BalanceSheetGroup = balanceSheetGroup;
@@ -97,7 +108,7 @@ namespace Accounting.Finance
             return this;
         }
 
-        public AccountType SetParentId(string parentId)
+        public AccountType SetParentId(Guid? parentId)
         {
             ParentId = parentId;
             return this;

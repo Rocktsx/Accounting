@@ -67,7 +67,9 @@ public class AccountingDbContext :
     public DbSet<CompanyContact> CompanyContacts { get; set; }
 
     public DbSet<AccountingPeriod> AccountingPeriods { get; set; }
-
+    public DbSet<AccountType> AccountTypes { get; set; }
+    public DbSet<SubjectCategory> SubjectCategories { get; set; }
+    public DbSet<Subject> Subjects { get; set; }
     public AccountingDbContext(DbContextOptions<AccountingDbContext> options)
         : base(options)
     {
@@ -96,6 +98,9 @@ public class AccountingDbContext :
         ConfigureCompanyAddress(builder);
         ConfigureCompanyContact(builder);
         ConfigureAccountingPeriod(builder);
+        ConfigureAccountType(builder);
+        ConfigureSubjectCategory(builder);
+        ConfigureSubject(builder);
     }
     protected static void ConfigureCurrency(ModelBuilder builder)
     {
@@ -171,10 +176,54 @@ public class AccountingDbContext :
         {
             b.ToTable(AccountingConsts.DbTablePrefix + "AccountingPeriods", AccountingConsts.DbSchema);
             b.ConfigureByConvention();
-            b.Property(x => x.Code).IsRequired().HasMaxLength(CompanyConsts.CommonMaxLength);
+            b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.StartDate).IsRequired().HasColumnType("date").HasDefaultValue(new DateOnly(2025, 1, 1));
             b.Property(x => x.EndDate).IsRequired().HasColumnType("date").HasDefaultValue(new DateOnly(2025, 12, 31));
             b.Property(x => x.IsCurrentPeriod).IsRequired().HasDefaultValue(false);
+        });
+    }
+    protected static void ConfigureAccountType(ModelBuilder builder)
+    {
+        builder.Entity<AccountType>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "AccountTypes", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Id).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
+            b.Property(x => x.OtherName).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
+        });
+    }
+    protected static void ConfigureSubjectCategory(ModelBuilder builder)
+    {
+        builder.Entity<SubjectCategory>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "SubjectCategories", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
+            b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
+            b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId);
+            b.HasMany(x => x.Subjects).WithOne(x => x.SubjectCategory).HasForeignKey(x => x.SubjectCategoryId);
+            b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
+        });
+    }
+    protected static void ConfigureSubject(ModelBuilder builder)
+    {
+        builder.Entity<Subject>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "Subjects", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
+            b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.Property(x => x.CurrencyCode).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
+            b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
+            b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId);
+            b.HasOne(x => x.SubjectCategory).WithMany(x => x.Subjects).HasForeignKey(x => x.SubjectCategoryId);
+            b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
         });
     }
 }
