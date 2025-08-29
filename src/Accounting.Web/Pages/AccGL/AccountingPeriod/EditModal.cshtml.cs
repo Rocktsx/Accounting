@@ -27,7 +27,7 @@ namespace Accounting.Web.Pages.AccGL.AccountingPeriod
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            var dto = ObjectMapper.Map<EditAccountingPeriodViewModel, AccountingPeriodEditDto>(Item);
+            var dto = ObjectMapper.Map<EditAccountingPeriodViewModel, AccountingPeriodUpdateDto>(Item);
             await _service.UpdateAsync(Item.Id, dto);
             return NoContent();
         }

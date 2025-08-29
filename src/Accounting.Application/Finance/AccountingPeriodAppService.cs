@@ -62,7 +62,7 @@ namespace Accounting.Finance
             return new PagedResultDto<AccountingPeriodDto>(count, ObjectMapper.Map<List<AccountingPeriod>, List<AccountingPeriodDto>>(list));
         }
         [Authorize(AccountingPermissions.AccountingPeriodEdit)]
-        public async Task UpdateAsync(Guid id, AccountingPeriodEditDto input)
+        public async Task UpdateAsync(Guid id, AccountingPeriodUpdateDto input)
         {
             var entity = await _accountingPeriodRepository.GetAsync(id);
             entity.SetCode(input.Code)

@@ -22,7 +22,7 @@ namespace Accounting.Finance
             _accountingPeriodAppService = GetRequiredService<IAccountingPeriodAppService>();
         }
 
-        private static AccountingPeriodCreateDto GetCreateOrEditDto(int year,bool isCurrentPeriod= false)
+        private static AccountingPeriodCreateDto GetCreateDto(int year,bool isCurrentPeriod= false)
         {
             return new AccountingPeriodCreateDto()
             { 
@@ -36,7 +36,7 @@ namespace Accounting.Finance
         public async Task Can_Create_A_AccountingPeriod()
         {
             // Arrange
-            var dto = GetCreateOrEditDto(2024);
+            var dto = GetCreateDto(2024);
 
             // Act
             var newDto = await _accountingPeriodAppService.CreateAsync(dto);
@@ -52,7 +52,7 @@ namespace Accounting.Finance
         public async Task Can_Get_A_Exist_AccountingPeriod()
         {
             // Arrange
-            var dto = GetCreateOrEditDto(2024);
+            var dto = GetCreateDto(2024);
             var newDto = await _accountingPeriodAppService.CreateAsync(dto);
 
             // Act
@@ -69,7 +69,7 @@ namespace Accounting.Finance
         public async Task Can_Delete_A_Exist_AccountingPeriod()
         {
             // Arrange
-            var dto = GetCreateOrEditDto(2024);
+            var dto = GetCreateDto(2024);
             var newDto = await _accountingPeriodAppService.CreateAsync(dto);
 
             // Act
@@ -86,9 +86,9 @@ namespace Accounting.Finance
         public async Task Can_Get_AccountingPeriods()
         {
             // Arrange 
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2022));
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2023));
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2024, true));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2022));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2023));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2024, true));
 
             var dto = new FilteredPagedAndSortedResultRequestDto() { };
 
@@ -103,9 +103,9 @@ namespace Accounting.Finance
         public async Task Can_Get_AccountingPeriods_With_Filter()
         {
             // Arrange 
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2022));
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2023));
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2024,true));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2022));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2023));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2024,true));
 
             var dto = new FilteredPagedAndSortedResultRequestDto() { Filter ="2024" };
 
@@ -120,15 +120,59 @@ namespace Accounting.Finance
         public async Task Can_Get_Current_AccountingPeriod()
         {
             // Arrange 
-            await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2022));
-            var dto = await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2023, true));
-            var secondDto = await _accountingPeriodAppService.CreateAsync(GetCreateOrEditDto(2024, true));
+            await _accountingPeriodAppService.CreateAsync(GetCreateDto(2022));
+            var dto = await _accountingPeriodAppService.CreateAsync(GetCreateDto(2023, true));
+            var secondDto = await _accountingPeriodAppService.CreateAsync(GetCreateDto(2024, true));
             // Act 
             var currentPeriod = await _accountingPeriodAppService.GetCurrentPeriodAsync();
             // Assert  
             currentPeriod.ShouldNotBeNull();
             currentPeriod.StartDate.ShouldBe(dto.StartDate);
             currentPeriod.EndDate.ShouldBe(secondDto.EndDate);
+        }
+        [Fact]
+        public async Task Can_Update_A_Exist_AccountingPeriod()
+        {
+            // Arrange
+            var dto = GetCreateDto(2024);
+            var newDto = await _accountingPeriodAppService.CreateAsync(dto);
+            var updateDto = new AccountingPeriodUpdateDto()
+            {
+                Code = "2024-Updated",
+                StartDate = new DateOnly(2024, 2, 1),
+                EndDate = new DateOnly(2024, 11, 30),
+                IsCurrentPeriod = true
+            };
+            // Act
+            await _accountingPeriodAppService.UpdateAsync(newDto.Id, updateDto);
+            // Assert
+            var existDto = await _accountingPeriodAppService.GetAsync(newDto.Id);
+            existDto.ShouldNotBeNull();
+            existDto.Id.ShouldBe(newDto.Id);
+            existDto.Code.ShouldBe(updateDto.Code);
+            existDto.StartDate.ShouldBe(updateDto.StartDate);
+            existDto.EndDate.ShouldBe(updateDto.EndDate);
+            existDto.IsCurrentPeriod.ShouldBeTrue();
+        }
+        [Fact]
+        public async Task Cannot_Update_A_Not_Exist_AccountingPeriod()
+        {
+            // Arrange
+            var dtoId = Guid.NewGuid();
+            var updateDto = new AccountingPeriodUpdateDto()
+            {
+                Code = "2024-Updated",
+                StartDate = new DateOnly(2024, 2, 1),
+                EndDate = new DateOnly(2024, 11, 30),
+                IsCurrentPeriod = true
+            };
+            // Act
+            var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            { 
+                await _accountingPeriodAppService.UpdateAsync(dtoId, updateDto);
+            });
+            // Assert
+            exception.ShouldNotBeNull(); 
         }
     }
 }
