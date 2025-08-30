@@ -17,8 +17,8 @@ namespace Accounting.Finance
     {
        
         public AccountTypeAppService(IRepository<AccountType, Guid> repository) : base(repository)
-        { 
-            CreatePolicyName = AccountingPermissions.AccountTypeCreation;
+        {
+            GetPolicyName = AccountingPermissions.AccountType;
             DeletePolicyName = AccountingPermissions.AccountTypeDeletion;
         }
         [Authorize(AccountingPermissions.AccountTypeCreation)]
