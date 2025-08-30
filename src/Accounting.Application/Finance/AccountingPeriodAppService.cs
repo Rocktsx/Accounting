@@ -53,11 +53,11 @@ namespace Accounting.Finance
         {
             var queryable = await _accountingPeriodRepository.GetQueryableAsync();
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), x => x.Code.Contains(input.Filter));
-            queryable = queryable.Skip(input.SkipCount)
+            var pageQueryable = queryable.Skip(input.SkipCount)
                                 .Take(input.MaxResultCount)
                                 .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate));
-            var list = await AsyncExecuter.ToListAsync(queryable);
-            var count = await _accountingPeriodRepository.GetCountAsync();
+            var list = await AsyncExecuter.ToListAsync(pageQueryable);
+            var count = await AsyncExecuter.CountAsync(queryable);
 
             return new PagedResultDto<AccountingPeriodDto>(count, ObjectMapper.Map<List<AccountingPeriod>, List<AccountingPeriodDto>>(list));
         }

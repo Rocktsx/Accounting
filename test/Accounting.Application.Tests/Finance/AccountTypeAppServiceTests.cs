@@ -93,23 +93,27 @@ namespace Accounting.Finance
         public async Task Can_Get_AccountType_List()
         {
             // Arrange
-            var dto1 = GetCreateDto("1000", "Cash");
-            var dto2 = GetCreateDto("2000", "Bank");
+            var dto1 = GetCreateDto("1000", "Cash11");
+            var dto2 = GetCreateDto("2010", "Bank2010");
             await _accountTypeAppService.CreateAsync(dto1);
             await _accountTypeAppService.CreateAsync(dto2);
+            await _accountTypeAppService.CreateAsync(GetCreateDto("2022", "Bank2022"));
+            await _accountTypeAppService.CreateAsync(GetCreateDto("2033", "Bank2033"));
+            await _accountTypeAppService.CreateAsync(GetCreateDto("2044", "Bank2044"));
             // Act
             var list = await _accountTypeAppService.GetListAsync(new FilteredPagedAndSortedResultRequestDto
             {
-                MaxResultCount = 10,
+                MaxResultCount = 2,
                 SkipCount = 0,
                 Sorting = nameof(AccountTypeDto.Code),
-                Filter = "Cash"
+                Filter = "Bank20"
             });
             // Assert
             list.ShouldNotBeNull();
-            list.TotalCount.ShouldBeGreaterThanOrEqualTo(1);
-            list.Items.ShouldContain(x => x.Code == dto1.Code);
-            list.Items.ShouldNotContain(x => x.Code == dto2.Code);
+            list.TotalCount.ShouldBe(4);
+            list.Items.Count.ShouldBe(2);
+            list.Items.ShouldNotContain(x => x.Code == dto1.Code);
+            list.Items.ShouldContain(x => x.Code == dto2.Code);
         }
         [Fact]
         public async Task Can_Update_A_AccountType()
@@ -153,7 +157,7 @@ namespace Accounting.Finance
             // Assert
             list.ShouldNotBeNull();
             list.ShouldContain(x => x.Code == dto1.Code);
-            list.ShouldContain(x => x.Code == dto2.Code);
+            list.ShouldContain(x => x.Code == dto2.Code); 
         }
         [Fact]
         public async Task Can_Delete_A_AccountType()

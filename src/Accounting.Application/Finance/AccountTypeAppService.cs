@@ -30,11 +30,11 @@ namespace Accounting.Finance
             var queryable = await Repository.GetQueryableAsync();
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            queryable = queryable.Skip(input.SkipCount)
+            var pageQueryable = queryable.Skip(input.SkipCount)
                                 .Take(input.MaxResultCount)
                                 .OrderBy(input.Sorting ?? nameof(AccountType.Code));
-            var list = await AsyncExecuter.ToListAsync(queryable);
-            var count = await Repository.GetCountAsync();
+            var list = await AsyncExecuter.ToListAsync(pageQueryable);
+            var count = await AsyncExecuter.CountAsync(queryable);
 
             return new PagedResultDto<AccountTypeDto>(count, ObjectMapper.Map<List<AccountType>, List<AccountTypeDto>>(list));
         }
