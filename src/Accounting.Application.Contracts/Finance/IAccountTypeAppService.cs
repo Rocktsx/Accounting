@@ -8,6 +8,6 @@ namespace Accounting.Finance
 {
     public interface IAccountTypeAppService: IApplicationService, ICrudAppService<AccountTypeDto,Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>
     { 
-        Task<IEnumerable<AccountTypeSampleDto>> GetSampleListAsync();
+        Task<IEnumerable<AccountTypeSimpleDto>> GetSimpleListAsync();
     }
 }
