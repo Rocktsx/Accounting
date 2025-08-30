@@ -1,4 +1,6 @@
 ﻿using Accounting.Finance.Dtos;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,13 @@ namespace Accounting.Finance
 {
     public class AccountTypeAppService : CrudAppService<AccountType, AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
     {
+       
         public AccountTypeAppService(IRepository<AccountType, Guid> repository) : base(repository)
         { 
+            CreatePolicyName = AccountingPermissions.AccountTypeCreation;
+            DeletePolicyName = AccountingPermissions.AccountTypeDeletion;
         }
+        [Authorize(AccountingPermissions.AccountTypeCreation)]
         public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
         {
             var item = new AccountType(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
@@ -24,7 +30,7 @@ namespace Accounting.Finance
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
-
+        [Authorize(AccountingPermissions.AccountType)]
         public override async Task<PagedResultDto<AccountTypeDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await Repository.GetQueryableAsync();
@@ -52,7 +58,7 @@ namespace Accounting.Finance
                     OtherName = x.OtherName
                 }));
         }
-
+        [Authorize(AccountingPermissions.AccountTypeEdit)]
         public override async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);

@@ -93,7 +93,7 @@ namespace Accounting
             var nonCurrentLiabilitiesId = _guidGenerator.Create();
             _accountTypes = new List<AccountType>
              {
-                 new AccountType(assetsId,"A", "資產", "Assets", null, 1, 0, 1, 1, 0, 1),
+                 new AccountType(assetsId,"A", "资产", "Assets", null, 1, 0, 1, 1, 0, 1),
                  new AccountType(nonCurrentAssetsId,"NA", "非流动资产", "Non-Current Assets", assetsId, 2, 0, 2, 1, 0, 1),
                  new AccountType(_guidGenerator.Create(),"FA", "固定资产", "Fixed Assets", nonCurrentAssetsId, 2, 0, 3, 1, 0, 1),
                  new AccountType(currentAssetsId,"CA", "流动资产", "Current Assets", assetsId, 3, 0, 4, 1, 0, 1),

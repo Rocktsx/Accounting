@@ -34,4 +34,9 @@ public static class AccountingPermissions
     public const string AccountingPeriodCreation = AccountingPeriod + Creation;
     public const string AccountingPeriodDeletion = AccountingPeriod + Deletion;
     public const string AccountingPeriodEdit = AccountingPeriod + Edit;
+
+    public const string AccountType = GenenalLedgerGroupName + ".AccountType";
+    public const string AccountTypeCreation = AccountType + Creation;
+    public const string AccountTypeDeletion = AccountType + Deletion;
+    public const string AccountTypeEdit = AccountType + Edit;
 }

@@ -5,6 +5,9 @@ using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance
 {
+    /// <summary>
+    /// 会计科目类别
+    /// </summary>
     public class AccountType : Entity<Guid>, IMultiTenant
     {
         public string Code { get; private set; }
