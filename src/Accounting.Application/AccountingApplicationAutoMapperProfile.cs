@@ -25,5 +25,6 @@ public class AccountingApplicationAutoMapperProfile : Profile
 
         CreateMap<AccountingPeriod, AccountingPeriodDto>();
         CreateMap<AccountType, AccountTypeDto>();
+        CreateMap<SubjectCategory,SubjectCategoryDto>();
     }
 }

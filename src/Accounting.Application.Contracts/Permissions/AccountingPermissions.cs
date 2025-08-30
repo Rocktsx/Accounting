@@ -39,4 +39,9 @@ public static class AccountingPermissions
     public const string AccountTypeCreation = AccountType + Creation;
     public const string AccountTypeDeletion = AccountType + Deletion;
     public const string AccountTypeEdit = AccountType + Edit;
+
+    public const string SubjectCategory = GenenalLedgerGroupName + ".SubjectCategory";
+    public const string SubjectCategoryCreation = SubjectCategory + Creation;
+    public const string SubjectCategoryDeletion = SubjectCategory + Deletion;
+    public const string SubjectCategoryEdit = SubjectCategory + Edit; 
 }

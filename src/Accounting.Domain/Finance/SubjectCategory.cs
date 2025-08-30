@@ -7,7 +7,7 @@ using Volo.Abp.MultiTenancy;
 namespace Accounting.Finance
 {
     /// <summary>
-    /// 科目类别
+    /// 总账类别
     /// </summary>
     public class SubjectCategory : Entity<Guid>, IMultiTenant
     {
