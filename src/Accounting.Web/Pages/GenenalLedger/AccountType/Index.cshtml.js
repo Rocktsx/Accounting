@@ -3,12 +3,14 @@
     const editModal = new abp.ModalManager(abp.appPath + 'GenenalLedger/AccountType/EditModal'); 
     const isGrantedEdit = abp.auth.isGranted('Accounting.GenenalLedger.AccountType.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GenenalLedger.AccountType.Deletion');
+    let accountTypes = [];
+    accounting.finance.accountType.getSimpleList().then(result => { accountTypes = result });
 
     const dataTable = $('#accountTypeTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
-            order: [[2, "asc"]],
+            order: [[1, "asc"]],
             searching: true,
             scrollX: true,
             ajax: abp.libs.datatables.createAjax(accounting.finance.accountType.getList),
@@ -60,36 +62,48 @@
                     title: l('OtherName'),
                     orderable: true,
                     data: "otherName"
-                }, 
+                },
+                {
+                    title: l('ParentId'),
+                    data: "parentId",
+                    orderable: true, 
+                    render: function (data) {
+                        if (!data || !accountTypes) {
+                            return '';
+                        }
+                        const accountType = accountTypes.find(at => at.id === data);
+                        return accountType ? accountType.code : '';
+                    }
+                },
                 {
                     title: l('TrialBalanceSort'),
                     data: "trialBalanceSort",
-                    orderable: false
+                    orderable: true,
                 },
                 {
                     title: l('ProfitAndLossSort'),
                     data: "profitAndLossSort",
-                    orderable: false
+                    orderable: true,
                 },
                 {
                     title: l('BalanceSheetSort'),
                     data: "balanceSheetSort",
-                    orderable: false
+                    orderable: true,
                 },
                 {
                     title: l('TrialBalanceGroup'),
                     data: "trialBalanceGroup",
-                    orderable: false
+                    orderable: true,
                 },
                 {
                     title: l('ProfitAndLossGroup'),
                     data: "profitAndLossGroup",
-                    orderable: false
+                    orderable: true,
                 },
                 {
                     title: l('BalanceSheetGroup'),
                     data: "balanceSheetGroup",
-                    orderable: false
+                    orderable: true,
                 }
             ]
         })
