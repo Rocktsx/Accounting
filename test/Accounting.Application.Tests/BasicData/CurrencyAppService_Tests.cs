@@ -8,6 +8,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;
+using Accounting.BasicData.Dtos;
 
 namespace Accounting.BasicData
 {

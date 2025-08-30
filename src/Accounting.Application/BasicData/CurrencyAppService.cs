@@ -1,4 +1,5 @@
-﻿using Accounting.Permissions;
+﻿using Accounting.BasicData.Dtos;
+using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;

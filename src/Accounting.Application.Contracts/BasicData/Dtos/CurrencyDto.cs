@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Dtos
 {
-    public class CurrencyUpdateDto
+    public class CurrencyDto
     {
-        [Required]
+        public Guid Id { get; set; }
+        public string SourceCurrency { get; set; }
+        public string TargetCurrency { get; set; }
         public decimal SourceAmount { get; set; }
-        [Required]
         public decimal TargetAmount { get; set; }
-        [Required]
         public decimal ExchangeRate { get; set; }
         public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }

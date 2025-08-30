@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accounting.BasicData.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
