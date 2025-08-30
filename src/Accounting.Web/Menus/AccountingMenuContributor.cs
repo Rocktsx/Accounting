@@ -113,7 +113,7 @@ public class AccountingMenuContributor : IMenuContributor
                 AccountingPermissions.AccountingPeriod,
                 l["Menu:AccountingPeriod"],
                   icon: "fas fa-bars-staggered",
-                url: "/AccGL/AccountingPeriod"
+                url: "/GenenalLedger/AccountingPeriod"
                 )
             );
         }

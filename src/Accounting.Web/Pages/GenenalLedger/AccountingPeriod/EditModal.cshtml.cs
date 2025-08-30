@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
 
-namespace Accounting.Web.Pages.AccGL.AccountingPeriod
+namespace Accounting.Web.Pages.GenenalLedger.AccountingPeriod
 {
     public class EditModalModel : AccountingPageModel
     {

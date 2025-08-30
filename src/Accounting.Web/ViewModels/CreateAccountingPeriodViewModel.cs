@@ -5,6 +5,7 @@ namespace Accounting.Web.ViewModels
 {
     public class CreateAccountingPeriodViewModel
     {
+        [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
         [Display(Name = "AccPeriod")]
         public string Code { get; set; }

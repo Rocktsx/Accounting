@@ -1,15 +1,15 @@
 ﻿@page
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
-@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @inject IStringLocalizer<AccountingResource> L
-@model Accounting.Web.Pages.AccGL.AccountingPeriod.EditModalModel
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model Accounting.Web.Pages.GenenalLedger.AccountingPeriod.CreateModalModel
 @{
     Layout = null;
 }
-<abp-dynamic-form abp-model="Item" id="periodForm" data-ajaxForm="true" asp-page="/AccGL/AccountingPeriod/EditModal">
+<abp-dynamic-form abp-model="Item" id="periodForm" data-ajaxForm="true" asp-page="/AccGL/AccountingPeriod/CreateModal">
     <abp-modal>
-        <abp-modal-header title="@L["EditAccountingPeriod"].Value">
+        <abp-modal-header title="@L["NewAccountingPeriod"].Value">
         </abp-modal-header>
         <abp-modal-body>
             <abp-form-content />

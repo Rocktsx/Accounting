@@ -1,6 +1,6 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
-    const editModal = new abp.ModalManager(abp.appPath + 'AccGL/AccountingPeriod/EditModal'); 
+    const editModal = new abp.ModalManager(abp.appPath + 'GenenalLedger/AccountingPeriod/EditModal'); 
     const isGrantedEdit = abp.auth.isGranted('Accounting.GenenalLedger.AccountingPeriod.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GenenalLedger.AccountingPeriod.Deletion');
 
@@ -75,7 +75,7 @@
             ]
         })
     );
-    const createModal = new abp.ModalManager(abp.appPath + 'AccGL/AccountingPeriod/CreateModal');
+    const createModal = new abp.ModalManager(abp.appPath + 'GenenalLedger/AccountingPeriod/CreateModal');
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
