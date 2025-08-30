@@ -27,7 +27,7 @@ namespace Accounting.Web.Pages.GenenalLedger.AccountType
         {
             var dto =await _service.GetAsync(Id);
             Item = ObjectMapper.Map<AccountTypeDto, EditAccountTypeViewModel>(dto);
-            var dtos = await _service.GetSelectListAsync();
+            var dtos = await _service.GetSampleListAsync();
             AccountTypes = dtos.Select(item => new SelectListItem
             {
                 Value = item.Id.ToString(),

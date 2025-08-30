@@ -39,12 +39,12 @@ namespace Accounting.Finance
             return queryable;
         } 
 
-        public async Task<IEnumerable<AccountTypeSelectDto>> GetSelectListAsync()
+        public async Task<IEnumerable<AccountTypeSampleDto>> GetSampleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
             return await AsyncExecuter.ToListAsync(queryable
                 .OrderBy(x => x.Code)
-                .Select(x => new AccountTypeSelectDto
+                .Select(x => new AccountTypeSampleDto
                 {
                     Id = x.Id,
                     Code = x.Code,

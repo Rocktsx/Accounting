@@ -27,7 +27,7 @@ namespace Accounting.Web.Pages.GenenalLedger.AccountType
         public async Task OnGet()
         {
             Item = new CreateAccountTypeViewModel();
-            var dtos = await _service.GetSelectListAsync();
+            var dtos = await _service.GetSampleListAsync();
             AccountTypes = dtos.Select(item =>new SelectListItem
             {
                 Value = item.Id.ToString(),

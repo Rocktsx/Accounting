@@ -153,7 +153,7 @@ namespace Accounting.Finance
             await _accountTypeAppService.CreateAsync(dto1);
             await _accountTypeAppService.CreateAsync(dto2);
             // Act
-            var list = await _accountTypeAppService.GetSelectListAsync();
+            var list = await _accountTypeAppService.GetSampleListAsync();
             // Assert
             list.ShouldNotBeNull();
             list.ShouldContain(x => x.Code == dto1.Code);
