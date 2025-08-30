@@ -22,5 +22,9 @@ public class AccountingWebAutoMapperProfile : Profile
         CreateMap<AccountingPeriodDto, EditAccountingPeriodViewModel>();
         CreateMap<CreateAccountingPeriodViewModel, AccountingPeriodCreateDto>();
         CreateMap<EditAccountingPeriodViewModel, AccountingPeriodUpdateDto>();
+
+        CreateMap<AccountTypeDto, EditAccountTypeViewModel>();
+        CreateMap<CreateAccountTypeViewModel, AccountTypeCreateDto>();
+        CreateMap<EditAccountTypeViewModel, AccountTypeUpdateDto>();
     }
 }

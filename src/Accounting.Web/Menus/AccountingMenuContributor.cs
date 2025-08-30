@@ -117,6 +117,17 @@ public class AccountingMenuContributor : IMenuContributor
                 )
             );
         }
+        if (await context.IsGrantedAsync(AccountingPermissions.AccountType))
+        {
+            genenalLedgerMenu.AddItem(
+                new ApplicationMenuItem(
+                AccountingPermissions.AccountType,
+                l["Menu:AccountType"],
+                  icon: "fas fa-landmark",
+                url: "/GenenalLedger/AccountType"
+                )
+            );
+        }
         if (genenalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(genenalLedgerMenu);

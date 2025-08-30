@@ -107,6 +107,17 @@
     "IsCurrentPeriod": "当前会计年度",
     "AccPeriod": "年度",
     "EditAccountingPeriod": "编辑会计年度",
-    "Permission:AccountingPeriod": "会计年度"
+    "Permission:AccountingPeriod": "会计年度",
+    "Permission:AccountType": "科目类别",
+    "Menu:AccountType": "科目类别",
+    "NewAccountType": "添加科目类别",
+    "EditAccountType": "编辑科目类别",
+    "TrialBalanceSort": "试算表排序",
+    "ProfitAndLossSort": "损益表排序",
+    "BalanceSheetSort": "资产负债表排序",
+    "TrialBalanceGroup": "试算表分组",
+    "ProfitAndLossGroup": "损益表分组",
+    "BalanceSheetGroup": "资产负债表分组",
+    "ParentId": "父级"
   }
 }

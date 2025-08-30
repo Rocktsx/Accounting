@@ -74,6 +74,17 @@
     "IsCurrentPeriod": "Is Current Period",
     "AccPeriod": "Period",
     "EditAccountingPeriod": "Edit Accounting Period",
-    "Permission:AccountingPeriod": "Accounting Period"
+    "Permission:AccountingPeriod": "Accounting Period",
+    "Permission:AccountType": "Account Type",
+    "Menu:AccountType": "Account Type",
+    "NewAccountType": "New Account Type",
+    "EditAccountType": "Edit Account Type",
+    "TrialBalanceSort": "Trial Balance Sort",
+    "ProfitAndLossSort": "Profit And Loss Sort",
+    "BalanceSheetSort": "Balance Sheet Sort",
+    "TrialBalanceGroup": "Trial Balance Group",
+    "ProfitAndLossGroup": "Profit And Loss Group",
+    "BalanceSheetGroup": "Balance Sheet Group",
+    "ParentId": "Parent"
   }
 }
