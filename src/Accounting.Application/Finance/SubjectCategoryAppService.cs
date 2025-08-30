@@ -20,6 +20,7 @@ namespace Accounting.Finance
         {
             GetPolicyName = AccountingPermissions.SubjectCategory;
             DeletePolicyName = AccountingPermissions.AccountTypeDeletion;
+            GetListPolicyName = AccountingPermissions.SubjectCategory;
         }
         [Authorize(AccountingPermissions.SubjectCategoryCreation)]
         public override async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
@@ -44,18 +45,12 @@ namespace Accounting.Finance
             entity = await Repository.UpdateAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
-        [Authorize(AccountingPermissions.SubjectCategory)]
-        public override async Task<PagedResultDto<SubjectCategoryDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
+        protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await Repository.GetQueryableAsync();
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            var pageQueryable = queryable.Skip(input.SkipCount)
-                                .Take(input.MaxResultCount)
-                                .OrderBy(input.Sorting ?? nameof(SubjectCategory.Code));
-            var list = await AsyncExecuter.ToListAsync(pageQueryable);
-            var count = await AsyncExecuter.CountAsync(queryable);
-            return new PagedResultDto<SubjectCategoryDto>(count, ObjectMapper.Map<List<SubjectCategory>, List<SubjectCategoryDto>>(list));
-        }
+            return queryable;
+        } 
     }
 }

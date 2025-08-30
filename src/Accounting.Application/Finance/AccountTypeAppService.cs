@@ -15,11 +15,12 @@ namespace Accounting.Finance
 {
     public class AccountTypeAppService : CrudAppService<AccountType, AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
     {
-       
+
         public AccountTypeAppService(IRepository<AccountType, Guid> repository) : base(repository)
         {
             GetPolicyName = AccountingPermissions.AccountType;
             DeletePolicyName = AccountingPermissions.AccountTypeDeletion;
+            GetListPolicyName = AccountingPermissions.AccountType;
         }
         [Authorize(AccountingPermissions.AccountTypeCreation)]
         public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
@@ -30,20 +31,13 @@ namespace Accounting.Finance
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
-        [Authorize(AccountingPermissions.AccountType)]
-        public override async Task<PagedResultDto<AccountTypeDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
+        protected override async Task<IQueryable<AccountType>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await Repository.GetQueryableAsync();
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            var pageQueryable = queryable.Skip(input.SkipCount)
-                                .Take(input.MaxResultCount)
-                                .OrderBy(input.Sorting ?? nameof(AccountType.Code));
-            var list = await AsyncExecuter.ToListAsync(pageQueryable);
-            var count = await AsyncExecuter.CountAsync(queryable);
-
-            return new PagedResultDto<AccountTypeDto>(count, ObjectMapper.Map<List<AccountType>, List<AccountTypeDto>>(list));
-        }
+            return queryable;
+        } 
 
         public async Task<IEnumerable<AccountTypeSelectDto>> GetSelectListAsync()
         {
