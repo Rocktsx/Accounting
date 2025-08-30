@@ -8,6 +8,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Accounting.BasicData.Dtos;
 
 namespace Accounting.BasicData
 {
@@ -20,7 +21,7 @@ namespace Accounting.BasicData
         {
             _companyRepository = companyRepository;
         } 
-        public virtual async Task<CompanyDto> CreateAsync(CompanyCreateOrEditDto input)
+        public virtual async Task<CompanyDto> CreateAsync(CompanyCreateDto input)
         { 
             var company = new Company(GuidGenerator.Create(), input.Name, input.OtherName,
                 input.NickName, input.Currency, input.CreditLimit, input.PaymentTerm, input.TradeTerm,
@@ -63,11 +64,7 @@ namespace Accounting.BasicData
             var queryable = await _companyRepository.WithDetailsAsync(item => item.Addresses, item => item.Contacts);
 
             var item = await AsyncExecuter.FirstOrDefaultAsync(queryable.Where(item => item.Id == companyId));
-            if (item == null)
-            {
-                throw new EntityNotFoundException();
-            }
-            return item;
+            return item == null ? throw new EntityNotFoundException() : item;
         }
 
         public virtual async Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
@@ -84,7 +81,7 @@ namespace Accounting.BasicData
             return new PagedResultDto<CompanyDto>(count, ObjectMapper.Map<List<Company>, List<CompanyDto>>(list));
         }
 
-        public virtual async Task<CompanyDto> UpdateAsync(Guid id, CompanyCreateOrEditDto input)
+        public virtual async Task<CompanyDto> UpdateAsync(Guid id, CompanyUpdateDto input)
         {
             var entity = await GetItemWithDetailsAsync(id); ;
             entity.SetCreditLimit(input.CreditLimit)
@@ -97,7 +94,7 @@ namespace Accounting.BasicData
                 .SetPaymentTerm(input.PaymentTerm)
                 .SetTradeTerm(input.TradeTerm);
 
-            if (input.Addresses == null || input.Addresses.Count() == 0)
+            if (input.Addresses == null || input.Addresses.Count == 0)
             {
                 entity.Addresses.Clear();
             }
@@ -120,7 +117,7 @@ namespace Accounting.BasicData
                     }
                 }
             }
-            if (input.Contacts == null || input.Contacts.Count() == 0)
+            if (input.Contacts == null || input.Contacts.Count == 0)
             {
                 entity.Contacts.Clear();
             }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Dtos
 {
-    public class CompanyContactCreateOrEditDto
+    public class CompanyContactCreateDto
     { 
         public Guid Id { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]

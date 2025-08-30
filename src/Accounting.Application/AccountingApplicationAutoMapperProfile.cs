@@ -1,4 +1,5 @@
 using Accounting.BasicData;
+using Accounting.BasicData.Dtos;
 using Accounting.Finance;
 using Accounting.Finance.Dtos;
 using AutoMapper;
@@ -16,11 +17,11 @@ public class AccountingApplicationAutoMapperProfile : Profile
         CreateMap<CurrencyCreateDto, Currency>();
 
         CreateMap<Company, CompanyDto>();
-        CreateMap<CompanyCreateOrEditDto, Company>();
+        CreateMap<CompanyCreateDto, Company>();
         CreateMap<CompanyAddress, CompanyAddressDto>();
-        CreateMap<CompanyAddressCreateOrEditDto, CompanyAddress>();
+        CreateMap<CompanyAddressCreateDto, CompanyAddress>();
         CreateMap<CompanyContact, CompanyContactDto>();
-        CreateMap<CompanyContactCreateOrEditDto, CompanyContact>();
+        CreateMap<CompanyContactCreateDto, CompanyContact>();
 
         CreateMap<AccountingPeriod, AccountingPeriodDto>();
         CreateMap<AccountType, AccountTypeDto>();

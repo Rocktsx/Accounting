@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks; 
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Dtos
 {
     public class CompanyDto: GenerateCodeDto
     {
@@ -20,7 +20,7 @@ namespace Accounting.BasicData
         public bool IsClient { get; set; }
         public bool IsVendor { get; set; }
 
-        public IEnumerable<CompanyAddressDto> Addresses { get; set; } = new List<CompanyAddressDto>();
-        public IEnumerable<CompanyContactDto> Contacts { get; set; } = new List<CompanyContactDto>();
+        public IEnumerable<CompanyAddressDto> Addresses { get; set; } = [];
+        public IEnumerable<CompanyContactDto> Contacts { get; set; } = [];
     }
 }

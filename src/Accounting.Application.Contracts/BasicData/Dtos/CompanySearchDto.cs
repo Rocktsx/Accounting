@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Application.Dtos;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Dtos
 {
     public class CompanySearchDto : PagedAndSortedResultRequestDto
     {

@@ -1,4 +1,5 @@
 using Accounting.BasicData;
+using Accounting.BasicData.Dtos;
 using Accounting.Finance.Dtos;
 using Accounting.Web.Pages.BasicData.Currency;
 using Accounting.Web.ViewModels;

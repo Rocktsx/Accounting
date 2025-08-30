@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using Accounting.BasicData.Dtos;
 
 namespace Accounting.BasicData
 {
@@ -15,7 +16,7 @@ namespace Accounting.BasicData
         {
         }
         [Authorize(AccountingPermissions.VendorCreation)]
-        public override Task<CompanyDto> CreateAsync(CompanyCreateOrEditDto input)
+        public override Task<CompanyDto> CreateAsync(CompanyCreateDto input)
         {
             return base.CreateAsync(input);
         }
@@ -35,7 +36,7 @@ namespace Accounting.BasicData
             return base.GetListAsync(dto);
         }
         [Authorize(AccountingPermissions.VendorEdit)]
-        public override Task<CompanyDto> UpdateAsync(Guid id, CompanyCreateOrEditDto input)
+        public override Task<CompanyDto> UpdateAsync(Guid id, CompanyUpdateDto input)
         {
             return base.UpdateAsync(id, input);
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;
+using Accounting.BasicData.Dtos;
 
 namespace Accounting.BasicData
 {
@@ -15,12 +16,13 @@ namespace Accounting.BasicData
     {
         private readonly ICompanyAppService _companyAppService;
 
-        public CompanyAppServiceTests() {
+        public CompanyAppServiceTests()
+        {
             _companyAppService = GetRequiredService<ICompanyAppService>();
         }
-        private static CompanyCreateOrEditDto GetCompanyCreateOrEditDto()
+        private static CompanyCreateDto GetCompanyCreateDto()
         {
-            var input = new CompanyCreateOrEditDto
+            var input = new CompanyCreateDto
             {
                 Name = "Test Company",
                 OtherName = "Test Co.",
@@ -37,9 +39,27 @@ namespace Accounting.BasicData
 
             return input;
         }
-        private static void AddDetails(CompanyCreateOrEditDto input, string suf)
+        private static CompanyUpdateDto GetCompanyUpdateDto()
         {
-            input.Addresses.Add(new CompanyAddressCreateOrEditDto
+            var input = new CompanyUpdateDto
+            {
+                Name = "Test Company",
+                OtherName = "Test Co.",
+                NickName = "TC",
+                Currency = "USD",
+                CreditLimit = 10000,
+                PaymentTerm = "Net 30",
+                TradeTerm = "FOB",
+                IsClient = true,
+                IsVendor = false,
+            };
+            AddDetails(input, string.Empty);
+
+            return input;
+        }
+        private static void AddDetails(CompanyCreateDto input, string suf)
+        {
+            input.Addresses.Add(new CompanyAddressCreateDto
             {
                 IsBilling = true,
                 IsShipping = false,
@@ -48,7 +68,28 @@ namespace Accounting.BasicData
                 ContactPerson = "John Doe" + suf,
                 Telephone = "123-456-7890"
             });
-            input.Contacts.Add(new CompanyContactCreateOrEditDto
+            input.Contacts.Add(new CompanyContactCreateDto
+            {
+                ContactName = "Jane Smith" + suf,
+                Department = "Sales" + suf,
+                Position = "Manager" + suf,
+                DirectLine = "123-456-7891",
+                Telephone = "123-456-7892",
+                Fax = "123-456-7893"
+            });
+        }
+        private static void AddDetails(CompanyUpdateDto input, string suf)
+        {
+            input.Addresses.Add(new CompanyAddressUpdateDto
+            {
+                IsBilling = true,
+                IsShipping = false,
+                Name = "Main Office" + suf,
+                Address = "123 Main St." + suf,
+                ContactPerson = "John Doe" + suf,
+                Telephone = "123-456-7890"
+            });
+            input.Contacts.Add(new CompanyContactUpdateDto
             {
                 ContactName = "Jane Smith" + suf,
                 Department = "Sales" + suf,
@@ -62,7 +103,7 @@ namespace Accounting.BasicData
         public async Task Should_Create_Company()
         {
             // Arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             // Act
             var entity = await _companyAppService.CreateAsync(input);
             // Assert
@@ -81,27 +122,31 @@ namespace Accounting.BasicData
         public async Task Should_Update_Company()
         {
             // Arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             var entity = await _companyAppService.CreateAsync(input);
-            input.Name = "Rock Company";
-            input.NickName = "Rock";
-            input.OtherName = "othRock";
-            var address = input.Addresses.First();
+            var updateInput = GetCompanyUpdateDto();
+            updateInput.Name = "Rock Company";
+            updateInput.NickName = "Rock";
+            updateInput.OtherName = "othRock";
+            var address = updateInput.Addresses.First();
             address.Id = entity.Addresses.First().Id;
             address.Name = "Home";
             address.Address = "east way big street, sz";
-            var contact = input.Contacts.First();
+            var contact = updateInput.Contacts.First();
             contact.Id = entity.Contacts.First().Id;
             contact.ContactName = "Rock";
             contact.Position = "CTO";
             contact.Telephone = "135222244444";
             // Act
-            await _companyAppService.UpdateAsync(entity.Id, input);
+            await WithUnitOfWorkAsync(async () =>
+            {
+                await _companyAppService.UpdateAsync(entity.Id, updateInput);
+            });
             // Assert
             var target = await _companyAppService.GetAsync(entity.Id);
-            target.Name.ShouldBe(input.Name);
-            target.OtherName.ShouldBe(input.OtherName);
-            target.NickName.ShouldBe(input.NickName);
+            target.Name.ShouldBe(updateInput.Name);
+            target.OtherName.ShouldBe(updateInput.OtherName);
+            target.NickName.ShouldBe(updateInput.NickName);
             var targetAddress = target.Addresses.First();
             targetAddress.Name.ShouldBe(address.Name);
             targetAddress.Address.ShouldBe(address.Address);
@@ -114,17 +159,17 @@ namespace Accounting.BasicData
         public async Task Should_Add_Address_Contact_When_Update_Company()
         {
             // Arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             var entity = await _companyAppService.CreateAsync(input);
-
-            var address = input.Addresses.First();
+            var updateInput = GetCompanyUpdateDto();
+            var address = updateInput.Addresses.First();
             address.Id = entity.Addresses.First().Id;
-            var contact = input.Contacts.First();
+            var contact = updateInput.Contacts.First();
             contact.Id = entity.Contacts.First().Id;
             var suf = "22";
-            AddDetails(input, suf);
+            AddDetails(updateInput, suf);
             // Act
-            await _companyAppService.UpdateAsync(entity.Id, input);
+            await _companyAppService.UpdateAsync(entity.Id, updateInput);
             // Assert
             var target = await _companyAppService.GetAsync(entity.Id);
             target.Addresses.Count().ShouldBe(2);
@@ -139,7 +184,7 @@ namespace Accounting.BasicData
         public async Task Should_Get_Company()
         {
             // Arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             var entity = await _companyAppService.CreateAsync(input);
             // Act 
             var target = await _companyAppService.GetAsync(entity.Id);
@@ -155,7 +200,7 @@ namespace Accounting.BasicData
         public async Task Should_Delete_Company()
         {
             // Arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             var entity = await _companyAppService.CreateAsync(input);
             // Act 
             await _companyAppService.DeleteAsync(entity.Id);
@@ -182,10 +227,10 @@ namespace Accounting.BasicData
         public async Task Should_Get_Client_Companies()
         {
             // arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             input.IsClient = false;
             await _companyAppService.CreateAsync(input);
-            input = GetCompanyCreateOrEditDto();
+            input = GetCompanyCreateDto();
             input.IsClient = false;
             await _companyAppService.CreateAsync(input);
             var dto = new CompanySearchDto()
@@ -203,11 +248,11 @@ namespace Accounting.BasicData
         public async Task Should_Get_Vendor_Companies()
         {
             // arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             input.IsVendor = true;
             input.IsClient = false;
             await _companyAppService.CreateAsync(input);
-            input = GetCompanyCreateOrEditDto();
+            input = GetCompanyCreateDto();
             input.IsVendor = true;
             input.IsClient = false;
             await _companyAppService.CreateAsync(input);
@@ -226,10 +271,10 @@ namespace Accounting.BasicData
         public async Task Should_Get_Filter_Companies()
         {
             // arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             input.Name = "Rock";
             await _companyAppService.CreateAsync(input);
-            input = GetCompanyCreateOrEditDto();
+            input = GetCompanyCreateDto();
             input.Name = "Ben";
             await _companyAppService.CreateAsync(input);
             var dto = new CompanySearchDto()
@@ -247,10 +292,10 @@ namespace Accounting.BasicData
         public async Task Should_Clear_Address_And_Contact()
         {
             // arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             var entry = await _companyAppService.CreateAsync(input);
 
-            var dto = GetCompanyCreateOrEditDto();
+            var dto = GetCompanyUpdateDto();
             dto.Contacts.Clear();
             dto.Addresses.Clear();
 
@@ -266,10 +311,10 @@ namespace Accounting.BasicData
         public async Task Should_Clear_Null_Address_And_Contact()
         {
             // arrange
-            var input = GetCompanyCreateOrEditDto();
+            var input = GetCompanyCreateDto();
             var entry = await _companyAppService.CreateAsync(input);
 
-            var dto = GetCompanyCreateOrEditDto();
+            var dto = GetCompanyUpdateDto();
             dto.Contacts = null;
             dto.Addresses = null;
 

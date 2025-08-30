@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Dtos
 {
-    public class CompanyAddressCreateOrEditDto
-    { 
+    public class CompanyAddressUpdateDto
+    {
         public Guid Id { get; set; }
         public bool IsBilling { get; set; }
         public bool IsShipping { get; set; }

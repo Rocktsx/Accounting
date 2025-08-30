@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Dtos
 {
-    public class CompanyCreateOrEditDto: GenerateCodeDto
+    public class CompanyUpdateDto
     {
         [Required]
         [MaxLength(CompanyConsts.MaxNameLength)]
@@ -26,7 +26,7 @@ namespace Accounting.BasicData
         public bool IsClient { get; set; }
         public bool IsVendor { get; set; }
 
-        public List<CompanyAddressCreateOrEditDto> Addresses { get; set; } = new List<CompanyAddressCreateOrEditDto>();
-        public List<CompanyContactCreateOrEditDto> Contacts { get; set; } = new List<CompanyContactCreateOrEditDto>();
+        public List<CompanyAddressUpdateDto> Addresses { get; set; } = [];
+        public List<CompanyContactUpdateDto> Contacts { get; set; } = [];
     }
 }
