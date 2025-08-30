@@ -21,7 +21,7 @@
             <abp-column size-md="_6" class="text-end">
                 @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.AccountingPeriodCreation))
                 {
-                    <abp-button id="newBtn"
+                    <abp-button id="newAccountingPeriodBtn"
                                 text="@L["NewAccountingPeriod"].Value"
                                 icon="plus"
                                 button-type="Primary" />
@@ -30,6 +30,6 @@
         </abp-row>
     </abp-card-header>
     <abp-card-body>
-        <abp-table id="table" striped-rows="true" />
+        <abp-table id="accountingPeriodTable" striped-rows="true" />
     </abp-card-body>
 </abp-card>

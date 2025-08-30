@@ -4,7 +4,7 @@
     const isGrantedEdit = abp.auth.isGranted('Accounting.GenenalLedger.AccountingPeriod.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GenenalLedger.AccountingPeriod.Deletion');
 
-    const dataTable = $('#table').DataTable(
+    const dataTable = $('#accountingPeriodTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
@@ -79,7 +79,7 @@
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
-    $(document).on('click', '#newBtn', function (e) {
+    $(document).on('click', '#newAccountingPeriodBtn', function (e) {
         e.preventDefault();
         createModal.open();
     }); 
