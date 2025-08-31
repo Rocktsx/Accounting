@@ -43,5 +43,10 @@ public static class AccountingPermissions
     public const string SubjectCategory = GenenalLedgerGroupName + ".SubjectCategory";
     public const string SubjectCategoryCreation = SubjectCategory + Creation;
     public const string SubjectCategoryDeletion = SubjectCategory + Deletion;
-    public const string SubjectCategoryEdit = SubjectCategory + Edit; 
+    public const string SubjectCategoryEdit = SubjectCategory + Edit;
+
+    public const string Subject = GenenalLedgerGroupName + ".Subject";
+    public const string SubjectCreation = Subject + Creation;
+    public const string SubjectDeletion = Subject + Deletion;
+    public const string SubjectEdit = Subject + Edit;
 }

@@ -16,6 +16,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         AddPermissionGroup(context, AccountingPermissions.AccountingPeriod, nameof(AccountingPermissions.AccountingPeriod), AccountingPermissions.AccountingPeriodCreation, AccountingPermissions.AccountingPeriodDeletion, AccountingPermissions.AccountingPeriodEdit);
         AddPermissionGroup(context, AccountingPermissions.AccountType, nameof(AccountingPermissions.AccountType), AccountingPermissions.AccountTypeCreation, AccountingPermissions.AccountTypeDeletion, AccountingPermissions.AccountTypeEdit);
         AddPermissionGroup(context, AccountingPermissions.SubjectCategory, nameof(AccountingPermissions.SubjectCategory), AccountingPermissions.SubjectCategoryCreation, AccountingPermissions.SubjectCategoryDeletion, AccountingPermissions.SubjectCategoryEdit);
+        AddPermissionGroup(context, AccountingPermissions.Subject, nameof(AccountingPermissions.Subject), AccountingPermissions.SubjectCreation, AccountingPermissions.SubjectDeletion, AccountingPermissions.SubjectEdit);
     }
     private static void AddPermission(PermissionGroupDefinition group, string permissionName, LocalizableString permissionDisplayName, string creationPermission, string deletionPermissin, string editPermission)
     {

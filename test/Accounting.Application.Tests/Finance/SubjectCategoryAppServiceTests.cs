@@ -245,8 +245,9 @@ namespace Accounting.Finance
             // Assert
             result.ShouldNotBeNull();
             result.Items.Count.ShouldBe(2);
-            result.Items.Any(x => x.Code == dto1.Code).ShouldBeTrue();
-            result.Items.Any(x => x.Code == dto2.Code).ShouldBeTrue();
+            result.TotalCount.ShouldBe(2);
+            result.Items.ShouldContain(x => x.Code == dto1.Code);
+            result.Items.ShouldContain(x => x.Code == dto2.Code);
         }
         [Fact]
         public async Task Can_Delete_A_SubjectCategory()
