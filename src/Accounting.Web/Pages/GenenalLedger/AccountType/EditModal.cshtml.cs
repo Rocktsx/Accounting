@@ -28,12 +28,9 @@ namespace Accounting.Web.Pages.GenenalLedger.AccountType
             var dto =await _service.GetAsync(Id);
             Item = ObjectMapper.Map<AccountTypeDto, EditAccountTypeViewModel>(dto);
             var dtos = await _service.GetSimpleListAsync();
-            AccountTypes = dtos.Select(item => new SelectListItem
-            {
-                Value = item.Id.ToString(),
-                Text = Helpers.GetText(item.Code, item.Name, item.OtherName),
-            }).ToList();
-            AccountTypes.Insert(0, new SelectListItem { Value = null, Text = "--" });
+            AccountTypes = dtos.ToSelectListItems(
+               item => item.Id.ToString(),
+               item => Helpers.GetText(item.Code, item.Name, item.OtherName));
         }
         public async Task<IActionResult> OnPostAsync()
         {
