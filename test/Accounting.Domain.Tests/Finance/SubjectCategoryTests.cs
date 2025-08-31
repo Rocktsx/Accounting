@@ -11,7 +11,7 @@ namespace Accounting.Finance
         {
             // Arrange
             var entity = new SubjectCategory(
-                Guid.NewGuid(), "1001", "现金", "Cash", null, CreditDebit.Debit, Guid.NewGuid(), true, description: null
+                Guid.NewGuid(), "1001", "现金", "Cash", null, DebitorCreditor.Debitor, Guid.NewGuid(), true, description: null
             );
             // Act & Assert
             entity.ShouldNotBeNull();
@@ -23,7 +23,7 @@ namespace Accounting.Finance
         {
             // Act
             var exception = Assert.Throws<ArgumentException>(() => new SubjectCategory(
-                Guid.NewGuid(), string.Empty, "现金", "Cash", null, CreditDebit.Debit, Guid.NewGuid(), true, "This is a cash account"
+                Guid.NewGuid(), string.Empty, "现金", "Cash", null, DebitorCreditor.Debitor, Guid.NewGuid(), true, "This is a cash account"
             ));
             // Assert
             exception.ShouldNotBeNull();
@@ -35,7 +35,7 @@ namespace Accounting.Finance
         {
             // Act
             var exception = Assert.Throws<ArgumentException>(() => new SubjectCategory(
-                Guid.NewGuid(), "1001", string.Empty, "Cash", null, CreditDebit.Debit, Guid.NewGuid(), true, "This is a cash account"
+                Guid.NewGuid(), "1001", string.Empty, "Cash", null, DebitorCreditor.Debitor, Guid.NewGuid(), true, "This is a cash account"
             ));
             // Assert
             exception.ShouldNotBeNull();

@@ -30,7 +30,7 @@ namespace Accounting.Finance
                 Name = "Cash",
                 OtherName = "Cash",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Cash account"
@@ -44,7 +44,7 @@ namespace Accounting.Finance
             newDto.Name.ShouldBe(dto.Name);
             newDto.OtherName.ShouldBe(dto.OtherName);
             newDto.ParentId.ShouldBe(dto.ParentId);
-            newDto.CreditDebit.ShouldBe(dto.CreditDebit);
+            newDto.DebitorCreditor.ShouldBe(dto.DebitorCreditor);
             newDto.AccountTypeId.ShouldBe(dto.AccountTypeId);
             newDto.ShowDetail.ShouldBe(dto.ShowDetail);
             newDto.Description.ShouldBe(dto.Description);
@@ -59,7 +59,7 @@ namespace Accounting.Finance
                 Name = "Cash",
                 OtherName = "Cash",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Cash account"
@@ -83,7 +83,7 @@ namespace Accounting.Finance
                 Name = string.Empty,
                 OtherName = "Cash",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Cash account"
@@ -107,7 +107,7 @@ namespace Accounting.Finance
                 Name = "Cash",
                 OtherName = "Cash",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Cash account"
@@ -122,7 +122,7 @@ namespace Accounting.Finance
             fetchedDto.Name.ShouldBe(newDto.Name);
             fetchedDto.OtherName.ShouldBe(newDto.OtherName);
             fetchedDto.ParentId.ShouldBe(newDto.ParentId);
-            fetchedDto.CreditDebit.ShouldBe(newDto.CreditDebit);
+            fetchedDto.DebitorCreditor.ShouldBe(newDto.DebitorCreditor);
             fetchedDto.AccountTypeId.ShouldBe(newDto.AccountTypeId);
             fetchedDto.ShowDetail.ShouldBe(newDto.ShowDetail);
             fetchedDto.Description.ShouldBe(newDto.Description);
@@ -150,7 +150,7 @@ namespace Accounting.Finance
                 Name = "Accounts Receivable",
                 OtherName = "AR",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Accounts Receivable account"
@@ -162,7 +162,7 @@ namespace Accounting.Finance
                 Name = "Accounts Receivable Updated",
                 OtherName = "AR Updated",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = createDto.AccountTypeId,
                 ShowDetail = false,
                 Description = "Updated description"
@@ -176,7 +176,7 @@ namespace Accounting.Finance
             updatedDto.Name.ShouldBe(updateDto.Name);
             updatedDto.OtherName.ShouldBe(updateDto.OtherName);
             updatedDto.ParentId.ShouldBe(updateDto.ParentId);
-            updatedDto.CreditDebit.ShouldBe(updateDto.CreditDebit);
+            updatedDto.DebitorCreditor.ShouldBe(updateDto.DebitorCreditor);
             updatedDto.AccountTypeId.ShouldBe(updateDto.AccountTypeId);
             updatedDto.ShowDetail.ShouldBe(updateDto.ShowDetail);
             updatedDto.Description.ShouldBe(updateDto.Description);
@@ -192,7 +192,7 @@ namespace Accounting.Finance
                 Name = "Inventory",
                 OtherName = "Inventory",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Inventory account"
@@ -215,7 +215,7 @@ namespace Accounting.Finance
                 Name = "Sales Revenue",
                 OtherName = "Sales",
                 ParentId = null,
-                CreditDebit = CreditDebit.Credit,
+                DebitorCreditor = DebitorCreditor.Creditor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Sales Revenue account"
@@ -226,7 +226,7 @@ namespace Accounting.Finance
                 Name = "Service Revenue",
                 OtherName = "Service",
                 ParentId = null,
-                CreditDebit = CreditDebit.Credit,
+                DebitorCreditor = DebitorCreditor.Creditor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Service Revenue account"
@@ -258,7 +258,7 @@ namespace Accounting.Finance
                 Name = "Miscellaneous Expense",
                 OtherName = "Misc Exp",
                 ParentId = null,
-                CreditDebit = CreditDebit.Debit,
+                DebitorCreditor = DebitorCreditor.Debitor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Miscellaneous Expense account"
@@ -283,7 +283,7 @@ namespace Accounting.Finance
                 Name = "Long-term Debt",
                 OtherName = "LTD",
                 ParentId = null,
-                CreditDebit = CreditDebit.Credit,
+                DebitorCreditor = DebitorCreditor.Creditor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Long-term Debt account"
@@ -294,7 +294,7 @@ namespace Accounting.Finance
                 Name = "Short-term Debt",
                 OtherName = "STD",
                 ParentId = null,
-                CreditDebit = CreditDebit.Credit,
+                DebitorCreditor = DebitorCreditor.Creditor,
                 AccountTypeId = null,
                 ShowDetail = true,
                 Description = "Short-term Debt account"

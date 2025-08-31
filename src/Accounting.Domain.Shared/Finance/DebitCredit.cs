@@ -1,7 +1,7 @@
 ﻿
 namespace Accounting.Finance
 {
-    public enum CreditDebit
+    public enum DebitCredit
     {
         Credit = -1,
         Debit = 1

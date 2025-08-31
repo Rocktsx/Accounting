@@ -124,11 +124,14 @@
     "NewSubjectCategory": "添加总账类别",
     "EditSubjectCategory": "编辑总账类别",
     "AccountTypeId": "科目类别",
-    "CreditDebit": "借方 / 贷方",
+    "DebitCredit": "借/贷",
     "ShowDetail": "显示详细",
     "Description": "说明",
-    "Debit": "借方",
-    "Credit": "贷方",
-    "ParentCode": "父编号"
+    "Debit": "借",
+    "Credit": "贷",
+    "ParentCode": "父编号",
+    "Debitor": "借方",
+    "Creditor": "贷方",
+    "DebitorCreditor": "借方/贷方"
   }
 }

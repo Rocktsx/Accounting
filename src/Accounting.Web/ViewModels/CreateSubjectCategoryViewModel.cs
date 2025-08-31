@@ -17,7 +17,7 @@ namespace Accounting.Web.ViewModels
         public string? OtherName { get; set; }
         [SelectItems("Categories")]
         public Guid? ParentId { get; set; }
-        public CreditDebit CreditDebit { get; set; }
+        public DebitorCreditor DebitorCreditor { get; set; }
         [SelectItems("AccountTypes")]
         public Guid? AccountTypeId { get; set; }
         public bool ShowDetail { get; set; }

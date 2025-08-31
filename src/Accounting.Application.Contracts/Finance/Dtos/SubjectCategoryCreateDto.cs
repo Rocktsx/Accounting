@@ -14,7 +14,7 @@ namespace Accounting.Finance.Dtos
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string OtherName { get; set; }
         public Guid? ParentId { get; set; }
-        public CreditDebit CreditDebit { get; set; }
+        public DebitorCreditor DebitorCreditor { get; set; }
         public Guid? AccountTypeId { get; set; }
         public bool ShowDetail { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]

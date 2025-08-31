@@ -61,7 +61,7 @@ namespace Accounting
                 var nonCurrentAccountType = _accountTypes.FirstOrDefault(a => a.Code == "NA");
                 if (nonCurrentAccountType !=null)
                 { 
-                    var subjectCategory = new SubjectCategory(_guidGenerator.Create(), "1", "非流动资产", "Non-Current Assets", null, CreditDebit.Debit, nonCurrentAccountType.Id, true, "Non-Current Assets");
+                    var subjectCategory = new SubjectCategory(_guidGenerator.Create(), "1", "非流动资产", "Non-Current Assets", null, DebitorCreditor.Debitor, nonCurrentAccountType.Id, true, "Non-Current Assets");
                     await _subjectCategoryRepository.InsertAsync(subjectCategory); 
                 }
             }
@@ -70,7 +70,7 @@ namespace Accounting
                 var fixedAssetsAccountType = _accountTypes.FirstOrDefault(a => a.Code == "FA");
                 if(fixedAssetsAccountType != null)
                 { 
-                    var subject = new Subject(_guidGenerator.Create(), "11", "固定资产", "Fixed Assets", null, fixedAssetsAccountType.Id, CreditDebit.Debit, "RMB", "Fixed Assets", false, true, false, 0);
+                    var subject = new Subject(_guidGenerator.Create(), "11", "固定资产", "Fixed Assets", null, fixedAssetsAccountType.Id, DebitorCreditor.Debitor, "RMB", "Fixed Assets", false, true, false, 0);
                     await _subjectRepository.InsertAsync(subject);
                 }
             }

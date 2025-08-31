@@ -26,7 +26,7 @@ namespace Accounting.Finance
         public override async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
         {
             var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
-               input.CreditDebit, input.AccountTypeId, input.ShowDetail, input.Description);
+               input.DebitorCreditor, input.AccountTypeId, input.ShowDetail, input.Description);
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
@@ -38,7 +38,7 @@ namespace Accounting.Finance
                 .SetName(input.Name)
                 .SetOtherName(input.OtherName)
                 .SetParentId(input.ParentId)
-                .SetCreditDebit(input.CreditDebit)
+                .SetDebitorCreditor(input.DebitorCreditor)
                 .SetAccountTypeId(input.AccountTypeId)
                 .SetShowDetail(input.ShowDetail)
                 .SetDescription(input.Description);

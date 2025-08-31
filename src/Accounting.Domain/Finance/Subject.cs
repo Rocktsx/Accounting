@@ -16,7 +16,7 @@ namespace Accounting.Finance
         public string OtherName { get; private set; }
         public Guid? SubjectCategoryId { get; private set; }
         public Guid? AccountTypeId { get; private set; }
-        public CreditDebit CreditDebit { get; private set; }
+        public DebitorCreditor DebitorCreditor { get; private set; }
         public string CurrencyCode { get; private set; }
         public string Description { get; private set; }
         public bool IsSubSujectType { get; private set; }
@@ -34,7 +34,7 @@ namespace Accounting.Finance
             string otherName,
             Guid? subjectCategoryId,
             Guid? accountTypeId,
-            CreditDebit creditDebit,
+            DebitorCreditor debitorCreditor,
             string currencyCode,
             string description,
             bool isSubSujectType,
@@ -48,7 +48,7 @@ namespace Accounting.Finance
             SetOtherName(otherName);
             SetSubjectCategoryId(subjectCategoryId);
             SetAccountTypeId(accountTypeId);
-            SetCreditDebit(creditDebit);
+            SetDebitorCreditor(debitorCreditor);
             SetCurrencyCode(currencyCode);
             SetDescription(description);
             SetIsSubSujectType(isSubSujectType);
@@ -73,9 +73,9 @@ namespace Accounting.Finance
             return this;
         } 
        
-        public Subject SetCreditDebit(CreditDebit creditDebit)
+        public Subject SetDebitorCreditor(DebitorCreditor debitorCreditor)
         {
-            CreditDebit = creditDebit;
+            DebitorCreditor = debitorCreditor;
             return this;
         }
         public Subject SetAccountTypeId(Guid? accountTypeId)

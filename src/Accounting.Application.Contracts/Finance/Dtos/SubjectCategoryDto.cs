@@ -9,7 +9,7 @@ namespace Accounting.Finance.Dtos
         public string Name { get; set; }
         public string OtherName { get; set; }
         public Guid? ParentId { get; set; }
-        public CreditDebit CreditDebit { get; set; }
+        public DebitorCreditor DebitorCreditor { get; set; }
         public Guid? AccountTypeId { get; set; }
         public bool ShowDetail { get; set; }
         public string Description { get; set; }

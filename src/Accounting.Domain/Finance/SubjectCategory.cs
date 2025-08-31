@@ -16,7 +16,7 @@ namespace Accounting.Finance
         public string Name { get; private set; }
         public string OtherName { get; private set; }
         public Guid? ParentId { get; private set; }
-        public CreditDebit CreditDebit { get; private set; }
+        public DebitorCreditor DebitorCreditor { get; private set; }
         public Guid? AccountTypeId { get; private set; }
         public bool ShowDetail { get; private set; }
         public string Description { get; private set; }
@@ -31,7 +31,7 @@ namespace Accounting.Finance
             string name,
             string otherName,
             Guid? parentId,
-            CreditDebit creditDebit,
+            DebitorCreditor debitorCreditor,
             Guid? accountTypeId,
             bool showDetail,
             string description
@@ -41,7 +41,7 @@ namespace Accounting.Finance
             SetName(name);
             SetOtherName(otherName);
             SetParentId(parentId);
-            SetCreditDebit(creditDebit);
+            SetDebitorCreditor(debitorCreditor);
             SetAccountTypeId(accountTypeId);
             SetShowDetail(showDetail);
             SetDescription(description);
@@ -69,9 +69,9 @@ namespace Accounting.Finance
             ParentId = parentId;
             return this;
         }
-        public SubjectCategory SetCreditDebit(CreditDebit creditDebit)
+        public SubjectCategory SetDebitorCreditor(DebitorCreditor debitorCreditor)
         {
-            CreditDebit = creditDebit;
+            DebitorCreditor = debitorCreditor;
             return this;
         }
         public SubjectCategory SetAccountTypeId(Guid? accountTypeId)

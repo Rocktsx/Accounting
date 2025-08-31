@@ -91,11 +91,14 @@
     "NewSubjectCategory": "New Subject Category",
     "EditSubjectCategory": "Edit Subject Category",
     "AccountTypeId": "Account Type",
-    "CreditDebit": "Debtor / Creditor",
+    "DebitCredit": "Debit/Credit",
     "ShowDetail": "Show Detail",
     "Description": "Description",
-    "Debit": "Debtor",
-    "Credit": "Creditor",
-    "ParentCode": "Parent Code"
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "ParentCode": "Parent Code",
+    "Debitor": "Debitor",
+    "Creditor": "Creditor",
+    "DebitorCreditor": "Debitor/Creditor"
   }
 }
