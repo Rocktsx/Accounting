@@ -89,11 +89,11 @@
                     }
                 },
                 {
-                    title: l('CreditDebit'),
-                    data: "creditDebit",
+                    title: l('DebitorCreditor'),
+                    data: "debitorCreditor",
                     orderable: false,
                     render: function (data) {
-                        return data === -1 ? 'DR' : data === 1 ? 'CR': '';
+                        return data === -1 ? l('Creditor') : data === 1 ? l('Debitor') : '';
                     }
                 },
                 {
