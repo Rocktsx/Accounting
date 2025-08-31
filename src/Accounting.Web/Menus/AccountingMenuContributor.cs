@@ -128,6 +128,17 @@ public class AccountingMenuContributor : IMenuContributor
                 )
             );
         }
+        if (await context.IsGrantedAsync(AccountingPermissions.SubjectCategory))
+        {
+            genenalLedgerMenu.AddItem(
+                new ApplicationMenuItem(
+                AccountingPermissions.SubjectCategory,
+                l["Menu:SubjectCategory"],
+                  icon: "fas fa-bug",
+                url: "/GenenalLedger/SubjectCategory"
+                )
+            );
+        }
         if (genenalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(genenalLedgerMenu);

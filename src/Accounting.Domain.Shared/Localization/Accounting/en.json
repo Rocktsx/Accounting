@@ -85,6 +85,17 @@
     "TrialBalanceGroup": "Trial Balance Group",
     "ProfitAndLossGroup": "Profit And Loss Group",
     "BalanceSheetGroup": "Balance Sheet Group",
-    "ParentId": "Parent"
+    "ParentId": "Parent",
+    "Permission:SubjectCategory": "Subject Category",
+    "Menu:SubjectCategory": "Subject Category",
+    "NewSubjectCategory": "New Subject Category",
+    "EditSubjectCategory": "Edit Subject Category",
+    "AccountTypeId": "Account Type",
+    "CreditDebit": "Debtor / Creditor",
+    "ShowDetail": "Show Detail",
+    "Description": "Description",
+    "Debit": "Debtor",
+    "Credit": "Creditor",
+    "ParentCode": "Parent Code"
   }
 }

@@ -26,5 +26,9 @@ public class AccountingWebAutoMapperProfile : Profile
         CreateMap<AccountTypeDto, EditAccountTypeViewModel>();
         CreateMap<CreateAccountTypeViewModel, AccountTypeCreateDto>();
         CreateMap<EditAccountTypeViewModel, AccountTypeUpdateDto>();
+
+        CreateMap<SubjectCategoryDto, EditSubjectCategoryViewModel>();
+        CreateMap<CreateSubjectCategoryViewModel, SubjectCategoryCreateDto>();
+        CreateMap<EditSubjectCategoryViewModel,SubjectCategoryUpdateDto>();
     }
 }

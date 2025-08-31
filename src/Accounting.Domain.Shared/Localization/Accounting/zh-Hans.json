@@ -118,6 +118,17 @@
     "TrialBalanceGroup": "试算表分组",
     "ProfitAndLossGroup": "损益表分组",
     "BalanceSheetGroup": "资产负债表分组",
-    "ParentId": "父级"
+    "ParentId": "父级",
+    "Permission:SubjectCategory": "总账类别",
+    "Menu:SubjectCategory": "总账类别",
+    "NewSubjectCategory": "添加总账类别",
+    "EditSubjectCategory": "编辑总账类别",
+    "AccountTypeId": "科目类别",
+    "CreditDebit": "借方 / 贷方",
+    "ShowDetail": "显示详细",
+    "Description": "说明",
+    "Debit": "借方",
+    "Credit": "贷方",
+    "ParentCode": "父编号"
   }
 }
