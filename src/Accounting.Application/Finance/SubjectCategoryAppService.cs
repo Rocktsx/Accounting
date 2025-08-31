@@ -25,8 +25,8 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.SubjectCategoryCreation)]
         public override async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
         {
-             var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
-                input.CreditDebit, input.AccountTypeId, input.ShowDetail, input.Description);
+            var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
+               input.CreditDebit, input.AccountTypeId, input.ShowDetail, input.Description);
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
@@ -51,6 +51,19 @@ namespace Accounting.Finance
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
-        } 
+        }
+        public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
+        {
+            var queryable = await Repository.GetQueryableAsync();
+            return await AsyncExecuter.ToListAsync(queryable
+                .OrderBy(x => x.Code)
+                .Select(x => new SubjectCategorySimpleDto
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    Name = x.Name,
+                    OtherName = x.OtherName
+                }));
+        }
     }
 }

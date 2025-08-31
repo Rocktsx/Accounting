@@ -273,5 +273,41 @@ namespace Accounting.Finance
             });
             exception.ShouldNotBeNull();
         }
+        [Fact]
+        public async Task Can_Get_Simple_Dto_List()
+        {
+            // Arrange
+            var dto1 = new SubjectCategoryCreateDto()
+            {
+                Code = "4001",
+                Name = "Long-term Debt",
+                OtherName = "LTD",
+                ParentId = null,
+                CreditDebit = CreditDebit.Credit,
+                AccountTypeId = null,
+                ShowDetail = true,
+                Description = "Long-term Debt account"
+            };
+            var dto2 = new SubjectCategoryCreateDto()
+            {
+                Code = "4002",
+                Name = "Short-term Debt",
+                OtherName = "STD",
+                ParentId = null,
+                CreditDebit = CreditDebit.Credit,
+                AccountTypeId = null,
+                ShowDetail = true,
+                Description = "Short-term Debt account"
+            };
+            await _subjectCategoryAppService.CreateAsync(dto1);
+            await _subjectCategoryAppService.CreateAsync(dto2);
+            // Act
+            var result = await _subjectCategoryAppService.GetSimpleListAsync();
+            // Assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBeGreaterThanOrEqualTo(2);
+            result.Any(x => x.Code == dto1.Code).ShouldBeTrue();
+            result.Any(x => x.Code == dto2.Code).ShouldBeTrue();
+        }
     }
 }
