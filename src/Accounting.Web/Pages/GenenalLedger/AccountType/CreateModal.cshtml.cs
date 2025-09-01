@@ -16,6 +16,10 @@ namespace Accounting.Web.Pages.GenenalLedger.AccountType
         [BindProperty]
         public CreateAccountTypeViewModel Item { get; set; }
         public List<SelectListItem> AccountTypes { get; set; } 
+        public CreateModalModel(IAccountTypeAppService service)
+        {
+            _service = service;
+        }
         public async Task OnGet()
         {
             Item = new CreateAccountTypeViewModel();

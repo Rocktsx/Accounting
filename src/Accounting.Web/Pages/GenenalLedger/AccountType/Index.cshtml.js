@@ -120,4 +120,9 @@
     editModal.onResult(function () {
         dataTable.ajax.reload();
     });
+    $(document).on('abp-ajax-success', '#accountTypeForm', function () {
+        $('#accountTypeForm').slideUp();
+        var l = abp.localization.getResource('Accounting');
+        abp.notify.success(l('SavedSuccessfully'));
+    });
 });

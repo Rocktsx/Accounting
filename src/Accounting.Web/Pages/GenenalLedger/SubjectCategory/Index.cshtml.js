@@ -124,4 +124,9 @@
     editModal.onResult(function () {
         dataTable.ajax.reload();
     });
+    $(document).on('abp-ajax-success', '#subjectCategoryForm', function () {
+        $('#subjectCategoryForm').slideUp();
+        var l = abp.localization.getResource('Accounting');
+        abp.notify.success(l('SavedSuccessfully'));
+    });
 });

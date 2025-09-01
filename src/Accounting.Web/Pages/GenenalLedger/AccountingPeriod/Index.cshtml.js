@@ -1,6 +1,6 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
-    const editModal = new abp.ModalManager(abp.appPath + 'GenenalLedger/AccountingPeriod/EditModal'); 
+    const editModal = new abp.ModalManager(abp.appPath + 'GenenalLedger/AccountingPeriod/EditModal');
     const isGrantedEdit = abp.auth.isGranted('Accounting.GenenalLedger.AccountingPeriod.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GenenalLedger.AccountingPeriod.Deletion');
 
@@ -24,7 +24,7 @@
                                     text: l('Edit'),
                                     iconClass: '',
                                     action: function (data) {
-                                        editModal.open({ id: data.record.id});
+                                        editModal.open({ id: data.record.id });
                                     },
                                     visible: isGrantedEdit
                                 },
@@ -62,14 +62,14 @@
                     orderable: true,
                     data: "endDate",
                     dataFormat: 'date'
-                }, 
+                },
                 {
                     title: l('IsCurrentPeriod'),
                     data: "isCurrentPeriod",
                     orderable: false,
                     className: 'text-end',
                     render: function (data) {
-                        return data ? '<i class="fa fa-check"></i>' : '<i class="fa fa-xmark"></i>'; 
+                        return data ? '<i class="fa fa-check"></i>' : '<i class="fa fa-xmark"></i>';
                     }
                 }
             ]
@@ -82,9 +82,14 @@
     $(document).on('click', '#newAccountingPeriodBtn', function (e) {
         e.preventDefault();
         createModal.open();
-    }); 
+    });
 
     editModal.onResult(function () {
         dataTable.ajax.reload();
+    });
+    $(document).on('abp-ajax-success', '#periodForm', function () {
+        $('#periodForm').slideUp();
+        var l = abp.localization.getResource('Accounting');
+        abp.notify.success(l('SavedSuccessfully'));
     });
 });
