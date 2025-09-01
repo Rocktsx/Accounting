@@ -48,6 +48,7 @@ namespace Accounting.Finance
             newDto.AccountTypeId.ShouldBe(dto.AccountTypeId);
             newDto.ShowDetail.ShouldBe(dto.ShowDetail);
             newDto.Description.ShouldBe(dto.Description);
+            newDto.Level.ShouldBe(1);
         }
         [Fact]
         public async Task Cannot_Create_A_SubjectCategory_With_Empty_Code()
@@ -231,8 +232,9 @@ namespace Accounting.Finance
                 ShowDetail = true,
                 Description = "Service Revenue account"
             };
-            await _subjectCategoryAppService.CreateAsync(dto1);
-            await _subjectCategoryAppService.CreateAsync(dto2);
+            var createdDto1 = await _subjectCategoryAppService.CreateAsync(dto1);
+            dto2.ParentId = createdDto1.Id;
+            var createdDto2 = await _subjectCategoryAppService.CreateAsync(dto2);
             var input = new FilteredPagedAndSortedResultRequestDto()
             {
                 MaxResultCount = 10,
@@ -243,6 +245,7 @@ namespace Accounting.Finance
             // Act
             var result = await _subjectCategoryAppService.GetListAsync(input);
             // Assert
+            createdDto2.Level.ShouldBe(2);
             result.ShouldNotBeNull();
             result.Items.Count.ShouldBe(2);
             result.TotalCount.ShouldBe(2);

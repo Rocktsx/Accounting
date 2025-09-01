@@ -99,6 +99,7 @@
     "ParentCode": "Parent Code",
     "Debitor": "Debitor",
     "Creditor": "Creditor",
-    "DebitorCreditor": "Debitor/Creditor"
+    "DebitorCreditor": "Debitor/Creditor",
+    "CannotFindParentCategory": "Cannot find this parent category: {0}"
   }
 }

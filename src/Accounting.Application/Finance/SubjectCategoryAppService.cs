@@ -1,14 +1,18 @@
 ﻿using Accounting.Finance.Dtos;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
@@ -27,6 +31,7 @@ namespace Accounting.Finance
         {
             var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
                input.DebitorCreditor, input.AccountTypeId, input.ShowDetail, input.Description);
+            await SetLevel(entity);
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
@@ -42,6 +47,7 @@ namespace Accounting.Finance
                 .SetAccountTypeId(input.AccountTypeId)
                 .SetShowDetail(input.ShowDetail)
                 .SetDescription(input.Description);
+            await SetLevel(entity);
             entity = await Repository.UpdateAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
@@ -64,6 +70,24 @@ namespace Accounting.Finance
                     Name = x.Name,
                     OtherName = x.OtherName
                 }));
+        }
+        private async Task SetLevel(SubjectCategory category)
+        {
+            if (category.ParentId == null)
+            {
+                category.SetLevel(1);
+                return;
+            }
+            try
+            {
+                var parent = await Repository.GetAsync(category.ParentId.Value);
+                category.SetLevel(parent.Level + 1);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Logger.LogException(ex,LogLevel.Information);
+                throw new UserFriendlyException(L.GetString("CannotFindParentCategory",category.ParentId));
+            }
         }
     }
 }

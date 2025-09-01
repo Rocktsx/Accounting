@@ -21,6 +21,8 @@ namespace Accounting.Finance
         public bool ShowDetail { get; private set; }
         public string Description { get; private set; }
 
+        public int Level { get; private set; }
+
         public virtual AccountType AccountType { get; private set; }
 
         public virtual ICollection<Subject> Subjects { get; private set; }
@@ -87,6 +89,11 @@ namespace Accounting.Finance
         public SubjectCategory SetDescription(string description)
         {
             Description = description ?? string.Empty;
+            return this;
+        }
+        public SubjectCategory SetLevel(int level)
+        {
+            Level = level;
             return this;
         }
     }

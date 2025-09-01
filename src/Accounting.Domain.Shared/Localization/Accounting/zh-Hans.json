@@ -132,6 +132,7 @@
     "ParentCode": "父编号",
     "Debitor": "借方",
     "Creditor": "贷方",
-    "DebitorCreditor": "借方/贷方"
+    "DebitorCreditor": "借方/贷方",
+    "CannotFindParentCategory": "无法找到这样的父级类别：{0}"
   }
 }

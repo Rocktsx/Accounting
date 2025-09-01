@@ -13,5 +13,6 @@ namespace Accounting.Finance.Dtos
         public Guid? AccountTypeId { get; set; }
         public bool ShowDetail { get; set; }
         public string Description { get; set; }
+        public int Level { get; set; }
     }
 }
