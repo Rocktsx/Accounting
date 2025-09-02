@@ -62,27 +62,6 @@ namespace Accounting.Finance
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
         }
-        //protected override async Task<List<SubjectCategoryDto>> MapToGetListOutputDtosAsync(List<SubjectCategory> entities)
-        //{
-        //    var dtos =await base.MapToGetListOutputDtosAsync(entities);
-        //    var categoryIds = entities.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
-        //    var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
-        //    var categoriesDic = categories.ToDictionary(x => x.Id, x => x);
-        //    var entityDics = entities.ToDictionary(x => x.Id, x => x);
-        //    dtos.ForEach(x =>
-        //    {
-        //        if (x.ParentId != null && categoriesDic.ContainsKey(x.ParentId.Value))
-        //        {
-        //            x.ParentCode = categoriesDic[x.ParentId.Value].Code;
-        //        }
-        //        var entity = entityDics[x.Id];
-        //        if(entity.AccountType != null)
-        //        {
-        //            x.AccountTypeCode = entity.AccountType.Code;
-        //        }
-        //    });
-        //    return dtos;
-        //}
         public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
@@ -114,7 +93,7 @@ namespace Accounting.Finance
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory",category.ParentId));
             }
         }
-
+        [Authorize(AccountingPermissions.SubjectCategory)]
         public async Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await NewFilteredQueryAsync(input, true);
