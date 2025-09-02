@@ -167,7 +167,7 @@ namespace Accounting.Finance
             var input1 = items.Item1;
             var input2 = items.Item2;
             // Act
-            var result = await _subjectAppService.GetListAsync(new FilteredPagedAndSortedResultRequestDto
+            var result = await _subjectAppService.GetListAsync(new SubjectFilterRequestDto
             {
                 MaxResultCount = 10,
                 SkipCount = 0,
@@ -210,6 +210,28 @@ namespace Accounting.Finance
             result.Count().ShouldBeGreaterThanOrEqualTo(2);
             result.ShouldContain(x => x.Code == input1.Code);
             result.ShouldContain(x => x.Code == input2.Code);
+        }
+        [Fact]
+        public async Task Can_Get_Filtered_Query_List()
+        {
+            // Arrange
+            var items = await InsertNewSubjectsAsync();
+            var input1 = items.Item1;
+            var input2 = items.Item2;
+            // Act
+            var result = await _subjectAppService.GetFilteredQueryListAsync(new SubjectFilterRequestDto
+            {
+                MaxResultCount = 10,
+                SkipCount = 0,
+                Sorting = "Code",
+                Filter = "Account222"
+            });
+            // Assert
+            result.ShouldNotBeNull();
+            result.Items.Count.ShouldBe(2);
+            result.TotalCount.ShouldBe(2);
+            result.Items.ShouldContain(x => x.Code == input1.Code);
+            result.Items.ShouldContain(x => x.Code == input2.Code);
         }
     }
 }

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Dtos
 {
-    public class SubjectDto : EntityDto<Guid>
+    public class SubjectFilteredQueryDto : EntityDto<Guid>
     {
         public string Code { get; set; }
         public string Name { get; set; }
@@ -16,6 +20,9 @@ namespace Accounting.Finance.Dtos
         public bool IsSubSujectType { get; set; }
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
-        public int? SeqCode { get; set; } 
+        public int? SeqCode { get; set; }
+        public string AccountTypeCode { get; set; }
+        public string AccountTypeName { get; set; }
+        public string AccountTypeOtherName { get; set; }
     }
 }

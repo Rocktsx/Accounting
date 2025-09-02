@@ -2,14 +2,16 @@
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace Accounting.Finance
 {
     public interface ISubjectAppService : IApplicationService, ICrudAppService<SubjectDto, Guid,
-        FilteredPagedAndSortedResultRequestDto, SubjectCreateDto, SubjectUpdateDto>
+        SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>
     {
         Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync();
         Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync();
+        Task<PagedResultDto<SubjectFilteredQueryDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input);
     } 
 }
