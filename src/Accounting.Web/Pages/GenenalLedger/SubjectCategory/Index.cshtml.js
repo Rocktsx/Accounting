@@ -3,9 +3,7 @@
     const editModal = new abp.ModalManager(abp.appPath + 'GenenalLedger/SubjectCategory/EditModal'); 
     const isGrantedEdit = abp.auth.isGranted('Accounting.GenenalLedger.SubjectCategory.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GenenalLedger.SubjectCategory.Deletion');
-    let accountTypes = [], categories = [];
-    accounting.finance.accountType.getSimpleList().then(result => { accountTypes = result });
-    accounting.finance.subjectCategory.getSimpleList().then(result => { categories = result });
+    let accountTypes = [], categories = []; 
 
     const dataTable = $('#subjectCategoryTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -14,7 +12,7 @@
             order: [[1, "asc"]],
             searching: true,
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(accounting.finance.subjectCategory.getList),
+            ajax: abp.libs.datatables.createAjax(accounting.finance.subjectCategory.getFilteredQueryList),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -65,28 +63,14 @@
                     data: "otherName"
                 },
                 {
-                    title: l('ParentCode'),
-                    data: "parentId",
-                    orderable: true,
-                    render: function (data) { 
-                        if (!data || !categories) {
-                            return '';
-                        }
-                        const category = categories.find(at => at.id === data);
-                        return category ? category.code : '';
-                    }
+                    title: l('Parent'),
+                    data: "parentName",
+                    orderable: false
                 },
                 {
-                    title: l('AccountTypeId'),
-                    data: "accountTypeId",
-                    orderable: true, 
-                    render: function (data) {
-                        if (!data || !accountTypes) {
-                            return '';
-                        }
-                        const accountType = accountTypes.find(at => at.id === data);
-                        return accountType ? accountType.code : '';
-                    }
+                    title: l('AccountType'),
+                    data: "accountTypeName",
+                    orderable: false
                 },
                 {
                     title: l('DebitorCreditor'),
