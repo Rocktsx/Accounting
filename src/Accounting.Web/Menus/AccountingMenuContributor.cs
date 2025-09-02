@@ -139,6 +139,17 @@ public class AccountingMenuContributor : IMenuContributor
                 )
             );
         }
+        if (await context.IsGrantedAsync(AccountingPermissions.Subject))
+        {
+            genenalLedgerMenu.AddItem(
+                new ApplicationMenuItem(
+                AccountingPermissions.Subject,
+                l["Menu:Subject"],
+                  icon: "fas fa-key",
+                url: "/GenenalLedger/ChartOfAccount"
+                )
+            );
+        }
         if (genenalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(genenalLedgerMenu);

@@ -1,11 +1,11 @@
-﻿using Accounting.Finance; 
+﻿using Accounting.Finance;
 using System;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
 namespace Accounting.Web.ViewModels
 {
-    public class CreateSubjectCategoryViewModel
+    public class CreateSubjectViewModel
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
@@ -14,16 +14,23 @@ namespace Accounting.Web.ViewModels
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string Name { get; set; }
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
-        public string? OtherName { get; set; }
+        public string OtherName { get; set; }
         [SelectItems("Categories")]
-        public Guid? ParentId { get; set; }
-        public DebitorCreditor DebitorCreditor { get; set; }
+        [Display(Name = "SubjectCategory")]
+        public Guid? SubjectCategoryId { get; set; }
         [SelectItems("AccountTypes")]
         [Display(Name = "AccountType")]
         public Guid? AccountTypeId { get; set; }
-        public bool ShowDetail { get; set; }
+        public DebitorCreditor DebitorCreditor { get; set; }
+        [MaxLength(AccountingCommonConsts.MaxCodeLength)]
+        [SelectItems("Currencies")]
+        [Display(Name = "Currency")]
+        public string CurrencyCode { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
-        [TextArea(Rows = 3)]
-        public string? Description { get; set; }
+        public string Description { get; set; }
+        public bool IsSubSujectType { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsPayMethod { get; set; }
+        public int? SeqCode { get; set; }
     }
 }

@@ -3,5 +3,6 @@ module.exports = {
         
     },
     mappings: {
+        "@node_modules/bootstrap-treeview/dist/**/*": "@libs/bootstrap-treeview/"
     }
 };

@@ -3,6 +3,8 @@
 	"name": "my-app",
 	"private": true,
 	"dependencies": {
-    "@abp/aspnetcore.mvc.ui.theme.leptonxlite": "~4.1.1"
+		"@abp/aspnetcore.mvc.ui.theme.leptonxlite": "~4.1.1",
+		"bower": "1.8.14",
+		"bootstrap-treeview": "1.2.0"
 	}
 }
