@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
@@ -16,10 +16,29 @@ namespace Accounting.Finance
         where TStartupModule : IAbpModule
     {
         private readonly ISubjectCategoryAppService _subjectCategoryAppService;
+        private readonly IAccountTypeAppService _accountTypeAppService;
         public SubjectCategoryAppServiceTests()
         {
             _subjectCategoryAppService = GetRequiredService<ISubjectCategoryAppService>();
+            _accountTypeAppService = GetRequiredService<IAccountTypeAppService>();
         }
+        private async Task<AccountTypeDto> CreateAccountTypeAsync()
+        {
+            var newdto = new AccountTypeCreateDto()
+            {
+                Code ="AAAA",
+                Name = "AAAA",
+                OtherName = "AAAA",
+                TrialBalanceGroup =1,
+                TrialBalanceSort= 1,
+                BalanceSheetGroup= 1,
+                BalanceSheetSort=1,
+                ProfitAndLossGroup =1,
+                ProfitAndLossSort =1
+            };
+            var dto = await _accountTypeAppService.CreateAsync(newdto);
+            return dto;
+        } 
         [Fact]
         public async Task Can_Create_A_SubjectCategory()
         {
@@ -206,10 +225,9 @@ namespace Accounting.Finance
             // Assert
             exception.ShouldNotBeNull();
         }
-        [Fact]
-        public async Task Can_Get_SubjectCategories()
+        private async Task<Tuple<SubjectCategoryCreateDto, SubjectCategoryCreateDto, SubjectCategoryDto>> InitGetListDataAsync()
         {
-            // Arrange
+            var accountType = await CreateAccountTypeAsync();
             var dto1 = new SubjectCategoryCreateDto()
             {
                 Code = "2001",
@@ -228,13 +246,21 @@ namespace Accounting.Finance
                 OtherName = "Service",
                 ParentId = null,
                 DebitorCreditor = DebitorCreditor.Creditor,
-                AccountTypeId = null,
+                AccountTypeId = accountType.Id,
                 ShowDetail = true,
                 Description = "Service Revenue account"
             };
             var createdDto1 = await _subjectCategoryAppService.CreateAsync(dto1);
             dto2.ParentId = createdDto1.Id;
             var createdDto2 = await _subjectCategoryAppService.CreateAsync(dto2);
+
+            return Tuple.Create(dto1, dto2, createdDto2);
+        }
+        [Fact]
+        public async Task Can_Get_SubjectCategories()
+        {
+            // Arrange 
+            var (dto1, dto2, createdDto2) = await InitGetListDataAsync();
             var input = new FilteredPagedAndSortedResultRequestDto()
             {
                 MaxResultCount = 10,
@@ -312,6 +338,27 @@ namespace Accounting.Finance
             result.Count().ShouldBeGreaterThanOrEqualTo(2);
             result.Any(x => x.Code == dto1.Code).ShouldBeTrue();
             result.Any(x => x.Code == dto2.Code).ShouldBeTrue();
+        }
+        [Fact]
+        public async Task Can_Get_Filter_Query_List()
+        {
+            // Arrange 
+            var (dto1, dto2, _) = await InitGetListDataAsync();
+            var input = new FilteredPagedAndSortedResultRequestDto()
+            {
+                MaxResultCount = 10,
+                SkipCount = 0,
+                Sorting = nameof(SubjectCategory.Code),
+                Filter = "Revenue"
+            };
+            // Act
+            var result = await _subjectCategoryAppService.GetFilteredQueryListAsync(input);
+            // Assert 
+            result.ShouldNotBeNull();
+            result.Items.Count.ShouldBe(2);
+            result.TotalCount.ShouldBe(2);
+            result.Items.ShouldContain(x => x.Code == dto1.Code);
+            result.Items.ShouldContain(x => x.Code == dto2.Code && x.ParentCode == dto1.Code);
         }
     }
 }

@@ -52,12 +52,37 @@ namespace Accounting.Finance
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
         protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)
+        { 
+            return await NewFilteredQueryAsync(input);
+        }
+         private async Task<IQueryable<SubjectCategory>> NewFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input, bool withDetails = false)
         {
-            var queryable = await Repository.GetQueryableAsync();
+            var queryable = await (withDetails?Repository.WithDetailsAsync(item=>item.AccountType): Repository.GetQueryableAsync());
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
         }
+        //protected override async Task<List<SubjectCategoryDto>> MapToGetListOutputDtosAsync(List<SubjectCategory> entities)
+        //{
+        //    var dtos =await base.MapToGetListOutputDtosAsync(entities);
+        //    var categoryIds = entities.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
+        //    var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
+        //    var categoriesDic = categories.ToDictionary(x => x.Id, x => x);
+        //    var entityDics = entities.ToDictionary(x => x.Id, x => x);
+        //    dtos.ForEach(x =>
+        //    {
+        //        if (x.ParentId != null && categoriesDic.ContainsKey(x.ParentId.Value))
+        //        {
+        //            x.ParentCode = categoriesDic[x.ParentId.Value].Code;
+        //        }
+        //        var entity = entityDics[x.Id];
+        //        if(entity.AccountType != null)
+        //        {
+        //            x.AccountTypeCode = entity.AccountType.Code;
+        //        }
+        //    });
+        //    return dtos;
+        //}
         public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
@@ -88,6 +113,46 @@ namespace Accounting.Finance
                 Logger.LogException(ex,LogLevel.Information);
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory",category.ParentId));
             }
+        }
+
+        public async Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input)
+        {
+            var queryable = await NewFilteredQueryAsync(input, true);
+            var pageQueryable = queryable.Skip(input.SkipCount)
+                                .Take(input.MaxResultCount)
+                                .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate))
+                                .Select(item =>new SubjectCategoryFilteredQueryDto()
+                                {
+                                    Id = item.Id,
+                                    Code = item.Code,
+                                    Name = item.Name,
+                                    OtherName = item.OtherName,
+                                    ParentId = item.ParentId,
+                                    DebitorCreditor = item.DebitorCreditor,
+                                    AccountTypeId = item.AccountTypeId,
+                                    ShowDetail = item.ShowDetail,
+                                    Description = item.Description,
+                                    Level = item.Level,
+                                    AccountTypeCode = item.AccountType != null ? item.AccountType.Code : null,
+                                    AccountTypeName = item.AccountType != null ? item.AccountType.Name : null,
+                                    AccountTypeOtherName = item.AccountType != null ? item.AccountType.OtherName : null,
+                                });
+            var list = await AsyncExecuter.ToListAsync(pageQueryable);
+            var count = await AsyncExecuter.CountAsync(queryable);
+            var categoryIds = list.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
+            var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
+            var categoriesDic = categories.ToDictionary(x => x.Id, x => x);
+            list.ForEach(x =>
+            {
+                if (x.ParentId != null && categoriesDic.ContainsKey(x.ParentId.Value))
+                {
+                    var category = categoriesDic[x.ParentId.Value];
+                    x.ParentCode = category.Code;
+                    x.ParentName = category.Name;
+                    x.ParentOtherName = category.OtherName;
+                }
+            });
+            return new PagedResultDto<SubjectCategoryFilteredQueryDto>(count, list);
         }
     }
 }
