@@ -26,7 +26,8 @@ namespace Accounting.Web.Pages.GenenalLedger.ChartOfAccount
         {
             Item = new CreateSubjectViewModel
             {
-                SubjectCategoryId = SubjectCategoryId ?? null
+                SubjectCategoryId = SubjectCategoryId ?? null,
+                IsActive = true
             };
             var accountTypeService = LazyServiceProvider.GetRequiredService<IAccountTypeAppService>();
             var dtos = await accountTypeService.GetSimpleListAsync();

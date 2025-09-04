@@ -26,7 +26,10 @@ namespace Accounting.Web.Pages.GenenalLedger.SubjectCategory
         }
         public async Task OnGet()
         {
-            Item = new CreateSubjectCategoryViewModel();
+            Item = new CreateSubjectCategoryViewModel()
+            {
+                ShowDetail = true
+            };
             var accountTypeService = LazyServiceProvider.GetRequiredService<IAccountTypeAppService>();
             var dtos = await accountTypeService.GetSimpleListAsync();
             AccountTypes = dtos.ToSelectListItems(

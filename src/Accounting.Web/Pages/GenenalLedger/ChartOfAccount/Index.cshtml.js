@@ -11,7 +11,7 @@
         Promise.all([cagegoryPromise, subjectPromise]).then(results => {
             categories = results[0].items.map(item => ({ text: item.code + ' - ' + item.name, item, isCategory: true }));
             const subjects = results[1].items.map(item => ({ text: item.code + ' - ' + item.name, item, isCategory: false }));
-            console.log(categories, subjects)
+             
             const nodes = getTree(categories, subjects);
             const treeData = [{
                 text: l('Menu:Subject'),
@@ -19,7 +19,7 @@
                 item: {},
                 isCategory: true
             }]
-            console.log(treeData,'treeData')
+            
             $('#coaTree').treeview({
                 data: treeData, nodeIcon: '', expandIcon: 'fa fa-plus',
                 emptyIcon: 'fa fa-leaf', collapseIcon: 'fa fa-minus', checkedIcon: '',
@@ -186,7 +186,7 @@ createModal.onResult(function () {
 });
 $(document).on('click', '#newSubjectBtn', function (e) {
     e.preventDefault();
-    createModal.open();
+    createModal.open(selectedCategory&& selectedCategory.id ?{subjectCategoryId: selectedCategory.id}: null );
 });
 
 editModal.onResult(function () {
