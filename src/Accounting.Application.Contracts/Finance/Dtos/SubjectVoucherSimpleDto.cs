@@ -14,7 +14,7 @@ namespace Accounting.Finance.Dtos
         public string OtherName { get; set; }
         public DebitorCreditor DebitorCreditor { get; set; }
         public string CurrencyCode { get; set; }
-        public bool IsSubSujectType { get; set; }
+        public bool IsSubSubjectType { get; set; }
         public bool IsPayMethod { get; set; }
     }
 }

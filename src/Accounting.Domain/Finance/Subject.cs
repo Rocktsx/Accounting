@@ -19,7 +19,7 @@ namespace Accounting.Finance
         public DebitorCreditor DebitorCreditor { get; private set; }
         public string CurrencyCode { get; private set; }
         public string Description { get; private set; }
-        public bool IsSubSujectType { get; private set; }
+        public bool IsSubSubjectType { get; private set; }
         public bool IsActive { get; private set; }
         public bool IsPayMethod { get; private set; }
         public int? SeqCode { get; private set; }
@@ -37,7 +37,7 @@ namespace Accounting.Finance
             DebitorCreditor debitorCreditor,
             string currencyCode,
             string description,
-            bool isSubSujectType,
+            bool isSubSubjectType,
             bool isActive,
             bool isPayMethod,
             int? seqCode
@@ -51,7 +51,7 @@ namespace Accounting.Finance
             SetDebitorCreditor(debitorCreditor);
             SetCurrencyCode(currencyCode);
             SetDescription(description);
-            SetIsSubSujectType(isSubSujectType);
+            SetIsSubSubjectType(isSubSubjectType);
             SetIsActive(isActive);
             SetIsPayMethod(isPayMethod);
             SetSeqCode(seqCode);
@@ -106,9 +106,9 @@ namespace Accounting.Finance
             return this;
         }
 
-        public Subject SetIsSubSujectType(bool isSubSujectType)
+        public Subject SetIsSubSubjectType(bool isSubSubjectType)
         {
-            IsSubSujectType = isSubSujectType;
+            IsSubSubjectType = isSubSubjectType;
             return this;
         }
 

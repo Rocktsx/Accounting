@@ -64,7 +64,7 @@ namespace Accounting.Finance
             dto.DebitorCreditor.ShouldBe(input.DebitorCreditor);
             dto.CurrencyCode.ShouldBe(input.CurrencyCode);
             dto.Description.ShouldBe(input.Description);
-            dto.IsSubSujectType.ShouldBe(input.IsSubSujectType);
+            dto.IsSubSubjectType.ShouldBe(input.IsSubSujectType);
             dto.IsActive.ShouldBe(input.IsActive);
             dto.IsPayMethod.ShouldBe(input.IsPayMethod);
         }
@@ -127,7 +127,7 @@ namespace Accounting.Finance
                 DebitorCreditor = DebitorCreditor.Debitor,
                 CurrencyCode = "USD",
                 Description = "Updated customer receivables",
-                IsSubSujectType = false,
+                IsSubSubjectType = false,
                 IsActive = true,
                 IsPayMethod = false,
                 SeqCode = 4

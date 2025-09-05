@@ -42,7 +42,7 @@ namespace Accounting.Finance
                 .SetDebitorCreditor(input.DebitorCreditor)
                 .SetCurrencyCode(input.CurrencyCode)
                 .SetDescription(input.Description)
-                .SetIsSubSujectType(input.IsSubSujectType)
+                .SetIsSubSubjectType(input.IsSubSubjectType)
                 .SetIsActive(input.IsActive)
                 .SetIsPayMethod(input.IsPayMethod)
                 .SetSeqCode(input.SeqCode);
@@ -86,7 +86,7 @@ namespace Accounting.Finance
                     Name = x.Name,
                     OtherName = x.OtherName,
                     IsPayMethod = x.IsPayMethod,
-                    IsSubSujectType = x.IsSubSujectType,
+                    IsSubSubjectType = x.IsSubSubjectType,
                     CurrencyCode = x.CurrencyCode,
                     DebitorCreditor = x.DebitorCreditor
                 }));
@@ -108,7 +108,7 @@ namespace Accounting.Finance
                 DebitorCreditor = item.DebitorCreditor,
                 CurrencyCode = item.CurrencyCode,
                 Description = item.Description,
-                IsSubSujectType = item.IsSubSujectType,
+                IsSubSubjectType = item.IsSubSubjectType,
                 IsActive = item.IsActive,
                 IsPayMethod = item.IsPayMethod,
                 SeqCode = item.SeqCode,
