@@ -112,6 +112,22 @@
     "SeqCode": "Row Seq",
     "Subject": "Subject",
     "GeneralCode": "General Code",
-    "Parent": "Parent"
+    "Parent": "Parent",
+    "Permission:AccountingSetting": "Accounting Setting",
+    "Accounting.SettingGroup": "Accounting Setting",
+    "CompanyName": "Company Name",
+    "CompanyOtherName": "Company Other Name",
+    "CompanyAddress": "Company Address",
+    "CompanyOtherAddress": "Company Other Address",
+    "CompanyContract": "Company Contract",
+    "NativeCurrency": "Native Currency",
+    "AccountReceivableSubjectCode": "Account Receivable Subject Code",
+    "AccountPayableSubjectCode": "Account Payable Subject Code",
+    "PurchaseExpensesSubjectCode": "Purchase Expenses Subject Code",
+    "SalesInvoiceSubjectCode": "Sales Invoice Subject Code",
+    "StatementNote": "Statement Note",
+    "StatementReminder": "Statement Reminder",
+    "FinalReminder": "Final Reminder",
+    "Save": "Save"
   }
 }

@@ -145,6 +145,22 @@
     "SeqCode": "顺序",
     "Subject": "科目",
     "GeneralCode": "总账编号",
-    "Parent": "父级"
+    "Parent": "父级",
+    "Permission:AccountingSetting": "会计设置",
+    "Accounting.SettingGroup": "会计设置",
+    "CompanyName": "公司名称",
+    "CompanyOtherName": "公司其他名称",
+    "CompanyAddress": "公司地址",
+    "CompanyOtherAddress": "公司其他地址",
+    "CompanyContract": "公司联系方式",
+    "NativeCurrency": "结算货币",
+    "AccountReceivableSubjectCode": "默认应收账科目",
+    "AccountPayableSubjectCode": "默认应付账科目",
+    "PurchaseExpensesSubjectCode": "采购支出科目",
+    "SalesInvoiceSubjectCode": "销售收入科目",
+    "StatementNote": "月结单说明",
+    "StatementReminder": "第二次通知",
+    "FinalReminder": "最后通知",
+    "Save": "保存"
   }
 }

@@ -38,6 +38,7 @@ using OpenIddict.Validation.AspNetCore;
 using Volo.Abp.TenantManagement.Web;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using Accounting.Web.Settings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Volo.Abp.Account.Web;
@@ -49,6 +50,7 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.Web;
+using Volo.Abp.SettingManagement.Web.Pages.SettingManagement;
 using Volo.Abp.Studio.Client.AspNetCore;
 
 namespace Accounting.Web;
@@ -148,6 +150,10 @@ public class AccountingWebModule : AbpModule
         Configure<PermissionManagementOptions>(options =>
         {
             options.IsDynamicPermissionStoreEnabled = true;
+        });
+        Configure<SettingManagementPageOptions>(options =>
+        {
+            options.Contributors.Add(new AccountingSettingPageContributor());
         });
     }
 

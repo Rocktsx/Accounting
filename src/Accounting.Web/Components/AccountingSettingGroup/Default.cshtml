@@ -1,0 +1,34 @@
+
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@model Accounting.Web.Components.AccountingSettingGroup.AccountingSettingGroupViewComponent
+<abp-dynamic-form abp-model="@Model.Setting" id="accountSettingForm">
+    <abp-form-content/>
+    <abp-button button-type="Primary" icon="save" text="@L["Save"]" type="submit"></abp-button>
+</abp-dynamic-form>
+<script>
+    $(document).ready(function () {
+        $('#accountSettingForm').on('submit', function (event) {
+            event.preventDefault();
+            const data = {}
+            $.each(event.target, ((index, item) => {
+                const $item = $(item);
+                let key = $item.attr('name');
+                if (key && !key.startsWith('__')) {
+                    key = key.split('.')[1];
+                    data[key] = $item.val();
+                }
+            }))
+            abp.ui.setBusy('#accountSettingForm');
+            accounting.finance.accountingSetting.update(data).then(() => {
+                const l = abp.localization.getResource('Accounting');
+                abp.ui.clearBusy('#accountSettingForm');
+                abp.notify.success(l('SavedSuccessfully'));
+            }).catch(() => {
+                abp.ui.clearBusy('#accountSettingForm');
+            })
+            return false;
+        })
+    });
+</script>

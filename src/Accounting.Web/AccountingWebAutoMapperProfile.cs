@@ -34,5 +34,7 @@ public class AccountingWebAutoMapperProfile : Profile
         CreateMap<SubjectDto, EditSubjectViewModel>();
         CreateMap<CreateSubjectViewModel, SubjectCreateDto>();
         CreateMap<EditSubjectViewModel, SubjectUpdateDto>();
+
+        CreateMap<AccountingSettingDto, AccountingSettingViewModel>();
     }
 }

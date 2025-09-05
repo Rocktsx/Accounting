@@ -49,4 +49,6 @@ public static class AccountingPermissions
     public const string SubjectCreation = Subject + Creation;
     public const string SubjectDeletion = Subject + Deletion;
     public const string SubjectEdit = Subject + Edit;
+    
+    public const string AccountingSetting = GroupName + ".AccountingSetting";
 }
