@@ -29,23 +29,23 @@ public static class AccountingPermissions
     public const string VendorDeletion = Vendor + Deletion;
     public const string VendorEdit = Vendor + Edit;
 
-    public const string GenenalLedgerGroupName = GroupName + ".GenenalLedger";
-    public const string AccountingPeriod = GenenalLedgerGroupName + ".AccountingPeriod";
+    public const string GenernalLedgerGroupName = GroupName + ".GenernalLedger";
+    public const string AccountingPeriod = GenernalLedgerGroupName + ".AccountingPeriod";
     public const string AccountingPeriodCreation = AccountingPeriod + Creation;
     public const string AccountingPeriodDeletion = AccountingPeriod + Deletion;
     public const string AccountingPeriodEdit = AccountingPeriod + Edit;
 
-    public const string AccountType = GenenalLedgerGroupName + ".AccountType";
+    public const string AccountType = GenernalLedgerGroupName + ".AccountType";
     public const string AccountTypeCreation = AccountType + Creation;
     public const string AccountTypeDeletion = AccountType + Deletion;
     public const string AccountTypeEdit = AccountType + Edit;
 
-    public const string SubjectCategory = GenenalLedgerGroupName + ".SubjectCategory";
+    public const string SubjectCategory = GenernalLedgerGroupName + ".SubjectCategory";
     public const string SubjectCategoryCreation = SubjectCategory + Creation;
     public const string SubjectCategoryDeletion = SubjectCategory + Deletion;
     public const string SubjectCategoryEdit = SubjectCategory + Edit;
 
-    public const string Subject = GenenalLedgerGroupName + ".Subject";
+    public const string Subject = GenernalLedgerGroupName + ".Subject";
     public const string SubjectCreation = Subject + Creation;
     public const string SubjectDeletion = Subject + Deletion;
     public const string SubjectEdit = Subject + Edit;

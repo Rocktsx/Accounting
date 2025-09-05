@@ -28,7 +28,7 @@ namespace Accounting.Web.ViewModels
         public string CurrencyCode { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
         public string Description { get; set; }
-        public bool IsSubSujectType { get; set; }
+        public bool IsSubSubjectType { get; set; }
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
         public int? SeqCode { get; set; }
