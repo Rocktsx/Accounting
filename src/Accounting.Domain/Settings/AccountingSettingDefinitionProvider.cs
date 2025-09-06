@@ -17,8 +17,8 @@ public class AccountingSettingDefinitionProvider : SettingDefinitionProvider
             L(nameof(AccountingSettings.CompanyAddress))));
         context.Add(new SettingDefinition(AccountingSettings.CompanyOtherAddress, string.Empty,
             L(nameof(AccountingSettings.CompanyOtherAddress))));
-        context.Add(new SettingDefinition(AccountingSettings.CompanyContract, string.Empty,
-            L(nameof(AccountingSettings.CompanyContract))));
+        context.Add(new SettingDefinition(AccountingSettings.CompanyContact, string.Empty,
+            L(nameof(AccountingSettings.CompanyContact))));
         context.Add(new SettingDefinition(AccountingSettings.NativeCurrency, string.Empty,
             L(nameof(AccountingSettings.NativeCurrency))));
         context.Add(new SettingDefinition(AccountingSettings.AccountReceivableSubjectCode, string.Empty,

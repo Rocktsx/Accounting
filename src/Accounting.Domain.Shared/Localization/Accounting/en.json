@@ -119,7 +119,7 @@
     "CompanyOtherName": "Company Other Name",
     "CompanyAddress": "Company Address",
     "CompanyOtherAddress": "Company Other Address",
-    "CompanyContract": "Company Contract",
+    "CompanyContact": "Company Contact",
     "NativeCurrency": "Native Currency",
     "AccountReceivableSubjectCode": "Account Receivable Subject Code",
     "AccountPayableSubjectCode": "Account Payable Subject Code",
@@ -128,6 +128,7 @@
     "StatementNote": "Statement Note",
     "StatementReminder": "Statement Reminder",
     "FinalReminder": "Final Reminder",
-    "Save": "Save"
+    "Save": "Save",
+    "ForeignExchangeRateMatchNativeAmount": "The foreign currency amount multiplied by the exchange rate must be equal to the native currency amount."
   }
 }

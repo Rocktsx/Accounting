@@ -10,7 +10,7 @@ public class AccountingSettingViewModel
     public string? CompanyAddress { get; set; }
     [TextArea(Rows = 3)]
     public string? CompanyOtherAddress { get; set; }
-    public string? CompanyContract { get; set; }
+    public string? CompanyContact { get; set; }
     [SelectItems("Currencies")]
     public string? NativeCurrency { get; set; }
     [SelectItems("Subjects")]

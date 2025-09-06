@@ -152,7 +152,7 @@
     "CompanyOtherName": "公司其他名称",
     "CompanyAddress": "公司地址",
     "CompanyOtherAddress": "公司其他地址",
-    "CompanyContract": "公司联系方式",
+    "CompanyContact": "公司联系方式",
     "NativeCurrency": "结算货币",
     "AccountReceivableSubjectCode": "默认应收账科目",
     "AccountPayableSubjectCode": "默认应付账科目",
@@ -161,6 +161,7 @@
     "StatementNote": "月结单说明",
     "StatementReminder": "第二次通知",
     "FinalReminder": "最后通知",
-    "Save": "保存"
+    "Save": "保存",
+    "ForeignExchangeRateMatchNativeAmount": "外币金额乘以汇率必须等于本币金额"
   }
 }

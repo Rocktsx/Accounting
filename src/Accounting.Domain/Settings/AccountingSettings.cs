@@ -26,7 +26,7 @@ public static class AccountingSettings
     /// <summary>
     /// 公司联系方式
     /// </summary>
-    public const string CompanyContract = Prefix + ".CompanyContract";
+    public const string CompanyContact = Prefix + ".CompanyContact";
 
     private const string AccountingPrefix = Prefix + ".Finance";
     /// <summary>

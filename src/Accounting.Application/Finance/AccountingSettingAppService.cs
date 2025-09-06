@@ -22,7 +22,7 @@ public class AccountingSettingAppService: AccountingAppService, IAccountingSetti
             AccountingSettings.CompanyOtherName,
             AccountingSettings.CompanyAddress,
             AccountingSettings.CompanyOtherAddress,
-            AccountingSettings.CompanyContract,
+            AccountingSettings.CompanyContact,
             AccountingSettings.NativeCurrency,
             AccountingSettings.AccountReceivableSubjectCode,
             AccountingSettings.AccountPayableSubjectCode,
@@ -36,7 +36,7 @@ public class AccountingSettingAppService: AccountingAppService, IAccountingSetti
         dto.CompanyOtherName = settings[AccountingSettings.CompanyOtherName]??string.Empty;
         dto.CompanyAddress = settings[AccountingSettings.CompanyAddress]??string.Empty;
         dto.CompanyOtherAddress = settings[AccountingSettings.CompanyOtherAddress]??string.Empty;
-        dto.CompanyContract = settings[AccountingSettings.CompanyContract]??string.Empty;
+        dto.CompanyContact = settings[AccountingSettings.CompanyContact]??string.Empty;
         dto.NativeCurrency = settings[AccountingSettings.NativeCurrency]??string.Empty;
         dto.AccountReceivableSubjectCode = settings[AccountingSettings.AccountReceivableSubjectCode]??string.Empty;
         dto.AccountPayableSubjectCode = settings[AccountingSettings.AccountPayableSubjectCode]??string.Empty;
@@ -57,13 +57,13 @@ public class AccountingSettingAppService: AccountingAppService, IAccountingSetti
             AccountingSettings.CompanyOtherName,
             AccountingSettings.CompanyAddress,
             AccountingSettings.CompanyOtherAddress,
-            AccountingSettings.CompanyContract
+            AccountingSettings.CompanyContact
         ])).ToDictionary(item => item.Name, item => item.Value);
         dto.CompanyName = settings[AccountingSettings.CompanyName]??string.Empty;
         dto.CompanyOtherName = settings[AccountingSettings.CompanyOtherName]??string.Empty;
         dto.CompanyAddress = settings[AccountingSettings.CompanyAddress]??string.Empty;
         dto.CompanyOtherAddress = settings[AccountingSettings.CompanyOtherAddress]??string.Empty;
-        dto.CompanyContract = settings[AccountingSettings.CompanyContract]??string.Empty;
+        dto.CompanyContact = settings[AccountingSettings.CompanyContact]??string.Empty;
           
         return dto;
     }
@@ -74,7 +74,7 @@ public class AccountingSettingAppService: AccountingAppService, IAccountingSetti
          await _settingManager.SetForCurrentTenantAsync(AccountingSettings.CompanyOtherName, dto.CompanyOtherName);
          await _settingManager.SetForCurrentTenantAsync(AccountingSettings.CompanyAddress, dto.CompanyAddress);
          await _settingManager.SetForCurrentTenantAsync(AccountingSettings.CompanyOtherAddress, dto.CompanyOtherAddress);
-         await _settingManager.SetForCurrentTenantAsync(AccountingSettings.CompanyContract, dto.CompanyContract);
+         await _settingManager.SetForCurrentTenantAsync(AccountingSettings.CompanyContact, dto.CompanyContact);
          await _settingManager.SetForCurrentTenantAsync(AccountingSettings.NativeCurrency, dto.NativeCurrency);
          await _settingManager.SetForCurrentTenantAsync(AccountingSettings.AccountPayableSubjectCode, dto.AccountPayableSubjectCode);
          await _settingManager.SetForCurrentTenantAsync(AccountingSettings.AccountReceivableSubjectCode, dto.AccountReceivableSubjectCode);

@@ -25,7 +25,7 @@ public abstract class AccountingSettingAppServiceTests<TStartupModule> : Account
             CompanyOtherName = name,
             CompanyAddress = address,
             CompanyOtherAddress = address,
-            CompanyContract = "Tel: 1234234324 FAX: 123423433",
+            CompanyContact = "Tel: 1234234324 FAX: 123423433",
             NativeCurrency = "RMB",
             AccountPayableSubjectCode = "21",
             AccountReceivableSubjectCode = "32",
@@ -52,7 +52,7 @@ public abstract class AccountingSettingAppServiceTests<TStartupModule> : Account
         updateDto.CompanyOtherName.ShouldBe(dto.CompanyOtherName);
         updateDto.CompanyAddress.ShouldBe(dto.CompanyAddress);
         updateDto.CompanyOtherAddress.ShouldBe(dto.CompanyOtherAddress);
-        updateDto.CompanyContract.ShouldBe(dto.CompanyContract);
+        updateDto.CompanyContact.ShouldBe(dto.CompanyContact);
         updateDto.NativeCurrency.ShouldBe(dto.NativeCurrency);
         updateDto.AccountPayableSubjectCode.ShouldBe(dto.AccountPayableSubjectCode);
         updateDto.AccountReceivableSubjectCode.ShouldBe(dto.AccountReceivableSubjectCode);
@@ -74,7 +74,7 @@ public abstract class AccountingSettingAppServiceTests<TStartupModule> : Account
         dto.CompanyOtherName.ShouldBe(string.Empty);
         dto.CompanyAddress.ShouldBe(string.Empty);
         dto.CompanyOtherAddress.ShouldBe(string.Empty);
-        dto.CompanyContract.ShouldBe(string.Empty);
+        dto.CompanyContact.ShouldBe(string.Empty);
         dto.NativeCurrency.ShouldBe(string.Empty);
         dto.AccountPayableSubjectCode.ShouldBe(string.Empty);
         dto.AccountReceivableSubjectCode.ShouldBe(string.Empty);
@@ -100,7 +100,7 @@ public abstract class AccountingSettingAppServiceTests<TStartupModule> : Account
         updateDto.CompanyOtherName.ShouldBe(dto.CompanyOtherName);
         updateDto.CompanyAddress.ShouldBe(dto.CompanyAddress);
         updateDto.CompanyOtherAddress.ShouldBe(dto.CompanyOtherAddress);
-        updateDto.CompanyContract.ShouldBe(dto.CompanyContract);
+        updateDto.CompanyContact.ShouldBe(dto.CompanyContact);
     }
 
     [Fact]
