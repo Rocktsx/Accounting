@@ -13,16 +13,19 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
+    /// <summary>
+    /// 科目类别
+    /// </summary>
     public class AccountTypeAppService : CrudAppService<AccountType, AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
     {
 
         public AccountTypeAppService(IRepository<AccountType, Guid> repository) : base(repository)
         {
-            GetPolicyName = AccountingPermissions.AccountType;
-            DeletePolicyName = AccountingPermissions.AccountTypeDeletion;
-            GetListPolicyName = AccountingPermissions.AccountType;
+            GetPolicyName = AccountingPermissions.SubjectCategory;
+            DeletePolicyName = AccountingPermissions.SubjectCategoryDeletion;
+            GetListPolicyName = AccountingPermissions.SubjectCategory;
         }
-        [Authorize(AccountingPermissions.AccountTypeCreation)]
+        [Authorize(AccountingPermissions.SubjectCategoryCreation)]
         public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
         {
             var item = new AccountType(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
@@ -52,7 +55,7 @@ namespace Accounting.Finance
                     OtherName = x.OtherName
                 }));
         }
-        [Authorize(AccountingPermissions.AccountTypeEdit)]
+        [Authorize(AccountingPermissions.SubjectCategoryEdit)]
         public override async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);

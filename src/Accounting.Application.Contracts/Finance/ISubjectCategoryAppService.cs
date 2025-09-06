@@ -7,6 +7,9 @@ using Volo.Abp.Application.Services;
 
 namespace Accounting.Finance
 {
+    /// <summary>
+    /// 总账类别
+    /// </summary>
     public interface ISubjectCategoryAppService : IApplicationService, ICrudAppService<SubjectCategoryDto, Guid,
         FilteredPagedAndSortedResultRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>
     {

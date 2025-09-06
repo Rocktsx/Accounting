@@ -11,3 +11,6 @@
 form label.error {
     color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
 }
+.hiding-first .col-12:first-child {
+    display: none;
+}

@@ -1,0 +1,19 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@inject IStringLocalizer<AccountingResource> L
+@model Accounting.Web.Pages.GeneralLedger.GeneralAccount.EditModalModel
+@{
+    Layout = null;
+}
+<abp-dynamic-form abp-model="Item" id="generalAccountForm" data-ajaxForm="true" asp-page="/GeneralLedger/GeneralAccount/EditModal">
+    <abp-modal>
+        <abp-modal-header title="@L["EditGeneralAccount"].Value">
+        </abp-modal-header>
+        <abp-modal-body>
+            <abp-form-content />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</abp-dynamic-form>

@@ -22,9 +22,9 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         AddPermissionGroup(context, AccountingPermissions.AccountingPeriod,
             nameof(AccountingPermissions.AccountingPeriod), AccountingPermissions.AccountingPeriodCreation,
             AccountingPermissions.AccountingPeriodDeletion, AccountingPermissions.AccountingPeriodEdit);
-        AddPermissionGroup(context, AccountingPermissions.AccountType, nameof(AccountingPermissions.AccountType),
-            AccountingPermissions.AccountTypeCreation, AccountingPermissions.AccountTypeDeletion,
-            AccountingPermissions.AccountTypeEdit);
+        AddPermissionGroup(context, AccountingPermissions.GeneralAccount, nameof(AccountingPermissions.GeneralAccount),
+            AccountingPermissions.GeneralAccountCreation, AccountingPermissions.GeneralAccountDeletion,
+            AccountingPermissions.GeneralAccountEdit);
         AddPermissionGroup(context, AccountingPermissions.SubjectCategory,
             nameof(AccountingPermissions.SubjectCategory), AccountingPermissions.SubjectCategoryCreation,
             AccountingPermissions.SubjectCategoryDeletion, AccountingPermissions.SubjectCategoryEdit);

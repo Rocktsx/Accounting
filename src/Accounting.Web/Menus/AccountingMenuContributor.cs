@@ -101,58 +101,58 @@ public class AccountingMenuContributor : IMenuContributor
         {
             context.Menu.AddItem(basicDataMenu);
         }
-        var genernalLedgerMenu = new ApplicationMenuItem(
-           AccountingPermissions.GenernalLedgerGroupName,
-           l["Menu:GenernalLedger"],
+        var generalLedgerMenu = new ApplicationMenuItem(
+           AccountingPermissions.GeneralLedgerGroupName,
+           l["Menu:GeneralLedger"],
            icon: "fas fa-calculator"
        );
         if (await context.IsGrantedAsync(AccountingPermissions.AccountingPeriod))
         {
-            genernalLedgerMenu.AddItem(
+            generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
                 AccountingPermissions.AccountingPeriod,
                 l["Menu:AccountingPeriod"],
                   icon: "fas fa-bars-staggered",
-                url: "/GenernalLedger/AccountingPeriod"
-                )
-            );
-        }
-        if (await context.IsGrantedAsync(AccountingPermissions.AccountType))
-        {
-            genernalLedgerMenu.AddItem(
-                new ApplicationMenuItem(
-                AccountingPermissions.AccountType,
-                l["Menu:AccountType"],
-                  icon: "fas fa-landmark",
-                url: "/GenernalLedger/AccountType"
+                url: "/GeneralLedger/AccountingPeriod"
                 )
             );
         }
         if (await context.IsGrantedAsync(AccountingPermissions.SubjectCategory))
         {
-            genernalLedgerMenu.AddItem(
+            generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
                 AccountingPermissions.SubjectCategory,
                 l["Menu:SubjectCategory"],
+                  icon: "fas fa-landmark",
+                url: "/GeneralLedger/SubjectCategory"
+                )
+            );
+        }
+        if (await context.IsGrantedAsync(AccountingPermissions.GeneralAccount))
+        {
+            generalLedgerMenu.AddItem(
+                new ApplicationMenuItem(
+                AccountingPermissions.GeneralAccount,
+                l["Menu:GeneralAccount"],
                   icon: "fas fa-bug",
-                url: "/GenernalLedger/SubjectCategory"
+                url: "/GeneralLedger/GeneralAccount"
                 )
             );
         }
         if (await context.IsGrantedAsync(AccountingPermissions.Subject))
         {
-            genernalLedgerMenu.AddItem(
+            generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
                 AccountingPermissions.Subject,
                 l["Menu:Subject"],
                   icon: "fas fa-key",
-                url: "/GenernalLedger/ChartOfAccount"
+                url: "/GeneralLedger/ChartOfAccount"
                 )
             );
         }
-        if (genernalLedgerMenu.Items.Count > 0)
+        if (generalLedgerMenu.Items.Count > 0)
         {
-            context.Menu.AddItem(genernalLedgerMenu);
+            context.Menu.AddItem(generalLedgerMenu);
         }
     }
 }

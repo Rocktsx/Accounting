@@ -29,23 +29,29 @@ public static class AccountingPermissions
     public const string VendorDeletion = Vendor + Deletion;
     public const string VendorEdit = Vendor + Edit;
 
-    public const string GenernalLedgerGroupName = GroupName + ".GenernalLedger";
-    public const string AccountingPeriod = GenernalLedgerGroupName + ".AccountingPeriod";
+    public const string GeneralLedgerGroupName = GroupName + ".GeneralLedger";
+    public const string AccountingPeriod = GeneralLedgerGroupName + ".AccountingPeriod";
     public const string AccountingPeriodCreation = AccountingPeriod + Creation;
     public const string AccountingPeriodDeletion = AccountingPeriod + Deletion;
     public const string AccountingPeriodEdit = AccountingPeriod + Edit;
 
-    public const string AccountType = GenernalLedgerGroupName + ".AccountType";
-    public const string AccountTypeCreation = AccountType + Creation;
-    public const string AccountTypeDeletion = AccountType + Deletion;
-    public const string AccountTypeEdit = AccountType + Edit;
-
-    public const string SubjectCategory = GenernalLedgerGroupName + ".SubjectCategory";
+    /// <summary>
+    /// 总账类别
+    /// </summary>
+    public const string GeneralAccount = GeneralLedgerGroupName + ".GeneralAccount";
+    public const string GeneralAccountCreation = GeneralAccount + Creation;
+    public const string GeneralAccountDeletion = GeneralAccount + Deletion;
+    public const string GeneralAccountEdit = GeneralAccount + Edit;
+    
+    /// <summary>
+    /// 科目类别
+    /// </summary>
+    public const string SubjectCategory = GeneralLedgerGroupName + ".SubjectCategory";
     public const string SubjectCategoryCreation = SubjectCategory + Creation;
     public const string SubjectCategoryDeletion = SubjectCategory + Deletion;
     public const string SubjectCategoryEdit = SubjectCategory + Edit;
 
-    public const string Subject = GenernalLedgerGroupName + ".Subject";
+    public const string Subject = GeneralLedgerGroupName + ".Subject";
     public const string SubjectCreation = Subject + Creation;
     public const string SubjectDeletion = Subject + Deletion;
     public const string SubjectEdit = Subject + Edit;

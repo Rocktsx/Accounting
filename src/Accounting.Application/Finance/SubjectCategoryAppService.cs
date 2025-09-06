@@ -17,16 +17,19 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
+    /// <summary>
+    /// 总账类别
+    /// </summary>
     public class SubjectCategoryAppService : CrudAppService<SubjectCategory, SubjectCategoryDto, Guid,
         FilteredPagedAndSortedResultRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>, ISubjectCategoryAppService
     {
         public SubjectCategoryAppService(IRepository<SubjectCategory, Guid> repository) : base(repository)
         {
-            GetPolicyName = AccountingPermissions.SubjectCategory;
-            DeletePolicyName = AccountingPermissions.AccountTypeDeletion;
-            GetListPolicyName = AccountingPermissions.SubjectCategory;
+            GetPolicyName = AccountingPermissions.GeneralAccount;
+            DeletePolicyName = AccountingPermissions.GeneralAccountDeletion;
+            GetListPolicyName = AccountingPermissions.GeneralAccount;
         }
-        [Authorize(AccountingPermissions.SubjectCategoryCreation)]
+        [Authorize(AccountingPermissions.GeneralAccountCreation)]
         public override async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
         {
             var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
@@ -35,7 +38,7 @@ namespace Accounting.Finance
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
-        [Authorize(AccountingPermissions.SubjectCategoryEdit)]
+        [Authorize(AccountingPermissions.GeneralAccountEdit)]
         public override async Task<SubjectCategoryDto> UpdateAsync(Guid id, SubjectCategoryUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);
@@ -93,7 +96,7 @@ namespace Accounting.Finance
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory",category.ParentId));
             }
         }
-        [Authorize(AccountingPermissions.SubjectCategory)]
+        [Authorize(AccountingPermissions.GeneralAccount)]
         public async Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await NewFilteredQueryAsync(input, true);

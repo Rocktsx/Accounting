@@ -1,0 +1,35 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+
+@model Accounting.Web.Pages.GeneralLedger.AccountingPeriod.IndexModel
+@{
+}
+@section scripts
+{
+    <abp-script src="/Pages/GeneralLedger/AccountingPeriod/Index.cshtml.js" />
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Menu:AccountingPeriod"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.AccountingPeriodCreation))
+                {
+                    <abp-button id="newAccountingPeriodBtn"
+                                text="@L["NewAccountingPeriod"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table id="accountingPeriodTable" striped-rows="true" />
+    </abp-card-body>
+</abp-card>
