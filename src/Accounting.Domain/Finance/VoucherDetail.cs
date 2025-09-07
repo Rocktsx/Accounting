@@ -15,8 +15,7 @@ public class VoucherDetail : Entity<Guid>
     public string CurrencyCode { get; private set; }
     public decimal CurrencyRate { get; private set; }
     public decimal ForeignAmount { get; private set; }
-    public decimal NativeAmount { get; private set; }
-    public string DocType { get; private set; }
+    public decimal NativeAmount { get; private set; } 
     public string DocNo { get; private set; }
     public DateOnly? DueDate { get; private set; }
     public string Project { get; private set; }
@@ -35,7 +34,7 @@ public class VoucherDetail : Entity<Guid>
 
     public VoucherDetail(Guid id, Guid voucherId, Guid subjectId, string subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
-        decimal nativeAmount, string docType, string docNo, DateOnly? dueDate, string project, string department,
+        decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
         string region, string custom1, string custom2, decimal itemQty, bool isOriginal) : base(id)
     {
         SetVoucherId(voucherId);
@@ -43,8 +42,7 @@ public class VoucherDetail : Entity<Guid>
         SetSubSubjectCode(subSubjectCode);
         SetDescription(description);
         SetDebitorCreditor(debitorCreditor);
-        SetCurrencyAndAmount(currencyCode, currencyRate,foreignAmount,nativeAmount);
-        SetDocType(docType);
+        SetCurrencyAndAmount(currencyCode, currencyRate,foreignAmount,nativeAmount); 
         SetDocNo(docNo);
         SetDueDate(dueDate);
         SetProject(project);
@@ -65,7 +63,10 @@ public class VoucherDetail : Entity<Guid>
 
     public VoucherDetail SetSubjectId(Guid subjectId)
     {
-        Check.NotDefaultOrNull<Guid>(subjectId, nameof(subjectId));
+        if(Guid.Empty.Equals(subjectId))
+        {
+            throw new BusinessException(AccountingDomainErrorCodes.SubjectIdCanNotBeEmpty);
+        }
         SubjectId = subjectId;
         return this;
     }
@@ -106,18 +107,11 @@ public class VoucherDetail : Entity<Guid>
         
         return this;
     }
-  
-    public VoucherDetail SetDocType(string docType)
-    {
-        DocType = docType ?? string.Empty;
-        ;
-        return this;
-    }
+   
 
     public VoucherDetail SetDocNo(string docNo)
     {
-        DocNo = docNo ?? string.Empty;
-        ;
+        DocNo = docNo ?? string.Empty; 
         return this;
     }
 

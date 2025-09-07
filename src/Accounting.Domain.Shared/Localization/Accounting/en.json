@@ -129,6 +129,12 @@
     "StatementReminder": "Statement Reminder",
     "FinalReminder": "Final Reminder",
     "Save": "Save",
-    "ForeignExchangeRateMatchNativeAmount": "The foreign currency amount multiplied by the exchange rate must be equal to the native currency amount."
+    "ForeignExchangeRateMatchNativeAmount": "The foreign currency amount multiplied by the exchange rate must be equal to the native currency amount.",
+    "VoucherDoesNotBalance": "The voucher does not balance!",
+    "SubjectIdCanNotBeEmpty": "You must enter a subject Id!",
+    "VoucherDateIsNotInCurrentPeriodRange": "The voucher date is not within the range of the current accounting period.",
+    "SubSubjectCodeCanNotBeEmpty": "When a subject is receivable subject or payable subject, SubSubjectCode field cannot be empty.",
+    "DocNoCanNotBnEmpty": "When a subject is receivable subject or payable subject, DocNo field cannot be empty.",
+    "DueDateCanNotBeEmpty": "When a subject is receivable subject or payable subject, DueDate field cannot be empty."
   }
 }
