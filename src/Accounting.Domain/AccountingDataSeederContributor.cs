@@ -18,13 +18,14 @@ namespace Accounting
         private readonly IRepository<Company, Guid> _companyRepository;
         private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
         private IGuidGenerator _guidGenerator;
-        private readonly IRepository<AccountType, Guid> _accountTypeRepository;
-        private List<AccountType> _accountTypes;
+        private readonly IRepository<AccountType, Guid> _accountTypeRepository; 
         private readonly IRepository<SubjectCategory, Guid> _subjectCategoryRepository;
         private readonly IRepository<Subject, Guid> _subjectRepository;
+        private readonly IRepository<Voucher, Guid> _voucherRepository;
         public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository,
             IGuidGenerator guidGenerator, IRepository<AccountingPeriod, Guid> accountingPeriodRepository,
-            IRepository<AccountType, Guid> accountTypeRepository, IRepository<SubjectCategory, Guid> subjectCategoryRepository, IRepository<Subject, Guid> subjectRepository)
+            IRepository<AccountType, Guid> accountTypeRepository, IRepository<SubjectCategory, Guid> subjectCategoryRepository,
+            IRepository<Subject, Guid> subjectRepository, IRepository<Voucher, Guid> voucherRepository)
         {
             _currencyRepository = currencyRepository;
             _companyRepository = companyRepository;
@@ -33,6 +34,7 @@ namespace Accounting
             _accountTypeRepository = accountTypeRepository;
             _subjectCategoryRepository = subjectCategoryRepository;
             _subjectRepository = subjectRepository;
+            _voucherRepository = voucherRepository;
         }
         public async Task SeedAsync(DataSeedContext context)
         {
@@ -56,25 +58,55 @@ namespace Accounting
                 await _accountingPeriodRepository.InsertAsync(accountingPeriod);
             }
             await AddAccountType(context);
-            if (!await _subjectCategoryRepository.AnyAsync() && _accountTypes != null)
+            if (!await _subjectCategoryRepository.AnyAsync())
             {
-                var nonCurrentAccountType = _accountTypes.FirstOrDefault(a => a.Code == "NA");
-                if (nonCurrentAccountType !=null)
-                { 
-                    var subjectCategory = new SubjectCategory(_guidGenerator.Create(), "1", "非流动资产", "Non-Current Assets", null, DebitorCreditor.Debitor, nonCurrentAccountType.Id, true, "Non-Current Assets");
-                    await _subjectCategoryRepository.InsertAsync(subjectCategory); 
-                }
+                var accountTypeQuery = await _accountTypeRepository.GetQueryableAsync();
+                var nonCurrentAccountType = accountTypeQuery.FirstOrDefault(a => a.Code == "NA");
+
+                var subjectCategory = new SubjectCategory(_guidGenerator.Create(), "1", "非流动资产", "Non-Current Assets", null, DebitorCreditor.Debitor, nonCurrentAccountType?.Id, true, "Non-Current Assets");
+                await _subjectCategoryRepository.InsertAsync(subjectCategory);
             }
-            if (!await _subjectRepository.AnyAsync() && _accountTypes != null)
+            if (!await _subjectRepository.AnyAsync())
             {
-                var fixedAssetsAccountType = _accountTypes.FirstOrDefault(a => a.Code == "FA");
-                if(fixedAssetsAccountType != null)
-                { 
-                    var subject = new Subject(_guidGenerator.Create(), "11", "固定资产", "Fixed Assets", null, fixedAssetsAccountType.Id, DebitorCreditor.Debitor, "RMB", "Fixed Assets", false, true, false, 0);
-                    await _subjectRepository.InsertAsync(subject);
-                }
+                await AddSubjectAsync(true);
+                await AddSubjectAsync(false);
             }
-            _accountTypes = null;
+            if (!await _voucherRepository.AnyAsync())
+            {
+                var voucher = new Voucher(_guidGenerator.Create(), new DateOnly(2025, 1, 1), VoucherType.JournalVoucher, VoucherStatus.Draft);
+                voucher.SetCode("JV-0001", "JV", 1);
+                var subjectCode1 = "2801";
+                var subjectCode2 = "8021";
+                var subjectQuery = await _subjectRepository.GetQueryableAsync();
+                var subject1 = subjectQuery.FirstOrDefault(item => item.Code == subjectCode1);
+                if (subject1 == null)
+                {
+                    subject1 = await AddSubjectAsync(true);
+                }
+                var subject2 = subjectQuery.FirstOrDefault(item => item.Code == subjectCode2);
+                if (subject2 == null)
+                {
+                    subject2 = await AddSubjectAsync(false);
+                }
+                voucher.AddDetail(_guidGenerator.Create(), subject2.Id, null, "Rent & Rates 2011 01", DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
+                voucher.AddDetail(_guidGenerator.Create(), subject1.Id, null, "Rent & Rates 2011 01", DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
+                await _voucherRepository.InsertAsync(voucher);
+            } 
+        }
+        private async Task<Subject> AddSubjectAsync(bool isAddBankOrAddRentRate)
+        {
+            var accountTypeQuery = await _accountTypeRepository.GetQueryableAsync();
+            if (isAddBankOrAddRentRate)
+            {
+                var bakAccountType = accountTypeQuery.FirstOrDefault(a => a.Code == "BAK");
+                var subject1 = new Subject(_guidGenerator.Create(), "2801", "銀行 (往來戶口）", "Bank (C/A)", null, bakAccountType?.Id, DebitorCreditor.Debitor, "RMB", "往來戶口", false, true, true, 0);
+                await _subjectRepository.InsertAsync(subject1);
+                return subject1;
+            }
+            var accountType = accountTypeQuery.FirstOrDefault(a => a.Code == "AEX");
+            var subject2 = new Subject(_guidGenerator.Create(), "8021", "租金及差餉", "Rent & Rates", null, accountType?.Id, DebitorCreditor.Debitor, "RMB", "购买固定资产", false, true, false, 0);
+            await _subjectRepository.InsertAsync(subject2);
+            return subject2;
         }
         private async Task AddAccountType(DataSeedContext context)
         {
@@ -91,7 +123,7 @@ namespace Accounting
             var nonCurrentAssetsId = _guidGenerator.Create();
             var liabilitiesId = _guidGenerator.Create();
             var nonCurrentLiabilitiesId = _guidGenerator.Create();
-            _accountTypes = new List<AccountType>
+            var accountTypes = new List<AccountType>
              {
                  new AccountType(assetsId,"A", "资产", "Assets", null, 1, 0, 1, 1, 0, 1),
                  new AccountType(nonCurrentAssetsId,"NA", "非流动资产", "Non-Current Assets", assetsId, 2, 0, 2, 1, 0, 1),
@@ -118,7 +150,7 @@ namespace Accounting
                  new AccountType(nonCurrentLiabilitiesId,"NL", "非流动负债", "Non-Current Liabilities", liabilitiesId,11, 0, 12, 2, 0, 2),
                  new AccountType(_guidGenerator.Create(),"LL", "长期负债", "Long Term Liabilities", nonCurrentLiabilitiesId, 11, 0, 13, 2, 0, 2)
              };
-            await _accountTypeRepository.InsertManyAsync(_accountTypes);
+            await _accountTypeRepository.InsertManyAsync(accountTypes);
         }
     }
 }

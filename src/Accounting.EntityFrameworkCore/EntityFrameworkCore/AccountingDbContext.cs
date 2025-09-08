@@ -70,6 +70,10 @@ public class AccountingDbContext :
     public DbSet<AccountType> AccountTypes { get; set; }
     public DbSet<SubjectCategory> SubjectCategories { get; set; }
     public DbSet<Subject> Subjects { get; set; }
+
+    public DbSet<Voucher> Vouchers { get; set; }
+    public DbSet<VoucherDetail> VoucherDetails { get; set; }
+
     public AccountingDbContext(DbContextOptions<AccountingDbContext> options)
         : base(options)
     {
@@ -101,6 +105,8 @@ public class AccountingDbContext :
         ConfigureAccountType(builder);
         ConfigureSubjectCategory(builder);
         ConfigureSubject(builder);
+        ConfigureVoucher(builder);
+        ConfigureVoucherDetail(builder);
     }
     protected static void ConfigureCurrency(ModelBuilder builder)
     {
@@ -224,6 +230,42 @@ public class AccountingDbContext :
             b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId);
             b.HasOne(x => x.SubjectCategory).WithMany(x => x.Subjects).HasForeignKey(x => x.SubjectCategoryId);
             b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
+        });
+    }
+    protected static void ConfigureVoucher(ModelBuilder builder)
+    {
+        builder.Entity<Voucher>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "Vouchers", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Prefix).IsRequired().HasMaxLength(AccountingCommonConsts.MaxPrefixLength);
+            b.Property(x => x.VoucherDate).IsRequired().HasColumnType("date");
+            b.Property(x => x.VoucherType).IsRequired().HasDefaultValue(VoucherType.JournalVoucher); 
+            b.HasMany(x => x.Details).WithOne(x => x.Voucher).HasForeignKey(x => x.VoucherId).OnDelete(DeleteBehavior.Cascade);
+            b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
+        });
+    }
+    protected static void ConfigureVoucherDetail(ModelBuilder builder)
+    {
+        builder.Entity<VoucherDetail>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "VoucherDetails", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.CurrencyCode).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.CurrencyRate).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
+            b.Property(x => x.ForeignAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
+            b.Property(x => x.NativeAmount).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
+            b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
+            b.Property(x => x.DocNo).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Project).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Department).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Region).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Custom1).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.Custom2).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
+            b.Property(x => x.DueDate).HasColumnType("date");
+            b.HasOne(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId);
+            b.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.SubSubjectCode);
         });
     }
 }
