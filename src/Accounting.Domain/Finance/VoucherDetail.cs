@@ -1,3 +1,4 @@
+using Accounting.BasicData;
 using System; 
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
@@ -24,9 +25,11 @@ public class VoucherDetail : Entity<Guid>
     public string Custom2 { get; private set; }
     public int ItemQty { get; private set; }
     public bool IsOriginal { get; private set; }
+    public string PaymentReference { get; private set; }
 
     public virtual Voucher? Voucher { get; private set; }
     public virtual Subject? Subject { get; private set; }
+    public virtual Company? Company { get; private set; }
 
     private VoucherDetail()
     {
@@ -35,7 +38,7 @@ public class VoucherDetail : Entity<Guid>
     public VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
-        string region, string custom1, string custom2, int itemQty, bool isOriginal) : base(id)
+        string region, string custom1, string custom2, int itemQty, bool isOriginal, string paymentReference) : base(id)
     {
         SetVoucherId(voucherId);
         SetSubjectId(subjectId);
@@ -52,6 +55,7 @@ public class VoucherDetail : Entity<Guid>
         SetCustom2(custom2);
         SetItemQty(itemQty);
         SetIsOriginal(isOriginal);
+        SetPaymentReference(paymentReference);
     }
 
     public VoucherDetail SetVoucherId(Guid voucherId)
@@ -160,6 +164,11 @@ public class VoucherDetail : Entity<Guid>
     public VoucherDetail SetIsOriginal(bool isOriginal)
     {
         IsOriginal = isOriginal;
+        return this;
+    }
+    public VoucherDetail SetPaymentReference(string paymentReference)
+    {
+        PaymentReference = paymentReference ?? string.Empty;
         return this;
     }
 }
