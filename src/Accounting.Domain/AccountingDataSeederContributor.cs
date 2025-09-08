@@ -51,8 +51,8 @@ namespace Accounting
             }
             if (!await _accountingPeriodRepository.AnyAsync())
             {
-                var date = DateTime.Now;
-                var accountingPeriod = new AccountingPeriod(Guid.NewGuid(), date.Year.ToString(), new DateOnly(date.Year, 1, 1), new DateOnly(date.Year, 12, 31), true);
+                var year = 2025;
+                var accountingPeriod = new AccountingPeriod(Guid.NewGuid(), year.ToString(), new DateOnly(year, 1, 1), new DateOnly(year, 12, 31), true);
                 await _accountingPeriodRepository.InsertAsync(accountingPeriod);
             }
             await AddAccountType(context);

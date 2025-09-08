@@ -58,7 +58,7 @@ namespace Accounting.Finance
                 {
                     continue;
                 }
-                if (arapSubjects[item.SubjectId] && string.IsNullOrWhiteSpace(item.SubSubjectCode))
+                if (arapSubjects[item.SubjectId] && (item.SubSubjectCode == null || Guid.Empty.Equals(item.SubSubjectCode)))
                 {
                     throw new BusinessException(AccountingDomainErrorCodes.SubSubjectCodeCanNotBeEmpty);
                 }

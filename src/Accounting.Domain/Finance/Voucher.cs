@@ -44,10 +44,10 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         return this;
     }
 
-    public Voucher AddDetail(Guid id, Guid subjectId, string subSubjectCode, string description,
+    public Voucher AddDetail(Guid id, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
-        string region, string custom1, string custom2, decimal itemQty, bool isOriginal)
+        string region, string custom1, string custom2, int itemQty, bool isOriginal)
     {
         var item = new VoucherDetail(id, this.Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
             currencyRate, foreignAmount, nativeAmount, docNo, dueDate, project, department, region, custom1,
@@ -56,10 +56,10 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         return this;
     }
 
-    public Voucher SetDetail(Guid id, Guid subjectId, string subSubjectCode, string description,
+    public Voucher SetDetail(Guid id, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
-        string region, string custom1, string custom2, decimal itemQty, bool isOriginal)
+        string region, string custom1, string custom2, int itemQty, bool isOriginal)
     {
         var item = Details.FirstOrDefault(obj => obj.Id == id);
         if (item == null)

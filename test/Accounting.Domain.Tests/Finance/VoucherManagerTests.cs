@@ -40,8 +40,8 @@ namespace Accounting.Finance
         private async Task InitData()
         {
             await _accountingPeriodRepository.InsertManyAsync([
-                new AccountingPeriod(Guid.NewGuid(), "2023", new DateOnly(2024,1,1),new DateOnly(2024,12,31),true),
-                new AccountingPeriod(Guid.NewGuid(), "2022", new DateOnly(2023,1,1),new DateOnly(2024,12,31),true),
+                new AccountingPeriod(Guid.NewGuid(), "2023", new DateOnly(2023,1,1),new DateOnly(2023,12,31),true),
+                new AccountingPeriod(Guid.NewGuid(), "2022", new DateOnly(2022,1,1),new DateOnly(2022,12,31),true),
             ]); 
 
             var arAccountType = await _accountTypeRepository.GetAsync(item => item.Code == AccountTypeConsts.AccountingReceivableType);
@@ -63,9 +63,9 @@ namespace Accounting.Finance
                 // Arrange 
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act
@@ -82,9 +82,9 @@ namespace Accounting.Finance
                 // Arrange 
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 10.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 10.0m,
                     10.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act
@@ -99,7 +99,7 @@ namespace Accounting.Finance
         }
         [Theory]
         [InlineData(2020)]
-        [InlineData(2024)]
+        [InlineData(2026)]
         public async Task Cannot_Validate_Voucher_With_Out_Period_Voucher_Date(int year)
         {
             await WithUnitOfWorkAsync(async () => await InitData());
@@ -108,9 +108,9 @@ namespace Accounting.Finance
                 // Arrange 
                 var voucherDate = new DateOnly(year, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act
@@ -134,9 +134,9 @@ namespace Accounting.Finance
                 
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), arSubject.Id, string.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), arSubject.Id, Guid.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act
@@ -160,9 +160,9 @@ namespace Accounting.Finance
 
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), arSubject.Id, "demo", "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), arSubject.Id, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act
@@ -187,9 +187,9 @@ namespace Accounting.Finance
 
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), arSubject.Id, "demo", "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), arSubject.Id, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act
@@ -214,9 +214,9 @@ namespace Accounting.Finance
 
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-                voucher.AddDetail(Guid.NewGuid(), apSubject.Id, "demo", "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), apSubject.Id, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC002", new DateOnly(2027,1,1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
                 // Act

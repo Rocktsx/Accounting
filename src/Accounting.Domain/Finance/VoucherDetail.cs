@@ -8,7 +8,7 @@ public class VoucherDetail : Entity<Guid>
 {
     public Guid VoucherId { get; private set; }
     public Guid SubjectId { get; private set; }
-    public string SubSubjectCode { get; private set; }
+    public Guid? SubSubjectCode { get; private set; }
     public string Description { get; private set; }
     public DebitorCreditor DebitorCreditor { get; private set; }
     public string CurrencyCode { get; private set; }
@@ -22,19 +22,20 @@ public class VoucherDetail : Entity<Guid>
     public string Region { get; private set; }
     public string Custom1 { get; private set; }
     public string Custom2 { get; private set; }
-    public decimal ItemQty { get; private set; }
+    public int ItemQty { get; private set; }
     public bool IsOriginal { get; private set; }
 
     public virtual Voucher? Voucher { get; private set; }
+    public virtual Subject? Subject { get; private set; }
 
     private VoucherDetail()
     {
     }
 
-    public VoucherDetail(Guid id, Guid voucherId, Guid subjectId, string subSubjectCode, string description,
+    public VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
-        string region, string custom1, string custom2, decimal itemQty, bool isOriginal) : base(id)
+        string region, string custom1, string custom2, int itemQty, bool isOriginal) : base(id)
     {
         SetVoucherId(voucherId);
         SetSubjectId(subjectId);
@@ -70,9 +71,9 @@ public class VoucherDetail : Entity<Guid>
         return this;
     }
 
-    public VoucherDetail SetSubSubjectCode(string subSubjectCode)
+    public VoucherDetail SetSubSubjectCode(Guid? subSubjectCode)
     {
-        SubSubjectCode = subSubjectCode ?? string.Empty;
+        SubSubjectCode = subSubjectCode;
         return this;
     }
 
@@ -150,7 +151,7 @@ public class VoucherDetail : Entity<Guid>
         return this;
     }
 
-    public VoucherDetail SetItemQty(decimal itemQty)
+    public VoucherDetail SetItemQty(int itemQty)
     {
         ItemQty = itemQty;
         return this;

@@ -25,9 +25,9 @@ namespace Accounting.Finance
         private Voucher GetVoucher(DateOnly voucherDate)
         {
             var voucher = CreateVoucher(voucherDate);
-            voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+            voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                 100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
-            voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+            voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                 100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             return voucher;
         }
@@ -58,7 +58,7 @@ namespace Accounting.Finance
             var newVoucherDate = new DateOnly(2024, voucherDate.Month, voucherDate.Day);
             voucher.SetStatus(VoucherStatus.Approval).SetVoucherDate(newVoucherDate).SetVoucherType(VoucherType.PayableVoucher);
             var detailItem = voucher.Details.First();
-            voucher.SetDetail(detailItem.Id, subjectId, demoText, "Test Description33", DebitorCreditor.Creditor, "RMB", 1.1m, 1000.0m,
+            voucher.SetDetail(detailItem.Id, subjectId, Guid.Empty, "Test Description33", DebitorCreditor.Creditor, "RMB", 1.1m, 1000.0m,
                 1100.0m, "DOC00121", newVoucherDate, demoText, demoText, demoText, demoText, demoText, 1, false);
 
             // Assert 
@@ -68,7 +68,7 @@ namespace Accounting.Finance
             voucher.Status.ShouldBe(VoucherStatus.Approval);
             assertDetailItem.ShouldNotBeNull();
             assertDetailItem.SubjectId.ShouldBe(subjectId);
-            assertDetailItem.SubSubjectCode.ShouldBe(demoText);
+            assertDetailItem.SubSubjectCode.ShouldBe(Guid.Empty);
             assertDetailItem.DebitorCreditor.ShouldBe(DebitorCreditor.Creditor);
             assertDetailItem.Description.ShouldBe("Test Description33");
             assertDetailItem.CurrencyCode.ShouldBe("RMB");
@@ -94,7 +94,7 @@ namespace Accounting.Finance
 
             // Act  
             var detailItemId = Guid.NewGuid();
-            voucher.SetDetail(detailItemId, Guid.NewGuid(), string.Empty, "Test Description33", DebitorCreditor.Debitor, "RMB", 1.1m, 100.0m,
+            voucher.SetDetail(detailItemId, Guid.NewGuid(), null, "Test Description33", DebitorCreditor.Debitor, "RMB", 1.1m, 100.0m,
                 110.0m, "DOC0012", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
 
             // Assert   
@@ -111,7 +111,7 @@ namespace Accounting.Finance
             // Act
             var exception = Should.Throw<BusinessException>(() =>
             {
-                voucher.AddDetail(Guid.NewGuid(), Guid.Empty, string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.Empty, null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             });
             // Assert
@@ -128,7 +128,7 @@ namespace Accounting.Finance
             // Act
             var exception = Should.Throw<ArgumentException>(() =>
             {
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, string.Empty, 1.0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, string.Empty, 1.0m, 100.0m,
                100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             });
             // Assert
@@ -145,7 +145,7 @@ namespace Accounting.Finance
             // Act
             var exception = Should.Throw<ArgumentException>(() =>
             {
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 0m, 100.0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 0m, 100.0m,
                100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             });
             // Assert
@@ -162,7 +162,7 @@ namespace Accounting.Finance
             // Act
             var exception = Should.Throw<ArgumentException>(() =>
             {
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 0m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 0m,
                100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             });
             // Assert
@@ -179,7 +179,7 @@ namespace Accounting.Finance
             // Act
             var exception = Should.Throw<ArgumentException>(() =>
             {
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100m,
                0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             });
             // Assert
@@ -196,7 +196,7 @@ namespace Accounting.Finance
             // Act
             var exception = Should.Throw<BusinessException>(() =>
             {
-                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), string.Empty, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100m,
+                voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100m,
                10m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true);
             });
             // Assert
