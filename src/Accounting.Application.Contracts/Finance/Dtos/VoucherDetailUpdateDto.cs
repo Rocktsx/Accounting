@@ -4,7 +4,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Dtos;
 
-public class VoucherDetailEditDto : EntityDto<Guid>
+public class VoucherDetailUpdateDto : EntityDto<Guid>
 { 
     [Required] public Guid SubjectId { get; set; }
     public Guid? SubSubjectCode { get; set; }
