@@ -8,7 +8,7 @@ public static class AccountingPermissions
     public const string Creation = ".Creation";
     public const string Deletion = ".Deletion";
     public const string Edit = ".Edit";
-    public const string CreationDisplayName = PermissionPrefix+"Creation";
+    public const string CreationDisplayName = PermissionPrefix + "Creation";
     public const string DeletionDisplayName = PermissionPrefix + "Deletion";
     public const string EditDisplayName = PermissionPrefix + "Edit";
 
@@ -42,7 +42,7 @@ public static class AccountingPermissions
     public const string GeneralAccountCreation = GeneralAccount + Creation;
     public const string GeneralAccountDeletion = GeneralAccount + Deletion;
     public const string GeneralAccountEdit = GeneralAccount + Edit;
-    
+
     /// <summary>
     /// 科目类别
     /// </summary>
@@ -55,6 +55,11 @@ public static class AccountingPermissions
     public const string SubjectCreation = Subject + Creation;
     public const string SubjectDeletion = Subject + Deletion;
     public const string SubjectEdit = Subject + Edit;
-    
+
     public const string AccountingSetting = GroupName + ".AccountingSetting";
+
+    public const string Voucher = GeneralLedgerGroupName + ".Voucher";
+    public const string VoucherCreation = Voucher + Creation;
+    public const string VoucherDeletion = Voucher + Deletion;
+    public const string VoucherEdit = Voucher + Edit;
 }

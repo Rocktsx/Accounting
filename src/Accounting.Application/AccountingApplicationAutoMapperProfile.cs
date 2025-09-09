@@ -27,5 +27,8 @@ public class AccountingApplicationAutoMapperProfile : Profile
         CreateMap<AccountType, AccountTypeDto>();
         CreateMap<SubjectCategory,SubjectCategoryDto>();
         CreateMap<Subject, SubjectDto>();
+
+        CreateMap<Voucher, VoucherDto>();
+        CreateMap<VoucherDetail, VoucherDetailDto>();
     }
 }
