@@ -55,16 +55,18 @@ namespace Accounting.Finance
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
         protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)
-        { 
+        {
             return await NewFilteredQueryAsync(input);
         }
-         private async Task<IQueryable<SubjectCategory>> NewFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input, bool withDetails = false)
+        private async Task<IQueryable<SubjectCategory>> NewFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input, bool withDetails = false)
         {
-            var queryable = await (withDetails?Repository.WithDetailsAsync(item=>item.AccountType): Repository.GetQueryableAsync());
+            var queryable = await (withDetails ? Repository.WithDetailsAsync(item => item.AccountType) : Repository.GetQueryableAsync());
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
         }
+
+        [Authorize]
         public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
@@ -92,8 +94,8 @@ namespace Accounting.Finance
             }
             catch (EntityNotFoundException ex)
             {
-                Logger.LogException(ex,LogLevel.Information);
-                throw new UserFriendlyException(L.GetString("CannotFindParentCategory",category.ParentId));
+                Logger.LogException(ex, LogLevel.Information);
+                throw new UserFriendlyException(L.GetString("CannotFindParentCategory", category.ParentId));
             }
         }
         [Authorize(AccountingPermissions.GeneralAccount)]
@@ -103,7 +105,7 @@ namespace Accounting.Finance
             var pageQueryable = queryable.Skip(input.SkipCount)
                                 .Take(input.MaxResultCount)
                                 .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate))
-                                .Select(item =>new SubjectCategoryFilteredQueryDto()
+                                .Select(item => new SubjectCategoryFilteredQueryDto()
                                 {
                                     Id = item.Id,
                                     Code = item.Code,

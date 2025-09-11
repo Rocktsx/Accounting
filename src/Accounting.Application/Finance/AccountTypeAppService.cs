@@ -40,8 +40,9 @@ namespace Accounting.Finance
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
-        } 
+        }
 
+        [Authorize]
         public async Task<IEnumerable<AccountTypeSimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();

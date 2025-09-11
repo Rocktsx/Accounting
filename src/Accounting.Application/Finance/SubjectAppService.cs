@@ -61,6 +61,8 @@ namespace Accounting.Finance
             queryable = queryable.WhereIf(input.SubjectCategoryId != null, x => x.SubjectCategoryId == input.SubjectCategoryId);
             return queryable;
         }
+
+        [Authorize]
         public async Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
@@ -74,6 +76,8 @@ namespace Accounting.Finance
                     OtherName = x.OtherName
                 }));
         }
+
+        [Authorize]
         public async Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
