@@ -14,5 +14,6 @@ namespace Accounting
         public const int MaxPrefixLength = 20;
         public const int MaxNameLength = 250;
         public const int MaxDescriptionLength = 1000;
+        public const int MaxCommonTextFieldLength = 30;
     }
 }

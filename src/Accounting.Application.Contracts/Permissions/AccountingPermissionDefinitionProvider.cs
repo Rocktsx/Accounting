@@ -36,6 +36,10 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
             L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.AccountingSetting));
         context.AddGroup(AccountingPermissions.AccountingSetting, setttingDisplay)
             .AddPermission(AccountingPermissions.AccountingSetting, setttingDisplay);
+
+        AddPermissionGroup(context, AccountingPermissions.Voucher, nameof(AccountingPermissions.Voucher),
+            AccountingPermissions.VoucherCreation, AccountingPermissions.VoucherDeletion,
+            AccountingPermissions.VoucherEdit);
     }
 
     private static void AddPermission(PermissionGroupDefinition group, string permissionName,
