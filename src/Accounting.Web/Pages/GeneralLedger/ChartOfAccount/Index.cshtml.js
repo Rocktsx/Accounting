@@ -53,6 +53,8 @@ function getTree(categories, subjects) {
         obj['nodes'] = subCategories.concat(subSubjects);
         getTreeNode(subCategories, categories, subjects);
     });
+    const allSubjects = subjects.filter(item => !item.item.subjectCategoryId);
+    roots.push(...allSubjects);
     return roots;
 }
 const subjectInputAction = function (requestData, dataTableSettings) {
