@@ -1,10 +1,10 @@
 ﻿$(function () {
-    const l = abp.localization.getResource('Accounting'); 
+    const l = abp.localization.getResource('Accounting');
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Deletion');
 
     const tvInputAction = function (requestData, dataTableSettings) {
-        
+
         return {
             filter: $('#code').val().trim(),
             prefix: $('#prefix').val().trim(),
@@ -72,15 +72,17 @@
                 {
                     title: l('Status'),
                     data: "status",
-                    orderable: true
+                    orderable: true,
+                    render: function (data) {
+                        return data === 1 ? l('Approval') : data === 2 ? l('Void') : l('Draft');
+                    }
                 },
             ]
         })
     );
 
     $(document).on('keydown', '#searchForm', function (e) {
-        if (e.which !== 13)
-        {
+        if (e.which !== 13) {
             return false;
         }
         e.preventDefault();
@@ -90,12 +92,10 @@
         e.preventDefault();
         dataTable.ajax.reload();
     });
-    $('#voucherTable').on('preXhr.dt', function () {
-        console.log('preXhr.dt event triggered');
+    $('#voucherTable').on('preXhr.dt', function () { 
         abp.ui.setBusy('#voucherTable')
     });
-    $('#voucherTable').on('xhr.dt', function (e) {
-        console.log('xhr.dt event triggered');
+    $('#voucherTable').on('xhr.dt', function (e) { 
         abp.ui.clearBusy('#voucherTable')
     });
-})
+});

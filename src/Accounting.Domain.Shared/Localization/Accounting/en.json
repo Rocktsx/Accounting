@@ -142,6 +142,12 @@
     "EditTransferVoucher": "Edit Transfer Voucher",
     "VoucherDate": "Voucher Date",
     "Status": "Status",
-    "DocNo": "Doc. No."
+    "DocNo": "Doc. No.",
+    "Draft": "Draft",
+    "Approval": "Approval",
+    "Void": "Void",
+    "JournalVoucher": "Transfer Voucher",
+    "ReceivableVoucher": "Receivable Voucher",
+    "PayableVoucher": "Payable Voucher"
   }
 }

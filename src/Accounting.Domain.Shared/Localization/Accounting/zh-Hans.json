@@ -175,6 +175,12 @@
     "EditTransferVoucher": "编辑转账传票",
     "VoucherDate": "传票日期",
     "Status": "状态",
-    "DocNo": "文档编号"
+    "DocNo": "文档编号",
+    "Draft": "草稿",
+    "Approval": "已审核",
+    "Void": "废弃",
+    "JournalVoucher": "转账传票",
+    "ReceivableVoucher": "收款传票",
+    "PayableVoucher": "应付传票"
   }
 }
