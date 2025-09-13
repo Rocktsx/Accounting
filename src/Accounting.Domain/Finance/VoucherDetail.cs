@@ -2,11 +2,13 @@ using Accounting.BasicData;
 using System; 
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance;
 
-public class VoucherDetail : Entity<Guid>
+public class VoucherDetail : Entity<Guid>, IMultiTenant
 {
+    public Guid? TenantId { get; set; }
     public Guid VoucherId { get; private set; }
     public Guid SubjectId { get; private set; }
     public Guid? SubSubjectCode { get; private set; }
