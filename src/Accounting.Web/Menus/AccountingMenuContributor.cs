@@ -66,10 +66,10 @@ public class AccountingMenuContributor : IMenuContributor
         {
             basicDataMenu.AddItem(
               new ApplicationMenuItem(
-              AccountingPermissions.Currency,
-              l["Menu:Currency"],
-                icon: "fas fa-dollar-sign",
-              url: "/BasicData/Currency"
+                  AccountingPermissions.Currency,
+                  l["Menu:Currency"],
+                  icon: "fas fa-dollar-sign",
+                  url: "/BasicData/Currency"
               )
           );
         }
@@ -77,11 +77,11 @@ public class AccountingMenuContributor : IMenuContributor
         if (await context.IsGrantedAsync(AccountingPermissions.Client))
         {
             basicDataMenu.AddItem(
-             new ApplicationMenuItem(
-                 AccountingPermissions.Client,
-                 l["Menu:Client"],
-                   icon: "fas fa-credit-card",
-                 url: "/BasicData/Client"
+                new ApplicationMenuItem(
+                     AccountingPermissions.Client,
+                     l["Menu:Client"],
+                     icon: "fas fa-credit-card",
+                     url: "/BasicData/Client"
                  )
             );
         }
@@ -90,10 +90,10 @@ public class AccountingMenuContributor : IMenuContributor
         {
             basicDataMenu.AddItem(
                 new ApplicationMenuItem(
-                AccountingPermissions.Vendor,
-                l["Menu:Vendor"],
-                  icon: "fas fa-rectangle-list",
-                url: "/BasicData/Vendor"
+                    AccountingPermissions.Vendor,
+                    l["Menu:Vendor"],
+                    icon: "fas fa-rectangle-list",
+                    url: "/BasicData/Vendor"
                 )
             );
         }
@@ -105,15 +105,15 @@ public class AccountingMenuContributor : IMenuContributor
            AccountingPermissions.GeneralLedgerGroupName,
            l["Menu:GeneralLedger"],
            icon: "fas fa-calculator"
-       );
+        );
         if (await context.IsGrantedAsync(AccountingPermissions.AccountingPeriod))
         {
             generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
-                AccountingPermissions.AccountingPeriod,
-                l["Menu:AccountingPeriod"],
-                  icon: "fas fa-bars-staggered",
-                url: "/GeneralLedger/AccountingPeriod"
+                    AccountingPermissions.AccountingPeriod,
+                    l["Menu:AccountingPeriod"],
+                    icon: "fas fa-bars-staggered",
+                    url: "/GeneralLedger/AccountingPeriod"
                 )
             );
         }
@@ -121,10 +121,10 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
-                AccountingPermissions.SubjectCategory,
-                l["Menu:SubjectCategory"],
-                  icon: "fas fa-landmark",
-                url: "/GeneralLedger/SubjectCategory"
+                    AccountingPermissions.SubjectCategory,
+                    l["Menu:SubjectCategory"],
+                    icon: "fas fa-landmark",
+                    url: "/GeneralLedger/SubjectCategory"
                 )
             );
         }
@@ -132,10 +132,10 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
-                AccountingPermissions.GeneralAccount,
-                l["Menu:GeneralAccount"],
-                  icon: "fas fa-bug",
-                url: "/GeneralLedger/GeneralAccount"
+                    AccountingPermissions.GeneralAccount,
+                    l["Menu:GeneralAccount"],
+                    icon: "fas fa-bug",
+                    url: "/GeneralLedger/GeneralAccount"
                 )
             );
         }
@@ -143,13 +143,21 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(
                 new ApplicationMenuItem(
-                AccountingPermissions.Subject,
-                l["Menu:Subject"],
-                  icon: "fas fa-key",
-                url: "/GeneralLedger/ChartOfAccount"
+                    AccountingPermissions.Subject,
+                    l["Menu:Subject"],
+                    icon: "fas fa-key",
+                    url: "/GeneralLedger/ChartOfAccount"
                 )
             );
         }
+        generalLedgerMenu.AddItem(
+               new ApplicationMenuItem(
+                   AccountingPermissions.TransferVoucher,
+                   l["Menu:TransferVoucher"],
+                   icon: "fas fa-wand-magic-sparkles",
+                   url: "/GeneralLedger/TransferVoucher"
+               ).RequirePermissions(AccountingPermissions.TransferVoucher)
+         );
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);

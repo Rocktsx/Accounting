@@ -168,6 +168,13 @@
     "VoucherDateIsNotInCurrentPeriodRange": "凭证日期不在当前会计年度的范围内。",
     "SubSubjectCodeCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，辅助科目（SubSubjectCode）字段不能为空",
     "DocNoCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，文档编号（DocNo）字段不能为空",
-    "DueDateCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，到期日期（DueDate）字段不能为空"
+    "DueDateCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，到期日期（DueDate）字段不能为空",
+    "Permission:TransferVoucher": "转账传票",
+    "Menu:TransferVoucher": "转账传票",
+    "NewTransferVoucher": "添加转账传票",
+    "EditTransferVoucher": "编辑转账传票",
+    "VoucherDate": "传票日期",
+    "Status": "状态",
+    "DocNo": "文档编号"
   }
 }

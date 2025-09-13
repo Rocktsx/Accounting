@@ -1,0 +1,82 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+@model Accounting.Web.Pages.GeneralLedger.TransferVoucher.IndexModel
+@section scripts
+{
+    <script src="/Pages/GeneralLedger/TransferVoucher/Index.cshtml.js" type="module"></script>
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row class="mb-3">
+            <abp-column>
+                <abp-card-title>@L["Menu:TransferVoucher"]</abp-card-title>
+            </abp-column>
+            <abp-column class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVoucher))
+                {
+                    <abp-button id="searchBtn"
+                                text="@L["Search"].Value"
+                                icon="magnifying-glass"
+                                button-type="Primary" />
+                }
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVoucherCreation))
+                {
+                    <abp-button id="newVoucherBtn"
+                                text="@L["NewTransferVoucher"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+        <form id="searchForm">
+            <abp-row class="mb-1">
+                <abp-column class="row">
+                    <label for="code" class="form-label col-sm-3 text-end">@L["Code"].Value</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="code" name="code" placeholder="JV-0001">
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="startDate" class="form-label col-sm-3 text-end">@L["VoucherDate"].Value</label>
+                    <div class="col-sm-9 row pe-0">
+                        <div class="col pe-1">
+                            <input type="date" class="form-control" id="startDate" name="startDate">
+                        </div>
+                        <div class="col ps-1 pe-0">
+                            <input type="date" class="form-control" id="endDate" name="endDate">
+                        </div>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column class="row">
+                    <label for="startNo" class="form-label col-sm-3 text-end">&nbsp;</label>
+                    <div class="col-sm-9 row pe-0">
+                        <div class="col pe-1">
+                            <input type="text" class="form-control" id="prefix" name="prefix" placeholder="JV">
+                        </div>
+                        <div class="col px-1">
+                            <input type="text" class="form-control" id="startNo" name="startNo" placeholder="0">
+                        </div>
+                        <div class="col ps-1 pe-0">
+                            <input type="text" class="form-control" id="endNo" name="endNo" placeholder="99">
+                        </div>
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="docNo" class="form-label col-sm-3 text-end">@L["DocNo"].Value</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="docNo" name="docNo">
+                    </div>
+                </abp-column>
+            </abp-row>
+        </form>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table id="voucherTable" striped-rows="true" />
+    </abp-card-body>
+</abp-card>

@@ -135,6 +135,13 @@
     "VoucherDateIsNotInCurrentPeriodRange": "The voucher date is not within the range of the current accounting period.",
     "SubSubjectCodeCanNotBeEmpty": "When a subject is receivable subject or payable subject, SubSubjectCode field cannot be empty.",
     "DocNoCanNotBnEmpty": "When a subject is receivable subject or payable subject, DocNo field cannot be empty.",
-    "DueDateCanNotBeEmpty": "When a subject is receivable subject or payable subject, DueDate field cannot be empty."
+    "DueDateCanNotBeEmpty": "When a subject is receivable subject or payable subject, DueDate field cannot be empty.",
+    "Permission:TransferVoucher": "Transfer Voucher",
+    "Menu:TransferVoucher": "Transfer Voucher",
+    "NewTransferVoucher": "New Transfer Voucher",
+    "EditTransferVoucher": "Edit Transfer Voucher",
+    "VoucherDate": "Voucher Date",
+    "Status": "Status",
+    "DocNo": "Doc. No."
   }
 }
