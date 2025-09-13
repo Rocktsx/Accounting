@@ -27,7 +27,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         _subjectAppService = GetRequiredService<ISubjectAppService>();
     }
 
-    private async Task<VoucherCreateDto> GetCreateDto()
+    private async Task<VoucherCreateDto> GetCreateDtoAsync()
     {
         var subjects = await _subjectAppService.GetSimpleListAsync();
         var dto = new VoucherCreateDto()
@@ -92,7 +92,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Create_Voucher()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
 
         // Act
         var dto = await _voucherAppService.CreateAsync(createDto);
@@ -111,7 +111,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Cannot_Create_Voucher_With_Empty_Prefix()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         createDto.Prefix = string.Empty;
 
         // Act
@@ -126,7 +126,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Cannot_Create_Voucher_With_Out_Period_VoucherDate()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         createDto.VoucherDate = new DateOnly(2024, 1, 12);
 
         // Act
@@ -141,7 +141,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Update_Voucher()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
         var firstDetailItem = GetDetailUpdateDto(dto.Details.First());
         firstDetailItem.ForeignAmount = 1220m;
@@ -178,7 +178,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Get_A_Voucher()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
 
         // Act
@@ -200,7 +200,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Delete_Voucher()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
 
         // Act
@@ -219,7 +219,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Get_Voucher_List_With_Filter()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
 
         // Act
@@ -240,7 +240,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Get_Voucher_List_With_Voucher_Type()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         await _voucherAppService.CreateAsync(createDto);
 
         // Act
@@ -259,7 +259,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Get_Voucher_List_With_Voucher_Date()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         await _voucherAppService.CreateAsync(createDto);
 
         // Act
@@ -280,7 +280,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Get_Voucher_List_With_Status()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
         var firstDetailItem = GetDetailUpdateDto(dto.Details.First());
         var secondDetailItem = GetDetailUpdateDto(dto.Details.Last());
@@ -309,7 +309,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     public async Task Can_Get_Voucher_List_With_No_Void_Status()
     {
         // Arrange
-        var createDto = await GetCreateDto();
+        var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
         var firstDetailItem = GetDetailUpdateDto(dto.Details.First());
         var secondDetailItem = GetDetailUpdateDto(dto.Details.Last()); 
@@ -331,5 +331,84 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         result.ShouldNotBeNull(); 
         result.Items.Count.ShouldBe(1);
         result.Items.ShouldNotContain(item => item.Status == VoucherStatus.Void);
+    }
+    [Fact]
+    public async Task Can_Get_Voucher_List_With_Prefix()
+    {
+        // Arrange
+        var createDto = await GetCreateDtoAsync();
+        createDto.Prefix = "TV";
+        var dto = await _voucherAppService.CreateAsync(createDto); 
+
+        //Act
+        var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()
+        {
+            MaxResultCount = 10,
+            Prefix = "TV"
+        });
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Items.Count.ShouldBe(1); 
+        result.Items.First().Prefix.ShouldBe("TV");
+    }
+    [Fact]
+    public async Task Can_Get_Voucher_List_Start_No()
+    {
+        // Arrange
+        var createDto = await GetCreateDtoAsync(); 
+        var dto = await _voucherAppService.CreateAsync(createDto);
+
+        //Act
+        var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()
+        {
+            MaxResultCount = 10,
+            StartNo = dto.GenNo
+        });
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Items.Count.ShouldBe(1);
+        result.Items.First().GenNo.ShouldBe(dto.GenNo);
+    }
+    [Fact]
+    public async Task Can_Get_Voucher_List_End_No()
+    {
+        // Arrange
+        var createDto = await GetCreateDtoAsync();
+        var dto = await _voucherAppService.CreateAsync(createDto);
+
+        //Act
+        var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()
+        {
+            MaxResultCount = 10,
+            EndNo = dto.GenNo
+        });
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Items.Count.ShouldBe(2);
+        result.Items.ShouldContain(item => item.GenNo == dto.GenNo);
+    }
+    [Fact]
+    public async Task Can_Get_Voucher_List_Doc_No()
+    {
+        // Arrange
+        var createDto = await GetCreateDtoAsync();
+        var docNo = "si202401";
+        createDto.Details.First().DocNo = docNo;
+        var dto = await _voucherAppService.CreateAsync(createDto);
+
+        //Act
+        var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()
+        {
+            MaxResultCount = 10,
+            DocNo = docNo
+        });
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Items.Count.ShouldBe(1);
+        result.Items.First().Id.ShouldBe(dto.Id);
     }
 }

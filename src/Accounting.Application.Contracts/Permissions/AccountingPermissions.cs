@@ -58,8 +58,8 @@ public static class AccountingPermissions
 
     public const string AccountingSetting = GroupName + ".AccountingSetting";
 
-    public const string Voucher = GeneralLedgerGroupName + ".Voucher";
-    public const string VoucherCreation = Voucher + Creation;
-    public const string VoucherDeletion = Voucher + Deletion;
-    public const string VoucherEdit = Voucher + Edit;
+    public const string TransferVoucher = GeneralLedgerGroupName + ".TransferVoucher";
+    public const string TransferVoucherCreation = TransferVoucher + Creation;
+    public const string TransferVoucherDeletion = TransferVoucher + Deletion;
+    public const string TransferVoucherEdit = TransferVoucher + Edit;
 }

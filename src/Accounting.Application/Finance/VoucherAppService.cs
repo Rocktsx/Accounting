@@ -1,26 +1,24 @@
+using Accounting.Finance.Dtos; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Accounting.Finance.Dtos;
-using Accounting.Permissions;
-using Microsoft.AspNetCore.Authorization;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance;
 
+[RemoteService(false)]
 public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     VoucherFilterRequestDto, VoucherCreateDto, VoucherUpdateDto>, IVoucherAppService
 {
     public VoucherAppService(IRepository<Voucher, Guid> repository) : base(repository)
-    {
-        DeletePolicyName = AccountingPermissions.VoucherDeletion;
-        GetListPolicyName = AccountingPermissions.Voucher;
-    }
+    { 
+    } 
 
-    private async Task ValidateAsync(Voucher voucher)
+    protected async Task ValidateAsync(Voucher voucher)
     {
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         await manager.ValidateAsync(voucher);
@@ -31,8 +29,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
             await manager.ValidateReceivablePayableSubject(voucher, subjectRepository);
         }
     }
-
-    [Authorize(AccountingPermissions.VoucherCreation)]
+    
     public override async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
     {
         var entity = new Voucher(GuidGenerator.Create(), input.VoucherDate, input.VoucherType, VoucherStatus.Draft);
@@ -61,12 +58,14 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         return entity ?? throw new EntityNotFoundException();
     }
 
-    [Authorize(AccountingPermissions.VoucherEdit)]
     public override async Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
     {
         var entity = await GetEntityByIdAsync(id);
         entity.SetVoucherDate(input.VoucherDate);
-        entity.SetStatus(input.Status);
+        if(input.Status != null)
+        {
+           entity.SetStatus(input.Status.Value);
+        } 
         entity.Details.RemoveAll(item => !input.Details.Any(obj => obj.Id == item.Id));
         foreach (var item in input.Details)
         {
@@ -93,13 +92,19 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
 
     protected override async Task<IQueryable<Voucher>> CreateFilteredQueryAsync(VoucherFilterRequestDto input)
     {
-        var query = await Repository.GetQueryableAsync();
+        var query = await (string.IsNullOrWhiteSpace(input.DocNo)
+            ? Repository.GetQueryableAsync()
+            : Repository.WithDetailsAsync(item => item.Details));
         query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.Code.Contains(input.Filter));
+        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Prefix), item => item.Prefix == input.Prefix);
+        query = query.WhereIf(input.StartNo != null, item => item.GenNo >= input.StartNo);
+        query = query.WhereIf(input.EndNo != null, item => item.GenNo <= input.EndNo);
         query = query.WhereIf(input.StartDate != null, item => item.VoucherDate >= input.StartDate);
         query = query.WhereIf(input.EndDate != null, item => item.VoucherDate <= input.EndDate);
         query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
         query = query.Where(item =>
             input.Status != null ? item.Status == input.Status : item.Status != VoucherStatus.Void);
+        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo),item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
         return query;
     }
 }
