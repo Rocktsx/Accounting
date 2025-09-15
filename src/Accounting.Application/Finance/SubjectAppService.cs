@@ -80,7 +80,7 @@ namespace Accounting.Finance
         [Authorize]
         public async Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync()
         {
-            var queryable = await Repository.GetQueryableAsync();
+            var queryable = await Repository.WithDetailsAsync(item => item.AccountType);
             return await AsyncExecuter.ToListAsync(queryable
                 .OrderBy(x => x.Code)
                 .Select(x => new SubjectVoucherSimpleDto
@@ -92,7 +92,8 @@ namespace Accounting.Finance
                     IsPayMethod = x.IsPayMethod,
                     IsSubSubjectType = x.IsSubSubjectType,
                     CurrencyCode = x.CurrencyCode,
-                    DebitorCreditor = x.DebitorCreditor
+                    DebitorCreditor = x.DebitorCreditor,
+                    AccountTypeCode = x.AccountType != null ? x.AccountType.Code : null,
                 }));
         }
         [Authorize(AccountingPermissions.Subject)]
@@ -108,7 +109,7 @@ namespace Accounting.Finance
                 Name = item.Name,
                 OtherName = item.OtherName,
                 SubjectCategoryId = item.SubjectCategoryId,
-                AccountTypeId = item.AccountTypeId, 
+                AccountTypeId = item.AccountTypeId,
                 DebitorCreditor = item.DebitorCreditor,
                 CurrencyCode = item.CurrencyCode,
                 Description = item.Description,
@@ -121,7 +122,7 @@ namespace Accounting.Finance
                 AccountTypeOtherName = item.AccountType != null ? item.AccountType.OtherName : null,
             });
             var dtos = await AsyncExecuter.ToListAsync(newQueryable);
-            return new PagedResultDto<SubjectFilteredQueryDto>(totalCount, dtos );
+            return new PagedResultDto<SubjectFilteredQueryDto>(totalCount, dtos);
         }
     }
 }

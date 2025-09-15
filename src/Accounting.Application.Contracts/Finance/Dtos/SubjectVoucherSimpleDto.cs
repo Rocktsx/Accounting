@@ -16,5 +16,6 @@ namespace Accounting.Finance.Dtos
         public string CurrencyCode { get; set; }
         public bool IsSubSubjectType { get; set; }
         public bool IsPayMethod { get; set; }
+        public string AccountTypeCode { get; set; }
     }
 }
