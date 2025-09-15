@@ -148,6 +148,18 @@
     "Void": "Void",
     "JournalVoucher": "Transfer Voucher",
     "ReceivableVoucher": "Receivable Voucher",
-    "PayableVoucher": "Payable Voucher"
+    "PayableVoucher": "Payable Voucher",
+    "DueDate": "Due Date",
+    "Project": "Project",
+    "Custom1": "Custom 1",
+    "Custom2": "Custom 2",
+    "Total": "Total",
+    "DebitorCreditorAmountMustGreaterThanZero": "The Debitor or creditor amount must be greater than 0.",
+    "NativeAmount": "Native Amount",
+    "ForeignAmount": "Foreign Amount",
+    "AddDetail": "Add Detail",
+    "SubSubject": "Sub Subject",
+    "Detail": "Detail",
+    "PleaseEnterAValue": "Please enter a value"
   }
 }

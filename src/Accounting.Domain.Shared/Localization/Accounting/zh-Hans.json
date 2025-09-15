@@ -181,6 +181,19 @@
     "Void": "废弃",
     "JournalVoucher": "转账传票",
     "ReceivableVoucher": "收款传票",
-    "PayableVoucher": "应付传票"
+    "PayableVoucher": "应付传票",
+    "DueDate": "到期日",
+    "Project": "项目",
+    "Custom1": "自定义1",
+    "Custom2": "自定义2",
+    "Total": "总计",
+    "DebitorCreditorAmountMustGreaterThanZero": "借方金额和贷方金额必须大于0",
+    "NativeAmount": "本币金额",
+    "ForeignAmount": "外币金额",
+    "AddDetail": "添加明细",
+    "SubSubject": "辅助科目",
+    "Detail": "明细",
+    "EditDetail": "编辑明细",
+    "PleaseEnterAValue": "请输入一个值"
   }
 }

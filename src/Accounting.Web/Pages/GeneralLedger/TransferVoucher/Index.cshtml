@@ -7,8 +7,20 @@
 @model Accounting.Web.Pages.GeneralLedger.TransferVoucher.IndexModel
 @section scripts
 {
-    <script src="/Pages/GeneralLedger/TransferVoucher/Index.cshtml.js" type="module"></script>
+    <script src="/libs/vue/vue.min.js"></script>
+    <script src="/libs/vuex/vuex.min.js"></script>
+    <script src="/Pages/GeneralLedger/TransferVoucher/Index.cshtml.js"></script>
 }
+<style>
+    .table thead th {
+        font-size: 1em;
+    }
+    
+    #details {
+        overflow: hidden;
+        overflow-x: scroll;
+    }
+</style>
 <abp-card>
     <abp-card-header>
         <abp-row class="mb-3">
@@ -80,3 +92,5 @@
         <abp-table id="voucherTable" striped-rows="true" />
     </abp-card-body>
 </abp-card>
+<div id="app">
+</div>
