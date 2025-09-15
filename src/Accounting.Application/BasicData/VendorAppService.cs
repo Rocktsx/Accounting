@@ -33,6 +33,7 @@ namespace Accounting.BasicData
         [Authorize(AccountingPermissions.Vendor)]
         public override Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
         {
+            dto.IsVendor = true;
             return base.GetListAsync(dto);
         }
         [Authorize(AccountingPermissions.VendorEdit)]

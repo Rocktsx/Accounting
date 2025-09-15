@@ -33,6 +33,7 @@ namespace Accounting.BasicData
         [Authorize(AccountingPermissions.Client)]
         public override Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
         {
+            dto.IsClient = true;
             return base.GetListAsync(dto);
         }
         [Authorize(AccountingPermissions.ClientEdit)]
