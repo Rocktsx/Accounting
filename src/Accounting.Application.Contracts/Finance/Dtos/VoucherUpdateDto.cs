@@ -6,7 +6,7 @@ namespace Accounting.Finance.Dtos;
 
 public class VoucherUpdateDto
 {
-    [Required] public DateOnly VoucherDate { get; set; }
+    [Required] public DateTime VoucherDate { get; set; }
     public VoucherStatus? Status { get; set; }
 
     public IEnumerable<VoucherDetailUpdateDto> Details { get; set; } = [];

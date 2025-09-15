@@ -32,7 +32,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     
     public override async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
     {
-        var entity = new Voucher(GuidGenerator.Create(), input.VoucherDate, input.VoucherType, VoucherStatus.Draft);
+        var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, VoucherStatus.Draft);
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
         foreach (var item in input.Details)
@@ -61,7 +61,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     public override async Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
     {
         var entity = await GetEntityByIdAsync(id);
-        entity.SetVoucherDate(input.VoucherDate);
+        entity.SetVoucherDate(DateOnly.FromDateTime(input.VoucherDate));
         if(input.Status != null)
         {
            entity.SetStatus(input.Status.Value);

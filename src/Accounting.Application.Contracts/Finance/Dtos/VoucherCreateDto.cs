@@ -12,7 +12,7 @@ public class VoucherCreateDto
 
     public int? GenNo { get; set; }
     [Required]
-    public DateOnly VoucherDate { get; set; }
+    public DateTime VoucherDate { get; set; }
     [Required]
     public VoucherType VoucherType { get; set; } 
 
