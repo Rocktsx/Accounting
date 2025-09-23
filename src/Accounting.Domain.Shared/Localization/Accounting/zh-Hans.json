@@ -194,6 +194,8 @@
     "SubSubject": "辅助科目",
     "Detail": "明细",
     "EditDetail": "编辑明细",
-    "PleaseEnterAValue": "请输入一个值"
+    "PleaseEnterAValue": "请输入一个值",
+    "CreationTime": "创建时间",
+    "LastModificationTime": "最后修改时间"
   }
 }

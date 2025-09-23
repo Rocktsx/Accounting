@@ -160,6 +160,8 @@
     "AddDetail": "Add Detail",
     "SubSubject": "Sub Subject",
     "Detail": "Detail",
-    "PleaseEnterAValue": "Please enter a value"
+    "PleaseEnterAValue": "Please enter a value",
+    "CreationTime": "Creation Time",
+    "LastModificationTime": "Last Modification Time"
   }
 }

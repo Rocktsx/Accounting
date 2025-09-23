@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 
 namespace Accounting.BasicData.Dtos
 {
-    public class CompanyDto: GenerateCodeDto
+    public class CompanyDto: AuditedEntityDto<Guid>
     {
-        public Guid Id { get; set; } 
+        public string Code { get; set; }
+        public string Prefix { get; set; }
+        public int GenNo { get; set; }
         public string Name { get; set; } 
         public string OtherName { get; set; } 
         public string NickName { get; set; }

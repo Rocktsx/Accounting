@@ -214,6 +214,18 @@ $(function () {
                         return data === 1 ? l('Approval') : data === 2 ? l('Void') : l('Draft');
                     }
                 },
+                {
+                    title: l('CreationTime'),
+                    data: "creationTime",
+                    orderable: true,
+                    dataFormat: 'datetime'
+                },
+                {
+                    title: l('LastModificationTime'),
+                    data: "lastModificationTime",
+                    orderable: true,
+                    dataFormat: 'datetime'
+                },
             ]
         })
     );
