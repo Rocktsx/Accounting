@@ -1,102 +1,102 @@
-﻿// 创建一个新的 store 实例
-const store = new Vuex.Store({
-    state() {
-        return {
-            editItem: { details: [] },
-            isShowModal: false,
-            subjects: [],
-            companies: [],
-            subjectMap: {},
-            companyMap: {},
-            clients: [],
-            vendors: [],
-            currencies: [],
-            nativeCurrency: '',
-            isRequestData: false
-        }
-    },
-    mutations: {
-        increment(state) {
-            state.count++
-        },
-        showModal(state, payload) {
-            state.isShowModal = payload.isShowModal;
-        },
-        setIsEdit(state, payload) {
-            state.isEdit = payload.isEdit;
-        },
-        setEditItem(state, payload) {
-            state.editItem = payload.item || { details: [] };
-            if (state.editItem.id) {
-                state.editItem.voucherDate = new Date(state.editItem.voucherDate).toLocaleDateString();
-            }
-
-            if (state.subjects.length > 0) {
-                (state.editItem.details || []).forEach(d => {
-                    if (d.subjectId) {
-                        const subject = state.subjectMap[d.subjectId];
-                        if (subject) {
-                            d.isSubSubjectType = subject.isSubSubjectType;
-                            d.accountTypeCode = subject.accountTypeCode;
-                        }
-                    }
-                });
-            }
-        },
-        setSubjects(state, payload) {
-            state.subjects = payload.subjects || [];
-            state.subjectMap = {};
-            (state.subjects).forEach(s => {
-                state.subjectMap[s.id] = s;
-            });
-        },
-        setCompanies(state, payload) {
-            const { companies, clients, vendors } = payload
-            state.companies = companies || [];
-            state.clients = clients || [];
-            state.vendors = vendors || [];
-
-            state.companyMap = {};
-            (state.companies).forEach(c => {
-                state.companyMap[c.id] = c;
-            });
-        },
-        setCurrencies(state, payload) {
-            state.currencies = payload.currencies || [];
-        },
-        setNativeCurrency(state, payload) {
-            state.nativeCurrency = payload;
-        },
-        setIsRequestData(state, payload) {
-            state.isRequestData = payload;
-        }
-    },
-    getters: {
-        isShowModal: state => state.isShowModal,
-        editItem: state => state.editItem,
-        totalDebitorAmount: state => {
-            return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === 1 ? item.nativeAmount : 0), 0)
-        },
-        totalCreditorAmount: state => {
-            return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === -1 ? 0 : item.nativeAmount), 0)
-        },
-        subjects: state => state.subjects,
-        subjectMap: state => state.subjectMap,
-        companies: state => state.companies,
-        companyMap: state => state.companyMap,
-        clients: state => state.clients,
-        vendors: state => state.vendors,
-        currencies: state => state.currencies,
-        nativeCurrency: state => state.nativeCurrency,
-        isRequestData: state => state.isRequestData
-    }
-})
-
+﻿
 $(function () {
     const l = abp.localization.getResource('Accounting');
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Deletion');
+    // 创建一个新的 store 实例 
+    function formatDate(value) {
+        return (new moment(value)).format("yyyy-MM-DD")
+    }
+    const store = new Vuex.Store({
+        state() {
+            return {
+                editItem: { details: [] },
+                isShowModal: false,
+                subjects: [],
+                companies: [],
+                subjectMap: {},
+                companyMap: {},
+                clients: [],
+                vendors: [],
+                currencies: [],
+                nativeCurrency: '',
+                isRequestData: false
+            }
+        },
+        mutations: {
+            increment(state) {
+                state.count++
+            },
+            showModal(state, payload) {
+                state.isShowModal = payload.isShowModal;
+            },
+            setIsEdit(state, payload) {
+                state.isEdit = payload.isEdit;
+            },
+            setEditItem(state, payload) { 
+                state.editItem = payload.item || { details: [] };
+                state.editItem.voucherDate = formatDate(state.editItem.voucherDate);
 
+                if (state.subjects.length > 0) {
+                    (state.editItem.details || []).forEach(d => {
+                        if (d.subjectId) {
+                            const subject = state.subjectMap[d.subjectId];
+                            if (subject) {
+                                d.isSubSubjectType = subject.isSubSubjectType;
+                                d.accountTypeCode = subject.accountTypeCode;
+                            }
+                        }
+                    });
+                }
+            },
+            setSubjects(state, payload) {
+                state.subjects = payload.subjects || [];
+                state.subjectMap = {};
+                (state.subjects).forEach(s => {
+                    state.subjectMap[s.id] = s;
+                });
+            },
+            setCompanies(state, payload) {
+                const { companies, clients, vendors } = payload
+                state.companies = companies || [];
+                state.clients = clients || [];
+                state.vendors = vendors || [];
+
+                state.companyMap = {};
+                (state.companies).forEach(c => {
+                    state.companyMap[c.id] = c;
+                });
+            },
+            setCurrencies(state, payload) {
+                state.currencies = payload.currencies || [];
+            },
+            setNativeCurrency(state, payload) {
+                state.nativeCurrency = payload;
+            },
+            setIsRequestData(state, payload) {
+                state.isRequestData = payload;
+            }
+        },
+        getters: {
+            isShowModal: state => state.isShowModal,
+            editItem: state => state.editItem,
+            totalDebitorAmount: state => {
+                return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === 1 ? Number(item.nativeAmount) : 0), 0)
+            },
+            totalCreditorAmount: state => {
+                return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === -1 ? Number(item.nativeAmount) : 0 ), 0)
+            },
+            subjects: state => state.subjects,
+            subjectMap: state => state.subjectMap,
+            companies: state => state.companies,
+            companyMap: state => state.companyMap,
+            clients: state => state.clients,
+            vendors: state => state.vendors,
+            currencies: state => state.currencies,
+            nativeCurrency: state => state.nativeCurrency,
+            isRequestData: state => state.isRequestData
+        }
+    }) 
     const tvInputAction = function (requestData, dataTableSettings) {
         return {
             filter: $('#code').val().trim(),
@@ -113,7 +113,7 @@ $(function () {
         if (id) {
             requests.push(accounting.finance.transferVoucher.get(id));
         } else {
-            requests.push(new Promise(resolve => resolve({ voucherDate: new Date().toLocaleDateString(), prefix: 'JV', genNo: 0, details: [] })));
+            requests.push(new Promise(resolve => resolve({ voucherDate: new Date(), prefix: 'JV', genNo: 0, details: [] })));
         }
 
         if (!store.getters.isRequestData) {
@@ -127,7 +127,7 @@ $(function () {
         store.commit('showModal', { isShowModal: true });
         Promise.all(requests).then(results => {
             const item = results[0];
-            store.commit('setEditItem', { item: item });
+            store.commit('setEditItem', { item });
              
             if (!store.getters.isRequestData) {
                 const clientList = results[2].items || [];
@@ -223,12 +223,12 @@ $(function () {
     $(document).on('click', '#newVoucherBtn', function () {
         editHandle();
     });
-});
 
-function getLocal(key) {
-    return abp.localization.getResource('Accounting')(key);
-}
-const modalTemplate = `
+
+    function getLocal(key) {
+        return abp.localization.getResource('Accounting')(key);
+    }
+    const modalTemplate = `
 <form ref="modal" class="needs-validation" novalidate>
     <div :class="[value ? 'show d-block' : '']" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(157, 159, 160, 0.8);">
       <div class="modal-dialog modal-xl" role="document">
@@ -248,33 +248,33 @@ const modalTemplate = `
       </div>
     </div>
 </form>`;
-const Modal = {
-    template: modalTemplate,
-    props: ['value', 'title'],
-    mounted() {
-        this.$nextTick(() => {
-            document.body.classList.add('modal-open');
-            document.body.appendChild(this.$refs.modal);
-        })
-    },
-    beforeDestroy() {
-        document.body.classList.remove('modal-open');
-        document.body.removeChild(this.$refs.modal);
-    },
-    methods: {
-        close() {
-            this.$emit('input', !this.value);
+    const Modal = {
+        template: modalTemplate,
+        props: ['value', 'title'],
+        mounted() {
+            this.$nextTick(() => {
+                document.body.classList.add('modal-open');
+                document.body.appendChild(this.$refs.modal);
+            })
         },
-        save(e) {
-            e.preventDefault();
-            this.$emit('save');
+        beforeDestroy() {
+            document.body.classList.remove('modal-open');
+            document.body.removeChild(this.$refs.modal);
         },
-        l(key) {
-            return getLocal(key);
+        methods: {
+            close() {
+                this.$emit('input', !this.value);
+            },
+            save(e) {
+                e.preventDefault();
+                this.$emit('save');
+            },
+            l(key) {
+                return getLocal(key);
+            }
         }
     }
-}
-const editDetailTemplate = `<div>
+    const editDetailTemplate = `<div>
 <Modal :value="value" @input="input" @save="save" :title="l('Detail')">
     <div>
        <div style="display: grid; grid-template-columns: 1fr 1fr;">
@@ -380,137 +380,139 @@ const editDetailTemplate = `<div>
         </div> 
     </div>
 </Modal></div>`;
-const EditDetail = {
-    components: { Modal },
-    template: editDetailTemplate,
-    props: ['item', 'value'],
-    data() {
-        return {
-            debitorCreditors: [{ value: 1, text: getLocal('Debitor') }, { value: -1, text: getLocal('Creditor') }],
-            errors: {}
-        }
-    },
-    computed: {
-        ...Vuex.mapGetters(['subjects', 'companies', 'currencies', 'subjectMap', 'clients', 'vendors'])
-    },
-    methods: {
-        input(value) {
-            this.$emit('input', value);
+    const EditDetail = {
+        components: { Modal },
+        template: editDetailTemplate,
+        props: ['item', 'value'],
+        data() {
+            return {
+                debitorCreditors: [{ value: 1, text: getLocal('Debitor') }, { value: -1, text: getLocal('Creditor') }],
+                errors: {}
+            }
         },
-        validate() {
-            const { subjectId, currencyCode, currencyRate, foreignAmount, debitorCreditor,
-                isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
-            let errorCount = 0;
-            this.errors = {};
-            if (!subjectId) {
-                this.errors.subjectId = true;
-                errorCount++;
-            }
-            if (!currencyCode) {
-                this.errors.currencyCode = true;
-                errorCount++;
-            }
-            if (!currencyRate || isNaN(Number(currencyRate)) || Number(currencyRate) <= 0) {
-                this.errors.currencyRate = true;
-                errorCount++;
-            }
-            if (!foreignAmount || isNaN(Number(foreignAmount)) || Number(foreignAmount) <= 0) {
-                this.errors.foreignAmount = true;
-                errorCount++;
-            }
-            if (!debitorCreditor) {
-                this.errors.debitorCreditor = true;
-                errorCount++;
-            }
-            if (isSubSubjectType) {
-                if (!subSubjectCode) {
-                    this.errors.subSubjectCode = true;
+        computed: {
+            ...Vuex.mapGetters(['subjects', 'companies', 'currencies', 'subjectMap', 'clients', 'vendors'])
+        },
+        methods: {
+            input(value) {
+                this.$emit('input', value);
+            },
+            validate() {
+                const { subjectId, currencyCode, currencyRate, foreignAmount, debitorCreditor,
+                    isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
+                let errorCount = 0;
+                this.errors = {};
+                if (!subjectId) {
+                    this.errors.subjectId = true;
                     errorCount++;
                 }
-                if (!docNo) {
-                    this.errors.docNo = true;
+                if (!currencyCode) {
+                    this.errors.currencyCode = true;
                     errorCount++;
                 }
-                if (!dueDate || (new Date(dueDate)).toString() === 'Invalid Date') {
-                    this.errors.dueDate = true;
+                if (!currencyRate || isNaN(Number(currencyRate)) || Number(currencyRate) <= 0) {
+                    this.errors.currencyRate = true;
                     errorCount++;
                 }
-            }
-            return errorCount === 0;
-        },
-        save() {
-            if (!this.validate()) {
-                return;
-            }
-            this.$emit('save')
-        },
-        renderAmount(amount, scale) {
-            const num = Number(amount);
-            return !Number.isNaN(num) ? num.toFixed(scale ? scale : 2) : '0.00';
-        },
-        setNativeAmount() {
-            if (this.item.foreignAmount) {
-                this.item.foreignAmount = this.item.foreignAmount.trim();
-            }
-            if (this.item.currencyRate) {
-                this.item.currencyRate = this.item.currencyRate.trim();
-            }
-            const foreignAmount = Number(this.item.foreignAmount);
-            const currencyRate = Number(this.item.currencyRate);
-            const amount = foreignAmount * currencyRate;
-            if (!isNaN(foreignAmount) && foreignAmount > 0) {
-                this.errors.foreignAmount = false;
-            }
-            if (!isNaN(currencyRate) && currencyRate > 0) {
-                this.errors.currencyRate = false;
-            }
-            this.item.nativeAmount = this.renderAmount(amount)
-        },
-        currencyChange() {
-            const currency = this.currencies.find(c => c.targetCurrency === this.item.currencyCode);
-            if (currency) {
-                this.errors.currencyCode = false;
-                this.item.currencyRate = this.renderAmount(currency.exchangeRate, 7);
-                this.setNativeAmount();
-            }
-        },
-        subjectChange() {
-            const subject = this.subjectMap[this.item.subjectId];
-            this.item.isSubSubjectType = subject ? subject.isSubSubjectType : false;
-            if (subject) {
-                this.item.accountTypeCode = subject.accountTypeCode;
-                this.errors.subjectId = false;
-                if (subject.currencyCode) {
-                    this.item.currencyCode = subject.currencyCode;
-                    this.currencyChange();
+                if (!foreignAmount || isNaN(Number(foreignAmount)) || Number(foreignAmount) <= 0) {
+                    this.errors.foreignAmount = true;
+                    errorCount++;
                 }
-            }
-            if (!this.item.isSubSubjectType) {
+                if (!debitorCreditor) {
+                    this.errors.debitorCreditor = true;
+                    errorCount++;
+                }
+                if (isSubSubjectType) {
+                    if (!subSubjectCode) {
+                        this.errors.subSubjectCode = true;
+                        errorCount++;
+                    }
+                    if (!docNo) {
+                        this.errors.docNo = true;
+                        errorCount++;
+                    }
+                    if (!dueDate || (new Date(dueDate)).toString() === 'Invalid Date') {
+                        this.errors.dueDate = true;
+                        errorCount++;
+                    }
+                }
+                return errorCount === 0;
+            },
+            save() {
+                if (!this.validate()) {
+                    return;
+                }
+                this.$emit('save')
+            },
+            renderAmount(amount, scale) {
+                const num = Number(amount);
+                return !Number.isNaN(num) ? num.toFixed(scale ? scale : 2) : '0.00';
+            },
+            setNativeAmount() {
+                if (this.item.foreignAmount) {
+                    this.item.foreignAmount = this.item.foreignAmount.trim();
+                }
+                if (this.item.currencyRate) {
+                    this.item.currencyRate = this.item.currencyRate.trim();
+                }
+                const foreignAmount = Number(this.item.foreignAmount);
+                const currencyRate = Number(this.item.currencyRate);
+                const amount = foreignAmount * currencyRate;
+                if (!isNaN(foreignAmount) && foreignAmount > 0) {
+                    this.errors.foreignAmount = false;
+                }
+                if (!isNaN(currencyRate) && currencyRate > 0) {
+                    this.errors.currencyRate = false;
+                }
+                this.item.nativeAmount = this.renderAmount(amount)
+            },
+            currencyChange() {
+                const currency = this.currencies.find(c => c.targetCurrency === this.item.currencyCode);
+                if (currency) {
+                    this.errors.currencyCode = false;
+                    this.item.currencyRate = this.renderAmount(currency.exchangeRate, 7);
+                    this.setNativeAmount();
+                }
+            },
+            subjectChange() {
+                const subject = this.subjectMap[this.item.subjectId];
+                this.item.isSubSubjectType = false;
+                if (subject) {
+                    const { isSubSubjectType, accountTypeCode, debitorCreditor, currencyCode } = subject;
+                    this.item.isSubSubjectType = isSubSubjectType;
+                    this.item.accountTypeCode = accountTypeCode;
+                    this.item.debitorCreditor = debitorCreditor;
+                    this.errors.subjectId = false;
+                    if (currencyCode) {
+                        this.item.currencyCode = currencyCode;
+                        this.currencyChange();
+                    }
+                    this.setNativeAmount();
+                }
                 this.item.subSubjectCode = '';
                 this.item.docNo = '';
                 this.item.dueDate = null;
+            },
+            arapFieldChange() {
+                const { isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
+                if (isSubSubjectType) {
+                    if (subSubjectCode) {
+                        this.errors.subSubjectCode = false;
+                    }
+                    if (docNo) {
+                        this.errors.docNo = false;
+                    }
+                    if (dueDate && (new Date(dueDate)).toString() !== 'Invalid Date') {
+                        this.errors.dueDate = false;
+                    }
+                }
+            },
+            l(key) {
+                return getLocal(key);
             }
-        },
-        arapFieldChange() {
-            const { isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
-            if (isSubSubjectType) {
-                if (subSubjectCode) {
-                    this.errors.subSubjectCode = false; 
-                }
-                if (docNo) {
-                    this.errors.docNo = false; 
-                }
-                if (dueDate && (new Date(dueDate)).toString() !== 'Invalid Date') {
-                    this.errors.dueDate = false;
-                }
-            }
-        },
-        l(key) {
-            return getLocal(key);
         }
     }
-}
-const editModalTemplate = `<div><Modal :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditTransferVoucher' : 'NewTransferVoucher' )">
+    const editModalTemplate = `<div><Modal :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditTransferVoucher' : 'NewTransferVoucher' )">
 <div id="content">
     <div class="mb-2 row">
        <div class="col row">
@@ -545,219 +547,232 @@ const editModalTemplate = `<div><Modal :value="isShowModal" @input="input" @save
         <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="tab" data-bs-target="#details" role="tab" aria-controls="details" aria-selected="true">{{l('Detail')}}</a>
       </li>
     </ul>
-    <div class="tab-content pt-0" id="detailTabContent">
+    <div class="tab-content pt-0 pb-0" id="detailTabContent">
       <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details" tabindex="0">
         <div><button type="button" class="btn btn-primary btn-sm" @click="addDetail"><i class="fa fa-plus"></i> {{l('AddDetail')}}</button></div>
-        <table class="table table-striped" style="min-width: 2060px;max-width: 2100px;">
-            <colgroup>
-                <col style="width: 120px;" />
-                <col style="width: 250px;" />
-                <col style="width: 250px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="min-width:120; max-width: 160px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-                <col style="width: 120px;" />
-            </colgroup>
-          <thead>
-            <tr>
-                <th>{{l('Actions')}}</th>
-                <th>{{l('Subject')}}</th>
-                 <th>{{l('Description')}}</th>
-                 <th>{{l('Debitor')}}<div>{{nativeCurrency}}</div></th>
-                 <th>{{l('Creditor')}}<div>{{nativeCurrency}}</div></th>
-                 <th><div>{{l('DebitorCreditor')}}</div><div>{{l('Currency')}}</div></th>
-                 <th class="text-end normal"><div>{{l('ForeignAmount')}}</div><div>{{l('ExchangeRate')}}</div></th>
-                 <th>{{l('SubSubject')}}</th>
-                 <th>{{l('DocNo')}}</th>
-                 <th>{{l('DueDate')}}</th>
-                 <th>{{l('Project')}}</th>
-                 <th>{{l('Department')}}</th>
-                 <th>{{l('Region')}}</th>
-                 <th>{{l('Custom1')}}</th>
-                 <th>{{l('Custom2')}}</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in editItem.details || []">
-                    <td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">  
-                          <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="fa fa-cog me-1"></i>{{l('Actions')}}
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li><a  @click="()=> showDetail(item)"  class="dropdown-item" href="#">{{l('Edit')}}</a></li>
-                              <li><a  @click="()=> deleteDetail(item)"  class="dropdown-item" href="#">{{l('Delete')}}</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                    </td>
-                    <td>{{ subjectMap[item.subjectId] ? (subjectMap[item.subjectId].code + ' - '+ subjectMap[item.subjectId].name) : item.subjectId }}</td>
-                    <td>{{item.description}}</td>
-                    <td>{{item.debitorCreditor === 1 ? renderAmount(item.nativeAmount) : ''}}</td>
-                    <td>{{item.debitorCreditor === -1 ? renderAmount(item.nativeAmount) : ''}}</td>
-                    <td><div>{{item.debitorCreditor === 1 ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
-                    <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
-                    <td>{{item.subSubjectCode && companyMap[item.subSubjectCode] ? (companyMap[item.subSubjectCode].code + ' - '+ companyMap[item.subSubjectCode].name) : item.subSubjectCode}}</td>
-                    <td>{{item.docNo}}</td>
-                    <td>{{item.dueDate}}</td>
-                    <td>{{item.project}}</td>
-                    <td>{{item.department}}</td>
-                    <td>{{item.region}}</td>
-                    <td>{{item.custom1}}</td>
-                    <td>{{item.custom2}}</td>
+        <div class="items"> 
+            <table class="table table-striped" style="min-width: 2060px;max-width: 2230px;">
+                <colgroup>
+                    <col style="width: 120px;" />
+                    <col style="width: 250px;" />
+                    <col style="width: 250px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                    <col style="min-width:120px; max-width: 160px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 250px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                    <col style="width: 120px;" />
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{{l('Actions')}}</th>
+                    <th>{{l('Subject')}}</th>
+                        <th>{{l('Description')}}</th>
+                        <th>{{l('Debitor')}}<div>{{nativeCurrency}}</div></th>
+                        <th>{{l('Creditor')}}<div>{{nativeCurrency}}</div></th>
+                        <th><div>{{l('DebitorCreditor')}}</div><div>{{l('Currency')}}</div></th>
+                        <th class="text-end normal"><div>{{l('ForeignAmount')}}</div><div>{{l('ExchangeRate')}}</div></th>
+                        <th>{{l('SubSubject')}}</th>
+                        <th>{{l('DocNo')}}</th>
+                        <th>{{l('DueDate')}}</th>
+                        <th>{{l('Project')}}</th>
+                        <th>{{l('Department')}}</th>
+                        <th>{{l('Region')}}</th>
+                        <th>{{l('Custom1')}}</th>
+                        <th>{{l('Custom2')}}</th>
                 </tr>
-            </tbody>
-            <tfoot>
-             <tr> 
-                <td colspan="3" class="text-end">{{l('Total')}}</td>
-                <td>{{renderAmount(totalDebitorAmount)}}</td>
-                <td colspan="11">{{renderAmount(totalCreditorAmount)}}</td>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    <tr v-for="item in editItem.details || []">
+                        <td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-cog me-1"></i>{{l('Actions')}}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a  @click="()=> showDetail(item)"  class="dropdown-item" href="#">{{l('Edit')}}</a></li>
+                                    <li><a  @click="()=> deleteDetail(item)"  class="dropdown-item" href="#">{{l('Delete')}}</a></li>
+                                </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ subjectMap[item.subjectId] ? (subjectMap[item.subjectId].code + ' - '+ subjectMap[item.subjectId].name) : item.subjectId }}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.debitorCreditor === 1 ? renderAmount(item.nativeAmount) : ''}}</td>
+                        <td>{{item.debitorCreditor === -1 ? renderAmount(item.nativeAmount) : ''}}</td>
+                        <td><div>{{item.debitorCreditor === 1 ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
+                        <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
+                        <td>{{item.subSubjectCode && companyMap[item.subSubjectCode] ? (companyMap[item.subSubjectCode].code + ' - '+ companyMap[item.subSubjectCode].name) : item.subSubjectCode}}</td>
+                        <td>{{item.docNo}}</td>
+                        <td>{{formatRowDate(item.dueDate)}}</td>
+                        <td>{{item.project}}</td>
+                        <td>{{item.department}}</td>
+                        <td>{{item.region}}</td>
+                        <td>{{item.custom1}}</td>
+                        <td>{{item.custom2}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <td colspan="3" class="text-end">{{l('Total')}}</td>
+                    <td>{{renderAmount(totalDebitorAmount)}}</td>
+                    <td colspan="11">{{renderAmount(totalCreditorAmount)}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div> 
       </div>
     </div>
 </div> 
 </Modal><EditDetail v-if="isShowDetail" v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
-function getDefaultDetail() {
-    return {
-        subjectId: null,
-        subSubjectCode: null,
-        description: '',
-        debitorCreditor: 1,
-        currencyCode: '',
-        currencyRate: 1,
-        foreignAmount: 0,
-        nativeAmount: 0,
-        docNo: '',
-        dueDate: null,
-        project: '',
-        department: '',
-        region: '',
-        custom1: '',
-        custom2: '',
-        itemQty: 0,
-        isOriginal: true,
-        paymentReference: '',
-        isSubSubjectType: false
-    };
-}
-const EditModal = {
-    components: { Modal, EditDetail },
-    template: editModalTemplate,
-    data() {
+    function getDefaultDetail() {
         return {
-            isShowDetail: false,
-            item: {},
-            errors: {}
-        }
-    },
-    computed: {
-        ...Vuex.mapGetters(['isShowModal', 'editItem', 'totalDebitorAmount',
-            'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency'])
-    },
-    methods: {
-        ...Vuex.mapMutations(['showModal']),
-        input(value) {
-            this.showModal({ isShowModal: value })
-        },
-        validate() {
-            const { id, prefix, voucherDate } = this.editItem
-            this.errors = {};
-            let errorCount = 0;
-            let message =''
-            if (!id && !prefix) {
-                this.errors.prefix = true;
-                errorCount++;
+            subjectId: null,
+            subSubjectCode: null,
+            description: '',
+            debitorCreditor: 1,
+            currencyCode: '',
+            currencyRate: 1,
+            foreignAmount: 0,
+            nativeAmount: 0,
+            docNo: '',
+            dueDate: null,
+            project: '',
+            department: '',
+            region: '',
+            custom1: '',
+            custom2: '',
+            itemQty: 0,
+            isOriginal: true,
+            paymentReference: '',
+            isSubSubjectType: false
+        };
+    }
+    const EditModal = {
+        components: { Modal, EditDetail },
+        template: editModalTemplate,
+        data() {
+            return {
+                isShowDetail: false,
+                item: {},
+                errors: {}
             }
-            if (!voucherDate || (new Date(voucherDate)).toString() === 'Invalid Date') {
-                this.errors.voucherDate = true;
-                errorCount++;
+        },
+        computed: {
+            ...Vuex.mapGetters(['isShowModal', 'editItem', 'totalDebitorAmount',
+                'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency'])
+        },
+        methods: {
+            ...Vuex.mapMutations(['showModal']),
+            input(value) {
+                this.showModal({ isShowModal: value })
+            },
+            validate() {
+                const { id, prefix, voucherDate } = this.editItem
+                this.errors = {};
+                let errorCount = 0;
+                let message = ''
+                if (!id && !prefix) {
+                    this.errors.prefix = true;
+                    errorCount++;
+                }
+                if (!voucherDate || (new Date(voucherDate)).toString() === 'Invalid Date') {
+                    this.errors.voucherDate = true;
+                    errorCount++;
+                }
+                if (this.totalCreditorAmount == 0 || this.totalDebitorAmount == 0) {
+                    message = this.l('DebitorCreditorAmountMustGreaterThanZero');
+                    errorCount++;
+                }
+                if (this.totalCreditorAmount !== this.totalDebitorAmount) {
+                    message += this.l('VoucherDoesNotBalance');
+                    errorCount++;
+                };
+                if (message) {
+                    abp.message.error(message);
+                }
+                return errorCount === 0;
+            },
+            save() {
+                this.editItem.voucherDate = document.querySelector("#voucherDate").value;
+                if (!this.validate()) {
+                    return;
+                }
+                abp.ui.setBusy('#content');
+                const data = { ...this.editItem }
+                data.voucherDate = data.voucherDate;
+                const request = this.editItem.id ? accounting.finance.transferVoucher.update(this.editItem.id, data) :
+                    accounting.finance.transferVoucher.create(data);
+                request.then(() => {
+                    abp.ui.clearBusy('#content');
+                    abp.notify.success(this.l('SavedSuccessfully'));
+                    this.showModal({ isShowModal: false });
+                    $('#voucherTable').DataTable().ajax.reload();
+                }).catch(() => {
+                    abp.ui.clearBusy('#content');
+                });
+            },
+            renderAmount(amount, scale) {
+                const num = Number(amount);
+                return !Number.isNaN(num) ? num.toFixed(scale ? scale : 2) : '0.00';
+            },
+            showDetail(item) {
+                this.item = item;
+                const { dueDate } = this.item;
+                if (dueDate) {
+                    this.item.dueDate = this.formatInputDate(dueDate)
+                }
+                this.isShowDetail = true;
+            },
+            deleteDetail(item) {
+                const index = (this.editItem.details || []).findIndex(obj => obj === item);
+                if (index >= 0) {
+                    this.editItem.details.splice(index, 1);
+                }
+                this.isShowDetail = false;
+            },
+            saveDetail() {
+                const index = (this.editItem.details || []).findIndex(obj => obj === this.item);
+                if (index < 0) {
+                    this.editItem.details = [...this.editItem.details, this.item];
+                } else {
+                    this.editItem.details = [...this.editItem.details];
+                }
+                this.isShowDetail = false;
+            },
+            addDetail() {
+                this.item = getDefaultDetail();
+                this.isShowDetail = true;
+            },
+            l(key) {
+                return getLocal(key);
+            },
+            formatInputDate(value) {
+                return (new moment(value)).format("yyyy-MM-DD")
+            },
+            formatRowDate(value) {
+                return value ? new Date(value).toLocaleDateString(): ''
             }
-            if (this.totalCreditorAmount == 0 || this.totalDebitorAmount == 0) {
-                message = this.l('DebitorCreditorAmountMustGreaterThanZero');
-                errorCount++;
-            }
-            if (this.totalCreditorAmount !== this.totalDebitorAmount) {
-                message += this.l('VoucherDoesNotBalance');
-                errorCount++;
-            };
-            if (message) {
-                abp.message.error(message);
-            }
-            return errorCount === 0;
-        },
-        save() {
-            this.editItem.voucherDate = document.querySelector("#voucherDate").value;
-            if (!this.validate()) {
-                return;
-            }
-            abp.ui.setBusy('#content');
-            const data = { ...this.editItem }
-            data.voucherDate = data.voucherDate; 
-            const request = this.editItem.id ? accounting.finance.transferVoucher.update(this.editItem.id, data) :
-                accounting.finance.transferVoucher.create(data);
-            request.then(() => {
-                abp.ui.clearBusy('#content');
-                abp.notify.success(this.l('SavedSuccessfully'));
-                this.showModal({ isShowModal: false });
-                $('#voucherTable').DataTable().ajax.reload();
-            }).catch(() => {
-                abp.ui.clearBusy('#content');
-            });
-        },
-        renderAmount(amount, scale) {
-            const num = Number(amount);
-            return !Number.isNaN(num) ? num.toFixed(scale ? scale : 2) : '0.00';
-        },
-        showDetail(item) {
-            this.item = item;
-            this.isShowDetail = true;
-        },
-        deleteDetail(item) {
-            const index = (this.editItem.details || []).findIndex(obj => obj === item);
-            if (index >= 0) {
-                this.editItem.details.splice(index, 1);
-            }
-            this.isShowDetail = false;
-        },
-        saveDetail() {
-            const index = (this.editItem.details || []).findIndex(obj => obj === this.item);
-            if (index < 0) {
-                this.editItem.details = [...this.editItem.details, this.item];
-            } else {
-                this.editItem.details = [...this.editItem.details];
-            }
-            this.isShowDetail = false;
-        },
-        addDetail() {
-            this.item = getDefaultDetail();
-            this.isShowDetail = true;
-        },
-        l(key) {
-            return getLocal(key);
         }
     }
-}
 
-const App = {
-    components: { EditModal },
-    template: `<div><EditModal /></div>`
-}
+    const App = {
+        components: { EditModal },
+        template: `<div><EditModal /></div>`
+    }
 
-const app = new Vue({
-    components: { App },
-    template: `<App />`,
-    el: '#app',
-    store,
-    abp,
-    accounting
+    const app = new Vue({
+        components: { App },
+        template: `<App />`,
+        el: '#app',
+        store,
+        abp,
+        accounting
+    });
 });
