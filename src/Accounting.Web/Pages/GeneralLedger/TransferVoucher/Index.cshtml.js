@@ -75,7 +75,22 @@ $(function () {
             },
             setIsRequestData(state, payload) {
                 state.isRequestData = payload;
-            }
+            },
+            saveDetailItem(state, payload) {
+                const { item } = payload;
+                const index = state.editItem.details.findIndex(obj => obj == item);
+                if (index < 0) {
+                    state.editItem.details.push(item)
+                } else {
+                    state.editItem.details = [...state.editItem.details];
+                } 
+            },
+            removeDetailItem(state, payload) {
+                const index = (state.editItem.details || []).findIndex(obj => obj === payload.item);
+                if (index >= 0) {
+                    state.editItem.details.splice(index, 1);
+                }
+            },
         },
         getters: {
             isShowModal: state => state.isShowModal,
@@ -669,7 +684,7 @@ $(function () {
                 'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency'])
         },
         methods: {
-            ...Vuex.mapMutations(['showModal']),
+            ...Vuex.mapMutations(['showModal', 'saveDetailItem', 'removeDetailItem']),
             input(value) {
                 this.showModal({ isShowModal: value })
             },
@@ -731,19 +746,11 @@ $(function () {
                 this.isShowDetail = true;
             },
             deleteDetail(item) {
-                const index = (this.editItem.details || []).findIndex(obj => obj === item);
-                if (index >= 0) {
-                    this.editItem.details.splice(index, 1);
-                }
+                this.removeDetailItem({ item })
                 this.isShowDetail = false;
             },
             saveDetail() {
-                const index = (this.editItem.details || []).findIndex(obj => obj === this.item);
-                if (index < 0) {
-                    this.editItem.details = [...this.editItem.details, this.item];
-                } else {
-                    this.editItem.details = [...this.editItem.details];
-                }
+                this.saveDetailItem({ item: this.item });
                 this.isShowDetail = false;
             },
             addDetail() {
