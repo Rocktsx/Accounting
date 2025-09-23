@@ -20,11 +20,13 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     private readonly ISubjectAppService _subjectAppService;
     private const string BankSubjectCode = "2801";
     private const string RentAndRatesSubjectCode = "8021";
+    private readonly IAccountingSettingAppService _accountingSettingAppService;
 
     public VoucherAppServiceTests()
     {
         _voucherAppService = GetRequiredService<IVoucherAppService>();
         _subjectAppService = GetRequiredService<ISubjectAppService>();
+        _accountingSettingAppService = GetRequiredService<IAccountingSettingAppService>();
     }
 
     private async Task<VoucherCreateDto> GetCreateDtoAsync()
@@ -34,7 +36,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         {
             Prefix = "JV",
             VoucherType = VoucherType.JournalVoucher,
-            VoucherDate = new DateOnly(2025, 1, 12),
+            VoucherDate = new DateTime(2025, 1, 12),
             Details =
             [
                 new VoucherDetailCreateDto()
@@ -106,7 +108,29 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         dto.Details.ShouldNotBeNull();
         dto.Details.Count().ShouldBe(2);
     }
+    [Fact]
+    public async Task Can_Create_Voucher_With_Format()
+    {
+        // Arrange
+        var createDto = await GetCreateDtoAsync();
+        await _accountingSettingAppService.UpdateAsync(new AccountingSettingDto
+        {
+            TransferVoucherDateFormat ="yy"
+        });
+        // Act
+        var dto = await _voucherAppService.CreateAsync(createDto);
 
+        // Assert
+        dto.ShouldNotBeNull();
+        dto.Id.ShouldNotBe(Guid.Empty);
+        dto.Code.ShouldBe("JV-25-0001");
+        dto.VoucherType.ShouldBe(VoucherType.JournalVoucher);
+        dto.VoucherDate.ShouldBe(new DateOnly(2025, 1, 12));
+        dto.Status.ShouldBe(VoucherStatus.Draft);
+        dto.Details.ShouldNotBeNull();
+        dto.Details.Count().ShouldBe(2);
+    }
+    
     [Fact]
     public async Task Cannot_Create_Voucher_With_Empty_Prefix()
     {
@@ -127,7 +151,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     {
         // Arrange
         var createDto = await GetCreateDtoAsync();
-        createDto.VoucherDate = new DateOnly(2024, 1, 12);
+        createDto.VoucherDate = new DateTime(2024, 1, 12);
 
         // Act
         var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -151,7 +175,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         secondDetailItem.NativeAmount = 1220m;
         var oldDetailId = secondDetailItem.Id;
         secondDetailItem.Id = Guid.Empty;
-        var voucherDate = new DateOnly(2025, 10, 10);
+        var voucherDate = new DateTime(2025, 10, 10);
         var updateDto = new VoucherUpdateDto()
         {
             VoucherDate = voucherDate,
@@ -164,7 +188,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
 
         // Assert
         updatedDto.ShouldNotBeNull();
-        updatedDto.VoucherDate.ShouldBe(voucherDate);
+        updatedDto.VoucherDate.ShouldBe(DateOnly.FromDateTime(voucherDate));
         updatedDto.Status.ShouldBe(VoucherStatus.Approval);
         updatedDto.Details.ShouldNotBeNull();
         updatedDto.Details.Count().ShouldBe(2);
@@ -284,7 +308,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var dto = await _voucherAppService.CreateAsync(createDto);
         var firstDetailItem = GetDetailUpdateDto(dto.Details.First());
         var secondDetailItem = GetDetailUpdateDto(dto.Details.Last());
-        var voucherDate = new DateOnly(2025, 10, 10);
+        var voucherDate = new DateTime(2025, 10, 10);
         var updateDto = new VoucherUpdateDto()
         {
             VoucherDate = voucherDate,
@@ -303,7 +327,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         // Assert
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(1);
-        result.Items.First().VoucherDate.ShouldBe(voucherDate);
+        result.Items.First().VoucherDate.ShouldBe(DateOnly.FromDateTime(voucherDate));
     }
     [Fact]
     public async Task Can_Get_Voucher_List_With_No_Void_Status()
@@ -315,7 +339,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var secondDetailItem = GetDetailUpdateDto(dto.Details.Last()); 
         var updateDto = new VoucherUpdateDto()
         {
-            VoucherDate = new DateOnly(2025, 10, 10),
+            VoucherDate = new DateTime(2025, 10, 10),
             Status = VoucherStatus.Void,
             Details = [firstDetailItem, secondDetailItem]
         };

@@ -17,4 +17,8 @@ public class AccountingSettingDto
     public string StatementNote { get; set; }
     public string StatementReminder { get; set; }
     public string FinalReminder { get; set; }
+    public string TransferVoucherDateFormat { get; set; }
+    public string ReceivableVoucherDateFormat { get; set; }
+
+    public string PayableVoucherDateFormat { get; set; }
 }

@@ -35,6 +35,12 @@ public class AccountingSettingDefinitionProvider : SettingDefinitionProvider
             L(nameof(AccountingSettings.StatementReminder))));
         context.Add(new SettingDefinition(AccountingSettings.FinalReminder, string.Empty,
             L(nameof(AccountingSettings.FinalReminder))));
+        context.Add(new SettingDefinition(AccountingSettings.TransferVoucherDateFormat, string.Empty,
+            L(nameof(AccountingSettings.TransferVoucherDateFormat))));
+        context.Add(new SettingDefinition(AccountingSettings.ReceivableVoucherDateFormat, string.Empty,
+            L(nameof(AccountingSettings.ReceivableVoucherDateFormat))));
+        context.Add(new SettingDefinition(AccountingSettings.PayableVoucherDateFormat, string.Empty,
+            L(nameof(AccountingSettings.PayableVoucherDateFormat))));
     }
 
     private static LocalizableString L(string name)

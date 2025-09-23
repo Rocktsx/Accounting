@@ -68,4 +68,17 @@ public static class AccountingSettings
     /// 最后通知
     /// </summary>
     public const string FinalReminder = AccountingPrefix + ".FinalReminder";
+
+    /// <summary>
+    ///转账传票VoucherDate的格式
+    /// </summary>
+    public const string TransferVoucherDateFormat = AccountingPrefix + ".TVVoucherDateFormat";
+    /// <summary>
+    /// 应收传票VoucherDate的格式
+    /// </summary>
+    public const string ReceivableVoucherDateFormat = AccountingPrefix + ".RVVoucherDateFormat";
+    /// <summary>
+    /// 应付传票VoucherDate的格式
+    /// </summary>
+    public const string PayableVoucherDateFormat = AccountingPrefix + ".PVVoucherDateFormat";
 }

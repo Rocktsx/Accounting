@@ -27,4 +27,8 @@ public class AccountingSettingViewModel
     public string? StatementReminder { get; set; }
     [TextArea(Rows = 3)]
     public string? FinalReminder { get; set; }
+    public string? TransferVoucherDateFormat { get; set; }
+    public string? ReceivableVoucherDateFormat { get; set; }
+
+    public string? PayableVoucherDateFormat { get; set; }
 }

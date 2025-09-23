@@ -12,4 +12,5 @@ public static class AccountingDomainErrorCodes
     public const string SubSubjectCodeCanNotBeEmpty = "SubSubjectCodeCanNotBeEmpty";
     public const string DocNoCanNotBeEmpty = "DocNoCanNotBeEmpty";
     public const string DueDateCanNotBeEmpty = "DueDateCanNotBeEmpty";
+    public const string CannotFormatVoucherDate = "CannotFormatVoucherDate";
 }

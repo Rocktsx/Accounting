@@ -18,9 +18,8 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     { 
     } 
 
-    protected async Task ValidateAsync(Voucher voucher)
+    protected async Task ValidateAsync(Voucher voucher, VoucherManager manager)
     {
-        var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         await manager.ValidateAsync(voucher);
         if (voucher.VoucherType == VoucherType.JournalVoucher)
         {
@@ -29,10 +28,14 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
             await manager.ValidateReceivablePayableSubject(voucher, subjectRepository);
         }
     }
-    
+    protected virtual async Task<string> GetVoucherDateFormatAsync(IAccountingSettingAppService service)
+    {
+        return await service.GetTransferVoucherDateFormatAsync();
+    }
     public override async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
     {
         var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, VoucherStatus.Draft);
+        var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
         foreach (var item in input.Details)
@@ -43,9 +46,13 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
                 item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
         }
 
-        await ValidateAsync(entity);
-        var generateCodeService = LazyServiceProvider.LazyGetRequiredService<GenerateCodeService>();
-        await generateCodeService.GenerateCodeAsync(entity, Repository);
+        await ValidateAsync(entity, manager); 
+
+        var setting = LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
+        var voucherDateFormat = await GetVoucherDateFormatAsync(setting);
+        manager.SetVoucherDateFormat(voucherDateFormat);
+        await manager.GenerateCodeAsync(entity, Repository);
+
         entity = await Repository.InsertAsync(entity);
         return ObjectMapper.Map<Voucher, VoucherDto>(entity);
     }
@@ -84,8 +91,8 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
                     item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
             }
         }
-
-        await ValidateAsync(entity);
+        var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
+        await ValidateAsync(entity, manager);
         entity = await Repository.UpdateAsync(entity);
         return ObjectMapper.Map<Voucher, VoucherDto>(entity);
     }

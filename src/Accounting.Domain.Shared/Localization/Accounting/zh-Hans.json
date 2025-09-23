@@ -196,6 +196,10 @@
     "EditDetail": "编辑明细",
     "PleaseEnterAValue": "请输入一个值",
     "CreationTime": "创建时间",
-    "LastModificationTime": "最后修改时间"
+    "LastModificationTime": "最后修改时间",
+    "TransferVoucherDateFormat": "转账传票传票日期格式",
+    "ReceivableVoucherDateFormat": "收款传票传票日期格式",
+    "PayableVoucherDateFormat": "应付传票传票日期格式",
+    "CannotFormatVoucherDate": "使用该格式无法格式化传票日期：{0}"
   }
 }

@@ -24,12 +24,20 @@ namespace Accounting.Finance
         public override Task<VoucherDto> CreateAsync(VoucherCreateDto input)
         {
             input.VoucherType = VoucherType.JournalVoucher;
+            foreach (var item in input.Details)
+            {
+                item.IsOriginal = true;
+            }
             return base.CreateAsync(input);
         }
 
         [Authorize(AccountingPermissions.TransferVoucherEdit)]
         public override Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
         {
+            foreach (var item in input.Details)
+            {
+                item.IsOriginal = true;
+            }
             return base.UpdateAsync(id, input);
         }
 

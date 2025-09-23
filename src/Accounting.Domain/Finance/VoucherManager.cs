@@ -10,10 +10,10 @@ using Volo.Abp.Domain.Services;
 
 namespace Accounting.Finance
 {
-    public class VoucherManager : DomainService
+    public class VoucherManager : GenerateCodeService
     {
         private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
-
+        private string _voucherDateFormat;
         public VoucherManager(IRepository<AccountingPeriod, Guid> accountingPeriodRepository)
         {
             _accountingPeriodRepository = accountingPeriodRepository;
@@ -71,6 +71,31 @@ namespace Accounting.Finance
                     throw new BusinessException(AccountingDomainErrorCodes.DueDateCanNotBeEmpty);
                 }
             }
+        }
+        public VoucherManager SetVoucherDateFormat(string format)
+        {
+            _voucherDateFormat = format;
+            return this;
+        }
+        protected override string GetPrefix(IGenerateCode obj)
+        {
+            if (string.IsNullOrWhiteSpace(_voucherDateFormat))
+            { 
+                return base.GetPrefix(obj);
+            }
+            var prefix = base.GetPrefix(obj);
+            try
+            {
+                var datePrefix = (obj as Voucher).VoucherDate.ToString(_voucherDateFormat);
+                if (!string.IsNullOrWhiteSpace(datePrefix))
+                {
+                    prefix += "-" + datePrefix;
+                }
+            }
+            catch (Exception ex) {
+                throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, _voucherDateFormat, innerException: ex);
+            }
+            return prefix;
         }
     }
 }

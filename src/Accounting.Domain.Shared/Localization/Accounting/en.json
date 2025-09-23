@@ -162,6 +162,10 @@
     "Detail": "Detail",
     "PleaseEnterAValue": "Please enter a value",
     "CreationTime": "Creation Time",
-    "LastModificationTime": "Last Modification Time"
+    "LastModificationTime": "Last Modification Time",
+    "TransferVoucherDateFormat": "Transfer Voucher Voucher Date Format",
+    "ReceivableVoucherDateFormat": "Receivable Voucher Voucher Date Format",
+    "PayableVoucherDateFormat": "Payable Voucher Voucher Date Format",
+    "CannotFormatVoucherDate": "Cannot format voucher date with {0}"
   }
 }

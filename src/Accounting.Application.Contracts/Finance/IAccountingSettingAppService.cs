@@ -16,4 +16,7 @@ public interface IAccountingSettingAppService
     Task<string> GetStatementNoteAsync();
     Task<string> GetStatementReminderAsync();
     Task<string> GetFinalReminderAsync();
+    Task<string> GetTransferVoucherDateFormatAsync();
+    Task<string> GetReceivableVoucherDateFormatAsync();
+    Task<string> GetPayableVoucherDateFormatAsync();
 }

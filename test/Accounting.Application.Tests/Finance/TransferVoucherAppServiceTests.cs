@@ -30,7 +30,7 @@ namespace Accounting.Finance
             {
                 Prefix = "JV",
                 VoucherType = VoucherType.JournalVoucher,
-                VoucherDate = new DateOnly(2025, 1, 12),
+                VoucherDate = new DateTime(2025, 1, 12),
                 Details =
                 [
                     new VoucherDetailCreateDto()

@@ -34,7 +34,10 @@ public class AccountingSettingAppService : AccountingAppService, IAccountingSett
             AccountingSettings.SalesInvoiceSubjectCode,
             AccountingSettings.StatementNote,
             AccountingSettings.StatementReminder,
-            AccountingSettings.FinalReminder
+            AccountingSettings.FinalReminder,
+            AccountingSettings.TransferVoucherDateFormat,
+            AccountingSettings.ReceivableVoucherDateFormat,
+            AccountingSettings.PayableVoucherDateFormat
         ])).ToDictionary(item => item.Name, item => item.Value);
         dto.CompanyName = settings[AccountingSettings.CompanyName] ?? string.Empty;
         dto.CompanyOtherName = settings[AccountingSettings.CompanyOtherName] ?? string.Empty;
@@ -49,6 +52,9 @@ public class AccountingSettingAppService : AccountingAppService, IAccountingSett
         dto.StatementNote = settings[AccountingSettings.StatementNote] ?? string.Empty;
         dto.StatementReminder = settings[AccountingSettings.StatementReminder] ?? string.Empty;
         dto.FinalReminder = settings[AccountingSettings.FinalReminder] ?? string.Empty;
+        dto.TransferVoucherDateFormat = settings[AccountingSettings.TransferVoucherDateFormat] ?? string.Empty;
+        dto.ReceivableVoucherDateFormat = settings[AccountingSettings.ReceivableVoucherDateFormat] ?? string.Empty;
+        dto.PayableVoucherDateFormat = settings[AccountingSettings.PayableVoucherDateFormat] ?? string.Empty;
 
         return dto;
     }
@@ -89,6 +95,9 @@ public class AccountingSettingAppService : AccountingAppService, IAccountingSett
         await _settingManager.SetForCurrentTenantAsync(AccountingSettings.StatementNote, dto.StatementNote);
         await _settingManager.SetForCurrentTenantAsync(AccountingSettings.StatementReminder, dto.StatementReminder);
         await _settingManager.SetForCurrentTenantAsync(AccountingSettings.FinalReminder, dto.FinalReminder);
+        await _settingManager.SetForCurrentTenantAsync(AccountingSettings.TransferVoucherDateFormat, dto.TransferVoucherDateFormat);
+        await _settingManager.SetForCurrentTenantAsync(AccountingSettings.ReceivableVoucherDateFormat, dto.ReceivableVoucherDateFormat);
+        await _settingManager.SetForCurrentTenantAsync(AccountingSettings.PayableVoucherDateFormat, dto.PayableVoucherDateFormat);
     }
 
     [Authorize]
@@ -137,5 +146,20 @@ public class AccountingSettingAppService : AccountingAppService, IAccountingSett
     public async Task<string> GetFinalReminderAsync()
     {
         return (await SettingProvider.GetOrNullAsync(AccountingSettings.FinalReminder)) ?? string.Empty;
+    }
+    [Authorize]
+    public async Task<string> GetTransferVoucherDateFormatAsync()
+    { 
+        return (await SettingProvider.GetOrNullAsync(AccountingSettings.TransferVoucherDateFormat)) ?? string.Empty;
+    }
+    [Authorize]
+    public async Task<string> GetReceivableVoucherDateFormatAsync()
+    {
+        return (await SettingProvider.GetOrNullAsync(AccountingSettings.ReceivableVoucherDateFormat)) ?? string.Empty;
+    }
+    [Authorize]
+    public async Task<string> GetPayableVoucherDateFormatAsync()
+    {
+        return (await SettingProvider.GetOrNullAsync(AccountingSettings.PayableVoucherDateFormat)) ?? string.Empty;
     }
 }
