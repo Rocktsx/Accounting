@@ -1,5 +1,5 @@
 using Accounting.BasicData;
-using System; 
+using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
@@ -8,7 +8,7 @@ namespace Accounting.Finance;
 
 public class VoucherDetail : Entity<Guid>, IMultiTenant
 {
-    public Guid? TenantId { get; set; }
+    public Guid? TenantId { get; private set; }
     public Guid VoucherId { get; private set; }
     public Guid SubjectId { get; private set; }
     public Guid? SubSubjectCode { get; private set; }
@@ -17,7 +17,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
     public string CurrencyCode { get; private set; }
     public decimal CurrencyRate { get; private set; }
     public decimal ForeignAmount { get; private set; }
-    public decimal NativeAmount { get; private set; } 
+    public decimal NativeAmount { get; private set; }
     public string DocNo { get; private set; }
     public DateOnly? DueDate { get; private set; }
     public string Project { get; private set; }
@@ -37,17 +37,17 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
     {
     }
 
-    public VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
+    internal VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
-        string region, string custom1, string custom2, int itemQty, bool isOriginal, string paymentReference) : base(id)
+        string region, string custom1, string custom2, int itemQty, bool isOriginal, string paymentReference, Guid? tenantId = null) : base(id)
     {
         SetVoucherId(voucherId);
         SetSubjectId(subjectId);
         SetSubSubjectCode(subSubjectCode);
         SetDescription(description);
         SetDebitorCreditor(debitorCreditor);
-        SetCurrencyAndAmount(currencyCode, currencyRate,foreignAmount,nativeAmount); 
+        SetCurrencyAndAmount(currencyCode, currencyRate, foreignAmount, nativeAmount);
         SetDocNo(docNo);
         SetDueDate(dueDate);
         SetProject(project);
@@ -58,6 +58,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         SetItemQty(itemQty);
         SetIsOriginal(isOriginal);
         SetPaymentReference(paymentReference);
+        TenantId = tenantId;
     }
 
     public VoucherDetail SetVoucherId(Guid voucherId)
@@ -69,7 +70,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
 
     public VoucherDetail SetSubjectId(Guid subjectId)
     {
-        if(Guid.Empty.Equals(subjectId))
+        if (Guid.Empty.Equals(subjectId))
         {
             throw new BusinessException(AccountingDomainErrorCodes.SubjectIdCanNotBeEmpty);
         }
@@ -94,7 +95,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         DebitorCreditor = debitorCreditor;
         return this;
     }
-  
+
     public VoucherDetail SetCurrencyAndAmount(string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount)
     {
@@ -104,20 +105,20 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         Check.Positive(nativeAmount, nameof(nativeAmount));
         if (currencyRate * foreignAmount != nativeAmount)
         {
-            throw new  BusinessException(AccountingDomainErrorCodes.ForeignExchangeRateMatchNativeAmount);
+            throw new BusinessException(AccountingDomainErrorCodes.ForeignExchangeRateMatchNativeAmount);
         }
-        CurrencyCode= currencyCode;
+        CurrencyCode = currencyCode;
         CurrencyRate = currencyRate;
         ForeignAmount = foreignAmount;
         NativeAmount = nativeAmount;
-        
+
         return this;
     }
-   
+
 
     public VoucherDetail SetDocNo(string docNo)
     {
-        DocNo = docNo ?? string.Empty; 
+        DocNo = docNo ?? string.Empty;
         return this;
     }
 

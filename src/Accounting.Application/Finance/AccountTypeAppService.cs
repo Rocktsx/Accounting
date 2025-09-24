@@ -30,7 +30,7 @@ namespace Accounting.Finance
         {
             var item = new AccountType(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
                 input.TrialBalanceSort, input.ProfitAndLossSort, input.BalanceSheetSort, input.TrialBalanceGroup,
-                input.ProfitAndLossGroup, input.BalanceSheetGroup);
+                input.ProfitAndLossGroup, input.BalanceSheetGroup, CurrentTenant.Id);
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }

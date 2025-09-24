@@ -21,7 +21,7 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.AccountingPeriodCreation)]
         public async Task<AccountingPeriodDto> CreateAsync(AccountingPeriodCreateDto input)
         {
-            var item = new AccountingPeriod(GuidGenerator.Create(), input.Code, input.StartDate, input.EndDate, input.IsCurrentPeriod);
+            var item = new AccountingPeriod(GuidGenerator.Create(), input.Code, input.StartDate, input.EndDate, input.IsCurrentPeriod, CurrentTenant.Id);
             var entity = await _accountingPeriodRepository.InsertAsync(item);
 
             return ObjectMapper.Map<AccountingPeriod, AccountingPeriodDto>(entity);

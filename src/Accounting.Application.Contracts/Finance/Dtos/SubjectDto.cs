@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Dtos
 {
-    public class SubjectDto : EntityDto<Guid>
+    public class SubjectDto : AuditedEntityDto<Guid>
     {
         public string Code { get; set; }
         public string Name { get; set; }

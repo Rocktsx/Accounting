@@ -19,12 +19,13 @@ namespace Accounting.BasicData
         public bool IsClient { get; private set; }
         public bool IsVendor { get; private set; }
 
-        public Guid? TenantId { get; set; }
+        public Guid? TenantId { get; private set; }
 
         public virtual ICollection<CompanyAddress> Addresses { get; private  set; } = [];
         public virtual ICollection<CompanyContact> Contacts { get; private set; } = [];
         private Company() { }
-        public Company(Guid id, string name, string otherName, string nickName, string currency, decimal creditLimit, string paymentTerm, string tradeTerm, bool isClient, bool isVendor)
+        public Company(Guid id, string name, string otherName, string nickName, string currency, decimal creditLimit, 
+            string paymentTerm, string tradeTerm, bool isClient, bool isVendor, Guid? tenantId =  null)
         {
             Check.NotNull(id, nameof(id));
             Id = id;
@@ -37,6 +38,7 @@ namespace Accounting.BasicData
             CreditLimit = creditLimit;
             IsClient = isClient;
             IsVendor = isVendor;
+            TenantId = tenantId;
         }
         public Company SetName(string name)
         {

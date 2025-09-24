@@ -1,6 +1,6 @@
 ﻿using System;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp; 
+using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance
@@ -8,9 +8,9 @@ namespace Accounting.Finance
     /// <summary>
     /// 会计年度
     /// </summary>
-    public class AccountingPeriod : Entity<Guid>, IMultiTenant
+    public class AccountingPeriod : AuditedEntity<Guid>, IMultiTenant
     {
-        public Guid? TenantId { get; set; }
+        public Guid? TenantId { get; private set; }
         public string Code { get; private set; }
         public DateOnly StartDate { get; private set; }
         public DateOnly EndDate { get; private set; }
@@ -18,13 +18,14 @@ namespace Accounting.Finance
 
         private AccountingPeriod() { }
 
-        public AccountingPeriod(Guid id, string code, DateOnly startDate, DateOnly endDate, bool isCurrentPeriod)
+        public AccountingPeriod(Guid id, string code, DateOnly startDate, DateOnly endDate, bool isCurrentPeriod, Guid? tenantId = null)
         {
             Id = id;
             SetCode(code);
             SetStartDate(startDate);
             SetEndDate(endDate);
             SetIsCurrentPeriod(isCurrentPeriod);
+            TenantId = tenantId;
         }
         public AccountingPeriod SetCode(string code)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp; 
+using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance
@@ -9,9 +9,9 @@ namespace Accounting.Finance
     /// <summary>
     /// 总账类别
     /// </summary>
-    public class SubjectCategory : Entity<Guid>, IMultiTenant
+    public class SubjectCategory : AuditedEntity<Guid>, IMultiTenant
     {
-        public Guid? TenantId { get; set; }
+        public Guid? TenantId { get; private set; }
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string OtherName { get; private set; }
@@ -36,7 +36,8 @@ namespace Accounting.Finance
             DebitorCreditor debitorCreditor,
             Guid? accountTypeId,
             bool showDetail,
-            string description
+            string description,
+            Guid? tenantId = null
         ) : base(id)
         {
             SetCode(code);
@@ -47,6 +48,7 @@ namespace Accounting.Finance
             SetAccountTypeId(accountTypeId);
             SetShowDetail(showDetail);
             SetDescription(description);
+            TenantId = tenantId;
         }
 
         public SubjectCategory SetCode(string code)

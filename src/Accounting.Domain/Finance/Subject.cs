@@ -1,6 +1,6 @@
 ﻿using System;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp; 
+using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance
@@ -8,9 +8,9 @@ namespace Accounting.Finance
     /// <summary>
     /// 科目
     /// </summary>
-    public class Subject : Entity<Guid>, IMultiTenant
+    public class Subject : AuditedEntity<Guid>, IMultiTenant
     {
-        public Guid? TenantId { get; set; }
+        public Guid? TenantId { get; private set; }
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string OtherName { get; private set; }
@@ -40,7 +40,8 @@ namespace Accounting.Finance
             bool isSubSubjectType,
             bool isActive,
             bool isPayMethod,
-            int? seqCode
+            int? seqCode,
+            Guid? tenantId = null
         ) : base(id)
         {
             SetCode(code);
@@ -55,6 +56,7 @@ namespace Accounting.Finance
             SetIsActive(isActive);
             SetIsPayMethod(isPayMethod);
             SetSeqCode(seqCode);
+            TenantId = tenantId;
         }
         public Subject SetCode(string code)
         {

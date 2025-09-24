@@ -1,10 +1,10 @@
 ﻿using System;
+using Volo.Abp.Application.Dtos;
 
 namespace Accounting.BasicData.Dtos
 {
-    public class CurrencyDto
-    {
-        public Guid Id { get; set; }
+    public class CurrencyDto :AuditedEntityDto<Guid>
+    { 
         public string SourceCurrency { get; set; }
         public string TargetCurrency { get; set; }
         public decimal SourceAmount { get; set; }

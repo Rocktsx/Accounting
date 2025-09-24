@@ -34,7 +34,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     }
     public override async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
     {
-        var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, VoucherStatus.Draft);
+        var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, VoucherStatus.Draft, CurrentTenant.Id);
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
@@ -43,7 +43,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
             entity.AddDetail(GuidGenerator.Create(), item.SubjectId, item.SubSubjectCode, item.Description,
                 item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
                 item.DocNo, item.DueDate, item.Project, item.Department, item.Region, item.Custom1, item.Custom2,
-                item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
+                item.ItemQty ?? 0, item.IsOriginal ?? true, item.PaymentReference);
         }
 
         await ValidateAsync(entity, manager); 

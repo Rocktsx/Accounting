@@ -7,7 +7,7 @@ namespace Accounting.Finance;
 
 public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
 {
-    public Guid? TenantId { get; set; }
+    public Guid? TenantId { get; private set; }
     public DateOnly VoucherDate { get; private set; }
     public VoucherType VoucherType { get; private set; }
     public VoucherStatus Status { get; private set; }
@@ -18,12 +18,13 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     {
     }
 
-    public Voucher(Guid id, DateOnly voucherDate, VoucherType voucherType, VoucherStatus status)
+    public Voucher(Guid id, DateOnly voucherDate, VoucherType voucherType, VoucherStatus status, Guid? tenantId = null)
     {
         Id = id;
         SetVoucherDate(voucherDate);
         SetVoucherType(voucherType);
         SetStatus(status);
+        TenantId = tenantId;
     }
 
     public Voucher SetVoucherDate(DateOnly voucherDate)
@@ -51,7 +52,7 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     {
         var item = new VoucherDetail(id, this.Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
             currencyRate, foreignAmount, nativeAmount, docNo, dueDate, project, department, region, custom1,
-            custom2, itemQty, isOriginal,paymentReference);
+            custom2, itemQty, isOriginal,paymentReference, TenantId);
         Details.Add(item);
         return this;
     }

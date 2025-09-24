@@ -1,6 +1,7 @@
 ﻿using System; 
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace Accounting.BasicData
@@ -8,9 +9,8 @@ namespace Accounting.BasicData
     /// <summary>
     ///货币
     /// </summary>
-    public class Currency : Entity, IMultiTenant
-    {
-        public Guid Id { get; private set; }
+    public class Currency : AuditedEntity<Guid>, IMultiTenant
+    { 
         public string SourceCurrency {get; private set; }
         public string TargetCurrency { get; private set; }
         public decimal SourceAmount { get; private set; }
@@ -19,10 +19,11 @@ namespace Accounting.BasicData
         public DateOnly? EffectiveDate { get; private set; }
         public bool IsActive { get; private set; }
 
-        public Guid? TenantId { get; set; }
+        public Guid? TenantId { get; private set; }
 
         private Currency() { } // For EF Core
-        public Currency(Guid id, string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, decimal exchangeRate, DateOnly? effectiveDate, bool isActive)
+        public Currency(Guid id, string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, 
+            decimal exchangeRate, DateOnly? effectiveDate, bool isActive, Guid? tenantId = null)
         {
             Id = id;
             SetCurrency(sourceCurrency, targetCurrency);
@@ -30,6 +31,7 @@ namespace Accounting.BasicData
             SetAmountAndRate(sourceAmount, targetAmount, exchangeRate); 
             EffectiveDate = effectiveDate;
             IsActive = isActive;
+            TenantId = tenantId;
         }
         public void SetCurrency(string sourceCurrency, string targetCurrency)
         {
@@ -65,11 +67,6 @@ namespace Accounting.BasicData
         {
             IsActive = isActive;
             return this;
-        }
-
-        public override object?[] GetKeys()
-        {
-           return [TenantId, SourceCurrency, TargetCurrency];
         }
     }
 }

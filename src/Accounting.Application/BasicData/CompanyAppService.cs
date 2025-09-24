@@ -25,7 +25,7 @@ namespace Accounting.BasicData
         { 
             var company = new Company(GuidGenerator.Create(), input.Name, input.OtherName,
                 input.NickName, input.Currency, input.CreditLimit, input.PaymentTerm, input.TradeTerm,
-                input.IsClient, input.IsVendor);
+                input.IsClient, input.IsVendor,CurrentTenant.Id);
             company.SetPrefix(input.Prefix);
             if (input.Addresses != null)
             {

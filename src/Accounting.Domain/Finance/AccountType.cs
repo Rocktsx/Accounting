@@ -1,6 +1,6 @@
 ﻿using System;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp; 
+using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace Accounting.Finance
@@ -8,7 +8,7 @@ namespace Accounting.Finance
     /// <summary>
     /// 会计科目类别
     /// </summary>
-    public class AccountType : Entity<Guid>, IMultiTenant
+    public class AccountType : AuditedEntity<Guid>, IMultiTenant
     {
         public string Code { get; private set; }
         public string Name { get; private set; }
@@ -41,7 +41,7 @@ namespace Accounting.Finance
         /// </summary>
         public int BalanceSheetGroup { get; private set; }
 
-        public Guid? TenantId { get; set; }
+        public Guid? TenantId { get; private set; }
 
         private AccountType() { }
          
@@ -56,7 +56,8 @@ namespace Accounting.Finance
             int balanceSheetSort,
             int trialBalanceGroup,
             int profitAndLossGroup,
-            int balanceSheetGroup
+            int balanceSheetGroup,
+            Guid? tenantId = null
         ) : base(id)
         {
             SetCode(code);
@@ -69,6 +70,7 @@ namespace Accounting.Finance
             SetTrialBalanceGroup(trialBalanceGroup);
             SetProfitAndLossGroup(profitAndLossGroup);
             SetBalanceSheetGroup(balanceSheetGroup);
+            TenantId = tenantId;
         }
         public AccountType SetCode(string code)
         {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System; 
 using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Dtos
 {
-    public class AccountingPeriodDto: EntityDto<Guid>
+    public class AccountingPeriodDto: AuditedEntityDto<Guid>
     {
         public string Code { get; set; }
         public DateOnly StartDate { get; set; }
