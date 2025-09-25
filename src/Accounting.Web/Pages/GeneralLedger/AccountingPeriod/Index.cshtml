@@ -25,7 +25,7 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.AccountingPeriod].Value</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.AccountingPeriodCreation))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.AccountingPeriods.Default))
                 {
                     <abp-button id="newAccountingPeriodBtn"
                                 text="@L["NewAccountingPeriod"].Value"

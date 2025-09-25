@@ -5,6 +5,7 @@
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout 
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
 
@@ -19,6 +20,10 @@
 {
     <abp-script src="/Pages/BasicData/Currency/Index.cshtml.js" />
 }
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+
 <abp-card>
     <abp-card-header>
         <abp-row>
@@ -26,7 +31,7 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.Currency].Value</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                 @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.CurrencyCreation))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.Currences.Create))
                 {
                      <abp-button id="newCurrencyButton"
                             text="@L["NewCurrency"].Value"

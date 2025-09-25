@@ -25,11 +25,11 @@ namespace Accounting.Finance
     {
         public SubjectCategoryAppService(IRepository<SubjectCategory, Guid> repository) : base(repository)
         {
-            GetPolicyName = AccountingPermissions.GeneralAccount;
-            DeletePolicyName = AccountingPermissions.GeneralAccountDeletion;
-            GetListPolicyName = AccountingPermissions.GeneralAccount;
+            GetPolicyName = AccountingPermissions.GeneralAccounts.Default;
+            DeletePolicyName = AccountingPermissions.GeneralAccounts.Delete;
+            GetListPolicyName = AccountingPermissions.GeneralAccounts.Default;
         }
-        [Authorize(AccountingPermissions.GeneralAccountCreation)]
+        [Authorize(AccountingPermissions.GeneralAccounts.Create)]
         public override async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
         {
             var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
@@ -38,7 +38,7 @@ namespace Accounting.Finance
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
-        [Authorize(AccountingPermissions.GeneralAccountEdit)]
+        [Authorize(AccountingPermissions.GeneralAccounts.Update)]
         public override async Task<SubjectCategoryDto> UpdateAsync(Guid id, SubjectCategoryUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);
@@ -98,7 +98,7 @@ namespace Accounting.Finance
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory", category.ParentId));
             }
         }
-        [Authorize(AccountingPermissions.GeneralAccount)]
+        [Authorize(AccountingPermissions.GeneralAccounts.Default)]
         public async Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await NewFilteredQueryAsync(input, true);

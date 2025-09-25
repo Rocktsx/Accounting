@@ -25,7 +25,7 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.Vendor]</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(AccountingPermissions.VendorCreation))
+                @if (await AuthorizationService.IsGrantedAsync(AccountingPermissions.Vendors.Create))
                 {
                     <abp-button id="newCompanyBtn"
                                 text="@L["NewVendor"].Value"

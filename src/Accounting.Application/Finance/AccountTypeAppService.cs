@@ -21,11 +21,11 @@ namespace Accounting.Finance
 
         public AccountTypeAppService(IRepository<AccountType, Guid> repository) : base(repository)
         {
-            GetPolicyName = AccountingPermissions.SubjectCategory;
-            DeletePolicyName = AccountingPermissions.SubjectCategoryDeletion;
-            GetListPolicyName = AccountingPermissions.SubjectCategory;
+            GetPolicyName = AccountingPermissions.SubjectCategories.Default;
+            DeletePolicyName = AccountingPermissions.SubjectCategories.Delete;
+            GetListPolicyName = AccountingPermissions.SubjectCategories.Default;
         }
-        [Authorize(AccountingPermissions.SubjectCategoryCreation)]
+        [Authorize(AccountingPermissions.SubjectCategories.Create)]
         public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
         {
             var item = new AccountType(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
@@ -56,7 +56,7 @@ namespace Accounting.Finance
                     OtherName = x.OtherName
                 }));
         }
-        [Authorize(AccountingPermissions.SubjectCategoryEdit)]
+        [Authorize(AccountingPermissions.SubjectCategories.Update)]
         public override async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);

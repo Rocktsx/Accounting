@@ -19,7 +19,7 @@ namespace Accounting.BasicData
         {
             _currencyRepository = repository; 
         }
-        [Authorize(AccountingPermissions.CurrencyCreation)]
+        [Authorize(AccountingPermissions.Currences.Create)]
         public async Task<CurrencyDto> CreateAsync(CurrencyCreateDto input)
         {
             var newCurrency = new Currency(GuidGenerator.Create(), input.SourceCurrency, input.TargetCurrency,
@@ -27,25 +27,25 @@ namespace Accounting.BasicData
             var entity = await _currencyRepository.InsertAsync(newCurrency);
             return ObjectMapper.Map<Currency, CurrencyDto>(entity);
         }
-        [Authorize(AccountingPermissions.CurrencyDeletion)]
+        [Authorize(AccountingPermissions.Currences.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _currencyRepository.DeleteAsync(id);
         }
-        [Authorize(AccountingPermissions.Currency)]
+        [Authorize(AccountingPermissions.Currences.Default)]
         public async Task<IEnumerable<CurrencyDto>> GetActiveListAsync()
         {
             var queryable = await _currencyRepository.GetQueryableAsync();
             var list = await AsyncExecuter.ToListAsync(queryable.Where(item => item.IsActive == true));
             return ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list);
         }
-        [Authorize(AccountingPermissions.Currency)]
+        [Authorize(AccountingPermissions.Currences.Default)]
         public async Task<CurrencyDto> GetAsync(Guid id)
         {
             var entity = await _currencyRepository.GetAsync(id);
             return ObjectMapper.Map<Currency, CurrencyDto>(entity);
         }
-        [Authorize(AccountingPermissions.Currency)]
+        [Authorize(AccountingPermissions.Currences.Default)]
         public async Task<PagedResultDto<CurrencyDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             var queryable = await _currencyRepository.GetQueryableAsync();
@@ -57,7 +57,7 @@ namespace Accounting.BasicData
 
             return new PagedResultDto<CurrencyDto>(count, ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list));
         }
-        [Authorize(AccountingPermissions.CurrencyEdit)]
+        [Authorize(AccountingPermissions.Currences.Update)]
         public async Task UpdateAsync(Guid id, CurrencyUpdateDto input)
         {
             var entity = await _currencyRepository.GetAsync(id);

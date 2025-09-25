@@ -11,55 +11,84 @@ public static class AccountingPermissions
     public const string CreationDisplayName = PermissionPrefix + "Creation";
     public const string DeletionDisplayName = PermissionPrefix + "Deletion";
     public const string EditDisplayName = PermissionPrefix + "Edit";
+    private const string Dot = ".";
 
-    public const string BasicDataGroupName = GroupName + ".BasicData";
+    public const string BasicDataGroup = GroupName + ".BasicData";
 
-    public const string Currency = BasicDataGroupName + ".Currency";
-    public const string CurrencyCreation = Currency + Creation;
-    public const string CurrencyDeletion = Currency + Deletion;
-    public const string CurrencyEdit = Currency + Edit;
+    public class Currences
+    {
+        public const string Name = "Currency";
+        public const string Default = BasicDataGroup + Dot + Name;
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
+    public class Clients
+    {
+        public const string Name = "Client";
+        public const string Default = BasicDataGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
+    public class Vendors
+    {
+        public const string Name = "Vendor";
+        public const string Default = BasicDataGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
 
-    public const string Client = BasicDataGroupName + ".Client";
-    public const string ClientCreation = Client + Creation;
-    public const string ClientDeletion = Client + Deletion;
-    public const string ClientEdit = Client + Edit;
+    public const string GeneralLedgerGroup = GroupName + ".GeneralLedger";
 
-    public const string Vendor = BasicDataGroupName + ".Vendor";
-    public const string VendorCreation = Vendor + Creation;
-    public const string VendorDeletion = Vendor + Deletion;
-    public const string VendorEdit = Vendor + Edit;
-
-    public const string GeneralLedgerGroupName = GroupName + ".GeneralLedger";
-    public const string AccountingPeriod = GeneralLedgerGroupName + ".AccountingPeriod";
-    public const string AccountingPeriodCreation = AccountingPeriod + Creation;
-    public const string AccountingPeriodDeletion = AccountingPeriod + Deletion;
-    public const string AccountingPeriodEdit = AccountingPeriod + Edit;
+    public class AccountingPeriods
+    {
+        public const string Name = "AccountingPeriod";
+        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
 
     /// <summary>
     /// 总账类别
     /// </summary>
-    public const string GeneralAccount = GeneralLedgerGroupName + ".GeneralAccount";
-    public const string GeneralAccountCreation = GeneralAccount + Creation;
-    public const string GeneralAccountDeletion = GeneralAccount + Deletion;
-    public const string GeneralAccountEdit = GeneralAccount + Edit;
-
+    public class GeneralAccounts
+    {
+        public const string Name = "GeneralAccount";
+        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
     /// <summary>
     /// 科目类别
     /// </summary>
-    public const string SubjectCategory = GeneralLedgerGroupName + ".SubjectCategory";
-    public const string SubjectCategoryCreation = SubjectCategory + Creation;
-    public const string SubjectCategoryDeletion = SubjectCategory + Deletion;
-    public const string SubjectCategoryEdit = SubjectCategory + Edit;
-
-    public const string Subject = GeneralLedgerGroupName + ".Subject";
-    public const string SubjectCreation = Subject + Creation;
-    public const string SubjectDeletion = Subject + Deletion;
-    public const string SubjectEdit = Subject + Edit;
+    public class SubjectCategories
+    {
+        public const string Name = "SubjectCategory";
+        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
+    public class Subjects
+    {
+        public const string Name = "Subject";
+        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    } 
 
     public const string AccountingSetting = GroupName + ".AccountingSetting";
-
-    public const string TransferVoucher = GeneralLedgerGroupName + ".TransferVoucher";
-    public const string TransferVoucherCreation = TransferVoucher + Creation;
-    public const string TransferVoucherDeletion = TransferVoucher + Deletion;
-    public const string TransferVoucherEdit = TransferVoucher + Edit;
+    public class TransferVouchers
+    {
+        public const string Name = "TransferVoucher";
+        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    } 
 }

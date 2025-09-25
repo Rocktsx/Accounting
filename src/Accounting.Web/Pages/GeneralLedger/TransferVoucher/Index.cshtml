@@ -35,14 +35,14 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.TransferVoucher]</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVoucher))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVouchers.Default))
                 {
                     <abp-button id="searchBtn"
                                 text="@L["Search"].Value"
                                 icon="magnifying-glass"
                                 button-type="Primary" />
                 }
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVoucherCreation))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVouchers.Create))
                 {
                     <abp-button id="newVoucherBtn"
                                 text="@L["NewTransferVoucher"].Value"

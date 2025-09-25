@@ -62,41 +62,33 @@ public class AccountingMenuContributor : IMenuContributor
              l[AccountingMenus.DisplayNames.BasicData],
              icon: "fas fa-gears"
          );
-        if (await context.IsGrantedAsync(AccountingPermissions.Currency))
-        {
-            basicDataMenu.AddItem(
+        basicDataMenu.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.Currency,
                   l[AccountingMenus.DisplayNames.Currency],
                   icon: "fas fa-dollar-sign",
                   url: "/BasicData/Currency"
-              )
+              ).RequirePermissions(AccountingPermissions.Currences.Default)
           );
-        }
 
-        if (await context.IsGrantedAsync(AccountingPermissions.Client))
-        {
-            basicDataMenu.AddItem(
-                new ApplicationMenuItem(
-                     AccountingMenus.Client,
-                     l[AccountingMenus.DisplayNames.Client],
-                     icon: "fas fa-credit-card",
-                     url: "/BasicData/Client"
-                 )
-            );
-        }
+        basicDataMenu.AddItem(
+            new ApplicationMenuItem(
+                    AccountingMenus.Client,
+                    l[AccountingMenus.DisplayNames.Client],
+                    icon: "fas fa-credit-card",
+                    url: "/BasicData/Client"
+                ).RequirePermissions(AccountingPermissions.Clients.Default)
+        );
 
-        if (await context.IsGrantedAsync(AccountingPermissions.Vendor))
-        {
-            basicDataMenu.AddItem(
-                new ApplicationMenuItem(
-                    AccountingMenus.Vendor,
-                    l[AccountingMenus.DisplayNames.Vendor],
-                    icon: "fas fa-rectangle-list",
-                    url: "/BasicData/Vendor"
-                )
-            );
-        }
+        basicDataMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.Vendor,
+                l[AccountingMenus.DisplayNames.Vendor],
+                icon: "fas fa-rectangle-list",
+                url: "/BasicData/Vendor"
+            ).RequirePermissions(AccountingPermissions.Vendors.Default)
+        );
+
         if (basicDataMenu.Items.Count > 0)
         {
             context.Menu.AddItem(basicDataMenu);
@@ -106,57 +98,50 @@ public class AccountingMenuContributor : IMenuContributor
            l[AccountingMenus.DisplayNames.GeneralLedger],
            icon: "fas fa-calculator"
         );
-        if (await context.IsGrantedAsync(AccountingPermissions.AccountingPeriod))
-        {
-            generalLedgerMenu.AddItem(
-                new ApplicationMenuItem(
-                    AccountingMenus.AccountingPeriod,
-                    l[AccountingMenus.DisplayNames.AccountingPeriod],
-                    icon: "fas fa-bars-staggered",
-                    url: "/GeneralLedger/AccountingPeriod"
-                )
-            );
-        }
-        if (await context.IsGrantedAsync(AccountingPermissions.SubjectCategory))
-        {
-            generalLedgerMenu.AddItem(
-                new ApplicationMenuItem(
-                    AccountingMenus.SubjectCategory,
-                    l[AccountingMenus.DisplayNames.SubjectCategory],
-                    icon: "fas fa-landmark",
-                    url: "/GeneralLedger/SubjectCategory"
-                )
-            );
-        }
-        if (await context.IsGrantedAsync(AccountingPermissions.GeneralAccount))
-        {
-            generalLedgerMenu.AddItem(
-                new ApplicationMenuItem(
-                    AccountingMenus.GeneralAccount,
-                    l[AccountingMenus.DisplayNames.GeneralAccount],
-                    icon: "fas fa-bug",
-                    url: "/GeneralLedger/GeneralAccount"
-                )
-            );
-        }
-        if (await context.IsGrantedAsync(AccountingPermissions.Subject))
-        {
-            generalLedgerMenu.AddItem(
-                new ApplicationMenuItem(
-                    AccountingMenus.Subject,
-                    l[AccountingMenus.DisplayNames.Subject],
-                    icon: "fas fa-key",
-                    url: "/GeneralLedger/ChartOfAccount"
-                )
-            );
-        }
+
+        generalLedgerMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.AccountingPeriod,
+                l[AccountingMenus.DisplayNames.AccountingPeriod],
+                icon: "fas fa-bars-staggered",
+                url: "/GeneralLedger/AccountingPeriod"
+            ).RequirePermissions(AccountingPermissions.AccountingPeriods.Default)
+        );
+
+        generalLedgerMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.SubjectCategory,
+                l[AccountingMenus.DisplayNames.SubjectCategory],
+                icon: "fas fa-landmark",
+                url: "/GeneralLedger/SubjectCategory"
+            ).RequirePermissions(AccountingPermissions.SubjectCategories.Default)
+        );
+
+        generalLedgerMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.GeneralAccount,
+                l[AccountingMenus.DisplayNames.GeneralAccount],
+                icon: "fas fa-bug",
+                url: "/GeneralLedger/GeneralAccount"
+            ).RequirePermissions(AccountingPermissions.GeneralAccounts.Default)
+        );
+
+        generalLedgerMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.Subject,
+                l[AccountingMenus.DisplayNames.Subject],
+                icon: "fas fa-key",
+                url: "/GeneralLedger/ChartOfAccount"
+            ).RequirePermissions(AccountingPermissions.Subjects.Default)
+        );
+
         generalLedgerMenu.AddItem(
                new ApplicationMenuItem(
                    AccountingMenus.TransferVoucher,
                    l[AccountingMenus.DisplayNames.TransferVoucher],
                    icon: "fas fa-wand-magic-sparkles",
                    url: "/GeneralLedger/TransferVoucher"
-               ).RequirePermissions(AccountingPermissions.TransferVoucher)
+               ).RequirePermissions(AccountingPermissions.TransferVouchers.Default)
          );
         if (generalLedgerMenu.Items.Count > 0)
         {

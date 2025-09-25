@@ -17,11 +17,11 @@ namespace Accounting.Finance
     {
         public SubjectAppService(IRepository<Subject, Guid> repository) : base(repository)
         {
-            GetPolicyName = AccountingPermissions.Subject;
-            DeletePolicyName = AccountingPermissions.SubjectDeletion;
-            GetListPolicyName = AccountingPermissions.Subject;
+            GetPolicyName = AccountingPermissions.Subjects.Default;
+            DeletePolicyName = AccountingPermissions.Subjects.Delete;
+            GetListPolicyName = AccountingPermissions.Subjects.Default;
         }
-        [Authorize(AccountingPermissions.SubjectCreation)]
+        [Authorize(AccountingPermissions.Subjects.Create)]
         public override async Task<SubjectDto> CreateAsync(SubjectCreateDto input)
         {
             var entity = new Subject(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.SubjectCategoryId,
@@ -30,7 +30,7 @@ namespace Accounting.Finance
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<Subject, SubjectDto>(entity);
         }
-        [Authorize(AccountingPermissions.SubjectEdit)]
+        [Authorize(AccountingPermissions.Subjects.Update)]
         public override async Task<SubjectDto> UpdateAsync(Guid id, SubjectUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);
@@ -96,7 +96,7 @@ namespace Accounting.Finance
                     AccountTypeCode = x.AccountType != null ? x.AccountType.Code : null,
                 }));
         }
-        [Authorize(AccountingPermissions.Subject)]
+        [Authorize(AccountingPermissions.Subjects.Default)]
         public async Task<PagedResultDto<SubjectFilteredQueryDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input)
         {
             var queryable = await NewFilteredQueryAsync(input, true);

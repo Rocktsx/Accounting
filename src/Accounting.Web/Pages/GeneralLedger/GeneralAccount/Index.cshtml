@@ -25,7 +25,7 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.GeneralAccount]</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.GeneralAccountCreation))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.GeneralAccounts.Create))
                 {
                     <abp-button id="newGeneralAccountBtn"
                                 text="@L["NewGeneralAccount"].Value"

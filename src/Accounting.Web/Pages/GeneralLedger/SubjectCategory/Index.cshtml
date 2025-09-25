@@ -25,7 +25,7 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.SubjectCategory]</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.SubjectCategoryCreation))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.SubjectCategories.Create))
                 {
                     <abp-button id="newSubjectCategoryBtn"
                                 text="@L["NewSubjectCategory"].Value"

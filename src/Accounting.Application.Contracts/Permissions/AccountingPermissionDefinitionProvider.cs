@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 using Volo.Abp.MultiTenancy;
+using static Accounting.Permissions.AccountingPermissions;
 
 namespace Accounting.Permissions;
 
@@ -10,36 +11,37 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        AddPermissionGroup(context, AccountingPermissions.Currency, nameof(AccountingPermissions.Currency),
-            AccountingPermissions.CurrencyCreation, AccountingPermissions.CurrencyDeletion,
-            AccountingPermissions.CurrencyEdit);
-        AddPermissionGroup(context, AccountingPermissions.Client, nameof(AccountingPermissions.Client),
-            AccountingPermissions.ClientCreation, AccountingPermissions.ClientDeletion,
-            AccountingPermissions.ClientEdit);
-        AddPermissionGroup(context, AccountingPermissions.Vendor, nameof(AccountingPermissions.Vendor),
-            AccountingPermissions.VendorCreation, AccountingPermissions.VendorDeletion,
-            AccountingPermissions.VendorEdit);
-        AddPermissionGroup(context, AccountingPermissions.AccountingPeriod,
-            nameof(AccountingPermissions.AccountingPeriod), AccountingPermissions.AccountingPeriodCreation,
-            AccountingPermissions.AccountingPeriodDeletion, AccountingPermissions.AccountingPeriodEdit);
-        AddPermissionGroup(context, AccountingPermissions.GeneralAccount, nameof(AccountingPermissions.GeneralAccount),
-            AccountingPermissions.GeneralAccountCreation, AccountingPermissions.GeneralAccountDeletion,
-            AccountingPermissions.GeneralAccountEdit);
-        AddPermissionGroup(context, AccountingPermissions.SubjectCategory,
-            nameof(AccountingPermissions.SubjectCategory), AccountingPermissions.SubjectCategoryCreation,
-            AccountingPermissions.SubjectCategoryDeletion, AccountingPermissions.SubjectCategoryEdit);
-        AddPermissionGroup(context, AccountingPermissions.Subject, nameof(AccountingPermissions.Subject),
-            AccountingPermissions.SubjectCreation, AccountingPermissions.SubjectDeletion,
-            AccountingPermissions.SubjectEdit);
+        AddPermissionGroup(context, AccountingPermissions.Currences.Default, AccountingPermissions.Currences.Name,
+            AccountingPermissions.Currences.Create, AccountingPermissions.Currences.Delete,
+            AccountingPermissions.Currences.Update);
 
-        var setttingDisplay =
-            L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.AccountingSetting));
+        AddPermissionGroup(context, AccountingPermissions.Clients.Default, AccountingPermissions.Clients.Name,
+            AccountingPermissions.Clients.Create, AccountingPermissions.Clients.Delete,
+            AccountingPermissions.Clients.Update);
+
+        AddPermissionGroup(context, AccountingPermissions.Vendors.Default, AccountingPermissions.Vendors.Name,
+            AccountingPermissions.Vendors.Create, AccountingPermissions.Vendors.Delete,
+            AccountingPermissions.Vendors.Update);
+
+        AddPermissionGroup(context, AccountingPermissions.AccountingPeriods.Default, AccountingPermissions.AccountingPeriods.Name,
+            AccountingPermissions.AccountingPeriods.Create, AccountingPermissions.AccountingPeriods.Delete, AccountingPermissions.AccountingPeriods.Update);
+
+        AddPermissionGroup(context, AccountingPermissions.GeneralAccounts.Default, AccountingPermissions.GeneralAccounts.Name,
+            AccountingPermissions.GeneralAccounts.Create, AccountingPermissions.GeneralAccounts.Delete, AccountingPermissions.GeneralAccounts.Update);
+
+        AddPermissionGroup(context, AccountingPermissions.SubjectCategories.Default, AccountingPermissions.SubjectCategories.Name,
+            AccountingPermissions.SubjectCategories.Create, AccountingPermissions.SubjectCategories.Delete, AccountingPermissions.SubjectCategories.Update);
+
+        AddPermissionGroup(context, AccountingPermissions.Subjects.Default, AccountingPermissions.Subjects.Name,
+           AccountingPermissions.Subjects.Create, AccountingPermissions.Subjects.Delete, AccountingPermissions.Subjects.Update);
+
+        var setttingDisplay = L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.AccountingSetting));
         context.AddGroup(AccountingPermissions.AccountingSetting, setttingDisplay)
             .AddPermission(AccountingPermissions.AccountingSetting, setttingDisplay);
 
-        AddPermissionGroup(context, AccountingPermissions.TransferVoucher, nameof(AccountingPermissions.TransferVoucher),
-            AccountingPermissions.TransferVoucherCreation, AccountingPermissions.TransferVoucherDeletion,
-            AccountingPermissions.TransferVoucherEdit);
+        AddPermissionGroup(context, AccountingPermissions.TransferVouchers.Default, AccountingPermissions.TransferVouchers.Name,
+           AccountingPermissions.TransferVouchers.Create, AccountingPermissions.TransferVouchers.Delete,
+            AccountingPermissions.TransferVouchers.Update);
     }
 
     private static void AddPermission(PermissionGroupDefinition group, string permissionName,

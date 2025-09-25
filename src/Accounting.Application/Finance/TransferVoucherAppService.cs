@@ -16,11 +16,12 @@ namespace Accounting.Finance
     {
         public TransferVoucherAppService(IRepository<Voucher, Guid> repository) : base(repository)
         {
-            DeletePolicyName = AccountingPermissions.TransferVoucherDeletion;
-            GetListPolicyName = AccountingPermissions.TransferVoucher;
+            DeletePolicyName = AccountingPermissions.TransferVouchers.Delete;
+            GetListPolicyName = AccountingPermissions.TransferVouchers.Default;
+            GetPolicyName = AccountingPermissions.TransferVouchers.Default;
         }
 
-        [Authorize(AccountingPermissions.TransferVoucherCreation)]
+        [Authorize(AccountingPermissions.TransferVouchers.Create)]
         public override Task<VoucherDto> CreateAsync(VoucherCreateDto input)
         {
             input.VoucherType = VoucherType.JournalVoucher;
@@ -31,7 +32,7 @@ namespace Accounting.Finance
             return base.CreateAsync(input);
         }
 
-        [Authorize(AccountingPermissions.TransferVoucherEdit)]
+        [Authorize(AccountingPermissions.TransferVouchers.Update)]
         public override Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
         {
             foreach (var item in input.Details)
