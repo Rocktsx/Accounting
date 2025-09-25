@@ -1,12 +1,18 @@
 ﻿@page
+@using Accounting.Web.Menus
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
 
 @model Accounting.Web.Pages.GeneralLedger.AccountingPeriod.IndexModel
+@inject IPageLayout PageLayout
 @{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.AccountingPeriod].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.MenuItemName = AccountingMenus.AccountingPeriod;
 }
 @section scripts
 {
@@ -16,7 +22,7 @@
     <abp-card-header>
         <abp-row>
             <abp-column size-md="_6">
-                <abp-card-title>@L["Menu:AccountingPeriod"]</abp-card-title>
+                <abp-card-title>@L[AccountingMenus.DisplayNames.AccountingPeriod].Value</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
                 @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.AccountingPeriodCreation))

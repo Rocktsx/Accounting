@@ -1,10 +1,18 @@
 ﻿@page
+@using Accounting.Web.Menus
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
 @model Accounting.Web.Pages.GeneralLedger.TransferVoucher.IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.TransferVoucher].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.MenuItemName = AccountingMenus.TransferVoucher;
+}
 @section scripts
 {
     <abp-script src="/libs/vue/vue.min.js"></abp-script>
@@ -24,7 +32,7 @@
     <abp-card-header>
         <abp-row class="mb-3">
             <abp-column>
-                <abp-card-title>@L["Menu:TransferVoucher"]</abp-card-title>
+                <abp-card-title>@L[AccountingMenus.DisplayNames.TransferVoucher]</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
                 @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.TransferVoucher))
