@@ -21,10 +21,10 @@
 <abp-card>
     <abp-card-header>
         <abp-row>
-            <abp-column size-md="_6">
+            <abp-column>
                 <abp-card-title>@L[AccountingMenus.DisplayNames.SubjectCategory]</abp-card-title>
             </abp-column>
-            <abp-column size-md="_6" class="text-end">
+            <abp-column class="text-end">
                 @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.SubjectCategoryCreation))
                 {
                     <abp-button id="newSubjectCategoryBtn"

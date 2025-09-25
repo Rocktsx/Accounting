@@ -21,10 +21,10 @@
 <abp-card>
     <abp-card-header>
         <abp-row class="mb-1">
-            <abp-column size-md="_6">
+            <abp-column>
                 <abp-card-title>@L[AccountingMenus.DisplayNames.Vendor]</abp-card-title>
             </abp-column>
-            <abp-column size-md="_6" class="text-end">
+            <abp-column class="text-end">
                 @if (await AuthorizationService.IsGrantedAsync(AccountingPermissions.VendorCreation))
                 {
                     <abp-button id="newCompanyBtn"
