@@ -38,14 +38,14 @@ namespace Accounting.Finance
                 SeqCode = seqCode
             };
         }
-        private async Task<Tuple<SubjectCreateDto, SubjectCreateDto>> InsertNewSubjectsAsync()
+        private async Task<Tuple<SubjectCreateDto, SubjectCreateDto, SubjectDto, SubjectDto>> InsertNewSubjectsAsync()
         {
             var input1 = GetCreateDto("3001", "Cash", "Cash Account222", "Main cash account",1); 
             var input2 = GetCreateDto("3002", "Bank", "Bank Account222", "Main bank account", 2);
-            await _subjectAppService.CreateAsync(input1);
-            await _subjectAppService.CreateAsync(input2);
+            var dto1 = await _subjectAppService.CreateAsync(input1);
+            var dto2 = await _subjectAppService.CreateAsync(input2);
 
-            return Tuple.Create(input1, input2);
+            return Tuple.Create(input1, input2, dto1, dto2);
         }
         [Fact]
         public async Task Can_Create_A_Subject()
@@ -232,6 +232,27 @@ namespace Accounting.Finance
             result.TotalCount.ShouldBe(2);
             result.Items.ShouldContain(x => x.Code == input1.Code);
             result.Items.ShouldContain(x => x.Code == input2.Code);
+        }
+        [Fact]
+        public async Task Can_Get_Filtered_Query_List_With_Id()
+        {
+            // Arrange
+            var items = await InsertNewSubjectsAsync();
+            var input1 = items.Item1;
+            var dto1 = items.Item3;
+            // Act
+            var result = await _subjectAppService.GetFilteredQueryListAsync(new SubjectFilterRequestDto
+            {
+                MaxResultCount = 10,
+                SkipCount = 0,
+                Sorting = "Code", 
+                SubjectIds = [dto1.Id]
+            });
+            // Assert
+            result.ShouldNotBeNull();
+            result.Items.Count.ShouldBe(1);
+            result.TotalCount.ShouldBe(1);
+            result.Items.First().Id.ShouldBe(dto1.Id); 
         }
     }
 }

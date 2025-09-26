@@ -12,6 +12,6 @@ namespace Accounting.Finance
     {
         Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync();
         Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync();
-        Task<PagedResultDto<SubjectFilteredQueryDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input);
+        Task<PagedResultDto<SubjectFilteredResultDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input);
     } 
 }

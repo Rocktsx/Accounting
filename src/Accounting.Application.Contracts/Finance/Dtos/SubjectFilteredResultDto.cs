@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Dtos
 {
-    public class SubjectFilteredQueryDto : EntityDto<Guid>
+    public class SubjectFilteredResultDto : EntityDto<Guid>
     {
         public string Code { get; set; }
         public string Name { get; set; }

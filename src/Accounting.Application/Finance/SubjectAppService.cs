@@ -59,6 +59,7 @@ namespace Accounting.Finance
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             queryable = queryable.WhereIf(input.SubjectCategoryId != null, x => x.SubjectCategoryId == input.SubjectCategoryId);
+            queryable = queryable.WhereIf(input.SubjectIds != null, item => input.SubjectIds.Contains(item.Id));
             return queryable;
         }
 
@@ -97,12 +98,12 @@ namespace Accounting.Finance
                 }));
         }
         [Authorize(AccountingPermissions.Subjects.Default)]
-        public async Task<PagedResultDto<SubjectFilteredQueryDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input)
+        public async Task<PagedResultDto<SubjectFilteredResultDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input)
         {
             var queryable = await NewFilteredQueryAsync(input, true);
             var totalCount = await AsyncExecuter.CountAsync(queryable);
             queryable = ApplySorting(queryable, input);
-            var newQueryable = ApplyPaging(queryable, input).Select(item => new SubjectFilteredQueryDto
+            var newQueryable = ApplyPaging(queryable, input).Select(item => new SubjectFilteredResultDto
             {
                 Id = item.Id,
                 Code = item.Code,
@@ -122,7 +123,7 @@ namespace Accounting.Finance
                 AccountTypeOtherName = item.AccountType != null ? item.AccountType.OtherName : null,
             });
             var dtos = await AsyncExecuter.ToListAsync(newQueryable);
-            return new PagedResultDto<SubjectFilteredQueryDto>(totalCount, dtos);
+            return new PagedResultDto<SubjectFilteredResultDto>(totalCount, dtos);
         }
     }
 }

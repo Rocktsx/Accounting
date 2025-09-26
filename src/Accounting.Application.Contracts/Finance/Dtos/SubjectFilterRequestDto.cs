@@ -9,5 +9,6 @@ namespace Accounting.Finance.Dtos
     public class SubjectFilterRequestDto: FilteredPagedAndSortedResultRequestDto
     {
         public Guid? SubjectCategoryId { get; set; }
+        public Guid[]? SubjectIds { get; set; } 
     }
 }

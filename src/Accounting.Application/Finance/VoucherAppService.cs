@@ -59,7 +59,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
 
     protected override async Task<Voucher> GetEntityByIdAsync(Guid id)
     {
-        var query = await Repository.WithDetailsAsync(item => item.Details);
+        var query = (await Repository.WithDetailsAsync(item => item.Details));
         query = query.Where(item => item.Id == id);
         var entity = await AsyncExecuter.FirstOrDefaultAsync(query);
         return entity ?? throw new EntityNotFoundException();
