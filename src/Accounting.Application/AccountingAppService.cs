@@ -14,11 +14,12 @@ public abstract class AccountingAppService : ApplicationService
     {
         LocalizationResource = typeof(AccountingResource);
     }
-    protected async Task CheckPermissions(params string[] permissons)
+    protected async Task<bool> CheckPermissions(params string[] permissons)
     {
         if (!await AuthorizationService.IsGrantedAnyAsync(permissons))
         {
             throw new UnauthorizedAccessException();
         }
+        return true;
     }
 }

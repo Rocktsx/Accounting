@@ -9,23 +9,25 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Accounting.BasicData.Dtos;
+using Accounting.Permissions;
 
 namespace Accounting.BasicData
 {
-    [RemoteService(false, IsMetadataEnabled =false)]
-    public class CompanyAppService : ApplicationService, ICompanyAppService
+    public class CompanyAppService : AccountingAppService, ICompanyAppService
     {
         private readonly IRepository<Company, Guid> _companyRepository;
 
         public CompanyAppService(IRepository<Company, Guid> companyRepository)
         {
             _companyRepository = companyRepository;
-        } 
+        }
+
+        [RemoteService(false)]
         public virtual async Task<CompanyDto> CreateAsync(CompanyCreateDto input)
-        { 
+        {
             var company = new Company(GuidGenerator.Create(), input.Name, input.OtherName,
                 input.NickName, input.Currency, input.CreditLimit, input.PaymentTerm, input.TradeTerm,
-                input.IsClient, input.IsVendor,CurrentTenant.Id);
+                input.IsClient, input.IsVendor, CurrentTenant.Id);
             company.SetPrefix(input.Prefix);
             if (input.Addresses != null)
             {
@@ -44,16 +46,19 @@ namespace Accounting.BasicData
                         contact.DirectLine, contact.Telephone, contact.Fax, contact.Email, contact.Remark);
                 }
             }
-            await (new GenerateCodeService()).GenerateCodeAsync(company, _companyRepository);
+            var service = LazyServiceProvider.LazyGetRequiredService<GenerateCodeService>();
+            await service.GenerateCodeAsync(company, _companyRepository);
             var createdCompany = await _companyRepository.InsertAsync(company);
             return ObjectMapper.Map<Company, CompanyDto>(createdCompany);
         }
 
+        [RemoteService(false)]
         public virtual async Task DeleteAsync(Guid id)
         {
             await _companyRepository.DeleteAsync(id);
         }
 
+        [RemoteService(false)]
         public virtual async Task<CompanyDto> GetAsync(Guid id)
         {
             var entity = await GetItemWithDetailsAsync(id);
@@ -69,18 +74,28 @@ namespace Accounting.BasicData
 
         public virtual async Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
         {
-            var queryable = await _companyRepository.GetQueryableAsync();
-            var filter = dto.Filter ?? string.Empty;
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(filter), item => item.Name.Contains(filter) || item.Code.Contains(filter));
-            queryable = queryable.WhereIf(dto.IsClient.HasValue && dto.IsClient == true, item => item.IsClient == true);
-            queryable = queryable.WhereIf(dto.IsVendor.HasValue && dto.IsVendor == true, item => item.IsVendor == true);
+            if (!await CheckPermissions(AccountingPermissions.Clients.Default, AccountingPermissions.Vendors.Default))
+            {
+                return new PagedResultDto<CompanyDto> { Items = [], TotalCount = 0 };
+            }
+            return await QueryListAsync(dto);
+        }
+        protected virtual async Task<PagedResultDto<CompanyDto>> QueryListAsync(CompanySearchDto input)
+        {
+            var queryable = await _companyRepository.GetQueryableAsync(); 
+            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.Name.Contains(input.Filter) 
+                || item.Code.Contains(input.Filter) || item.OtherName.Contains(input.Filter) || item.NickName.Contains(input.Filter));
+            queryable = queryable.WhereIf(input.IsClient.HasValue && input.IsClient == true, item => item.IsClient == true);
+            queryable = queryable.WhereIf(input.IsVendor.HasValue && input.IsVendor == true, item => item.IsVendor == true);
+            queryable = queryable.WhereIf(input.Ids != null, item => input.Ids.Contains(item.Id));
 
-            var listQuery = queryable.OrderBy(dto.Sorting ?? nameof(Company.Name)).Skip(dto.SkipCount).Take(dto.MaxResultCount);
+            var listQuery = queryable.OrderBy(input.Sorting ?? nameof(Company.Name)).Skip(input.SkipCount).Take(input.MaxResultCount);
             var count = await AsyncExecuter.CountAsync(queryable);
             var list = await AsyncExecuter.ToListAsync(listQuery);
             return new PagedResultDto<CompanyDto>(count, ObjectMapper.Map<List<Company>, List<CompanyDto>>(list));
         }
 
+        [RemoteService(false)]
         public virtual async Task<CompanyDto> UpdateAsync(Guid id, CompanyUpdateDto input)
         {
             var entity = await GetItemWithDetailsAsync(id); ;

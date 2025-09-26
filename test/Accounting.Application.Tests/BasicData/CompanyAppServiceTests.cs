@@ -289,6 +289,28 @@ namespace Accounting.BasicData
             result.Items.Count.ShouldBe(1);
         }
         [Fact]
+        public async Task Should_Get_Filter_Companies_With_Id()
+        {
+            // arrange
+            var input = GetCompanyCreateDto();
+            input.Name = "Rock";
+            var newDto = await _companyAppService.CreateAsync(input);
+            input = GetCompanyCreateDto();
+            input.Name = "Ben";
+            await _companyAppService.CreateAsync(input);
+            var dto = new CompanySearchDto()
+            {
+                Ids  = [newDto.Id]
+            };
+            //act
+            var result = await _companyAppService.GetListAsync(dto);
+
+            // assert
+            result.TotalCount.ShouldBe(1);
+            result.Items.Count.ShouldBe(1);
+            result.Items.First().Id.ShouldBe(newDto.Id);
+        }
+        [Fact]
         public async Task Should_Clear_Address_And_Contact()
         {
             // arrange
