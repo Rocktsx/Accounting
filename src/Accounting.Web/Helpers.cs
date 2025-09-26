@@ -1,12 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Accounting.Web
 {
     public static class Helpers
     {
+        public static Dictionary<string, string> Select2Languages { get; set; } =
+        new Dictionary<string, string>
+        {
+            { "en", "en" },
+            { "zh-Hans", "zh-CN" },
+            { "zh-Hant", "zh-TW" }
+        };
+        public static string GetSelect2LanguageName()
+        {
+            var lang = CultureInfo.CurrentCulture.Name;
+            return Select2Languages.ContainsKey(lang) ? Select2Languages[lang] : "en";
+        }
         public static string GetText(string code, string name, string otherName)
         {
             return $"{code} - {name}" + (string.IsNullOrWhiteSpace(otherName) ? "" : $" ({otherName})");

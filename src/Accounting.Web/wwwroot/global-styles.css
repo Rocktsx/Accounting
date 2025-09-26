@@ -2,15 +2,58 @@
     --lpx-logo: url('/images/logo/leptonxlite/logo-light.png');
     --lpx-logo-icon: url('/images/logo/leptonxlite/logo-light-thumbnail.png');
 }
-:root .abp-account-layout .lpx-brand-logo{
+
+:root .abp-account-layout .lpx-brand-logo {
     --lpx-logo: url('/images/logo/leptonxlite/logo-dark.png');
 }
+
 :root {
     --bs-text-opacity: 1;
 }
+
 form label.error {
     color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
 }
+
 .hiding-first .col-12:first-child {
     display: none;
+}
+
+.select2-container {
+    background: #f5f5f7;
+    padding: 0.675rem 1.25rem;
+}
+
+    .select2-container .select2-selection--single {
+        padding-top: 0;
+        border: none;
+        padding-bottom: 0;
+        border-radius: 0;
+        background: #f5f5f7;
+        height: auto;
+    }
+
+    .select2-container.select2-container--default.select2-container--open {
+        background: #f5f5f7;
+    }
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 0.675rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 1.5;
+}
+
+.select2-dropdown {
+    padding: 1rem 0 !important;
+    background-color: #f5f5f7;
+    border-radius: 3px !important;
+    box-sizing: border-box;
+    border: 1px solid #e8eef3 !important;
+}
+
+.select2-search__field, .select2-search__field:focus {
+    border: none !important;
+    outline: none !important;
 }

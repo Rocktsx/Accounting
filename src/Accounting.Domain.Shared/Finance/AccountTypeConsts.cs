@@ -10,5 +10,12 @@ namespace Accounting.Finance
     {
         public const string AccountingReceivableType = "AR";
         public const string AccountingPayableType = "AP";
+
+        public enum ReceivablePayableType
+        {
+            None = 0,
+            AccountingReceivableType,
+            AccountingPayableType
+        }
     }
 }

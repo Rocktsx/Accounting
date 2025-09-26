@@ -18,6 +18,8 @@ $(function () {
                 companyMap: {},
                 clients: [],
                 vendors: [],
+                clientMap: {},
+                vendorMap: {},
                 currencies: [],
                 nativeCurrency: '',
                 isRequestData: false
@@ -33,38 +35,60 @@ $(function () {
             setIsEdit(state, payload) {
                 state.isEdit = payload.isEdit;
             },
-            setEditItem(state, payload) { 
-                state.editItem = payload.item || { details: [] };
+            setEditItem(state, payload) {
+                const { details, ...others } = payload.item || { details: [] };
+                const newDetails = details.map(item => ({
+                    ...item,
+                    subjectName: '',
+                    subSubjectName: '',
+                    isSubSubjectType: false,
+                    accountTypeCode: ''
+                }));
+                state.editItem = { ...others, details: newDetails };
                 state.editItem.voucherDate = formatDate(state.editItem.voucherDate);
-
-                if (state.subjects.length > 0) {
-                    (state.editItem.details || []).forEach(d => {
-                        if (d.subjectId) {
-                            const subject = state.subjectMap[d.subjectId];
-                            if (subject) {
-                                d.isSubSubjectType = subject.isSubSubjectType;
-                                d.accountTypeCode = subject.accountTypeCode;
-                            }
-                        }
-                    });
-                }
             },
             setSubjects(state, payload) {
-                state.subjects = payload.subjects || [];
-                state.subjectMap = {};
-                (state.subjects).forEach(s => {
-                    state.subjectMap[s.id] = s;
+                const { subjects, setDetail } = payload;
+                (subjects || []).forEach(item => {
+                    if (!state.subjectMap[item.id]) {
+                        state.subjectMap[item.id] = item;
+                        state.subjects.push(item);
+                    }
+                });
+                if (setDetail) {
+
+                }
+            },
+            setDetails(state) {
+                (state.editItem.details || []).forEach(item => {
+                    const subject = state.subjectMap[item.subjectId];
+                    if (subject) {
+                        const { code, name, isSubSubjectType, accountTypeCode } = subject;
+                        item.isSubSubjectType = isSubSubjectType;
+                        item.accountTypeCode = accountTypeCode;
+                        item.subjectName = code + ' - ' + name;
+                    }
+                });
+                (state.editItem.details || []).forEach(item => {
+                    const company = state.companyMap[item.subSubjectCode];
+                    if (company) {
+                        const { code, name, } = company;
+                        item.subSubjectName = code + ' - ' + name;
+                    }
                 });
             },
             setCompanies(state, payload) {
-                const { companies, clients, vendors } = payload
-                state.companies = companies || [];
-                state.clients = clients || [];
-                state.vendors = vendors || [];
-
-                state.companyMap = {};
-                (state.companies).forEach(c => {
+                const { items } = payload;
+                (items || []).forEach(c => {
                     state.companyMap[c.id] = c;
+                    if (!state.clientMap[c.id] && c.isClient) {
+                        state.clientMap[c.id] = c;
+                        state.clients.push(c)
+                    }
+                    if (!state.vendorMap[c.id] && c.isVender) {
+                        state.vendorMap[c.id] = c;
+                        state.vendors.push(c)
+                    }
                 });
             },
             setCurrencies(state, payload) {
@@ -83,7 +107,7 @@ $(function () {
                     state.editItem.details.push(item)
                 } else {
                     state.editItem.details = [...state.editItem.details];
-                } 
+                }
             },
             removeDetailItem(state, payload) {
                 const index = (state.editItem.details || []).findIndex(obj => obj === payload.item);
@@ -99,7 +123,7 @@ $(function () {
                 return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === 1 ? Number(item.nativeAmount) : 0), 0)
             },
             totalCreditorAmount: state => {
-                return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === -1 ? Number(item.nativeAmount) : 0 ), 0)
+                return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === -1 ? Number(item.nativeAmount) : 0), 0)
             },
             subjects: state => state.subjects,
             subjectMap: state => state.subjectMap,
@@ -111,7 +135,7 @@ $(function () {
             nativeCurrency: state => state.nativeCurrency,
             isRequestData: state => state.isRequestData
         }
-    }) 
+    })
     const tvInputAction = function (requestData, dataTableSettings) {
         return {
             filter: $('#code').val().trim(),
@@ -132,25 +156,50 @@ $(function () {
         }
 
         if (!store.getters.isRequestData) {
-            requests.push(accounting.finance.subject.getVoucherSimpleList().then(result => store.commit('setSubjects', { subjects: result })));
-            requests.push(accounting.basicData.client.getList({ maxResultCount: 1000 }));
-            requests.push(accounting.basicData.vendor.getList({ maxResultCount: 1000 }));
             requests.push(accounting.basicData.currency.getActiveList().then(result => store.commit('setCurrencies', { currencies: result })));
             requests.push(accounting.finance.accountingSetting.getNativeCurrency().then(result => store.commit('setNativeCurrency', result)));
         }
-       
+
         store.commit('showModal', { isShowModal: true });
         Promise.all(requests).then(results => {
             const item = results[0];
             store.commit('setEditItem', { item });
-             
+            if (id) {
+                const details = (item.details || [])
+                const subjectIds = details.filter(obj => !store.state.subjectMap[obj.subjectId]).map(detailItem => detailItem.subjectId);
+                let setDetail = false
+                if (subjectIds.length > 0) {
+                    accounting.finance.subject.getFilteredQueryList({
+                        maxResultCount: subjectIds.length,
+                        sorting: '',
+                        subjectIds
+                    }).then(subjectResult => {
+                        store.commit('setSubjects', { subjects: subjectResult.items, setDetail: true })
+                        store.commit('setDetails')
+                    })
+                } else {
+                    setDetail = true
+                }
+                const companyIds = details.filter(obj => obj.subSubjectCode && !store.state.companyMap[obj.subSubjectCode]).map(detailItem => detailItem.subSubjectCode)
+                if (companyIds.length) {
+                    accounting.basicData.company.getList({
+                        maxResultCount: companyIds.length,
+                        sorting: '',
+                        ids: companyIds
+                    }).then(companyResult => {
+                        store.commit('setCompanies', { items: companyResult.items })
+                        store.commit('setDetails')
+                    })
+                } else {
+                    setDetail = true
+                }
+                if (setDetail) {
+                    store.commit('setDetails')
+                }
+            }
             if (!store.getters.isRequestData) {
-                const clientList = results[2].items || [];
-                const vendorList = results[3].items || [];
-                const companyList = clientList.concat(vendorList);
-                store.commit('setCompanies', { companies: companyList, clients: clientList, vendors: vendorList });
                 store.commit('setIsRequestData', { isRequestData: true });
-            } 
+            }
         });
     }
     const dataTable = $('#voucherTable').DataTable(
@@ -257,7 +306,7 @@ $(function () {
     }
     const modalTemplate = `
 <form ref="modal" class="needs-validation" novalidate>
-    <div :class="[value ? 'show d-block' : '']" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(157, 159, 160, 0.8);">
+    <div :class="[value ? 'show d-block' : '']" :id="modalId" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(157, 159, 160, 0.8);">
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -277,7 +326,7 @@ $(function () {
 </form>`;
     const Modal = {
         template: modalTemplate,
-        props: ['value', 'title'],
+        props: ['value', 'title', 'modalId'],
         mounted() {
             this.$nextTick(() => {
                 document.body.classList.add('modal-open');
@@ -302,13 +351,13 @@ $(function () {
         }
     }
     const editDetailTemplate = `<div>
-<Modal :value="value" @input="input" @save="save" :title="l('Detail')">
+<Modal :value="value" @input="input" @save="save" :title="l('Detail')" modal-id="edit-modal">
     <div>
        <div style="display: grid; grid-template-columns: 1fr 1fr;">
              <div class="mb-2 mx-1">
                 <label for="subjectId" class="form-label">{{l('Subject')}}<span> * </span></label>
-                <select v-model="item.subjectId" @change="subjectChange" :class="{'is-invalid': errors.subjectId }" class="form-control" id="subjectId" name="subjectId">
-                    <option value="">--</option>
+                <select v-model="item.subjectId" @change="subjectChange" :class="{'is-invalid': errors.subjectId }" class="form-control lpx-select2" id="subjectId" name="subjectId" placeholder="">
+                    <option value="-">--</option>
                     <option v-for="subjectItem in subjects || []" :key="subjectItem.id" :value="subjectItem.id">{{subjectItem.code + ' - '+ subjectItem.name }}</option>
                 </select>
                 <div id="subjectIdFeedback" class="invalid-feedback">
@@ -356,14 +405,14 @@ $(function () {
                 <label for="nativeAmount" class="form-label">{{l('NativeAmount')}}</label>
                 <input v-model="item.nativeAmount" type="text" class="form-control" id="nativeAmount" name="nativeAmount" readonly>
             </div>
-             <div v-if="item.isSubSubjectType" class="mb-2 mx-1">
+             <div v-if="item.isSubSubjectType" class="mb-2 mx-1" id="subSubject" style="position: relative;">
                 <label for="subSubjectCode" :class="{'is-invalid': errors.subSubjectCode }" class="form-label">{{l('SubSubject')}}<span> * </span></label>
                 <select v-if="item.accountTypeCode ==='AR'" v-model="item.subSubjectCode" @change="arapFieldChange"  key="ar" class="form-control" id="subSubjectCode" name="subSubjectCode">
-                    <option value="">--</option>
+                    <option value="-">--</option>
                     <option v-for="subItem in clients || []" :key="subItem.id" :value="subItem.id">{{subItem.code + ' - '+ subItem.name }}</option>
                  </select>
                  <select v-else v-model="item.subSubjectCode" @change="arapFieldChange" key="ap" class="form-control" id="subSubjectCode" name="subSubjectCode">
-                    <option value="">--</option>
+                    <option value="-">--</option>
                     <option v-for="subItem in vendors || []" :key="subItem.id" :value="subItem.id">{{subItem.code + ' - '+ subItem.name }}</option>
                  </select>
                  <div id="subSubjectCodeFeedback" class="invalid-feedback">
@@ -420,7 +469,14 @@ $(function () {
         computed: {
             ...Vuex.mapGetters(['subjects', 'companies', 'currencies', 'subjectMap', 'clients', 'vendors'])
         },
+        mounted() {
+            this.initSubjectSelect();
+        },
+        beforeDestroy() {
+            $('#subjectId').off('select2:select');
+        },
         methods: {
+            ...Vuex.mapMutations(['setSubjects', 'setCompanies']),
             input(value) {
                 this.$emit('input', value);
             },
@@ -477,10 +533,10 @@ $(function () {
             },
             setNativeAmount() {
                 if (this.item.foreignAmount) {
-                    this.item.foreignAmount = this.item.foreignAmount.trim();
+                    this.item.foreignAmount = this.item.foreignAmount.toString().trim();
                 }
                 if (this.item.currencyRate) {
-                    this.item.currencyRate = this.item.currencyRate.trim();
+                    this.item.currencyRate = this.item.currencyRate.toString().trim();
                 }
                 const foreignAmount = Number(this.item.foreignAmount);
                 const currencyRate = Number(this.item.currencyRate);
@@ -505,20 +561,25 @@ $(function () {
                 const subject = this.subjectMap[this.item.subjectId];
                 this.item.isSubSubjectType = false;
                 if (subject) {
-                    const { isSubSubjectType, accountTypeCode, debitorCreditor, currencyCode } = subject;
+                    const { isSubSubjectType, accountTypeCode, debitorCreditor, currencyCode, name, code } = subject;
                     this.item.isSubSubjectType = isSubSubjectType;
                     this.item.accountTypeCode = accountTypeCode;
                     this.item.debitorCreditor = debitorCreditor;
+                    this.item.subjectName = code + ' - ' + name;
                     this.errors.subjectId = false;
                     if (currencyCode) {
                         this.item.currencyCode = currencyCode;
                         this.currencyChange();
                     }
                     this.setNativeAmount();
+                    if (this.item.isSubSubjectType) {
+                        this.$nextTick(() => this.initCompanySelect(accountTypeCode == 'AR'))
+                    }
                 }
-                this.item.subSubjectCode = '';
+                this.item.subSubjectCode = '-';
                 this.item.docNo = '';
                 this.item.dueDate = null;
+                
             },
             arapFieldChange() {
                 const { isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
@@ -536,6 +597,90 @@ $(function () {
             },
             l(key) {
                 return getLocal(key);
+            },
+            getSelect2Language() {
+                const languageMap = { 'zh-Hans': 'zh-CN', 'zh-Hant': 'zh-TW' }
+                const cultureName = abp.localization.currentCulture.cultureName;
+                return languageMap[cultureName] || 'en';
+            },
+            initSubjectSelect: function () {
+                const _this = this;
+
+                const $subjectId = $('#subjectId');
+                const language = this.getSelect2Language();
+                $subjectId.attr('data-language', language);
+                $subjectId.select2({
+                    ajax: {
+                        url: '/api/app/subject/filtered-query-list',
+                        delay: 250,
+                        dataType: "json",
+                        data: function (params) {
+                            return { filter: params.term || '', maxResultCount: 10 };
+                        },
+                        processResults: function (data) {
+                            const items = data.items;
+                            const results = items.map(function (item, index) {
+                                const { name, id, code } = item;
+                                const text = code + ' - ' + name;
+                                return {
+                                    id,
+                                    text: text,
+                                    displayName: text
+                                }
+                            });
+                            _this.setSubjects({ subjects: items });
+                            return { results: results };
+                        }
+                    },
+                    width: '100%',
+                    dropdownParent: $('#edit-modal'),
+                    placeholder: '',
+                    allowClear: true,
+                    language: language
+                });
+                $subjectId.on('select2:select', function (e) {
+                    _this.item.subjectId = e.params.data.id;
+                    _this.subjectChange();
+                });
+            },
+            initCompanySelect: function (isClient) {
+                const _this = this; 
+                const $target = $('#subSubjectCode');
+                const url = isClient ? '/api/app/client' : '/api/app/vendor'
+                const language = this.getSelect2Language();
+                $target.attr('data-language', language);
+                $target.select2({
+                    ajax: {
+                        url: url,
+                        delay: 250,
+                        dataType: "json",
+                        data: function (params) {
+                            return { filter: params.term || '', maxResultCount: 10 };
+                        },
+                        processResults: function (data) {
+                            const items = data.items;
+                            const results = items.map(function (item, index) {
+                                const { name, id, code } = item;
+                                const text = code + ' - ' + name;
+                                return {
+                                    id,
+                                    text: text,
+                                    displayName: text
+                                }
+                            });
+                            _this.setCompanies({ items: items });
+                            return { results: results };
+                        }
+                    },
+                    width: '100%',
+                    dropdownParent: $('#subSubject'),
+                    placeholder: '',
+                    allowClear: true,
+                    language: language
+                });
+                $target.on('select2:select', function (e) {
+                    _this.item.subSubjectCode = e.params.data.id;
+                });
             }
         }
     }
@@ -629,13 +774,13 @@ $(function () {
                                 </div>
                             </div>
                         </td>
-                        <td>{{ subjectMap[item.subjectId] ? (subjectMap[item.subjectId].code + ' - '+ subjectMap[item.subjectId].name) : item.subjectId }}</td>
+                        <td>{{ item.subjectName }}</td>
                         <td>{{item.description}}</td>
                         <td>{{item.debitorCreditor === 1 ? renderAmount(item.nativeAmount) : ''}}</td>
                         <td>{{item.debitorCreditor === -1 ? renderAmount(item.nativeAmount) : ''}}</td>
                         <td><div>{{item.debitorCreditor === 1 ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
                         <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
-                        <td>{{item.subSubjectCode && companyMap[item.subSubjectCode] ? (companyMap[item.subSubjectCode].code + ' - '+ companyMap[item.subSubjectCode].name) : item.subSubjectCode}}</td>
+                        <td>{{ item.subSubjectName }}</td>
                         <td>{{item.docNo}}</td>
                         <td>{{formatRowDate(item.dueDate)}}</td>
                         <td>{{item.project}}</td>
@@ -660,7 +805,7 @@ $(function () {
 </Modal><EditDetail v-if="isShowDetail" v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
     function getDefaultDetail() {
         return {
-            subjectId: null,
+            subjectId: '-',
             subSubjectCode: null,
             description: '',
             debitorCreditor: 1,
@@ -678,7 +823,9 @@ $(function () {
             itemQty: 0,
             isOriginal: true,
             paymentReference: '',
-            isSubSubjectType: false
+            isSubSubjectType: false,
+            subjectName: '',
+            subSubjectName: ''
         };
     }
     const EditModal = {
@@ -776,7 +923,7 @@ $(function () {
                 return (new moment(value)).format("yyyy-MM-DD")
             },
             formatRowDate(value) {
-                return value ? new Date(value).toLocaleDateString(): ''
+                return value ? new Date(value).toLocaleDateString() : ''
             }
         }
     }
