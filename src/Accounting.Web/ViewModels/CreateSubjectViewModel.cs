@@ -14,7 +14,7 @@ namespace Accounting.Web.ViewModels
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string Name { get; set; }
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
-        public string OtherName { get; set; }
+        public string? OtherName { get; set; }
         [SelectItems("Categories")]
         [Display(Name = "SubjectCategory")]
         public Guid? SubjectCategoryId { get; set; }
@@ -27,7 +27,7 @@ namespace Accounting.Web.ViewModels
         [Display(Name = "Currency")]
         public string CurrencyCode { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public bool IsSubSubjectType { get; set; }
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
