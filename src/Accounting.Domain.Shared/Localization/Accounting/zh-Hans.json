@@ -200,6 +200,12 @@
     "TransferVoucherDateFormat": "转账传票传票日期格式",
     "ReceivableVoucherDateFormat": "收款传票传票日期格式",
     "PayableVoucherDateFormat": "应付传票传票日期格式",
-    "CannotFormatVoucherDate": "使用该格式无法格式化传票日期：{0}"
+    "CannotFormatVoucherDate": "使用该格式无法格式化传票日期：{0}",
+    "AccountingFeature": "会计功能",
+    "AccountingFeature.ProjectFunction": "项目功能",
+    "AccountingFeature.RegionFunction": "区域功能",
+    "AccountingFeature.DepartmentFunction": "部门功能",
+    "AccountingFeature.Custom1Function": "自定义1功能",
+    "AccountingFeature.Custom2Function": "自定义2功能"
   }
 }

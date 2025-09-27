@@ -20,7 +20,7 @@ public class AccountingMenuContributor : IMenuContributor
         }
     }
 
-    private static async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private static Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var l = context.GetLocalizer<AccountingResource>();
 
@@ -147,5 +147,7 @@ public class AccountingMenuContributor : IMenuContributor
         {
             context.Menu.AddItem(generalLedgerMenu);
         }
+
+        return Task.CompletedTask;
     }
 }

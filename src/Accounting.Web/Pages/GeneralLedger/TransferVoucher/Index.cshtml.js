@@ -22,7 +22,12 @@ $(function () {
                 vendorMap: {},
                 currencies: [],
                 nativeCurrency: '',
-                isRequestData: false
+                isRequestData: false,
+                enableProject: abp.features.isEnabled('AccountingFeature.ProjectFunction'),
+                enableRegion: abp.features.isEnabled('AccountingFeature.RegionFunction'),
+                enableDepartment: abp.features.isEnabled('AccountingFeature.DepartmentFunction'),
+                enableCustom1: abp.features.isEnabled('AccountingFeature.Custom1Function'),
+                enableCustom2: abp.features.isEnabled('AccountingFeature.Custom2Function')
             }
         },
         mutations: {
@@ -133,7 +138,12 @@ $(function () {
             vendors: state => state.vendors,
             currencies: state => state.currencies,
             nativeCurrency: state => state.nativeCurrency,
-            isRequestData: state => state.isRequestData
+            isRequestData: state => state.isRequestData,
+            enableProject: state => state.enableProject, 
+            enableRegion: state => state.enableRegion,
+            enableDepartment: state => state.enableDepartment,
+            enableCustom1: state => state.enableCustom1,
+            enableCustom2: state => state.enableCustom2,
         }
     })
     const tvInputAction = function (requestData, dataTableSettings) {
@@ -433,23 +443,23 @@ $(function () {
                     {{l('PleaseEnterAValue')}}
                 </div>
             </div>
-             <div class="mb-2 mx-1">
+             <div v-if="enableProject" class="mb-2 mx-1">
                 <label for="project" class="form-label">{{l('Project')}}</label>
                 <input v-model="item.project" type="text" class="form-control" id="project" name="project">
             </div>
-            <div class="mb-2 mx-1">
+            <div v-if="enableRegion" class="mb-2 mx-1">
                 <label for="department" class="form-label">{{l('Department')}}</label>
                 <input v-model="item.department" type="text" class="form-control" id="department" rows="3" name="department">
             </div>
-             <div class="mb-2 mx-1">
+             <div v-if="enableDepartment" class="mb-2 mx-1">
                 <label for="region" class="form-label">{{l('Region')}}</label>
                 <input v-model="item.region" type="text" class="form-control" id="region" name="region">
             </div>
-            <div class="mb-2 mx-1">
+            <div v-if="enableCustom1" class="mb-2 mx-1">
                 <label for="custom1" class="form-label">{{l('Custom1')}}</label>
                 <input v-model="item.custom1" type="text" class="form-control" id="custom1" rows="3" name="custom1">
             </div>
-             <div class="mb-2 mx-1">
+             <div v-if="enableCustom2" class="mb-2 mx-1">
                 <label for="custom2" class="form-label">{{l('Custom2')}}</label>
                 <input v-model="item.custom2" type="text" class="form-control" id="custom2" name="custom2">
             </div>
@@ -467,7 +477,8 @@ $(function () {
             }
         },
         computed: {
-            ...Vuex.mapGetters(['subjects', 'companies', 'currencies', 'subjectMap', 'clients', 'vendors'])
+            ...Vuex.mapGetters(['subjects', 'companies', 'currencies', 'subjectMap', 'clients', 'vendors',
+                'enableProject', 'enableRegion', 'enableDepartment', 'enableCustom1', 'enableCustom2'])
         },
         mounted() {
             this.initSubjectSelect();
@@ -723,7 +734,7 @@ $(function () {
       <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details" tabindex="0">
         <div><button type="button" class="btn btn-primary btn-sm" @click="addDetail"><i class="fa fa-plus"></i> {{l('AddDetail')}}</button></div>
         <div class="items"> 
-            <table class="table table-striped" style="min-width: 2060px;max-width: 2230px;">
+            <table class="table table-striped" :style="tableStyle">
                 <colgroup>
                     <col style="width: 120px;" />
                     <col style="width: 250px;" />
@@ -735,11 +746,11 @@ $(function () {
                     <col style="width: 250px;" />
                     <col style="width: 120px;" />
                     <col style="width: 120px;" />
-                    <col style="width: 120px;" />
-                    <col style="width: 120px;" />
-                    <col style="width: 120px;" />
-                    <col style="width: 120px;" />
-                    <col style="width: 120px;" />
+                    <col v-if="enableProject" style="width: 120px;" />
+                    <col v-if="enableRegion" style="width: 120px;" />
+                    <col v-if="enableDepartment" style="width: 120px;" />
+                    <col v-if="enableCustom1" style="width: 120px;" />
+                    <col v-if="enableCustom2" style="width: 120px;" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -753,11 +764,11 @@ $(function () {
                         <th>{{l('SubSubject')}}</th>
                         <th>{{l('DocNo')}}</th>
                         <th>{{l('DueDate')}}</th>
-                        <th>{{l('Project')}}</th>
-                        <th>{{l('Department')}}</th>
-                        <th>{{l('Region')}}</th>
-                        <th>{{l('Custom1')}}</th>
-                        <th>{{l('Custom2')}}</th>
+                        <th v-if="enableProject">{{l('Project')}}</th>
+                        <th v-if="enableRegion">{{l('Department')}}</th>
+                        <th v-if="enableDepartment">{{l('Region')}}</th>
+                        <th v-if="enableCustom1">{{l('Custom1')}}</th>
+                        <th v-if="enableCustom2">{{l('Custom2')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -783,11 +794,11 @@ $(function () {
                         <td>{{ item.subSubjectName }}</td>
                         <td>{{item.docNo}}</td>
                         <td>{{formatRowDate(item.dueDate)}}</td>
-                        <td>{{item.project}}</td>
-                        <td>{{item.department}}</td>
-                        <td>{{item.region}}</td>
-                        <td>{{item.custom1}}</td>
-                        <td>{{item.custom2}}</td>
+                        <td v-if="enableProject">{{item.project}}</td>
+                        <td v-if="enableRegion">{{item.department}}</td>
+                        <td v-if="enableDepartment">{{item.region}}</td>
+                        <td v-if="enableCustom1">{{item.custom1}}</td>
+                        <td v-if="enableCustom2">{{item.custom2}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -840,7 +851,27 @@ $(function () {
         },
         computed: {
             ...Vuex.mapGetters(['isShowModal', 'editItem', 'totalDebitorAmount',
-                'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency'])
+                'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency',
+                'enableProject', 'enableRegion', 'enableDepartment', 'enableCustom1', 'enableCustom2']),
+            showSubSubject() {
+                return this.editItem.details.findIndex(item => item.subSubjectCode) > -1
+            },
+            tableStyle() {
+                let minWidth = 1460, maxWidth = 1630;
+                const features = [this.enableProject, this.enableRegion, this.enableDepartment, this.enableCustom1, this.enableCustom2]
+
+                features.forEach(enable => {
+                    if (enable) {
+                        minWidth += 120;
+                        maxWidth += 120;
+                    }
+                })
+
+                return {
+                    ['min-width']: minWidth.toString() + 'px',
+                    ['max-width']: maxWidth.toString() + 'px'
+                }
+            }
         },
         methods: {
             ...Vuex.mapMutations(['showModal', 'saveDetailItem', 'removeDetailItem']),

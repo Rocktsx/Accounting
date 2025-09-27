@@ -1,4 +1,5 @@
-using Accounting.Finance.Dtos; 
+using Accounting.Features;
+using Accounting.Finance.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     VoucherFilterRequestDto, VoucherCreateDto, VoucherUpdateDto>, IVoucherAppService
 {
     public VoucherAppService(IRepository<Voucher, Guid> repository) : base(repository)
-    { 
-    } 
+    {
+    }
 
     protected async Task ValidateAsync(Voucher voucher, VoucherManager manager)
     {
@@ -38,15 +39,25 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
+        var enableProjectFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.ProjectFunction);
+        var enableRegionFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.RegionFunction);
+        var enableDepartmentFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.DepartmentFunction);
+        var enableCustom1Function = await FeatureChecker.IsEnabledAsync(AccountingFeatures.Custom1Function);
+        var enableCustom2Function = await FeatureChecker.IsEnabledAsync(AccountingFeatures.Custom2Function);
         foreach (var item in input.Details)
         {
             entity.AddDetail(GuidGenerator.Create(), item.SubjectId, item.SubSubjectCode, item.Description,
                 item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
-                item.DocNo, item.DueDate, item.Project, item.Department, item.Region, item.Custom1, item.Custom2,
+                item.DocNo, item.DueDate,
+                enableProjectFunction ? item.Project : string.Empty,
+                enableRegionFunction ? item.Region : string.Empty,
+                enableDepartmentFunction ? item.Department : string.Empty,
+                enableCustom1Function ? item.Custom1 : string.Empty,
+                enableCustom2Function ? item.Custom2 : string.Empty,
                 item.ItemQty ?? 0, item.IsOriginal ?? true, item.PaymentReference);
         }
 
-        await ValidateAsync(entity, manager); 
+        await ValidateAsync(entity, manager);
 
         var setting = LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
         var voucherDateFormat = await GetVoucherDateFormatAsync(setting);
@@ -69,25 +80,42 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     {
         var entity = await GetEntityByIdAsync(id);
         entity.SetVoucherDate(DateOnly.FromDateTime(input.VoucherDate));
-        if(input.Status != null)
+        if (input.Status != null)
         {
-           entity.SetStatus(input.Status.Value);
-        } 
+            entity.SetStatus(input.Status.Value);
+        }
         entity.Details.RemoveAll(item => !input.Details.Any(obj => obj.Id == item.Id));
+
+        var enableProjectFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.ProjectFunction);
+        var enableRegionFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.RegionFunction);
+        var enableDepartmentFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.DepartmentFunction);
+        var enableCustom1Function = await FeatureChecker.IsEnabledAsync(AccountingFeatures.Custom1Function);
+        var enableCustom2Function = await FeatureChecker.IsEnabledAsync(AccountingFeatures.Custom2Function);
+
         foreach (var item in input.Details)
         {
             if (Guid.Empty.Equals(item.Id))
             {
                 entity.AddDetail(GuidGenerator.Create(), item.SubjectId, item.SubSubjectCode, item.Description,
                     item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
-                    item.DocNo, item.DueDate, item.Project, item.Department, item.Region, item.Custom1, item.Custom2,
+                    item.DocNo, item.DueDate,
+                    enableProjectFunction ? item.Project : string.Empty,
+                    enableRegionFunction ? item.Region : string.Empty,
+                    enableDepartmentFunction ? item.Department : string.Empty,
+                    enableCustom1Function ? item.Custom1 : string.Empty,
+                    enableCustom2Function ? item.Custom2 : string.Empty,
                     item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
             }
             else
             {
                 entity.SetDetail(item.Id, item.SubjectId, item.SubSubjectCode, item.Description,
                     item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
-                    item.DocNo, item.DueDate, item.Project, item.Department, item.Region, item.Custom1, item.Custom2,
+                    item.DocNo, item.DueDate,
+                    enableProjectFunction ? item.Project : string.Empty,
+                    enableRegionFunction ? item.Region : string.Empty,
+                    enableDepartmentFunction ? item.Department : string.Empty,
+                    enableCustom1Function ? item.Custom1 : string.Empty,
+                    enableCustom2Function ? item.Custom2 : string.Empty,
                     item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
             }
         }
@@ -111,7 +139,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
         query = query.Where(item =>
             input.Status != null ? item.Status == input.Status : item.Status != VoucherStatus.Void);
-        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo),item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
+        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
         return query;
     }
 }

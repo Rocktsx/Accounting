@@ -166,6 +166,12 @@
     "TransferVoucherDateFormat": "Transfer Voucher Voucher Date Format",
     "ReceivableVoucherDateFormat": "Receivable Voucher Voucher Date Format",
     "PayableVoucherDateFormat": "Payable Voucher Voucher Date Format",
-    "CannotFormatVoucherDate": "Cannot format voucher date with {0}"
+    "CannotFormatVoucherDate": "Cannot format voucher date with {0}",
+    "AccountingFeature": "Accounting Features",
+    "AccountingFeature.ProjectFunction": "Project Function",
+    "AccountingFeature.RegionFunction": "Region Function",
+    "AccountingFeature.DepartmentFunction": "Department Function",
+    "AccountingFeature.Custom1Function": "Custom1 Function",
+    "AccountingFeature.Custom2Function": "Custom2 Function"
   }
 }
