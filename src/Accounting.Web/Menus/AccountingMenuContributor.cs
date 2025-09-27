@@ -68,7 +68,7 @@ public class AccountingMenuContributor : IMenuContributor
                   l[AccountingMenus.DisplayNames.Currency],
                   icon: "fas fa-dollar-sign",
                   url: "/BasicData/Currency"
-              ).RequirePermissions(AccountingPermissions.Currences.Default)
+              ).RequirePermissions(AccountingPermissions.Currencies.Default)
           );
 
         basicDataMenu.AddItem(

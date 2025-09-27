@@ -11,9 +11,9 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        AddPermissionGroup(context, AccountingPermissions.Currences.Default, AccountingPermissions.Currences.Name,
-            AccountingPermissions.Currences.Create, AccountingPermissions.Currences.Delete,
-            AccountingPermissions.Currences.Update);
+        AddPermissionGroup(context, AccountingPermissions.Currencies.Default, AccountingPermissions.Currencies.Name,
+            AccountingPermissions.Currencies.Create, AccountingPermissions.Currencies.Delete,
+            AccountingPermissions.Currencies.Update);
 
         AddPermissionGroup(context, AccountingPermissions.Clients.Default, AccountingPermissions.Clients.Name,
             AccountingPermissions.Clients.Create, AccountingPermissions.Clients.Delete,

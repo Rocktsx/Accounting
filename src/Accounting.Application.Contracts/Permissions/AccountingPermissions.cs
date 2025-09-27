@@ -15,7 +15,7 @@ public static class AccountingPermissions
 
     public const string BasicDataGroup = GroupName + ".BasicData";
 
-    public class Currences
+    public class Currencies
     {
         public const string Name = "Currency";
         public const string Default = BasicDataGroup + Dot + Name;
@@ -41,7 +41,9 @@ public static class AccountingPermissions
     }
 
     public const string GeneralLedgerGroup = GroupName + ".GeneralLedger";
-
+    /// <summary>
+    /// 会计年度
+    /// </summary>
     public class AccountingPeriods
     {
         public const string Name = "AccountingPeriod";
@@ -73,6 +75,9 @@ public static class AccountingPermissions
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
     }
+    /// <summary>
+    /// 科目
+    /// </summary>
     public class Subjects
     {
         public const string Name = "Subject";
@@ -83,6 +88,10 @@ public static class AccountingPermissions
     } 
 
     public const string AccountingSetting = GroupName + ".AccountingSetting";
+
+    /// <summary>
+    /// 转账传票
+    /// </summary>
     public class TransferVouchers
     {
         public const string Name = "TransferVoucher";

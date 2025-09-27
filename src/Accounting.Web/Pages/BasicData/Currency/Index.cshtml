@@ -31,7 +31,7 @@
                 <abp-card-title>@L[AccountingMenus.DisplayNames.Currency].Value</abp-card-title>
             </abp-column>
             <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.Currences.Create))
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.Currencies.Create))
                 {
                      <abp-button id="newCurrencyButton"
                             text="@L["NewCurrency"].Value"

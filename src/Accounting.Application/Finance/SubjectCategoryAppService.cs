@@ -66,7 +66,7 @@ namespace Accounting.Finance
             return queryable;
         }
 
-        [Authorize]
+        [Authorize(AccountingPermissions.GeneralAccounts.Default)]
         public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();

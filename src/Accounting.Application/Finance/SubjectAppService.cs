@@ -63,7 +63,7 @@ namespace Accounting.Finance
             return queryable;
         }
 
-        [Authorize]
+        [Authorize(AccountingPermissions.Subjects.Default)]
         public async Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync()
         {
             var queryable = await Repository.GetQueryableAsync();
@@ -78,7 +78,7 @@ namespace Accounting.Finance
                 }));
         }
 
-        [Authorize]
+        [Authorize(AccountingPermissions.Subjects.Default)]
         public async Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync()
         {
             var queryable = await Repository.WithDetailsAsync(item => item.AccountType);
