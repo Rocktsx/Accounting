@@ -71,8 +71,8 @@ namespace Accounting
             }
             if (!await _subjectRepository.AnyAsync())
             {
-                await AddSubjectAsync(true);
-                await AddSubjectAsync(false);
+                await AddSubjectAsync(true, context.TenantId);
+                await AddSubjectAsync(false, context.TenantId);
             }
             if (!await _voucherRepository.AnyAsync())
             {
@@ -80,16 +80,8 @@ namespace Accounting
                 voucher.SetCode("JV-0001", "JV", 1);
                 var subjectCode1 = "2801";
                 var subjectCode2 = "8021"; 
-                var subject1 = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode1);
-                if (subject1 == null)
-                {
-                    subject1 = await AddSubjectAsync(true);
-                }
-                var subject2 = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode2);
-                if (subject2 == null)
-                {
-                    subject2 = await AddSubjectAsync(false);
-                }
+                var subject1 = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode1); 
+                var subject2 = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode2); 
                 voucher.AddDetail(_guidGenerator.Create(), subject2.Id, null, "Rent & Rates 2011 01", DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
                 voucher.AddDetail(_guidGenerator.Create(), subject1.Id, null, "Rent & Rates 2011 01", DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
                 await _voucherRepository.InsertAsync(voucher);
