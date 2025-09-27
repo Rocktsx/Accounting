@@ -1,4 +1,4 @@
-using Accounting.Localization;
+﻿using Accounting.Localization;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.FeatureManagement;
@@ -50,6 +50,10 @@ public class AccountingDomainSharedModule : AbpModule
                 .AddVirtualJson("/Localization/Accounting");
 
             options.DefaultResourceType = typeof(AccountingResource);
+
+            options.Languages.Add(new LanguageInfo("en", "en", "English"));
+            options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
+            options.Languages.Add(new LanguageInfo("zh-Hant", "zh-Hant", "繁體中文"));
         });
 
         Configure<AbpExceptionLocalizationOptions>(options =>
