@@ -53,16 +53,13 @@ $(function () {
                 state.editItem.voucherDate = formatDate(state.editItem.voucherDate);
             },
             setSubjects(state, payload) {
-                const { subjects, setDetail } = payload;
+                const { subjects } = payload;
                 (subjects || []).forEach(item => {
                     if (!state.subjectMap[item.id]) {
                         state.subjectMap[item.id] = item;
                         state.subjects.push(item);
                     }
                 });
-                if (setDetail) {
-
-                }
             },
             setDetails(state) {
                 (state.editItem.details || []).forEach(item => {
@@ -477,7 +474,7 @@ $(function () {
             }
         },
         computed: {
-            ...Vuex.mapGetters(['subjects', 'companies', 'currencies', 'subjectMap', 'clients', 'vendors',
+            ...Vuex.mapGetters(['subjects', 'companyMap', 'currencies', 'subjectMap', 'clients', 'vendors',
                 'enableProject', 'enableRegion', 'enableDepartment', 'enableCustom1', 'enableCustom2'])
         },
         mounted() {
@@ -689,8 +686,14 @@ $(function () {
                     allowClear: true,
                     language: language
                 });
-                $target.on('select2:select', function (e) {
+                $target.on('select2:select', function (e) { 
                     _this.item.subSubjectCode = e.params.data.id;
+                    _this.item.subSubjectName = e.params.data.text;
+                    const company = _this.companyMap[e.params.data.id];
+                    if (company && company.currency) {
+                        _this.item.currencyCode = company.currency;
+                        _this.currencyChange();
+                    }
                 });
             }
         }
@@ -743,9 +746,9 @@ $(function () {
                     <col style="width: 120px;" />
                     <col style="min-width:120px; max-width: 160px;" />
                     <col style="width: 120px;" />
-                    <col style="width: 250px;" />
-                    <col style="width: 120px;" />
-                    <col style="width: 120px;" />
+                    <col v-if="showSubSubject" style="width: 250px;" />
+                    <col v-if="showSubSubject" style="width: 120px;" />
+                    <col v-if="showSubSubject" style="width: 120px;" />
                     <col v-if="enableProject" style="width: 120px;" />
                     <col v-if="enableRegion" style="width: 120px;" />
                     <col v-if="enableDepartment" style="width: 120px;" />
@@ -761,9 +764,9 @@ $(function () {
                         <th>{{l('Creditor')}}<div>{{nativeCurrency}}</div></th>
                         <th><div>{{l('DebitorCreditor')}}</div><div>{{l('Currency')}}</div></th>
                         <th class="text-end normal"><div>{{l('ForeignAmount')}}</div><div>{{l('ExchangeRate')}}</div></th>
-                        <th>{{l('SubSubject')}}</th>
-                        <th>{{l('DocNo')}}</th>
-                        <th>{{l('DueDate')}}</th>
+                        <th v-if="showSubSubject">{{l('SubSubject')}}</th>
+                        <th v-if="showSubSubject">{{l('DocNo')}}</th>
+                        <th v-if="showSubSubject">{{l('DueDate')}}</th>
                         <th v-if="enableProject">{{l('Project')}}</th>
                         <th v-if="enableRegion">{{l('Department')}}</th>
                         <th v-if="enableDepartment">{{l('Region')}}</th>
@@ -791,9 +794,9 @@ $(function () {
                         <td>{{item.debitorCreditor === -1 ? renderAmount(item.nativeAmount) : ''}}</td>
                         <td><div>{{item.debitorCreditor === 1 ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
                         <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
-                        <td>{{ item.subSubjectName }}</td>
-                        <td>{{item.docNo}}</td>
-                        <td>{{formatRowDate(item.dueDate)}}</td>
+                        <td v-if="showSubSubject">{{ item.subSubjectName }}</td>
+                        <td v-if="showSubSubject">{{item.docNo}}</td>
+                        <td v-if="showSubSubject">{{formatRowDate(item.dueDate)}}</td>
                         <td v-if="enableProject">{{item.project}}</td>
                         <td v-if="enableRegion">{{item.department}}</td>
                         <td v-if="enableDepartment">{{item.region}}</td>
@@ -857,15 +860,19 @@ $(function () {
                 return this.editItem.details.findIndex(item => item.subSubjectCode) > -1
             },
             tableStyle() {
-                let minWidth = 1460, maxWidth = 1630;
+                let minWidth = 970, maxWidth = 1140;
                 const features = [this.enableProject, this.enableRegion, this.enableDepartment, this.enableCustom1, this.enableCustom2]
-
+                const featureColumnWidth = 120, subSubbjectWidth = 490;
                 features.forEach(enable => {
                     if (enable) {
-                        minWidth += 120;
-                        maxWidth += 120;
+                        minWidth += featureColumnWidth;
+                        maxWidth += featureColumnWidth;
                     }
                 })
+                if (this.showSubSubject) {
+                    minWidth += subSubbjectWidth;
+                    maxWidth += subSubbjectWidth;
+                }
 
                 return {
                     ['min-width']: minWidth.toString() + 'px',
