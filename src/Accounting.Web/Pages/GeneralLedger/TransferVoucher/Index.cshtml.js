@@ -485,7 +485,7 @@ $(function () {
                     isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
                 let errorCount = 0;
                 this.errors = {};
-                if (!subjectId) {
+                if (!subjectId || subjectId === '-') {
                     this.errors.subjectId = true;
                     errorCount++;
                 }
@@ -506,7 +506,7 @@ $(function () {
                     errorCount++;
                 }
                 if (isSubSubjectType) {
-                    if (!subSubjectCode) {
+                    if (!subSubjectCode || subSubjectCode === '-') {
                         this.errors.subSubjectCode = true;
                         errorCount++;
                     }
