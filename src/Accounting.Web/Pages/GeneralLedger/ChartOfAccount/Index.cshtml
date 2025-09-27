@@ -36,6 +36,9 @@
         font-size: 1rem !important;
         font-weight: 400 !important;
     } 
+    #showDetail i.fa.fa-check {
+        color: #4fbf67;
+    }
 </style>
 <abp-card>
     <abp-card-header>
@@ -66,25 +69,19 @@
                     </abp-card-header>
                     <abp-card-body class="pb-0 pt-2">
                         <abp-row>
-                            <abp-column>
+                            <abp-column size="_4">
                                 <label class="title">@L["GeneralCode"]</label><span id="subjectCategoryCode"></span>
                             </abp-column>
-                            <abp-column>
+                            <abp-column size="_8">
                                 <label class="title">@L["Name"]</label><span id="name"></span>
-                            </abp-column>
-                            <abp-column>
-                                <label class="title">@L["OtherName"]</label><span id="otherName"></span>
                             </abp-column>
                         </abp-row>
                         <abp-row>
-                            <abp-column>
-                                <label class="title">@L["DebitorCreditor"]</label><span id="debitorCreditor"></span>
-                            </abp-column>
-                            <abp-column>
+                            <abp-column size="_4">
                                 <label class="title">@L["AccountType"]</label><span id="accountType"></span>
                             </abp-column>
-                            <abp-column>
-                                <label class="title">@L["ShowDetail"]</label><span id="showDetail"></span>
+                            <abp-column size="_8">
+                                <label class="title">@L["OtherName"]</label><span id="otherName"></span>
                             </abp-column>
                         </abp-row>
                         <abp-row>
@@ -92,8 +89,10 @@
                                 <label class="title">@L["ParentCode"]</label><span id="parentCode"></span>
                             </abp-column>
                             <abp-column>
+                                <label class="title">@L["DebitorCreditor"]</label><span id="debitorCreditor"></span>
                             </abp-column>
                             <abp-column>
+                                <label class="title">@L["ShowDetail"]</label><span id="showDetail"></span>
                             </abp-column>
                         </abp-row>
                     </abp-card-body>
