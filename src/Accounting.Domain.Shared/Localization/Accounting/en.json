@@ -172,6 +172,8 @@
     "AccountingFeature.RegionFunction": "Region Function",
     "AccountingFeature.DepartmentFunction": "Department Function",
     "AccountingFeature.Custom1Function": "Custom1 Function",
-    "AccountingFeature.Custom2Function": "Custom2 Function"
+    "AccountingFeature.Custom2Function": "Custom2 Function",
+    "DocNoIsDuplicated": "The Doc. No. is duplicated: {0}",
+    "DocNoHasBeenUsed": "The Doc. No. has been used: {0}"
   }
 }

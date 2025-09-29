@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
@@ -23,6 +24,10 @@ namespace Accounting.Finance
         {
             ValidateBalance(voucher);
             await ValidateVoucherDateAsync(voucher);
+            if (voucher.VoucherType == VoucherType.JournalVoucher)
+            {
+                await ValidateReceivablePayableSubject(voucher);
+            }
         }
         private void ValidateBalance(Voucher voucher)
         {
@@ -43,22 +48,33 @@ namespace Accounting.Finance
                 throw new BusinessException(AccountingDomainErrorCodes.VoucherDateIsNotInCurrentPeriodRange);
             }
         }
-        public async Task ValidateReceivablePayableSubject(Voucher voucher, IRepository<Subject, Guid> subjectRepository)
+        private async Task ValidateReceivablePayableSubject(Voucher voucher)
         {
             var subjectIds = voucher.Details.Select(item => item.SubjectId).Distinct().ToList();
+            var subjectRepository = LazyServiceProvider.LazyGetRequiredService<IRepository<Subject, Guid>>();
             var querable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
-            var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id) && item.AccountType != null && 
-                (item.AccountType.Code == AccountTypeConsts.AccountingReceivableType || item.AccountType.Code == AccountTypeConsts.AccountingPayableType))
-                .Select(item => new { item.Id, item.IsSubSubjectType }); 
-            var arapSubjects = (await AsyncExecuter.ToListAsync(arapQuerable)).ToDictionary(item => item.Id, item => item.IsSubSubjectType);
 
+            var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id) && item.AccountType != null &&
+                (item.AccountType.Code == AccountTypeConsts.AccountingReceivableType || item.AccountType.Code == AccountTypeConsts.AccountingPayableType))
+                .Select(item => new SimpleSubject { Id = item.Id, IsSubSubjectType = item.IsSubSubjectType, AccountTypeCode = item.AccountType.Code });
+            var subjects = await AsyncExecuter.ToListAsync(arapQuerable);
+
+            if (subjects.Count == 0)
+            {
+                return;
+            }
+            var arapSubjects = subjects.ToDictionary(item => item.Id, item => item);
+
+            var arapVoucherDetails = new List<VoucherDetail>();
+            var docDics = new Dictionary<string, VoucherDetail>();
             foreach (var item in voucher.Details)
             {
                 if (!arapSubjects.ContainsKey(item.SubjectId))
                 {
                     continue;
                 }
-                if (arapSubjects[item.SubjectId] && (item.SubSubjectCode == null || Guid.Empty.Equals(item.SubSubjectCode)))
+                var subject = arapSubjects[item.SubjectId];
+                if (subject.IsSubSubjectType && (item.SubSubjectCode == null || Guid.Empty.Equals(item.SubSubjectCode)))
                 {
                     throw new BusinessException(AccountingDomainErrorCodes.SubSubjectCodeCanNotBeEmpty);
                 }
@@ -70,6 +86,61 @@ namespace Accounting.Finance
                 {
                     throw new BusinessException(AccountingDomainErrorCodes.DueDateCanNotBeEmpty);
                 }
+
+                if (docDics.TryGetValue(item.DocNo, out VoucherDetail? value) && (subject.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
+                    subject.AccountTypeCode == AccountTypeConsts.AccountingPayableType && item.SubSubjectCode == value.SubSubjectCode))
+                {
+                    throw new BusinessException(AccountingDomainErrorCodes.DocNoIsDuplicated);
+                }
+                else
+                {
+                    docDics[item.DocNo] = item;
+                }
+                arapVoucherDetails.Add(item);
+            }
+            await CheckDocNoRepeatAsync(arapVoucherDetails, arapSubjects);
+        }
+        /// <summary>
+        /// 检查DocNo是否已经使用了
+        /// AR的DOC. No.一定是唯一的
+        /// AP的DOC. No. 同一供應商一定是唯一的
+        /// </summary>
+        /// <param name="voucherDetails"></param>
+        /// <param name="subjects"></param>
+        /// <returns></returns>
+        /// <exception cref="BusinessException"></exception>
+        private async Task CheckDocNoRepeatAsync(List<VoucherDetail> voucherDetails, Dictionary<Guid, SimpleSubject> subjects)
+        {
+            var repository = LazyServiceProvider.LazyGetRequiredService<IRepository<VoucherDetail, Guid>>();
+            var query = await repository.GetQueryableAsync();
+            var voucherId = voucherDetails.First().VoucherId;
+            var docNos = voucherDetails.Select(item => item.DocNo);
+
+            var repeatQuery = query.Where(item => item.Voucher.VoucherType == VoucherType.JournalVoucher
+                                        && item.VoucherId != voucherId
+                                        && docNos.Contains(item.DocNo)
+                                        && (item.Subject.AccountType.Code == AccountTypeConsts.AccountingReceivableType
+                                            || item.Subject.AccountType.Code == AccountTypeConsts.AccountingPayableType)
+                                  ).GroupBy(item => new { item.DocNo, item.SubSubjectCode, AccountTypeCode = item.Subject.AccountType.Code })
+                                  .Select(item => new { item.Key.DocNo, item.Key.SubSubjectCode, item.Key.AccountTypeCode, Count = item.Count() });
+            var repeatList = await AsyncExecuter.ToListAsync(repeatQuery);
+            if (repeatList.Count == 0)
+            {
+                return;
+            }
+            var result = from r in repeatList
+                         join d in voucherDetails on r.DocNo equals d.DocNo
+                         where r.AccountTypeCode == subjects[d.SubjectId].AccountTypeCode
+                           && (r.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
+                               r.AccountTypeCode == AccountTypeConsts.AccountingPayableType && r.SubSubjectCode == d.SubSubjectCode)
+                         group r by new { r.DocNo, r.AccountTypeCode, SubSubjectCode = (r.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ? Guid.Empty : r.SubSubjectCode) } into grp
+                         where grp.Count() > 0
+                         select new { grp.Key.DocNo, grp.Key.SubSubjectCode, grp.Key.AccountTypeCode, Count = grp.Sum(g => g.Count) };
+
+            if (result.Any(item => item.Count > 0))
+            {
+                var repeatDocNos = String.Join(',', result.Where(item => item.Count > 0).Select(item => item.DocNo));
+                throw new BusinessException(AccountingDomainErrorCodes.DocNoHasBeenUsed, repeatDocNos);
             }
         }
         public VoucherManager SetVoucherDateFormat(string format)
@@ -80,7 +151,7 @@ namespace Accounting.Finance
         protected override string GetPrefix(IGenerateCode obj)
         {
             if (string.IsNullOrWhiteSpace(_voucherDateFormat))
-            { 
+            {
                 return base.GetPrefix(obj);
             }
             var prefix = base.GetPrefix(obj);
@@ -92,10 +163,17 @@ namespace Accounting.Finance
                     prefix += "-" + datePrefix;
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, _voucherDateFormat, innerException: ex);
             }
             return prefix;
+        }
+        private class SimpleSubject
+        {
+            public Guid Id { get; set; }
+            public string AccountTypeCode { get; set; }
+            public bool IsSubSubjectType { get; set; }
         }
     }
 }

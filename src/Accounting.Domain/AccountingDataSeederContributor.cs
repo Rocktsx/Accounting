@@ -22,6 +22,9 @@ namespace Accounting
         private readonly IRepository<SubjectCategory, Guid> _subjectCategoryRepository;
         private readonly IRepository<Subject, Guid> _subjectRepository;
         private readonly IRepository<Voucher, Guid> _voucherRepository;
+
+        private Guid? _subject2801Id = Guid.Empty;
+        private Guid? _subject88021Id = Guid.Empty;
         public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository,
             IGuidGenerator guidGenerator, IRepository<AccountingPeriod, Guid> accountingPeriodRepository,
             IRepository<AccountType, Guid> accountTypeRepository, IRepository<SubjectCategory, Guid> subjectCategoryRepository,
@@ -77,13 +80,16 @@ namespace Accounting
             if (!await _voucherRepository.AnyAsync())
             {
                 var voucher = new Voucher(_guidGenerator.Create(), new DateOnly(2025, 1, 1), VoucherType.JournalVoucher, VoucherStatus.Draft, context.TenantId);
-                voucher.SetCode("JV-0001", "JV", 1);
-                var subjectCode1 = "2801";
-                var subjectCode2 = "8021"; 
-                var subject1 = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode1); 
-                var subject2 = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode2); 
-                voucher.AddDetail(_guidGenerator.Create(), subject2.Id, null, "Rent & Rates 2011 01", DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
-                voucher.AddDetail(_guidGenerator.Create(), subject1.Id, null, "Rent & Rates 2011 01", DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
+                voucher.SetCode("JV-0001", "JV", 1); 
+                if(_subject2801Id == null)
+                {
+                    await AddSubjectAsync(true, context.TenantId);
+                }
+                if (_subject88021Id == null) {
+                    await AddSubjectAsync(false, context.TenantId);
+                }
+                voucher.AddDetail(_guidGenerator.Create(), _subject2801Id.Value, null, "Rent & Rates 2011 01", DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
+                voucher.AddDetail(_guidGenerator.Create(), _subject88021Id.Value, null, "Rent & Rates 2011 01", DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
                 await _voucherRepository.InsertAsync(voucher);
             }
         }
@@ -92,13 +98,15 @@ namespace Accounting
             if (isAddBankOrAddRentRate)
             {
                 var bakAccountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == "BAK");
-                var subject1 = new Subject(_guidGenerator.Create(), "2801", "銀行 (往來戶口）", "Bank (C/A)", null, bakAccountType?.Id,
+                _subject2801Id = _guidGenerator.Create();
+                var subject1 = new Subject(_subject2801Id.Value, "2801", "銀行 (往來戶口）", "Bank (C/A)", null, bakAccountType?.Id,
                     DebitorCreditor.Debitor, "RMB", "往來戶口", false, true, true, 0, tenantId);
                 await _subjectRepository.InsertAsync(subject1);
                 return subject1;
             }
             var accountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == "AEX");
-            var subject2 = new Subject(_guidGenerator.Create(), "8021", "租金及差餉", "Rent & Rates", null, accountType?.Id,
+            _subject88021Id = _guidGenerator.Create();
+            var subject2 = new Subject(_subject88021Id.Value, "8021", "租金及差餉", "Rent & Rates", null, accountType?.Id,
                 DebitorCreditor.Debitor, "RMB", "购买固定资产", false, true, false, 0, tenantId);
             await _subjectRepository.InsertAsync(subject2);
             return subject2;

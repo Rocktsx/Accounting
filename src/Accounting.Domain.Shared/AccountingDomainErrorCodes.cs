@@ -13,4 +13,6 @@ public static class AccountingDomainErrorCodes
     public const string DocNoCanNotBeEmpty = "DocNoCanNotBeEmpty";
     public const string DueDateCanNotBeEmpty = "DueDateCanNotBeEmpty";
     public const string CannotFormatVoucherDate = "CannotFormatVoucherDate";
+    public const string DocNoIsDuplicated = "DocNoIsDuplicated";
+    public const string DocNoHasBeenUsed = "DocNoHasBeenUsed";
 }

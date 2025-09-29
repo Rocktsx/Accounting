@@ -206,6 +206,8 @@
     "AccountingFeature.RegionFunction": "区域功能",
     "AccountingFeature.DepartmentFunction": "部门功能",
     "AccountingFeature.Custom1Function": "自定义1功能",
-    "AccountingFeature.Custom2Function": "自定义2功能"
+    "AccountingFeature.Custom2Function": "自定义2功能",
+    "DocNoIsDuplicated": "Doc. No.重复了：{0}",
+    "DocNoHasBeenUsed": "Doc. No.已经被使用：{0}"
   }
 }

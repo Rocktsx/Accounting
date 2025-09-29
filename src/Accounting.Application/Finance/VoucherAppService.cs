@@ -21,13 +21,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
 
     protected async Task ValidateAsync(Voucher voucher, VoucherManager manager)
     {
-        await manager.ValidateAsync(voucher);
-        if (voucher.VoucherType == VoucherType.JournalVoucher)
-        {
-            var subjectRepository =
-                LazyServiceProvider.LazyGetRequiredService<IRepository<Subject, Guid>>();
-            await manager.ValidateReceivablePayableSubject(voucher, subjectRepository);
-        }
+        await manager.ValidateAsync(voucher); 
     }
     protected virtual async Task<string> GetVoucherDateFormatAsync(IAccountingSettingAppService service)
     {
