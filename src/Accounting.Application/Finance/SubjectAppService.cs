@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -124,6 +125,16 @@ namespace Accounting.Finance
             });
             var dtos = await AsyncExecuter.ToListAsync(newQueryable);
             return new PagedResultDto<SubjectFilteredResultDto>(totalCount, dtos);
+        }
+        [Authorize(AccountingPermissions.Subjects.Delete)]
+        public override async Task DeleteAsync(Guid id)
+        {
+            var voucherDetailRepository = LazyServiceProvider.LazyGetRequiredService<IRepository<VoucherDetail, Guid>>();
+            if (await voucherDetailRepository.AnyAsync(item => item.SubjectId == id))
+            {
+                throw new BusinessException(AccountingDomainErrorCodes.Subjects.SubjectIsInUse);
+            }
+            await base.DeleteAsync(id);
         }
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Accounting.Localization;
 
-[LocalizationResourceName("Accounting")]
+[LocalizationResourceName(Name)]
 public class AccountingResource
 {
-
+    public const string Name = "Accounting";
 }

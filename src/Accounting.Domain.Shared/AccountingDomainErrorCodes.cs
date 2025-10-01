@@ -3,16 +3,22 @@
 public static class AccountingDomainErrorCodes
 {
     /* You can add your business exception error codes here, as constants */ 
-    public const string AmountsMustNotBeZero = "AmountsMustNotBeZero";
-    public const string ExchangeRateMatchAmounts = "ExchangeRateMatchAmounts";
-    public const string ForeignExchangeRateMatchNativeAmount = "ForeignExchangeRateMatchNativeAmount";
-    public const string VoucherDoesNotBalance = "VoucherDoesNotBalance";
-    public const string SubjectIdCanNotBeEmpty = "SubjectIdCanNotBeEmpty";
-    public const string VoucherDateIsNotInCurrentPeriodRange = "VoucherDateIsNotInCurrentPeriodRange";
-    public const string SubSubjectCodeCanNotBeEmpty = "SubSubjectCodeCanNotBeEmpty";
-    public const string DocNoCanNotBeEmpty = "DocNoCanNotBeEmpty";
-    public const string DueDateCanNotBeEmpty = "DueDateCanNotBeEmpty";
-    public const string CannotFormatVoucherDate = "CannotFormatVoucherDate";
-    public const string DocNoIsDuplicated = "DocNoIsDuplicated";
-    public const string DocNoHasBeenUsed = "DocNoHasBeenUsed";
+    public const string AmountsMustNotBeZero = "Accounting:AmountsMustNotBeZero";
+    public const string ExchangeRateMatchAmounts = "Accounting:ExchangeRateMatchAmounts";
+
+    public const string ForeignExchangeRateMatchNativeAmount = "Accounting:ForeignExchangeRateMatchNativeAmount";
+    public const string VoucherDoesNotBalance = "Accounting:VoucherDoesNotBalance";
+    public const string SubjectIdCanNotBeEmpty = "Accounting:SubjectIdCanNotBeEmpty";
+    public const string VoucherDateIsNotInCurrentPeriodRange = "Accounting:VoucherDateIsNotInCurrentPeriodRange";
+    public const string SubSubjectCodeCanNotBeEmpty = "Accounting:SubSubjectCodeCanNotBeEmpty";
+    public const string DocNoCanNotBeEmpty = "Accounting:DocNoCanNotBeEmpty";
+    public const string DueDateCanNotBeEmpty = "Accounting:DueDateCanNotBeEmpty";
+    public const string CannotFormatVoucherDate = "Accounting:CannotFormatVoucherDate";
+    public const string DocNoIsDuplicated = "Accounting:DocNoIsDuplicated";
+    public const string DocNoHasBeenUsed = "Accounting:DocNoHasBeenUsed";
+
+    public static class Subjects
+    { 
+        public const string SubjectIsInUse = "Accounting:SubjectIsInUse";
+    }
 }

@@ -58,7 +58,7 @@ public class AccountingDomainSharedModule : AbpModule
 
         Configure<AbpExceptionLocalizationOptions>(options =>
         {
-            options.MapCodeNamespace("Accounting", typeof(AccountingResource));
+            options.MapCodeNamespace(AccountingResource.Name, typeof(AccountingResource));
         });
     }
 }
