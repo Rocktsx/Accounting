@@ -207,9 +207,11 @@
     "AccountingFeature.DepartmentFunction": "部门功能",
     "AccountingFeature.Custom1Function": "自定义1功能",
     "AccountingFeature.Custom2Function": "自定义2功能",
-    "Accounting:DocNoIsDuplicated": "Doc. No.重复了：{0}",
-    "Accounting:DocNoHasBeenUsed": "Doc. No.已经被使用：{0}",
+    "Accounting:DocNoIsDuplicated": "这些文档编号重复了：{0}",
+    "Accounting:DocNoHasBeenUsed": "这些文档编号已经被使用：{0}",
     "Accounting:SubjectIsInUse": "该科目已经被使用了，不能删除。",
-    "Copy": "复制"
+    "Copy": "复制",
+    "Accounting:CodeIsDuplicated": "这些编号重复了：{0}",
+    "Accounting:CodeIsInUse": "这些编号已经被使用：{0}"
   }
 }

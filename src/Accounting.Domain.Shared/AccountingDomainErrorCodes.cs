@@ -21,4 +21,6 @@ public static class AccountingDomainErrorCodes
     { 
         public const string SubjectIsInUse = "Accounting:SubjectIsInUse";
     }
+    public const string CodeIsDuplicated = "Accounting:CodeIsDuplicated";
+    public const string CodeIsInUse = "Accounting:CodeIsInUse";
 }

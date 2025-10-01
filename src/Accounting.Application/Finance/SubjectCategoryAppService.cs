@@ -1,6 +1,7 @@
 ﻿using Accounting.Finance.Dtos;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -137,6 +138,56 @@ namespace Accounting.Finance
                 }
             });
             return new PagedResultDto<SubjectCategoryFilteredQueryDto>(count, list);
+        }
+        public async Task<int> ImportData(IEnumerable<SubjectCategoryImportDto> inputs)
+        {
+            Check.NotNull(inputs, nameof(inputs));
+
+            var codes = inputs.Select(item => item.Code).Distinct();
+            if (codes.Count() < inputs.Count())
+            {
+                throw new BusinessException(AccountingDomainErrorCodes.CodeIsDuplicated, string.Join(",", inputs.Where(item => !codes.Contains(item.Code)).Select(item => item.Code)));
+            }
+            var existsItems = await Repository.GetListAsync(item => codes.Contains(item.Code));
+            if (existsItems.Count > 0)
+            {
+                throw new BusinessException(AccountingDomainErrorCodes.CodeIsInUse, string.Join(",", existsItems.Where(item => codes.Contains(item.Code)).Select(item => item.Code)));
+            }
+            var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
+            var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();
+            var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+            var inputCategories = inputs.Select(item => item.ParentCode).Distinct();
+            var categories = (await Repository.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+            var inputDics = new Dictionary<string, SubjectCategoryImportDto>(inputs.Count());
+            var entities = inputs.Where(item => !string.IsNullOrWhiteSpace(item.Code) && !string.IsNullOrWhiteSpace(item.Name))
+                    .Select(item =>
+                    {
+                        var drcr = item.DebitorCreditor == 1 ? DebitorCreditor.Debitor : DebitorCreditor.Creditor;
+                        Guid? accTypeId = !string.IsNullOrWhiteSpace(item.AccountTypeCode) && accountTypes.TryGetValue(item.AccountTypeCode, out AccountType? value) ? value.Id : null;
+                        var entity = new SubjectCategory(GuidGenerator.Create(), item.Code, item.Name, item.OtherName, null,
+                            drcr, accTypeId, item.ShowDetail, item.Description, CurrentTenant.Id, item.Level);
+
+                        categories[entity.Code] = entity;
+                        inputDics.Add(item.Code, item);
+
+                        return entity;
+                    }).ToList();
+            foreach (var item in entities)
+            {
+                var inputItem = inputDics[item.Code];
+                if (!string.IsNullOrWhiteSpace(inputItem.ParentCode) && categories.TryGetValue(inputItem.ParentCode, out SubjectCategory? parent))
+                {
+                    item.SetParentId(parent.Id);
+                    if (parent.Level + 1 != inputItem.Level)
+                    {
+                        item.SetLevel(parent.Level + 1);
+                    }
+                }
+            }
+
+            await Repository.InsertManyAsync(entities, true);
+
+            return entities.Count;
         }
     }
 }

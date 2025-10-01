@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
@@ -359,6 +360,116 @@ namespace Accounting.Finance
             result.TotalCount.ShouldBe(2);
             result.Items.ShouldContain(x => x.Code == dto1.Code);
             result.Items.ShouldContain(x => x.Code == dto2.Code && x.ParentCode == dto1.Code);
+        }
+        [Fact]
+        public async Task Can_Import_Datas()
+        {
+            // Arrange
+            var inputs = new List<SubjectCategoryImportDto>
+            {
+                new SubjectCategoryImportDto
+                {
+                    Code ="t1",
+                    Name = "t1name",
+                    ParentCode = string.Empty,
+                    AccountTypeCode = "A",
+                    Level = 0,
+                },
+                new SubjectCategoryImportDto
+                {
+                    Code ="t2",
+                    Name = "t2name",
+                    ParentCode = "t1",
+                    AccountTypeCode = "NA"
+                },
+                new SubjectCategoryImportDto
+                {
+                    Code ="t3",
+                    Name = "t3name",
+                    ParentCode = "t1",
+                    AccountTypeCode = "PL",
+                    Level = 1,
+                }
+            };
+            // Act
+            var result = await _subjectCategoryAppService.ImportData(inputs);
+
+            // Assert
+            result.ShouldBe(3);
+        }
+        [Fact]
+        public async Task Cannot_Import_Datas_With_Duplicate_Code()
+        {
+            // Arrange
+            var inputs = new List<SubjectCategoryImportDto>
+            {
+                new SubjectCategoryImportDto
+                {
+                    Code ="t1",
+                    Name = "t1name",
+                    ParentCode = string.Empty,
+                    AccountTypeCode = "A",
+                    Level = 0,
+                },
+                new SubjectCategoryImportDto
+                {
+                    Code ="t1",
+                    Name = "t2name",
+                    ParentCode = "t1",
+                    AccountTypeCode = "NA"
+                },
+                new SubjectCategoryImportDto
+                {
+                    Code ="t3",
+                    Name = "t3name",
+                    ParentCode = "t1",
+                    AccountTypeCode = "PL",
+                    Level = 1,
+                }
+            };
+            // Act
+            var result =await Should.ThrowAsync<BusinessException>( async () => await _subjectCategoryAppService.ImportData(inputs));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Code.ShouldBe(AccountingDomainErrorCodes.CodeIsDuplicated);
+        }
+        [Fact]
+        public async Task Cannot_Import_Datas_With_In_Use_Code()
+        {
+            // Arrange
+            var inputs = new List<SubjectCategoryImportDto>
+            {
+                new SubjectCategoryImportDto
+                {
+                    Code ="t1",
+                    Name = "t1name",
+                    ParentCode = string.Empty,
+                    AccountTypeCode = "A",
+                    Level = 0,
+                },
+                new SubjectCategoryImportDto
+                {
+                    Code ="1",
+                    Name = "t2name",
+                    ParentCode = "t1",
+                    AccountTypeCode = "NA"
+                },
+                new SubjectCategoryImportDto
+                {
+                    Code ="t3",
+                    Name = "t3name",
+                    ParentCode = "t1",
+                    AccountTypeCode = "PL",
+                    Level = 1,
+                }
+            };
+            // Act
+            var result = await Should.ThrowAsync<BusinessException>(async () => await _subjectCategoryAppService.ImportData(inputs));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Code.ShouldBe(AccountingDomainErrorCodes.CodeIsInUse);
         }
     }
 }

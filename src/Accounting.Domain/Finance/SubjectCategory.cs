@@ -37,7 +37,8 @@ namespace Accounting.Finance
             Guid? accountTypeId,
             bool showDetail,
             string description,
-            Guid? tenantId = null
+            Guid? tenantId = null,
+            int level = 0
         ) : base(id)
         {
             SetCode(code);
@@ -49,6 +50,7 @@ namespace Accounting.Finance
             SetShowDetail(showDetail);
             SetDescription(description);
             TenantId = tenantId;
+            SetLevel(level);
         }
 
         public SubjectCategory SetCode(string code)

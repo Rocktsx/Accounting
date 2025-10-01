@@ -15,5 +15,7 @@ namespace Accounting.Finance
     {
         Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync();
         Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input);
+
+        Task<int> ImportData(IEnumerable<SubjectCategoryImportDto> inputs);
     }
 }
