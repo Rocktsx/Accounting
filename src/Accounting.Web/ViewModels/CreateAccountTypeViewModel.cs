@@ -16,6 +16,7 @@ namespace Accounting.Web.ViewModels
         public string OtherName { get; set; }
 
         [SelectItems("AccountTypes")]
+        [Display(Name = "Parent")]
         public Guid? ParentId { get; set; }
         /// <summary>
         /// 试算表排序

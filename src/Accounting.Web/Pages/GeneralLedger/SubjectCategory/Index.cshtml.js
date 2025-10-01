@@ -64,7 +64,7 @@
                     data: "otherName"
                 },
                 {
-                    title: l('ParentId'),
+                    title: l('Parent'),
                     data: "parentId",
                     orderable: true, 
                     render: function (data) {
