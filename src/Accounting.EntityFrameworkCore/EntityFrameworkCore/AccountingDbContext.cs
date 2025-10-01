@@ -211,8 +211,8 @@ public class AccountingDbContext :
             b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
             b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength); 
             b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
-            b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId);
-            b.HasMany(x => x.Subjects).WithOne(x => x.SubjectCategory).HasForeignKey(x => x.SubjectCategoryId);
+            b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId).OnDelete(DeleteBehavior.Restrict);
+            b.HasMany(x => x.Subjects).WithOne(x => x.SubjectCategory).HasForeignKey(x => x.SubjectCategoryId).OnDelete(DeleteBehavior.Restrict);
             b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
         });
     }
@@ -227,7 +227,7 @@ public class AccountingDbContext :
             b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength); 
             b.Property(x => x.CurrencyCode).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
             b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
-            b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId);
+            b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.SubjectCategory).WithMany(x => x.Subjects).HasForeignKey(x => x.SubjectCategoryId);
             b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
         });
@@ -264,8 +264,8 @@ public class AccountingDbContext :
             b.Property(x => x.Custom1).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Custom2).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.DueDate).HasColumnType("date");
-            b.HasOne(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId);
-            b.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.SubSubjectCode);
+            b.HasOne(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId).OnDelete(DeleteBehavior.Restrict);
+            b.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.SubSubjectCode).OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
