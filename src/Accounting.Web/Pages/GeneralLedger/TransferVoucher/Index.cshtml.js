@@ -136,7 +136,7 @@ $(function () {
             currencies: state => state.currencies,
             nativeCurrency: state => state.nativeCurrency,
             isRequestData: state => state.isRequestData,
-            enableProject: state => state.enableProject, 
+            enableProject: state => state.enableProject,
             enableRegion: state => state.enableRegion,
             enableDepartment: state => state.enableDepartment,
             enableCustom1: state => state.enableCustom1,
@@ -154,7 +154,7 @@ $(function () {
             docNo: $('#docNo').val().trim()
         };
     };
-    const editHandle = function (id) {
+    const editHandle = function (id, isCopy) {
         const requests = [];
         if (id) {
             requests.push(accounting.finance.transferVoucher.get(id));
@@ -170,6 +170,19 @@ $(function () {
         store.commit('showModal', { isShowModal: true });
         Promise.all(requests).then(results => {
             const item = results[0];
+            if (!item.details) {
+                item.details = [];
+            }
+            if (isCopy) {
+                item.id = null;
+                item.code = '';
+                item.prefix = 'JV';
+                item.genNo = 0;
+                item.details.forEach(detail => {
+                    detail.id = null;
+                    detail.voucherId = null;
+                })
+            }
             store.commit('setEditItem', { item });
             if (id) {
                 const details = (item.details || [])
@@ -232,6 +245,14 @@ $(function () {
                                         editHandle(data.record.id);
                                     },
                                     visible: isGrantedEdit
+                                },
+                                {
+                                    text: l('Copy'),
+                                    iconClass: '',
+                                    action: function (data) {
+                                        editHandle(data.record.id, true);
+                                    },
+                                    visible: abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Creation')
                                 },
                                 {
                                     text: l('Delete'),
@@ -587,7 +608,7 @@ $(function () {
                 this.item.subSubjectCode = '-';
                 this.item.docNo = '';
                 this.item.dueDate = null;
-                
+
             },
             arapFieldChange() {
                 const { isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
@@ -652,7 +673,7 @@ $(function () {
                 });
             },
             initCompanySelect: function (isClient) {
-                const _this = this; 
+                const _this = this;
                 const $target = $('#subSubjectCode');
                 const url = isClient ? '/api/app/client' : '/api/app/vendor'
                 const language = this.getSelect2Language();
@@ -686,7 +707,7 @@ $(function () {
                     allowClear: true,
                     language: language
                 });
-                $target.on('select2:select', function (e) { 
+                $target.on('select2:select', function (e) {
                     _this.item.subSubjectCode = e.params.data.id;
                     _this.item.subSubjectName = e.params.data.text;
                     const company = _this.companyMap[e.params.data.id];
