@@ -177,7 +177,20 @@
     "Accounting:DocNoHasBeenUsed": "The Doc. No. has been used: {0}",
     "Accounting:SubjectIsInUse": "The subject has already been used, cannot be deleted",
     "Copy": "Copy",
-    "Accounting:CodeIsDuplicated": "The codes is duplicated: {0}",
-    "Accounting:CodeIsInUse": "The codes has been used: {0}"
+    "Accounting:CodeIsDuplicated": "The codes is duplicated: {codes}",
+    "Accounting:CodeIsInUse": "The codes has been used: {codes}",
+    "DataConvertFail": "Data convert fail：{0}",
+    "DataConvertFail2": "Data conversion failed: \n",
+    "RowColumnMsg": "row : {0}, column : {1}\n",
+    "Colon": ",",
+    "TemplateErrorsMsg": "Template errors, cannot found the columns: {0}",
+    "UnsupportFileExtensionImport": "Unsupport file extension, only support .csv, .xlsx type file.",
+    "OnlyImportFiles": "Only supports. csv,. xlsx type files.",
+    "ImportFileLabel": "Select the file to upload",
+    "ImportData": "Import Data",
+    "ImportGeneralAccount": "Import General Account",
+    "ImportDataSuccessfully": "Import data successfully.",
+    "TemplateFile": "Template file",
+    "Permission:Import": "Import"
   }
 }

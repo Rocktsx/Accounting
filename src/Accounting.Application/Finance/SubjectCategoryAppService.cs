@@ -139,6 +139,7 @@ namespace Accounting.Finance
             });
             return new PagedResultDto<SubjectCategoryFilteredQueryDto>(count, list);
         }
+        [Authorize(AccountingPermissions.GeneralAccounts.Import)]
         public async Task<int> ImportData(IEnumerable<SubjectCategoryImportDto> inputs)
         {
             Check.NotNull(inputs, nameof(inputs));
@@ -146,12 +147,13 @@ namespace Accounting.Finance
             var codes = inputs.Select(item => item.Code).Distinct();
             if (codes.Count() < inputs.Count())
             {
-                throw new BusinessException(AccountingDomainErrorCodes.CodeIsDuplicated, string.Join(",", inputs.Where(item => !codes.Contains(item.Code)).Select(item => item.Code)));
+                var repeatCodes = inputs.Select(item => item.Code).GroupBy(item => item).Where(item => item.Count() > 1).Select(item => item.Key);
+                throw new BusinessException(AccountingDomainErrorCodes.CodeIsDuplicated).WithData("codes", string.Join(L["Comma"], repeatCodes));
             }
             var existsItems = await Repository.GetListAsync(item => codes.Contains(item.Code));
             if (existsItems.Count > 0)
             {
-                throw new BusinessException(AccountingDomainErrorCodes.CodeIsInUse, string.Join(",", existsItems.Where(item => codes.Contains(item.Code)).Select(item => item.Code)));
+                throw new BusinessException(AccountingDomainErrorCodes.CodeIsInUse).WithData("codes", string.Join(L["Comma"], existsItems.Where(item => codes.Contains(item.Code)).Select(item => item.Code)));
             }
             var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
             var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();

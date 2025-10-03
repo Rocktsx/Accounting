@@ -211,7 +211,20 @@
     "Accounting:DocNoHasBeenUsed": "这些文档编号已经被使用：{0}",
     "Accounting:SubjectIsInUse": "该科目已经被使用了，不能删除。",
     "Copy": "复制",
-    "Accounting:CodeIsDuplicated": "这些编号重复了：{0}",
-    "Accounting:CodeIsInUse": "这些编号已经被使用：{0}"
+    "Accounting:CodeIsDuplicated": "编号重复了：{codes}",
+    "Accounting:CodeIsInUse": "编号已经被使用：{codes}",
+    "DataConvertFail": "数据转换失败：{0}",
+    "DataConvertFail2": "数据转换失败：\n",
+    "RowColumnMsg": "行： {0}， 列： {1}\n",
+    "Comma": "，",
+    "TemplateErrorsMsg": "模板错误，无法找到这些列：{0}",
+    "UnsupportFileExtension": "不支持的文件类型，只支持.csv, .xlsx类型文件。",
+    "OnlyImportFiles": "只支持.csv, .xlsx类型文件。",
+    "ImportFileLabel": "选择要上传的文件",
+    "ImportData": "导入数据",
+    "ImportGeneralAccount": "导入总账类别",
+    "ImportDataSuccessfully": "导入数据成功。",
+    "TemplateFile": "模板文件",
+    "Permission:Import": "导入"
   }
 }

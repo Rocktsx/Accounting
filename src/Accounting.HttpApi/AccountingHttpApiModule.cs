@@ -8,7 +8,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.Localization;
 using Volo.Abp.TenantManagement;
-
+using Volo.Abp.AutoMapper;
 namespace Accounting;
 
  [DependsOn(
@@ -25,6 +25,10 @@ public class AccountingHttpApiModule : AbpModule
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         ConfigureLocalization();
+        Configure<AbpAutoMapperOptions>(options =>
+        {
+            options.AddMaps<AccountingHttpApiModule>();
+        });
     }
 
     private void ConfigureLocalization()

@@ -8,9 +8,14 @@ public static class AccountingPermissions
     public const string Creation = ".Creation";
     public const string Deletion = ".Deletion";
     public const string Edit = ".Edit";
+    public const string Imports = ".Import";
     public const string CreationDisplayName = PermissionPrefix + "Creation";
     public const string DeletionDisplayName = PermissionPrefix + "Deletion";
     public const string EditDisplayName = PermissionPrefix + "Edit";
+    public const string PrintDisplayName = PermissionPrefix + "Print";
+    public const string ImportDisplayName = PermissionPrefix + "Import";
+    public const string ExportDisplayName = PermissionPrefix + "Export";
+
     private const string Dot = ".";
 
     public const string BasicDataGroup = GroupName + ".BasicData";
@@ -26,7 +31,7 @@ public static class AccountingPermissions
     public class Clients
     {
         public const string Name = "Client";
-        public const string Default = BasicDataGroup + Dot + Name; 
+        public const string Default = BasicDataGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
@@ -34,7 +39,7 @@ public static class AccountingPermissions
     public class Vendors
     {
         public const string Name = "Vendor";
-        public const string Default = BasicDataGroup + Dot + Name; 
+        public const string Default = BasicDataGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
@@ -47,7 +52,7 @@ public static class AccountingPermissions
     public class AccountingPeriods
     {
         public const string Name = "AccountingPeriod";
-        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Default = GeneralLedgerGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
@@ -59,10 +64,11 @@ public static class AccountingPermissions
     public class GeneralAccounts
     {
         public const string Name = "GeneralAccount";
-        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Default = GeneralLedgerGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
+        public const string Import = Default + Imports;
     }
     /// <summary>
     /// 科目类别
@@ -70,7 +76,7 @@ public static class AccountingPermissions
     public class SubjectCategories
     {
         public const string Name = "SubjectCategory";
-        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Default = GeneralLedgerGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
@@ -81,11 +87,11 @@ public static class AccountingPermissions
     public class Subjects
     {
         public const string Name = "Subject";
-        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Default = GeneralLedgerGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
-    } 
+    }
 
     public const string AccountingSetting = GroupName + ".AccountingSetting";
 
@@ -95,9 +101,9 @@ public static class AccountingPermissions
     public class TransferVouchers
     {
         public const string Name = "TransferVoucher";
-        public const string Default = GeneralLedgerGroup + Dot + Name; 
+        public const string Default = GeneralLedgerGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
-    } 
+    }
 }

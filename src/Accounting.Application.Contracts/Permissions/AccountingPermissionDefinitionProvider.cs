@@ -1,5 +1,6 @@
 using Accounting.Localization;
 using JetBrains.Annotations;
+using System.Linq;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 using Volo.Abp.MultiTenancy;
@@ -26,8 +27,9 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         AddPermissionGroup(context, AccountingPermissions.AccountingPeriods.Default, AccountingPermissions.AccountingPeriods.Name,
             AccountingPermissions.AccountingPeriods.Create, AccountingPermissions.AccountingPeriods.Delete, AccountingPermissions.AccountingPeriods.Update);
 
-        AddPermissionGroup(context, AccountingPermissions.GeneralAccounts.Default, AccountingPermissions.GeneralAccounts.Name,
+        var generalAccountGroup = AddPermissionGroup(context, AccountingPermissions.GeneralAccounts.Default, AccountingPermissions.GeneralAccounts.Name,
             AccountingPermissions.GeneralAccounts.Create, AccountingPermissions.GeneralAccounts.Delete, AccountingPermissions.GeneralAccounts.Update);
+        generalAccountGroup.Permissions.First().AddChild(AccountingPermissions.GeneralAccounts.Import, L(AccountingPermissions.ImportDisplayName));
 
         AddPermissionGroup(context, AccountingPermissions.SubjectCategories.Default, AccountingPermissions.SubjectCategories.Name,
             AccountingPermissions.SubjectCategories.Create, AccountingPermissions.SubjectCategories.Delete, AccountingPermissions.SubjectCategories.Update);
@@ -44,7 +46,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
             AccountingPermissions.TransferVouchers.Update);
     }
 
-    private static void AddPermission(PermissionGroupDefinition group, string permissionName,
+    private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,
         LocalizableString permissionDisplayName, string creationPermission, string deletionPermissin,
         string editPermission)
     {
@@ -52,20 +54,24 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         permission.AddChild(creationPermission, L(AccountingPermissions.CreationDisplayName));
         permission.AddChild(deletionPermissin, L(AccountingPermissions.DeletionDisplayName));
         permission.AddChild(editPermission, L(AccountingPermissions.EditDisplayName));
+
+        return permission;
     }
 
-    private static void AddPermissionGroup(IPermissionDefinitionContext context, string permission,
+    private static PermissionGroupDefinition AddPermissionGroup(IPermissionDefinitionContext context, string permission,
         LocalizableString permissionName, string creationPermission, string deletionPermissin, string editPermission)
     {
         var group = context.AddGroup(permission, permissionName);
         AddPermission(group, permission, permissionName, creationPermission, deletionPermissin, editPermission);
+
+        return group;
     }
 
-    private static void AddPermissionGroup(IPermissionDefinitionContext context, string permission,
+    private static PermissionGroupDefinition AddPermissionGroup(IPermissionDefinitionContext context, string permission,
         string permissionName, string creationPermission, string deletionPermissin, string editPermission)
     {
         var permissionDisplayName = L(AccountingPermissions.PermissionPrefix + permissionName);
-        AddPermissionGroup(context, permission, permissionDisplayName, creationPermission, deletionPermissin,
+       return AddPermissionGroup(context, permission, permissionDisplayName, creationPermission, deletionPermissin,
             editPermission);
     }
 
