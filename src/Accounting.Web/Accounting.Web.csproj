@@ -39,6 +39,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Templates\GeneralAccountDataTemplate.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\GeneralAccountDataTemplate.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GeneralAccountDataTemplateHant.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="9.0.0" />
@@ -78,6 +91,12 @@
   <ItemGroup>
     <None Include="wwwroot\basicData\currencyModal.js" />
     <None Include="wwwroot\basicData\company.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\GeneralAccountDataTemplate.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

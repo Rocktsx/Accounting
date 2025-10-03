@@ -2,8 +2,7 @@
     const l = abp.localization.getResource('Accounting');
     const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/GeneralAccount/EditModal'); 
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.GeneralAccount.Edit');
-    const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.GeneralAccount.Deletion');
-    let accountTypes = [], categories = []; 
+    const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.GeneralAccount.Deletion'); 
 
     const dataTable = $('#generalAccountTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -113,4 +112,30 @@
         var l = abp.localization.getResource('Accounting');
         abp.notify.success(l('SavedSuccessfully'));
     });
+    const importModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/GeneralAccount/ImportModal');
+    $(document).on('click', '#importGeneralAccountBtn', function () {
+        importModal.open();
+    });
+    $(document).on('click', '#importDataForm [type="submit"]', function (e) {
+        e.preventDefault();
+        const fileElement = document.querySelector('#importDataForm #file');
+        const formData = new FormData();
+        formData.append('file', fileElement.files[0]);
+        abp.ui.setBusy('#importDataForm .modal-body')
+        abp.ajax({
+            url: abp.appPath + 'api/subject-category',
+            processData: false,
+            contentType: false,
+            method: 'POST',
+            data: formData,
+            success: function (result) { 
+                importModal.close();
+                dataTable.ajax.reload();
+                abp.notify.success(l('ImportDataSuccessfully'));
+            }, 
+            complete() {
+                abp.ui.clearBusy('#importDataForm .modal-body')
+            }
+        });
+    })
 });
