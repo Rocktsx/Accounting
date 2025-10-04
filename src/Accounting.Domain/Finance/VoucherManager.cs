@@ -140,7 +140,7 @@ namespace Accounting.Finance
             if (result.Any(item => item.Count > 0))
             {
                 var repeatDocNos = String.Join(',', result.Where(item => item.Count > 0).Select(item => item.DocNo));
-                throw new BusinessException(AccountingDomainErrorCodes.DocNoHasBeenUsed, repeatDocNos);
+                throw new BusinessException(AccountingDomainErrorCodes.DocNoHasBeenUsed).WithData("DocNos", repeatDocNos);
             }
         }
         public VoucherManager SetVoucherDateFormat(string format)
@@ -165,7 +165,7 @@ namespace Accounting.Finance
             }
             catch (Exception ex)
             {
-                throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, _voucherDateFormat, innerException: ex);
+                throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, innerException: ex).WithData("Format", _voucherDateFormat);
             }
             return prefix;
         }
