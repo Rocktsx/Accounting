@@ -54,6 +54,13 @@
                                 icon="plus"
                                 button-type="Primary" />
                 }
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.Subjects.Import))
+                {
+                    <abp-button id="importSubjectBtn"
+                                text="@L["ImportSubject"].Value"
+                                icon="file-import"
+                                button-type="Primary" />
+                }
             </abp-column>
         </abp-row>
     </abp-card-header>

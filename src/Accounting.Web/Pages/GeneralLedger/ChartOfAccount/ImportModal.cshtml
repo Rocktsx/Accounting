@@ -3,13 +3,13 @@
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @inject IStringLocalizer<AccountingResource> L
-@model Accounting.Web.Pages.GeneralLedger.GeneralAccount.ImportModalModel
+@model Accounting.Web.Pages.GeneralLedger.ChartOfAccount.ImportModalModel
 @{
     Layout = null;
 }
-<form id="importDataForm" data-check-form-on-close="false" data-ajaxform="true" asp-page="/api/subject-category" method="post" enctype="multipart/form-data">
+<form id="importSubjectsForm" data-check-form-on-close="false" data-ajaxform="true" asp-page="/api/subjects" method="post" enctype="multipart/form-data">
     <abp-modal>
-        <abp-modal-header title="@L["ImportGeneralAccount"].Value">
+        <abp-modal-header title="@L["ImportSubject"].Value">
         </abp-modal-header>
         <abp-modal-body>
             <div class="mb-3">
@@ -17,7 +17,7 @@
                 <input type="file" id="file" name="file" accept=".csv, .xlsx" class="form-control" />
             </div>
             <div class="text-info mb-1">@L["OnlyImportFiles"]</div>
-            <div><a href="/api/templates/GeneralAccountDataTemplate" target="_blank">@L["TemplateFile"]</a></div>
+            <div><a href="/api/templates/SubjectDataTemplate" target="_blank">@L["TemplateFile"]</a></div>
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>

@@ -213,4 +213,31 @@
             setCategory(selectedCategory || {});
         }
     })
+    const importModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccount/ImportModal');
+    $(document).on('click', '#importSubjectBtn', function () {
+        importModal.open();
+    });
+    $(document).on('click', '#importSubjectsForm [type="submit"]', function (e) {
+        e.preventDefault();
+        const fileElement = document.querySelector('#importSubjectsForm #file');
+        const formData = new FormData();
+        formData.append('file', fileElement.files[0]);
+        const bodySelector = '#importSubjectsForm .modal-body';
+        abp.ui.setBusy(bodySelector)
+        abp.ajax({
+            url: abp.appPath + 'api/subjects',
+            processData: false,
+            contentType: false,
+            method: 'POST',
+            data: formData,
+            success: function () {
+                importModal.close();
+                dataTable.ajax.reload();
+                abp.notify.success(l('ImportDataSuccessfully'));
+            },
+            complete() {
+                abp.ui.clearBusy(bodySelector)
+            }
+        });
+    })
 });
