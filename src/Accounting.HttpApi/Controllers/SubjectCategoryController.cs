@@ -61,7 +61,7 @@ namespace Accounting.Controllers
                 if (importResult.Data != null)
                 {
                     var data = ObjectMapper.Map<List<SubjectCategoryImportModel>, List<SubjectCategoryImportDto>>(importResult.Data.ToList());
-                    result = await _subjectCategoryAppService.ImportData(data);
+                    result = await _subjectCategoryAppService.ImportDataAsync(data);
                 }
             }
 

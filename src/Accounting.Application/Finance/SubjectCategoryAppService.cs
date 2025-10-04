@@ -1,6 +1,7 @@
 ﻿using Accounting.Dtos;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Permissions;
+using Accounting.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -141,27 +142,18 @@ namespace Accounting.Finance
             return new PagedResultDto<SubjectCategoryFilteredQueryDto>(count, list);
         }
         [Authorize(AccountingPermissions.GeneralAccounts.Import)]
-        public async Task<int> ImportData(IEnumerable<SubjectCategoryImportDto> inputs)
+        public async Task<int> ImportDataAsync(IEnumerable<SubjectCategoryImportDto> inputs)
         {
-            Check.NotNull(inputs, nameof(inputs));
+            var codes = await inputs.CheckImportDataAsync(L, item => item.Code,
+                async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
 
-            var codes = inputs.Select(item => item.Code).Distinct();
-            if (codes.Count() < inputs.Count())
-            {
-                var repeatCodes = inputs.Select(item => item.Code).GroupBy(item => item).Where(item => item.Count() > 1).Select(item => item.Key);
-                throw new BusinessException(AccountingDomainErrorCodes.CodeIsDuplicated).WithData("codes", string.Join(L["Comma"], repeatCodes));
-            }
-            var existsItems = await Repository.GetListAsync(item => codes.Contains(item.Code));
-            if (existsItems.Count > 0)
-            {
-                throw new BusinessException(AccountingDomainErrorCodes.CodeIsInUse).WithData("codes", string.Join(L["Comma"], existsItems.Where(item => codes.Contains(item.Code)).Select(item => item.Code)));
-            }
             var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
             var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();
             var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
             var inputCategories = inputs.Select(item => item.ParentCode).Distinct();
             var categories = (await Repository.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
             var inputDics = new Dictionary<string, SubjectCategoryImportDto>(inputs.Count());
+
             var entities = inputs.Where(item => !string.IsNullOrWhiteSpace(item.Code) && !string.IsNullOrWhiteSpace(item.Name))
                     .Select(item =>
                     {
@@ -170,7 +162,7 @@ namespace Accounting.Finance
                         var entity = new SubjectCategory(GuidGenerator.Create(), item.Code, item.Name, item.OtherName, null,
                             drcr, accTypeId, item.ShowDetail, item.Description, CurrentTenant.Id, item.Level);
 
-                        categories[entity.Code] = entity;
+                        categories[entity.Code] = entity; 
                         inputDics.Add(item.Code, item);
 
                         return entity;

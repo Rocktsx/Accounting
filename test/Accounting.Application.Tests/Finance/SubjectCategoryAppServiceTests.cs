@@ -394,7 +394,7 @@ namespace Accounting.Finance
                 }
             };
             // Act
-            var result = await _subjectCategoryAppService.ImportData(inputs);
+            var result = await _subjectCategoryAppService.ImportDataAsync(inputs);
 
             // Assert
             result.ShouldBe(3);
@@ -430,7 +430,7 @@ namespace Accounting.Finance
                 }
             };
             // Act
-            var result =await Should.ThrowAsync<BusinessException>( async () => await _subjectCategoryAppService.ImportData(inputs));
+            var result =await Should.ThrowAsync<BusinessException>( async () => await _subjectCategoryAppService.ImportDataAsync(inputs));
 
             // Assert
             result.ShouldNotBeNull();
@@ -467,7 +467,7 @@ namespace Accounting.Finance
                 }
             };
             // Act
-            var result = await Should.ThrowAsync<BusinessException>(async () => await _subjectCategoryAppService.ImportData(inputs));
+            var result = await Should.ThrowAsync<BusinessException>(async () => await _subjectCategoryAppService.ImportDataAsync(inputs));
 
             // Assert
             result.ShouldNotBeNull();
