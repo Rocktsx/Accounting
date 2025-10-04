@@ -15,5 +15,7 @@ namespace Accounting
         public const int MaxNameLength = 250;
         public const int MaxDescriptionLength = 1000;
         public const int MaxCommonTextFieldLength = 30;
+
+        public const string StandardDateFormat = "yyyy-MM-dd";
     }
 }
