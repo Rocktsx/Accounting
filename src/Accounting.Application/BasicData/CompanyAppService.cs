@@ -8,8 +8,8 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
-using Accounting.BasicData.Dtos;
 using Accounting.Permissions;
+using Accounting.BasicData.Companies;
 
 namespace Accounting.BasicData
 {

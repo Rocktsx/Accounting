@@ -1,7 +1,7 @@
 ﻿using System;
 using Volo.Abp.Application.Dtos;
 
-namespace Accounting.BasicData.Dtos
+namespace Accounting.BasicData.Currencies
 {
     public class CurrencyDto :AuditedEntityDto<Guid>
     { 

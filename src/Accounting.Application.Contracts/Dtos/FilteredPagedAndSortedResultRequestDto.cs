@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
-namespace Accounting
+namespace Accounting.Dtos
 {
     public class FilteredPagedAndSortedResultRequestDto : PagedAndSortedResultRequestDto
     {

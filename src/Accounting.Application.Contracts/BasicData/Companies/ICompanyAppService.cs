@@ -1,11 +1,10 @@
-﻿using Accounting.BasicData.Dtos;
-using System;
-using System.Collections.Generic; 
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Companies
 {
     public interface ICompanyAppService :  IApplicationService
     {

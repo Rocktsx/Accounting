@@ -11,6 +11,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Xunit;
+using Accounting.Dtos;
 
 namespace Accounting.Finance
 {

@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Accounting
+namespace Accounting.Dtos
 {
     public class GenerateCodeDto
     {

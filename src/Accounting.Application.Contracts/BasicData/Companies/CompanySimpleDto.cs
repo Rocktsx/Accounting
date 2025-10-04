@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Accounting.Dtos;
+using System;
 
-namespace Accounting.BasicData.Dtos
+namespace Accounting.BasicData.Companies
 {
     public class CompanySimpleDto: SimpleDto<Guid>
     {

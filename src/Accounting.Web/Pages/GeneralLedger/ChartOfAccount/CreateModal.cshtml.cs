@@ -1,4 +1,4 @@
-using Accounting.BasicData;
+using Accounting.BasicData.Currencies;
 using Accounting.Finance.AccountTypes;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;

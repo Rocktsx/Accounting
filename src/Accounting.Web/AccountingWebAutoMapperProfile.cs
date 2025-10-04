@@ -1,4 +1,3 @@
-using Accounting.BasicData.Dtos;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.Settings;
 using Accounting.Finance.AccountTypes;
@@ -7,6 +6,8 @@ using Accounting.Finance.Subjects;
 using Accounting.Web.Pages.BasicData.Currency;
 using Accounting.Web.ViewModels;
 using AutoMapper;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 
 namespace Accounting.Web;
 

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
-using Xunit;
-using Accounting.BasicData.Dtos;
+using Xunit; 
+using Accounting.BasicData.Currencies;
 
 namespace Accounting.BasicData
 {

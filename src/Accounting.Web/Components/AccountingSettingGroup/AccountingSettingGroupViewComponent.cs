@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Accounting.BasicData;
+using Accounting.BasicData.Currencies;
 using Accounting.Finance.Settings;
 using Accounting.Finance.Subjects;
 using Accounting.Web.ViewModels;

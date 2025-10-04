@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
-using Accounting.BasicData.Dtos;
+using Accounting.BasicData.Companies;
 
 namespace Accounting.BasicData
 {

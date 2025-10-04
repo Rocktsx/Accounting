@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace Accounting.BasicData.Dtos
+namespace Accounting.BasicData.Companies
 {
     public class CompanyDto: AuditedEntityDto<Guid>
     {

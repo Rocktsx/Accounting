@@ -1,5 +1,4 @@
-using Accounting.BasicData;
-using Accounting.BasicData.Dtos;
+using Accounting.BasicData.Currencies;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

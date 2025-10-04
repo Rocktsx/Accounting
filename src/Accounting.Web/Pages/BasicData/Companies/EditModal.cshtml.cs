@@ -1,5 +1,5 @@
-using Accounting.BasicData;
-using Accounting.BasicData.Dtos;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 using Accounting.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

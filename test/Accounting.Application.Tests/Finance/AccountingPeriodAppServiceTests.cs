@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;
+using Accounting.Dtos;
 
 namespace Accounting.Finance
 {

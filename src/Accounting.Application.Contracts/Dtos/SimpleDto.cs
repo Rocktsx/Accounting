@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Application.Dtos;
 
-namespace Accounting
+namespace Accounting.Dtos
 {
     public class SimpleDto<T>: EntityDto<T>
     {

@@ -1,5 +1,6 @@
 using Accounting.BasicData;
-using Accounting.BasicData.Dtos;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 using Accounting.Finance;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
