@@ -145,17 +145,19 @@ namespace Accounting.Finance
                 async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
 
             var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
-            var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();
+            var inputAccTypes = inputs.Where(item => !string.IsNullOrWhiteSpace(item.AccountTypeCode)).Select(item => item.AccountTypeCode).Distinct();
             var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
-            var inputCategories = inputs.Select(item => item.SubjectCategoryCode).Distinct();
-            var categories = (await Repository.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+
+            var categoryReposity = LazyServiceProvider.GetRequiredService<IRepository<SubjectCategory, Guid>>();
+            var inputCategories = inputs.Where(item => !string.IsNullOrWhiteSpace(item.SubjectCategoryCode)).Select(item => item.SubjectCategoryCode).Distinct();
+            var categories = (await categoryReposity.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
 
             var entities = inputs.Where(item => !string.IsNullOrWhiteSpace(item.Code) && !string.IsNullOrWhiteSpace(item.Name))
                     .Select(item =>
                     {
                         var drcr = item.DebitorCreditor == 1 ? DebitorCreditor.Debitor : DebitorCreditor.Creditor;
                         Guid? accTypeId = !string.IsNullOrWhiteSpace(item.AccountTypeCode) && accountTypes.TryGetValue(item.AccountTypeCode, out AccountType? value) ? value.Id : null;
-                        Guid? categoryId = categories.ContainsKey(item.SubjectCategoryCode) ? categories[item.SubjectCategoryCode].Id : null;
+                        Guid? categoryId = !string.IsNullOrWhiteSpace(item.SubjectCategoryCode) && categories.ContainsKey(item.SubjectCategoryCode) ? categories[item.SubjectCategoryCode].Id : null;
                         var entity = new Subject(GuidGenerator.Create(), item.Code, item.Name, item.OtherName, categoryId, accTypeId, drcr,
                             item.CurrencyCode, item.Description, item.IsSubSubjectType, item.IsActive, item.IsPayMethod, item.SeqCode, CurrentTenant.Id);
                          
