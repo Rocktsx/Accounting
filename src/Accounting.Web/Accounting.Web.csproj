@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <None Remove="Templates\GeneralAccountDataTemplate.xlsx" />
+    <None Remove="Templates\SubjectDataTemplate.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\GeneralAccountDataTemplateHant.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SubjectDataTemplate.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
