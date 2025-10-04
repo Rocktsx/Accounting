@@ -91,6 +91,7 @@ public static class AccountingPermissions
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
+        public const string Import = Default + Imports;
     }
 
     public const string AccountingSetting = GroupName + ".AccountingSetting";

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
@@ -40,7 +41,7 @@ namespace Accounting.Finance
         }
         private async Task<Tuple<SubjectCreateDto, SubjectCreateDto, SubjectDto, SubjectDto>> InsertNewSubjectsAsync()
         {
-            var input1 = GetCreateDto("3001", "Cash", "Cash Account222", "Main cash account",1); 
+            var input1 = GetCreateDto("3001", "Cash", "Cash Account222", "Main cash account", 1);
             var input2 = GetCreateDto("3002", "Bank", "Bank Account222", "Main bank account", 2);
             var dto1 = await _subjectAppService.CreateAsync(input1);
             var dto2 = await _subjectAppService.CreateAsync(input2);
@@ -115,7 +116,7 @@ namespace Accounting.Finance
         public async Task Can_Update_A_Subject()
         {
             // Arrange
-            var input = GetCreateDto("10033", "Receivables", "Accounts Receivable", "Customer receivables", 2); 
+            var input = GetCreateDto("10033", "Receivables", "Accounts Receivable", "Customer receivables", 2);
             var dto = await _subjectAppService.CreateAsync(input);
             var updateInput = new SubjectUpdateDto
             {
@@ -245,14 +246,95 @@ namespace Accounting.Finance
             {
                 MaxResultCount = 10,
                 SkipCount = 0,
-                Sorting = "Code", 
+                Sorting = "Code",
                 SubjectIds = [dto1.Id]
             });
             // Assert
             result.ShouldNotBeNull();
             result.Items.Count.ShouldBe(1);
             result.TotalCount.ShouldBe(1);
-            result.Items.First().Id.ShouldBe(dto1.Id); 
+            result.Items.First().Id.ShouldBe(dto1.Id);
+        }
+
+        [Fact]
+        public async Task Can_Import_Data()
+        {
+            // Arrange
+            var inputs = new List<SubjectImportDto>
+            {
+                new() {
+                    Code ="s1",
+                    Name ="s1 name",
+                    SubjectCategoryCode ="1",
+                    AccountTypeCode ="BAK"
+                },
+                 new() {
+                    Code ="s2",
+                    Name ="s2 name",
+                    SubjectCategoryCode ="1",
+                    AccountTypeCode ="AR"
+                }
+            };
+
+            // Act
+            var result = await _subjectAppService.ImportDataAsync(inputs);
+
+            // Assert
+            result.ShouldBe(inputs.Count);
+        }
+        [Fact]
+        public async Task Cannot_Import_Data_With_Duplicate_Code()
+        {
+            // Arrange
+            var inputs = new List<SubjectImportDto>
+            {
+                new() {
+                    Code ="s1",
+                    Name ="s1 name",
+                    SubjectCategoryCode ="1",
+                    AccountTypeCode ="BAK"
+                },
+                 new() {
+                    Code ="s1",
+                    Name ="s1 name",
+                    SubjectCategoryCode ="1",
+                    AccountTypeCode ="AR"
+                }
+            };
+
+            // Act
+            var result = await Should.ThrowAsync<BusinessException>(async () => await _subjectAppService.ImportDataAsync(inputs));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Code.ShouldBe(AccountingDomainErrorCodes.CodeIsDuplicated);
+        }
+        [Fact]
+        public async Task Cannot_Import_Data_With_In_Use_Code()
+        {
+            // Arrange
+            var inputs = new List<SubjectImportDto>
+            {
+                new() {
+                    Code ="s1",
+                    Name ="s1 name",
+                    SubjectCategoryCode ="1",
+                    AccountTypeCode ="BAK"
+                },
+                 new() {
+                    Code ="2801",
+                    Name ="2801 name",
+                    SubjectCategoryCode ="1",
+                    AccountTypeCode ="AR"
+                }
+            };
+
+            // Act
+            var result = await Should.ThrowAsync<BusinessException>(async () => await _subjectAppService.ImportDataAsync(inputs));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Code.ShouldBe(AccountingDomainErrorCodes.CodeIsInUse);
         }
     }
 }

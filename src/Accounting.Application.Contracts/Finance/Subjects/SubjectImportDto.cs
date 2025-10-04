@@ -11,7 +11,7 @@ namespace Accounting.Finance.Subjects
         public string OtherName { get; set; }
         public string SubjectCategoryCode { get; set; }
         public string AccountTypeCode { get; set; }
-        public DebitorCreditor DebitorCreditor { get; set; }
+        public int DebitorCreditor { get; set; }
         public string CurrencyCode { get; set; }
         public string Description { get; set; }
         public bool IsSubSubjectType { get; set; }

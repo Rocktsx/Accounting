@@ -27,15 +27,16 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         AddPermissionGroup(context, AccountingPermissions.AccountingPeriods.Default, AccountingPermissions.AccountingPeriods.Name,
             AccountingPermissions.AccountingPeriods.Create, AccountingPermissions.AccountingPeriods.Delete, AccountingPermissions.AccountingPeriods.Update);
 
-        var generalAccountGroup = AddPermissionGroup(context, AccountingPermissions.GeneralAccounts.Default, AccountingPermissions.GeneralAccounts.Name,
+        var group = AddPermissionGroup(context, AccountingPermissions.GeneralAccounts.Default, AccountingPermissions.GeneralAccounts.Name,
             AccountingPermissions.GeneralAccounts.Create, AccountingPermissions.GeneralAccounts.Delete, AccountingPermissions.GeneralAccounts.Update);
-        generalAccountGroup.Permissions.First().AddChild(AccountingPermissions.GeneralAccounts.Import, L(AccountingPermissions.ImportDisplayName));
+        group.Permissions.First().AddChild(AccountingPermissions.GeneralAccounts.Import, L(AccountingPermissions.ImportDisplayName));
 
         AddPermissionGroup(context, AccountingPermissions.SubjectCategories.Default, AccountingPermissions.SubjectCategories.Name,
             AccountingPermissions.SubjectCategories.Create, AccountingPermissions.SubjectCategories.Delete, AccountingPermissions.SubjectCategories.Update);
 
-        AddPermissionGroup(context, AccountingPermissions.Subjects.Default, AccountingPermissions.Subjects.Name,
+        group = AddPermissionGroup(context, AccountingPermissions.Subjects.Default, AccountingPermissions.Subjects.Name,
            AccountingPermissions.Subjects.Create, AccountingPermissions.Subjects.Delete, AccountingPermissions.Subjects.Update);
+        group.Permissions.First().AddChild(AccountingPermissions.Subjects.Import, L(AccountingPermissions.ImportDisplayName));
 
         var setttingDisplay = L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.AccountingSetting));
         context.AddGroup(AccountingPermissions.AccountingSetting, setttingDisplay)

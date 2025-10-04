@@ -1,6 +1,8 @@
 ﻿using Accounting.Finance.Subjects;
 using Accounting.Permissions;
+using Accounting.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,6 +137,34 @@ namespace Accounting.Finance
                 throw new BusinessException(AccountingDomainErrorCodes.Subjects.SubjectIsInUse);
             }
             await base.DeleteAsync(id);
+        }
+        [Authorize(AccountingPermissions.Subjects.Import)]
+        public async Task<int> ImportDataAsync(IEnumerable<SubjectImportDto> inputs)
+        {
+            var codes = await inputs.CheckImportDataAsync(L, item => item.Code,
+                async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
+
+            var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
+            var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();
+            var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+            var inputCategories = inputs.Select(item => item.SubjectCategoryCode).Distinct();
+            var categories = (await Repository.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+
+            var entities = inputs.Where(item => !string.IsNullOrWhiteSpace(item.Code) && !string.IsNullOrWhiteSpace(item.Name))
+                    .Select(item =>
+                    {
+                        var drcr = item.DebitorCreditor == 1 ? DebitorCreditor.Debitor : DebitorCreditor.Creditor;
+                        Guid? accTypeId = !string.IsNullOrWhiteSpace(item.AccountTypeCode) && accountTypes.TryGetValue(item.AccountTypeCode, out AccountType? value) ? value.Id : null;
+                        Guid? categoryId = categories.ContainsKey(item.SubjectCategoryCode) ? categories[item.SubjectCategoryCode].Id : null;
+                        var entity = new Subject(GuidGenerator.Create(), item.Code, item.Name, item.OtherName, categoryId, accTypeId, drcr,
+                            item.CurrencyCode, item.Description, item.IsSubSubjectType, item.IsActive, item.IsPayMethod, item.SeqCode, CurrentTenant.Id);
+                         
+                        return entity;
+                    }).ToList();
+
+            await Repository.InsertManyAsync(entities, true);
+
+            return entities.Count;
         }
     }
 }
