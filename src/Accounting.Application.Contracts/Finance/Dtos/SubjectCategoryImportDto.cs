@@ -1,10 +1,14 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace Accounting.Finance.Dtos
 {
     public class SubjectCategoryImportDto
     {
-        public string? Code { get; set; }
-        public string? Name { get; set; }
+        [Required]
+        public string Code { get; set; }
+        [Required]
+        public string Name { get; set; }
         public string? OtherName { get; set; }
         public string? ParentCode { get; set; }
         public int DebitorCreditor { get; set; }
