@@ -225,6 +225,7 @@
     "ImportGeneralAccount": "导入总账类别",
     "ImportDataSuccessfully": "导入数据成功。",
     "TemplateFile": "模板文件",
-    "Permission:Import": "导入"
+    "Permission:Import": "导入",
+    "ImportSubject": "导入科目"
   }
 }

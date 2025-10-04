@@ -9,6 +9,9 @@ using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.Localization;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using Magicodes.ExporterAndImporter.Csv;
+using Magicodes.ExporterAndImporter.Excel;
 namespace Accounting;
 
  [DependsOn(
@@ -29,6 +32,8 @@ public class AccountingHttpApiModule : AbpModule
         {
             options.AddMaps<AccountingHttpApiModule>();
         });
+        context.Services.AddScoped<ICsvImporter, CsvImporter>();
+        context.Services.AddScoped<IExcelImporter,  ExcelImporter>();
     }
 
     private void ConfigureLocalization()

@@ -1,8 +1,8 @@
 ﻿using Accounting.Finance.SubjectCategories;
+using Accounting.Finance.Subjects;
 using Accounting.Models;
 using Accounting.Permissions;
 using Accounting.Utility;
-using CsvHelper.TypeConversion;
 using Magicodes.ExporterAndImporter.Core;
 using Magicodes.ExporterAndImporter.Core.Models;
 using Magicodes.ExporterAndImporter.Csv;
@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using NUglify.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,18 +23,18 @@ using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 
 namespace Accounting.Controllers
 {
-    [Route("api/subject-category")]
-    public class SubjectCategoryController : AccountingController
+    [Route("api/subjects")]
+    public class SubjectsController : AccountingController
     {
-        private readonly ISubjectCategoryAppService _subjectCategoryAppService;
+        private readonly ISubjectAppService _subjectAppService;
 
-        public SubjectCategoryController(ISubjectCategoryAppService subjectCategoryAppService)
+        public SubjectsController(ISubjectAppService subjectAppService)
         {
-            _subjectCategoryAppService = subjectCategoryAppService;
+            _subjectAppService = subjectAppService;
         }
 
         [HttpPost]
-        [Authorize(AccountingPermissions.GeneralAccounts.Import)]
+        [Authorize(AccountingPermissions.Subjects.Import)]
         public async Task<IResult> ImportData(IFormFile file)
         {
             var importer = file.GetImporter(L, LazyServiceProvider);
@@ -43,12 +42,12 @@ namespace Accounting.Controllers
             if (importer != null)
             {
                 var stream = file.OpenReadStream();
-                var importResult = await importer.Import<SubjectCategoryImportModel>(stream);
+                var importResult = await importer.Import<SubjectImportModel>(stream);
                 importResult.HandleErrors(L);
                 if (importResult.Data != null)
                 {
-                    var data = ObjectMapper.Map<List<SubjectCategoryImportModel>, List<SubjectCategoryImportDto>>(importResult.Data.ToList());
-                    result = await _subjectCategoryAppService.ImportDataAsync(data);
+                    var data = ObjectMapper.Map<List<SubjectImportModel>, List<SubjectImportDto>>(importResult.Data.ToList());
+                    result = await _subjectAppService.ImportDataAsync(data);
                 }
             }
 

@@ -191,6 +191,7 @@
     "ImportGeneralAccount": "Import General Account",
     "ImportDataSuccessfully": "Import data successfully.",
     "TemplateFile": "Template file",
-    "Permission:Import": "Import"
+    "Permission:Import": "Import",
+    "ImportSubject": "Import Subject"
   }
 }

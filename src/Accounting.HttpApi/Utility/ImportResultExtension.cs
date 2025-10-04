@@ -15,7 +15,6 @@ namespace Accounting.Utility
     {
         public static void HandleErrors<T>(this ImportResult<T> importResult, IStringLocalizer localizer) where T : class
         {
-            var comma = localizer["Comma"].Value;
             if (importResult.Exception != null)
             {
                 var msg = string.Empty;
@@ -28,6 +27,7 @@ namespace Accounting.Utility
             }
             if (importResult.HasError)
             {
+                var comma = localizer["Comma"].Value;
                 string msg = string.Empty;
                 if (importResult.TemplateErrors != null && importResult.TemplateErrors.Count > 0)
                 {
