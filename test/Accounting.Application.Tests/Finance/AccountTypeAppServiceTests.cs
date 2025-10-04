@@ -1,4 +1,4 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.AccountTypes; 
 using Shouldly;
 using System;
 using System.Threading.Tasks;

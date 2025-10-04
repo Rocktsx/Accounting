@@ -1,4 +1,4 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.SubjectCategories;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;

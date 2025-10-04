@@ -1,4 +1,4 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.AccountTypes;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Accounting.Finance.Dtos;
+using Accounting.Finance.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Volo.Abp.Modularity;

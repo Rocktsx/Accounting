@@ -1,5 +1,4 @@
-﻿using Accounting.Finance;
-using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.SubjectCategories;
 using Accounting.Models;
 using Accounting.Permissions;
 using Accounting.Utility;

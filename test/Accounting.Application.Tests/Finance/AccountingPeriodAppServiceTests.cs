@@ -1,11 +1,7 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.AccountingPeriods; 
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
+using System; 
+using System.Threading.Tasks; 
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;

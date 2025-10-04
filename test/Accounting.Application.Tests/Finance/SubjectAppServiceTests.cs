@@ -1,4 +1,4 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.Subjects;
 using Shouldly;
 using System;
 using System.Collections.Generic;

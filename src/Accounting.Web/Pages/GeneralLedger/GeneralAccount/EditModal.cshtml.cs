@@ -1,12 +1,12 @@
-using Accounting.Finance;
-using Accounting.Finance.Dtos;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.SubjectCategories;
 using Accounting.Web.ViewModels;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic; 
-using System.Threading.Tasks; 
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.GeneralAccount
 {
@@ -26,7 +26,7 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralAccount
         public async Task OnGet()
         {
             var dto = await _service.GetAsync(Id);
-            Item = ObjectMapper.Map<Finance.Dtos.SubjectCategoryDto, EditSubjectCategoryViewModel>(dto);
+            Item = ObjectMapper.Map<SubjectCategoryDto, EditSubjectCategoryViewModel>(dto);
             var accountTypeService = LazyServiceProvider.GetRequiredService<IAccountTypeAppService>();
             var dtos = await accountTypeService.GetSimpleListAsync();
             AccountTypes = dtos.ToSelectListItems(

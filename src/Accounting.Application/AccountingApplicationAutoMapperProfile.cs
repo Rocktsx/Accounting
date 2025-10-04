@@ -1,7 +1,11 @@
 using Accounting.BasicData;
 using Accounting.BasicData.Dtos;
 using Accounting.Finance;
-using Accounting.Finance.Dtos;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.SubjectCategories;
+using Accounting.Finance.Subjects;
+using Accounting.Finance.Vouchers;
 using AutoMapper;
 
 namespace Accounting;

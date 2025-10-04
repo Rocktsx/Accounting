@@ -1,4 +1,5 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.AccountTypes;
+using Accounting.Finance.SubjectCategories;
 using Shouldly;
 using System;
 using System.Collections.Generic;

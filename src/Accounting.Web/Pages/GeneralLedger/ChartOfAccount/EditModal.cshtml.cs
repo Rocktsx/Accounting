@@ -1,6 +1,7 @@
 using Accounting.BasicData;
-using Accounting.Finance;
-using Accounting.Finance.Dtos;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.SubjectCategories;
+using Accounting.Finance.Subjects;
 using Accounting.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -1,6 +1,6 @@
-﻿using Accounting.Finance.Dtos;
+﻿using Accounting.Finance.SubjectCategories;
 using AutoMapper;
-using Magicodes.ExporterAndImporter.Core; 
+using Magicodes.ExporterAndImporter.Core;
 
 namespace Accounting.Models
 {
