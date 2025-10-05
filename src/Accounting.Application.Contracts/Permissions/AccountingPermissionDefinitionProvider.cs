@@ -10,40 +10,32 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        AddPermissionGroup(context, AccountingPermissions.Currencies.Default, AccountingPermissions.Currencies.Name,
-            AccountingPermissions.Currencies.Create, AccountingPermissions.Currencies.Delete,
-            AccountingPermissions.Currencies.Update);
+        AddPermissionGroup(context, Currencies.Default, Currencies.Name, Currencies.Create, Currencies.Delete, Currencies.Update);
 
-        AddPermissionGroup(context, AccountingPermissions.Clients.Default, AccountingPermissions.Clients.Name,
-            AccountingPermissions.Clients.Create, AccountingPermissions.Clients.Delete,
-            AccountingPermissions.Clients.Update);
+        AddPermissionGroup(context, Clients.Default, Clients.Name, Clients.Create, Clients.Delete, Clients.Update);
 
-        AddPermissionGroup(context, AccountingPermissions.Vendors.Default, AccountingPermissions.Vendors.Name,
-            AccountingPermissions.Vendors.Create, AccountingPermissions.Vendors.Delete,
-            AccountingPermissions.Vendors.Update);
+        AddPermissionGroup(context, Vendors.Default, Vendors.Name, Vendors.Create, Vendors.Delete, Vendors.Update);
 
-        AddPermissionGroup(context, AccountingPermissions.AccountingPeriods.Default, AccountingPermissions.AccountingPeriods.Name,
-            AccountingPermissions.AccountingPeriods.Create, AccountingPermissions.AccountingPeriods.Delete, AccountingPermissions.AccountingPeriods.Update);
+        AddPermissionGroup(context, AccountingPeriods.Default, AccountingPeriods.Name,
+            AccountingPeriods.Create, AccountingPeriods.Delete, AccountingPeriods.Update);
 
-        var group = AddPermissionGroup(context, AccountingPermissions.GeneralAccounts.Default, AccountingPermissions.GeneralAccounts.Name,
-            AccountingPermissions.GeneralAccounts.Create, AccountingPermissions.GeneralAccounts.Delete, AccountingPermissions.GeneralAccounts.Update);
-        group.Permissions.First().AddChild(AccountingPermissions.GeneralAccounts.Import, L(AccountingPermissions.ImportDisplayName));
+        var group = AddPermissionGroup(context, GeneralAccounts.Default, GeneralAccounts.Name,
+            GeneralAccounts.Create, GeneralAccounts.Delete, GeneralAccounts.Update);
+        group.Permissions.First().AddChild(GeneralAccounts.Import, L(ImportDisplayName));
 
-        AddPermissionGroup(context, AccountingPermissions.SubjectCategories.Default, AccountingPermissions.SubjectCategories.Name,
-            AccountingPermissions.SubjectCategories.Create, AccountingPermissions.SubjectCategories.Delete, AccountingPermissions.SubjectCategories.Update);
+        AddPermissionGroup(context, SubjectCategories.Default, SubjectCategories.Name,
+            SubjectCategories.Create, SubjectCategories.Delete, SubjectCategories.Update);
 
-        group = AddPermissionGroup(context, AccountingPermissions.Subjects.Default, AccountingPermissions.Subjects.Name,
-           AccountingPermissions.Subjects.Create, AccountingPermissions.Subjects.Delete, AccountingPermissions.Subjects.Update);
-        group.Permissions.First().AddChild(AccountingPermissions.Subjects.Import, L(AccountingPermissions.ImportDisplayName));
+        group = AddPermissionGroup(context, Subjects.Default, Subjects.Name, Subjects.Create, Subjects.Delete, Subjects.Update);
+        group.Permissions.First().AddChild(Subjects.Import, L(ImportDisplayName));
 
-        var setttingDisplay = L(AccountingPermissions.PermissionPrefix + nameof(AccountingPermissions.AccountingSetting));
-        context.AddGroup(AccountingPermissions.AccountingSetting, setttingDisplay)
-            .AddPermission(AccountingPermissions.AccountingSetting, setttingDisplay);
+        var setttingDisplay = L(PermissionPrefix + nameof(AccountingSetting));
+        context.AddGroup(AccountingSetting, setttingDisplay)
+            .AddPermission(AccountingSetting, setttingDisplay);
 
-        group = AddPermissionGroup(context, AccountingPermissions.TransferVouchers.Default, AccountingPermissions.TransferVouchers.Name,
-           AccountingPermissions.TransferVouchers.Create, AccountingPermissions.TransferVouchers.Delete,
-            AccountingPermissions.TransferVouchers.Update);
-        group.Permissions.First().AddChild(AccountingPermissions.TransferVouchers.UpdateStatus, L(AccountingPermissions.UpdateStatusDisplayName));
+        group = AddPermissionGroup(context, TransferVouchers.Default, TransferVouchers.Name,
+           TransferVouchers.Create, TransferVouchers.Delete, TransferVouchers.Update);
+        group.Permissions.First().AddChild(TransferVouchers.UpdateStatus, L(UpdateStatusDisplayName));
 
         var voucherStatesName = PermissionPrefix + VoucherStates.Name;
         group = context.AddGroup(VoucherStates.Default, L(voucherStatesName));
@@ -52,13 +44,12 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,
-        LocalizableString permissionDisplayName, string creationPermission, string deletionPermissin,
-        string editPermission)
+        LocalizableString permissionDisplayName, string creationPermission, string deletionPermissin, string editPermission)
     {
         var permission = group.AddPermission(permissionName, permissionDisplayName);
-        permission.AddChild(creationPermission, L(AccountingPermissions.CreationDisplayName));
-        permission.AddChild(deletionPermissin, L(AccountingPermissions.DeletionDisplayName));
-        permission.AddChild(editPermission, L(AccountingPermissions.EditDisplayName));
+        permission.AddChild(creationPermission, L(CreationDisplayName));
+        permission.AddChild(deletionPermissin, L(DeletionDisplayName));
+        permission.AddChild(editPermission, L(EditDisplayName));
 
         return permission;
     }
@@ -75,7 +66,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
     private static PermissionGroupDefinition AddPermissionGroup(IPermissionDefinitionContext context, string permission,
         string permissionName, string creationPermission, string deletionPermissin, string editPermission)
     {
-        var permissionDisplayName = L(AccountingPermissions.PermissionPrefix + permissionName);
+        var permissionDisplayName = L(PermissionPrefix + permissionName);
         return AddPermissionGroup(context, permission, permissionDisplayName, creationPermission, deletionPermissin,
              editPermission);
     }
