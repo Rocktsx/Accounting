@@ -1,6 +1,7 @@
 using Accounting.Features;
 using Accounting.Finance.Settings;
 using Accounting.Finance.Vouchers;
+using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
@@ -134,11 +135,26 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
         return query;
     }
+
     public virtual async Task UpdateStatus(Guid id, VoucherStatus status)
     {
         var entity = await Repository.GetAsync(id);
         entity.SetStatus(status);
 
         await Repository.UpdateAsync(entity);
+    }
+
+    [Authorize(AccountingPermissions.VoucherStates.UpdateStatus)]
+    public virtual async Task UpdateManyStatus(VoucherUpdateStatusDto input, VoucherStatus status)
+    {
+        var query = await Repository.GetQueryableAsync();
+        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Code), item => item.Code.Contains(input.Code));
+        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
+        query = query.WhereIf(input.Status != null, item => item.Status == input.Status);
+        
+        var list =await AsyncExecuter.ToListAsync(query);
+        list.ForEach(item => item.SetStatus(status));
+
+        await Repository.UpdateManyAsync(list); 
     }
 }

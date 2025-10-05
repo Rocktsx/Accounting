@@ -1,7 +1,7 @@
-using Accounting.Localization; 
+using Accounting.Localization;
 using System.Linq;
 using Volo.Abp.Authorization.Permissions;
-using Volo.Abp.Localization; 
+using Volo.Abp.Localization;
 using static Accounting.Permissions.AccountingPermissions;
 
 namespace Accounting.Permissions;
@@ -44,6 +44,11 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
            AccountingPermissions.TransferVouchers.Create, AccountingPermissions.TransferVouchers.Delete,
             AccountingPermissions.TransferVouchers.Update);
         group.Permissions.First().AddChild(AccountingPermissions.TransferVouchers.UpdateStatus, L(AccountingPermissions.UpdateStatusDisplayName));
+
+        var voucherStatesName = PermissionPrefix + VoucherStates.Name;
+        group = context.AddGroup(VoucherStates.Default, L(voucherStatesName));
+        var permission = group.AddPermission(VoucherStates.Default, L(voucherStatesName));
+        permission.AddChild(VoucherStates.UpdateStatus, L(UpdateStatusDisplayName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,
@@ -71,8 +76,8 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         string permissionName, string creationPermission, string deletionPermissin, string editPermission)
     {
         var permissionDisplayName = L(AccountingPermissions.PermissionPrefix + permissionName);
-       return AddPermissionGroup(context, permission, permissionDisplayName, creationPermission, deletionPermissin,
-            editPermission);
+        return AddPermissionGroup(context, permission, permissionDisplayName, creationPermission, deletionPermissin,
+             editPermission);
     }
 
     private static LocalizableString L(string name)

@@ -10,4 +10,5 @@ public interface IVoucherAppService : ICrudAppService<VoucherDto, Guid,
     VoucherFilterRequestDto, VoucherCreateDto, VoucherUpdateDto>, IApplicationService
 {
     Task UpdateStatus(Guid id, VoucherStatus status);
+    Task UpdateManyStatus(VoucherUpdateStatusDto input, VoucherStatus status);
 }

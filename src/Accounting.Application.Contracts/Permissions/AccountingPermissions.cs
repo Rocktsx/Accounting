@@ -119,4 +119,13 @@ public static class AccountingPermissions
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
     }
+    /// <summary>
+    /// 传票状态
+    /// </summary>
+    public class VoucherStates
+    {
+        public const string Name = "VoucherStates";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+        public const string UpdateStatus = Default + UpdateStatusDot;
+    }
 }
