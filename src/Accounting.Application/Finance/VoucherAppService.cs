@@ -1,6 +1,7 @@
 using Accounting.Features;
 using Accounting.Finance.Settings;
 using Accounting.Finance.Vouchers;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
 
     protected async Task ValidateAsync(Voucher voucher, VoucherManager manager)
     {
-        await manager.ValidateAsync(voucher); 
+        await manager.ValidateAsync(voucher);
     }
     protected virtual async Task<string> GetVoucherDateFormatAsync(IAccountingSettingAppService service)
     {
@@ -75,10 +76,6 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     {
         var entity = await GetEntityByIdAsync(id);
         entity.SetVoucherDate(DateOnly.FromDateTime(input.VoucherDate));
-        if (input.Status != null)
-        {
-            entity.SetStatus(input.Status.Value);
-        }
         entity.Details.RemoveAll(item => !input.Details.Any(obj => obj.Id == item.Id));
 
         var enableProjectFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.ProjectFunction);
@@ -136,5 +133,12 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
             input.Status != null ? item.Status == input.Status : item.Status != VoucherStatus.Void);
         query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
         return query;
+    }
+    public virtual async Task UpdateStatus(Guid id, VoucherStatus status)
+    {
+        var entity = await Repository.GetAsync(id);
+        entity.SetStatus(status);
+
+        await Repository.UpdateAsync(entity);
     }
 }

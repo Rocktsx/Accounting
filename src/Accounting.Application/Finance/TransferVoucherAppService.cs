@@ -47,5 +47,11 @@ namespace Accounting.Finance
             input.VoucherType = VoucherType.JournalVoucher;
             return await base.CreateFilteredQueryAsync(input);
         }
+        [Authorize(AccountingPermissions.TransferVouchers.UpdateStatus)]
+
+        public override Task UpdateStatus(Guid id, VoucherStatus status)
+        {
+            return base.UpdateStatus(id, status);
+        }
     }
 }

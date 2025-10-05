@@ -180,8 +180,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var voucherDate = new DateTime(2025, 10, 10);
         var updateDto = new VoucherUpdateDto()
         {
-            VoucherDate = voucherDate,
-            Status = VoucherStatus.Approval,
+            VoucherDate = voucherDate, 
             Details = [firstDetailItem, secondDetailItem]
         };
 
@@ -190,8 +189,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
 
         // Assert
         updatedDto.ShouldNotBeNull();
-        updatedDto.VoucherDate.ShouldBe(DateOnly.FromDateTime(voucherDate));
-        updatedDto.Status.ShouldBe(VoucherStatus.Approval);
+        updatedDto.VoucherDate.ShouldBe(DateOnly.FromDateTime(voucherDate)); 
         updatedDto.Details.ShouldNotBeNull();
         updatedDto.Details.Count().ShouldBe(2);
         updatedDto.Details.ShouldContain(item =>
@@ -240,7 +238,20 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         // Assert
         exception.ShouldNotBeNull();
     }
+    [Fact]
+    public async Task Can_Update_Status ()
+    {
+        // Arrange
+        var createDto = await GetCreateDtoAsync();
+        var dto = await _voucherAppService.CreateAsync(createDto);
 
+        // Act
+        await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Void);
+
+        // Assert
+        dto = await _voucherAppService.GetAsync(dto.Id);
+        dto.Status.ShouldBe(VoucherStatus.Void);
+    }
     [Fact]
     public async Task Can_Get_Voucher_List_With_Filter()
     {
@@ -301,6 +312,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         result.Items.Count.ShouldBe(1);
         result.Items.First().VoucherDate.ShouldBe(new DateOnly(2025, 1, 12));
     }
+    
 
     [Fact]
     public async Task Can_Get_Voucher_List_With_Status()
@@ -313,11 +325,11 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var voucherDate = new DateTime(2025, 10, 10);
         var updateDto = new VoucherUpdateDto()
         {
-            VoucherDate = voucherDate,
-            Status = VoucherStatus.Approval,
+            VoucherDate = voucherDate, 
             Details = [firstDetailItem, secondDetailItem]
         };
         await _voucherAppService.UpdateAsync(dto.Id, updateDto);
+        await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Approval);
 
         //Act
         var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()
@@ -341,11 +353,11 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var secondDetailItem = GetDetailUpdateDto(dto.Details.Last()); 
         var updateDto = new VoucherUpdateDto()
         {
-            VoucherDate = new DateTime(2025, 10, 10),
-            Status = VoucherStatus.Void,
+            VoucherDate = new DateTime(2025, 10, 10), 
             Details = [firstDetailItem, secondDetailItem]
         };
         await _voucherAppService.UpdateAsync(dto.Id, updateDto);
+        await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Void);
 
         //Act
         var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()

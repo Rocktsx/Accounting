@@ -192,6 +192,12 @@
     "ImportDataSuccessfully": "Import data successfully.",
     "TemplateFile": "Template file",
     "Permission:Import": "Import",
-    "ImportSubject": "Import Subject"
+    "ImportSubject": "Import Subject",
+    "Permission:Print": "Print",
+    "Print": "Print",
+    "Permission:Export": "Export",
+    "Export": "Export",
+    "UpdateStatus": "Update Status",
+    "Permission:UpdateStatus": "Update Status"
   }
 }

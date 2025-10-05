@@ -1,9 +1,7 @@
-using Accounting.Localization;
-using JetBrains.Annotations;
+using Accounting.Localization; 
 using System.Linq;
 using Volo.Abp.Authorization.Permissions;
-using Volo.Abp.Localization;
-using Volo.Abp.MultiTenancy;
+using Volo.Abp.Localization; 
 using static Accounting.Permissions.AccountingPermissions;
 
 namespace Accounting.Permissions;
@@ -42,9 +40,10 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         context.AddGroup(AccountingPermissions.AccountingSetting, setttingDisplay)
             .AddPermission(AccountingPermissions.AccountingSetting, setttingDisplay);
 
-        AddPermissionGroup(context, AccountingPermissions.TransferVouchers.Default, AccountingPermissions.TransferVouchers.Name,
+        group = AddPermissionGroup(context, AccountingPermissions.TransferVouchers.Default, AccountingPermissions.TransferVouchers.Name,
            AccountingPermissions.TransferVouchers.Create, AccountingPermissions.TransferVouchers.Delete,
             AccountingPermissions.TransferVouchers.Update);
+        group.Permissions.First().AddChild(AccountingPermissions.TransferVouchers.UpdateStatus, L(AccountingPermissions.UpdateStatusDisplayName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

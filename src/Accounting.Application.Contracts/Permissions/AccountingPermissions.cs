@@ -5,18 +5,29 @@ public static class AccountingPermissions
     public const string PermissionPrefix = "Permission:";
     public const string GroupName = "Accounting";
 
-    public const string Creation = ".Creation";
-    public const string Deletion = ".Deletion";
-    public const string Edit = ".Edit";
-    public const string Imports = ".Import";
-    public const string CreationDisplayName = PermissionPrefix + "Creation";
-    public const string DeletionDisplayName = PermissionPrefix + "Deletion";
-    public const string EditDisplayName = PermissionPrefix + "Edit";
-    public const string PrintDisplayName = PermissionPrefix + "Print";
-    public const string ImportDisplayName = PermissionPrefix + "Import";
-    public const string ExportDisplayName = PermissionPrefix + "Export";
-
     private const string Dot = ".";
+    public const string CreationText = "Creation";
+    public const string DeletionText = "Deletion";
+    public const string EditText = "Edit";
+    public const string ImportText = "Import";
+    public const string ExportText = "Export";
+    public const string UpdateStatusText = "UpdateStatus";
+    public const string PrintText = "Print"; 
+
+    public const string Creation = Dot + CreationText;
+    public const string Deletion = Dot + DeletionText;
+    public const string Edit = Dot + EditText;
+    public const string Imports = Dot + ImportText;
+    public const string Exports = Dot + ExportText;
+    public const string UpdateStatusDot = Dot + UpdateStatusText;
+
+    public const string CreationDisplayName = PermissionPrefix + CreationText;
+    public const string DeletionDisplayName = PermissionPrefix + DeletionText;
+    public const string EditDisplayName = PermissionPrefix + EditText;
+    public const string PrintDisplayName = PermissionPrefix + PrintText;
+    public const string ImportDisplayName = PermissionPrefix + ImportText;
+    public const string ExportDisplayName = PermissionPrefix + ExportText;
+    public const string UpdateStatusDisplayName = PermissionPrefix + UpdateStatusText;
 
     public const string BasicDataGroup = GroupName + ".BasicData";
 
@@ -106,5 +117,6 @@ public static class AccountingPermissions
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
+        public const string UpdateStatus = Default + UpdateStatusDot;
     }
 }

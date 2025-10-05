@@ -226,6 +226,12 @@
     "ImportDataSuccessfully": "导入数据成功。",
     "TemplateFile": "模板文件",
     "Permission:Import": "导入",
-    "ImportSubject": "导入科目"
+    "ImportSubject": "导入科目",
+    "Permission:Print": "打印",
+    "Print": "打印",
+    "Permission:Export": "导出",
+    "Export": "导出",
+    "UpdateStatus": "更新状态",
+    "Permission:UpdateStatus": "更新状态"
   }
 }
