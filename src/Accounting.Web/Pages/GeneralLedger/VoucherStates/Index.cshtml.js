@@ -7,8 +7,10 @@
             voucherType: $('#voucherType').val(),
             status: $('#status').val()
         };
-    };
-    const dataTable = $('#voucherStates').DataTable(
+    }; 
+
+    const tableSelector = '#voucherStates';
+    const dataTable = $(tableSelector).DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
             paging: true,
@@ -68,4 +70,20 @@
             abp.notify.success(l('SavedSuccessfully'));
         }).catch(() => abp.ui.clearBusy(bodySelector));
     })
+    $(document).on('click', '#search', function(){
+        dataTable.ajax.reload();
+    });
+    $(document).on('keydown', '#searchForm', function (e) {
+        if (e.which !== 13) {
+            return false;
+        }
+        e.preventDefault();
+        dataTable.ajax.reload(); 
+    })
+    $(tableSelector).on('preXhr.dt', function () {
+        abp.ui.setBusy(tableSelector)
+    });
+    $(tableSelector).on('xhr.dt', function (e) {
+        abp.ui.clearBusy(tableSelector)
+    });
 })

@@ -31,7 +31,7 @@
                     <div class="col-sm-9">
                         <input type="text" class="form-control form-control-sm" id="code" name="code" placeholder="JV-0001">
                     </div>
-                </abp-column> 
+                </abp-column>
                 <abp-column class="row">
                     <label for="voucherType" class="form-label col-sm-3 text-end">@L["VoucherType"].Value</label>
                     <div class="col-sm-9">
@@ -44,7 +44,10 @@
                         <select type="text" class="form-control form-control-sm" id="status" name="status" asp-items="Model.VoucherStates"></select>
                     </div>
                 </abp-column>
-            </abp-row> 
+                <abp-column>
+                    <abp-button icon="magnifying-glass" text="@L["Search"]" id="search" button-type="Primary"></abp-button>
+                </abp-column>
+            </abp-row>
         </form>
     </abp-card-header>
     <abp-card-body>
