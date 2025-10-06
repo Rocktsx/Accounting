@@ -1,0 +1,30 @@
+﻿@page
+@using Accounting.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Accounting.Web.Pages.GeneralLedger.SubjectCategories
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+
+@model Accounting.Web.Pages.GeneralLedger.SubjectCategories.IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.SubjectCategory].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.MenuItemName = AccountingMenus.SubjectCategory;
+}
+@section scripts
+{
+    <abp-script src="/Pages/GeneralLedger/SubjectCategories/Index.cshtml.js" />
+}
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+<abp-card>
+    <abp-card-body>
+        <abp-table id="subjectCategoryTable" striped-rows="true" />
+    </abp-card-body>
+</abp-card>

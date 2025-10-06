@@ -272,7 +272,7 @@ public class AccountingWebModule : AbpModule
     {
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.BasicData.Currency.IndexModel>(
+            options.Configure<Pages.BasicData.Currencies.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(
@@ -285,7 +285,7 @@ public class AccountingWebModule : AbpModule
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.BasicData.Client.IndexModel>(
+            options.Configure<Pages.BasicData.Clients.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(
@@ -298,7 +298,7 @@ public class AccountingWebModule : AbpModule
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.BasicData.Vendor.IndexModel>(
+            options.Configure<Pages.BasicData.Vendors.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(
@@ -311,7 +311,7 @@ public class AccountingWebModule : AbpModule
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.GeneralLedger.AccountingPeriod.IndexModel>(
+            options.Configure<Pages.GeneralLedger.AccountingPeriods.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(
@@ -343,7 +343,7 @@ public class AccountingWebModule : AbpModule
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.GeneralLedger.GeneralAccount.IndexModel>(
+            options.Configure<Pages.GeneralLedger.GeneralAccounts.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(
@@ -362,7 +362,7 @@ public class AccountingWebModule : AbpModule
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.GeneralLedger.SubjectCategory.IndexModel>(
+            options.Configure<Pages.GeneralLedger.SubjectCategories.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(
@@ -375,7 +375,7 @@ public class AccountingWebModule : AbpModule
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.GeneralLedger.TransferVoucher.IndexModel>(
+            options.Configure<Pages.GeneralLedger.TransferVouchers.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(

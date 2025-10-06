@@ -67,7 +67,7 @@ public class AccountingMenuContributor : IMenuContributor
                   AccountingMenus.Currency,
                   l[AccountingMenus.DisplayNames.Currency],
                   icon: "fas fa-dollar-sign",
-                  url: "/BasicData/Currency"
+                  url: "/BasicData/Currencies"
               ).RequirePermissions(AccountingPermissions.Currencies.Default)
           );
 
@@ -76,7 +76,7 @@ public class AccountingMenuContributor : IMenuContributor
                     AccountingMenus.Client,
                     l[AccountingMenus.DisplayNames.Client],
                     icon: "fas fa-credit-card",
-                    url: "/BasicData/Client"
+                    url: "/BasicData/Clients"
                 ).RequirePermissions(AccountingPermissions.Clients.Default)
         );
 
@@ -85,7 +85,7 @@ public class AccountingMenuContributor : IMenuContributor
                 AccountingMenus.Vendor,
                 l[AccountingMenus.DisplayNames.Vendor],
                 icon: "fas fa-rectangle-list",
-                url: "/BasicData/Vendor"
+                url: "/BasicData/Vendors"
             ).RequirePermissions(AccountingPermissions.Vendors.Default)
         );
 
@@ -104,7 +104,7 @@ public class AccountingMenuContributor : IMenuContributor
                 AccountingMenus.AccountingPeriod,
                 l[AccountingMenus.DisplayNames.AccountingPeriod],
                 icon: "fas fa-bars-staggered",
-                url: "/GeneralLedger/AccountingPeriod"
+                url: "/GeneralLedger/AccountingPeriods"
             ).RequirePermissions(AccountingPermissions.AccountingPeriods.Default)
         );
 
@@ -113,7 +113,7 @@ public class AccountingMenuContributor : IMenuContributor
                 AccountingMenus.SubjectCategory,
                 l[AccountingMenus.DisplayNames.SubjectCategory],
                 icon: "fas fa-landmark",
-                url: "/GeneralLedger/SubjectCategory"
+                url: "/GeneralLedger/SubjectCategories"
             ).RequirePermissions(AccountingPermissions.SubjectCategories.Default)
         );
 
@@ -122,7 +122,7 @@ public class AccountingMenuContributor : IMenuContributor
                 AccountingMenus.GeneralAccount,
                 l[AccountingMenus.DisplayNames.GeneralAccount],
                 icon: "fas fa-bug",
-                url: "/GeneralLedger/GeneralAccount"
+                url: "/GeneralLedger/GeneralAccounts"
             ).RequirePermissions(AccountingPermissions.GeneralAccounts.Default)
         );
 
@@ -140,7 +140,7 @@ public class AccountingMenuContributor : IMenuContributor
                    AccountingMenus.TransferVoucher,
                    l[AccountingMenus.DisplayNames.TransferVoucher],
                    icon: "fas fa-wand-magic-sparkles",
-                   url: "/GeneralLedger/TransferVoucher"
+                   url: "/GeneralLedger/TransferVouchers"
                ).RequirePermissions(AccountingPermissions.TransferVouchers.Default)
          );
         generalLedgerMenu.AddItem(

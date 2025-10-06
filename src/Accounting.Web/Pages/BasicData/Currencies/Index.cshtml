@@ -1,0 +1,31 @@
+﻿@page
+@using Accounting.Web.Menus
+@using Accounting.Web.Pages.BasicData.Currencies
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout 
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+
+@model Accounting.Web.Pages.BasicData.Currencies.IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.Currency].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.BasicData]);
+    PageLayout.Content.MenuItemName = AccountingMenus.Currency;
+}
+@section scripts
+{
+    <abp-script src="/Pages/BasicData/Currencies/Index.cshtml.js" />
+}
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+
+<abp-card> 
+    <abp-card-body>
+        <abp-table id="currencyTable" striped-rows="true" />
+    </abp-card-body>
+</abp-card>

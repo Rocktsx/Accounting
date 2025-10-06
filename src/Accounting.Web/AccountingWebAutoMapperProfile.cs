@@ -3,7 +3,7 @@ using Accounting.Finance.Settings;
 using Accounting.Finance.AccountTypes;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
-using Accounting.Web.Pages.BasicData.Currency;
+using Accounting.Web.Pages.BasicData.Currencies;
 using Accounting.Web.ViewModels;
 using AutoMapper;
 using Accounting.BasicData.Companies;
