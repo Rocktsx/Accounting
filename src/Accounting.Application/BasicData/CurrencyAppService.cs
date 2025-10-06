@@ -1,4 +1,5 @@
 ﻿using Accounting.BasicData.Currencies;
+using Accounting.Dtos;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
@@ -46,14 +47,16 @@ namespace Accounting.BasicData
             return ObjectMapper.Map<Currency, CurrencyDto>(entity);
         }
         [Authorize(AccountingPermissions.Currencies.Default)]
-        public async Task<PagedResultDto<CurrencyDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public async Task<PagedResultDto<CurrencyDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
             var queryable = await _currencyRepository.GetQueryableAsync();
-            queryable = queryable.Skip(input.SkipCount)
-                                .Take(input.MaxResultCount)
-                                .OrderBy(input.Sorting ?? nameof(Currency.TargetCurrency));
-            var list = await AsyncExecuter.ToListAsync(queryable);
-            var count = await _currencyRepository.GetCountAsync();
+            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.TargetCurrency.Contains(input.Filter));
+            var pageQueryable = queryable
+                                .OrderBy(input.Sorting ?? nameof(Currency.TargetCurrency))
+                                .Skip(input.SkipCount)
+                                .Take(input.MaxResultCount);
+            var list = await AsyncExecuter.ToListAsync(pageQueryable);
+            var count = await AsyncExecuter.CountAsync(queryable);
 
             return new PagedResultDto<CurrencyDto>(count, ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list));
         }

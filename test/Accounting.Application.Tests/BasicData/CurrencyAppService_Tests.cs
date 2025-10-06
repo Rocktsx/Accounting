@@ -1,4 +1,6 @@
-﻿using Shouldly;
+﻿using Accounting.BasicData.Currencies;
+using Accounting.Dtos;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,6 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit; 
-using Accounting.BasicData.Currencies;
 
 namespace Accounting.BasicData
 {
@@ -25,7 +26,7 @@ namespace Accounting.BasicData
         public async Task Can_Get_An_Exists_Currency()
         {
             // arrange
-            var list = await currencyAppService.GetListAsync(new PagedAndSortedResultRequestDto() { MaxResultCount = 10 });
+            var list = await currencyAppService.GetListAsync(new FilteredPagedAndSortedResultRequestDto() { MaxResultCount = 10 });
             var dto = list.Items.First();
             var id = dto.Id;
             // act
@@ -70,7 +71,7 @@ namespace Accounting.BasicData
             await WithUnitOfWorkAsync( async () =>
             {
                 // arrange
-                var list = await currencyAppService.GetListAsync(new PagedAndSortedResultRequestDto() { MaxResultCount = 10 });
+                var list = await currencyAppService.GetListAsync(new FilteredPagedAndSortedResultRequestDto() { MaxResultCount = 10 });
                 var dto = list.Items.First();
                 // act
                 await currencyAppService.DeleteAsync(dto.Id);
@@ -111,13 +112,13 @@ namespace Accounting.BasicData
         public async Task Can_Get_Currencies()
         {
             // arrange
-            var dto = new PagedAndSortedResultRequestDto() { MaxResultCount = 10 };
+            var dto = new FilteredPagedAndSortedResultRequestDto() { MaxResultCount = 10, Filter = "USD" };
             // act
             var list = await currencyAppService.GetListAsync(dto);
 
             // assert
-            list.TotalCount.ShouldBe(2);
-            list.Items.Any(item => item.TargetCurrency == "USD").ShouldBeTrue();
+            list.TotalCount.ShouldBe(1);
+            list.Items.First().TargetCurrency.ShouldBe("USD");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accounting.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace Accounting.BasicData.Currencies
 
         Task<CurrencyDto> GetAsync(Guid id);
 
-        Task<PagedResultDto<CurrencyDto>> GetListAsync(PagedAndSortedResultRequestDto input);
+        Task<PagedResultDto<CurrencyDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input);
 
         Task UpdateAsync(Guid id, CurrencyUpdateDto input);
         Task<IEnumerable<CurrencyDto>> GetActiveListAsync();

@@ -7,7 +7,7 @@
             serverSide: true,
             paging: true,
             order: [[3, "asc"]],
-            searching: false,
+            searching: true,
             scrollX: true,
             ajax: abp.libs.datatables.createAjax(
                 accounting.basicData.currency.getList),
