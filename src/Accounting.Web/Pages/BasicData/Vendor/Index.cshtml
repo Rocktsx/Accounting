@@ -1,10 +1,12 @@
 ﻿@page
 @using Accounting.Permissions
 @using Accounting.Web.Menus
+@using Accounting.Web.Pages.BasicData.Vendor
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
 @model Accounting.Web.Pages.BasicData.Vendor.IndexModel
@@ -18,24 +20,10 @@
 {
     <abp-script src="/basicData/company.js" />
 }
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
 <abp-card>
-    <abp-card-header>
-        <abp-row class="mb-1">
-            <abp-column>
-                <abp-card-title>@L[AccountingMenus.DisplayNames.Vendor]</abp-card-title>
-            </abp-column>
-            <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(AccountingPermissions.Vendors.Create))
-                {
-                    <abp-button id="newCompanyBtn"
-                                text="@L["NewVendor"].Value"
-                                icon="plus"
-                                button-type="Primary" />
-                
-                }
-            </abp-column>
-        </abp-row>
-    </abp-card-header>
     <abp-card-body>
         <abp-table id="companyTable" striped-rows="true" data-isvendor="1" />
     </abp-card-body>

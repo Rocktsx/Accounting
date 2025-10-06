@@ -3,7 +3,9 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
+@using Accounting.Web.Pages.GeneralLedger.ChartOfAccount;
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
 @model Accounting.Web.Pages.GeneralLedger.ChartOfAccount.IndexModel
@@ -40,30 +42,10 @@
         color: #4fbf67;
     }
 </style>
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
 <abp-card>
-    <abp-card-header>
-        <abp-row>
-            <abp-column>
-                <abp-card-title>@L[AccountingMenus.DisplayNames.Subject]</abp-card-title>
-            </abp-column>
-            <abp-column class="text-end">
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.Subjects.Create))
-                {
-                    <abp-button id="newSubjectBtn"
-                                text="@L["NewSubject"].Value"
-                                icon="plus"
-                                button-type="Primary" />
-                }
-                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.Subjects.Import))
-                {
-                    <abp-button id="importSubjectBtn"
-                                text="@L["ImportSubject"].Value"
-                                icon="file-import"
-                                button-type="Primary" />
-                }
-            </abp-column>
-        </abp-row>
-    </abp-card-header>
     <abp-card-body>
         <abp-row>
             <abp-column size-md="_4">
