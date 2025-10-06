@@ -222,6 +222,23 @@ $(function () {
             }
         });
     }
+
+    abp.modals.UpdateStatusModal = function () {
+        function initModal(modalManager, args) {
+            const { id } = args;
+            $("#updateStatusForm").attr('data-id', id); 
+        };
+
+        return {
+            initModal: initModal
+        };
+    };
+
+    const updateStatusModal = new abp.ModalManager({
+        viewUrl: abp.appPath + 'GeneralLedger/Components/UpdateStatusModal',
+        modalClass: 'UpdateStatusModal'
+    });
+
     const dataTable = $('#voucherTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
             serverSide: true,
@@ -253,6 +270,14 @@ $(function () {
                                         editHandle(data.record.id, true);
                                     },
                                     visible: abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Creation')
+                                },
+                                {
+                                    text: l('UpdateStatus'),
+                                    iconClass: '',
+                                    action: function (data) {
+                                        updateStatusModal.open({ id: data.record.id })
+                                    },
+                                    visible: abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.UpdateStatus')
                                 },
                                 {
                                     text: l('Delete'),
@@ -326,8 +351,19 @@ $(function () {
     });
     $(document).on('click', '#newVoucherBtn', function () {
         editHandle();
-    });
-
+    }); 
+    $(document).on('click', '#updateStatusForm [type="submit"]', function (e) {
+        e.preventDefault();
+        const bodySelector = '#updateStatusForm .modal-body';
+        abp.ui.setBusy(bodySelector)
+        const id = $("#updateStatusForm").attr('data-id');
+        accounting.finance.transferVoucher.updateStatus(id, $('#newStatus').val()).then(() => {
+            updateStatusModal.close();
+            dataTable.ajax.reload();
+            abp.ui.clearBusy(bodySelector);
+            abp.notify.success(l('SavedSuccessfully'));
+        }).catch(() => abp.ui.clearBusy(bodySelector));
+    })
 
     function getLocal(key) {
         return abp.localization.getResource('Accounting')(key);
