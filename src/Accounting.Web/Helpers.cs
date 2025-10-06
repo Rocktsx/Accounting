@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using DeviceDetectorNET;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace Accounting.Web
 {
@@ -38,5 +41,22 @@ namespace Accounting.Web
             }
             return list;
         }
+
+        public static List<SelectListItem> GetEnumSelectList(Type type, IStringLocalizer localizer)
+        {
+
+            var items = Enum.GetValues(type);
+            var list = new List<SelectListItem>(items.Length);
+            foreach (int item in items)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = item.ToString(),
+                    Text = localizer[Enum.GetName(type, item)].Value
+                });
+            }
+            return list;
+        }
+
     }
 }

@@ -1,0 +1,62 @@
+﻿@page
+@using Accounting.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+@model Accounting.Web.Pages.GeneralLedger.VoucherStates.IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.VoucherState].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.MenuItemName = AccountingMenus.VoucherState;
+}
+@section scripts
+{
+    <abp-script src="/Pages/GeneralLedger/VoucherStates/Index.cshtml.js" />
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column>
+                <abp-card-title>@L[AccountingMenus.DisplayNames.VoucherState]</abp-card-title>
+            </abp-column>
+            <abp-column class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(Accounting.Permissions.AccountingPermissions.VoucherStates.UpdateStatus))
+                {
+                    <abp-button id="updateStatusBtn"
+                                text="@L["UpdateStatus"].Value"
+                                icon="plus"
+                                button-type="Primary" />
+                }
+            </abp-column> 
+        </abp-row>
+        <form id="searchForm">
+            <abp-row class="mb-1 mt-1">
+                <abp-column class="row">
+                    <label for="code" class="form-label col-sm-3 text-end">@L["Code"].Value</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="code" name="code" placeholder="JV-0001">
+                    </div>
+                </abp-column> 
+                <abp-column class="row">
+                    <label for="voucherType" class="form-label col-sm-3 text-end">@L["VoucherType"].Value</label>
+                    <div class="col-sm-9">
+                        <select type="text" class="form-control" id="voucherType" name="voucherType" asp-items="Model.VoucherTypes"></select> 
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="status" class="form-label col-sm-3 text-end">@L["Status"].Value</label>
+                    <div class="col-sm-9">
+                        <select type="text" class="form-control" id="status" name="status" asp-items="Model.VoucherStates"></select>
+                    </div>
+                </abp-column>
+            </abp-row> 
+        </form>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table id="voucherStates" striped-rows="true" />
+    </abp-card-body>
+</abp-card>

@@ -198,6 +198,10 @@
     "Permission:Export": "Export",
     "Export": "Export",
     "UpdateStatus": "Update Status",
-    "Permission:UpdateStatus": "Update Status"
+    "Permission:UpdateStatus": "Update Status",
+    "Permission:VoucherStates": "Voucher Status",
+    "Menu:VoucherState": "Voucher Status",
+    "VoucherType": "Voucher Type",
+    "NewStatus": "New Status"
   }
 }

@@ -1,0 +1,23 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@inject IStringLocalizer<AccountingResource> L
+@model Accounting.Web.Pages.GeneralLedger.Components.UpdateStatusModalModel
+@{
+    Layout = null;
+}
+
+<form id="updateStatusForm" asp-page="/" data-ajaxform="true" data-check-form-on-close="false">
+    <abp-modal>
+        <abp-modal-header title="@L["UpdateStatus"].Value">
+        </abp-modal-header>
+        <abp-modal-body>
+            <label for="newStatus" class="form-labeltext-end">@L["NewStatus"].Value</label>
+            <div>
+                <select type="text" class="form-control" id="newStatus" name="newStatus" asp-items="Model.VoucherStates"></select>
+            </div>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

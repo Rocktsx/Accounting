@@ -143,6 +143,14 @@ public class AccountingMenuContributor : IMenuContributor
                    url: "/GeneralLedger/TransferVoucher"
                ).RequirePermissions(AccountingPermissions.TransferVouchers.Default)
          );
+        generalLedgerMenu.AddItem(
+               new ApplicationMenuItem(
+                   AccountingMenus.VoucherState,
+                   l[AccountingMenus.DisplayNames.VoucherState],
+                   icon: "fas fa-layer-group",
+                   url: "/GeneralLedger/VoucherStates"
+               ).RequirePermissions(AccountingPermissions.VoucherStates.Default)
+         );
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);

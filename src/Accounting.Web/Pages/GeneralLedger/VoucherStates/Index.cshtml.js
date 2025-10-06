@@ -1,0 +1,71 @@
+﻿$(function () {
+    const l = abp.localization.getResource('Accounting');
+
+    const inputAction = function (requestData, dataTableSettings) {
+        return {
+            code: $('#code').val().trim(),
+            voucherType: $('#voucherType').val(),
+            status: $('#status').val()
+        };
+    };
+    const dataTable = $('#voucherStates').DataTable(
+        abp.libs.datatables.normalizeConfiguration({
+            serverSide: true,
+            paging: true,
+            order: [[1, "asc"]],
+            searching: false,
+            scrollX: true,
+            ajax: abp.libs.datatables.createAjax(accounting.finance.voucherState.getList, inputAction),
+            columnDefs: [
+                {
+                    title: l('VoucherType'),
+                    data: "voucherType",
+                    orderable: true,
+                    render: function (data) {
+                        return data === 0 ? l('JournalVoucher') : data === 1 ? l('ReceivableVoucher') : l('PayableVoucher');
+                    }
+                },
+                {
+                    title: l('Code'),
+                    data: "code",
+                    orderable: true
+                },
+                {
+                    title: l('Status'),
+                    data: "status",
+                    orderable: true,
+                    render: function (data) {
+                        return data === 1 ? l('Approval') : data === 2 ? l('Void') : l('Draft');
+                    }
+                },
+                {
+                    title: l('CreationTime'),
+                    data: "creationTime",
+                    orderable: true,
+                    dataFormat: 'datetime'
+                },
+                {
+                    title: l('LastModificationTime'),
+                    data: "lastModificationTime",
+                    orderable: true,
+                    dataFormat: 'datetime'
+                },
+            ]
+        })
+    );
+    const updateStatusModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/Components/UpdateStatusModal');
+    $(document).on('click', "#updateStatusBtn", function () {
+        updateStatusModal.open();
+    })
+    $(document).on('click', '#updateStatusForm [type="submit"]', function (e) {
+        e.preventDefault();
+        const bodySelector = '#updateStatusForm .modal-body';
+        abp.ui.setBusy(bodySelector)
+        accounting.finance.voucherState.updateStatus(inputAction(), $('#newStatus').val()).then(() => {
+            updateStatusModal.close();
+            dataTable.ajax.reload();
+            abp.ui.clearBusy(bodySelector);
+            abp.notify.success(l('SavedSuccessfully'));
+        }).catch(() => abp.ui.clearBusy(bodySelector));
+    })
+})

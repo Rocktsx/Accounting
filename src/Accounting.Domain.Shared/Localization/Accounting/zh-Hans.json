@@ -232,6 +232,10 @@
     "Permission:Export": "导出",
     "Export": "导出",
     "UpdateStatus": "更新状态",
-    "Permission:UpdateStatus": "更新状态"
+    "Permission:UpdateStatus": "更新状态",
+    "Permission:VoucherStates": "传票状态",
+    "Menu:VoucherState": "传票状态",
+    "VoucherType": "传票类型",
+    "NewStatus": "新状态"
   }
 }
