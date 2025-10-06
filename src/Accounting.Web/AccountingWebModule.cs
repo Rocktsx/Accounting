@@ -399,7 +399,7 @@ public class AccountingWebModule : AbpModule
                 {
                     toolbar.AddButton(
                         L("UpdateStatus"),
-                        icon: "plus",
+                        icon: "pencil",
                         id: "updateStatusBtn",
                         requiredPolicyName: AccountingPermissions.VoucherStates.UpdateStatus
                     );
