@@ -334,7 +334,7 @@ $(function () {
 
     $(document).on('keydown', '#searchForm', function (e) {
         if (e.which !== 13) {
-            return false;
+            return;
         }
         e.preventDefault();
         dataTable.ajax.reload();
@@ -755,7 +755,7 @@ $(function () {
             }
         }
     }
-    const editModalTemplate = `<div><Modal :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditTransferVoucher' : 'NewTransferVoucher' )">
+    const editModalTemplate = `<div><Modal  v-if="isShowModal" :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditTransferVoucher' : 'NewTransferVoucher' )">
 <div id="content">
     <div class="mb-2 row">
        <div class="col row">
