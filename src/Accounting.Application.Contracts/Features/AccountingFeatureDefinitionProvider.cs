@@ -50,6 +50,13 @@ namespace Accounting.Features
                 displayName: L(AccountingFeatures.Custom2Function),
                 isVisibleToClients: false,
                 valueType: new ToggleStringValueType());
+
+            myGroup.AddFeature(
+               AccountingFeatures.AccountTypeFunction,
+               defaultValue: "false",
+               displayName: L(AccountingFeatures.AccountTypeFunction),
+               isVisibleToClients: false,
+               valueType: new ToggleStringValueType());
         }
         private ILocalizableString L(string name)
         {

@@ -7,6 +7,8 @@ using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Identity.Web.Navigation;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
+using Volo.Abp.Features;
+using Accounting.Features;
 
 namespace Accounting.Web.Menus;
 
@@ -114,7 +116,8 @@ public class AccountingMenuContributor : IMenuContributor
                 l[AccountingMenus.DisplayNames.SubjectCategory],
                 icon: "fas fa-landmark",
                 url: "/GeneralLedger/SubjectCategories"
-            ).RequirePermissions(AccountingPermissions.SubjectCategories.Default)
+            ).RequireFeatures(AccountingFeatures.AccountTypeFunction)
+            .RequirePermissions(AccountingPermissions.SubjectCategories.Default)
         );
 
         generalLedgerMenu.AddItem(

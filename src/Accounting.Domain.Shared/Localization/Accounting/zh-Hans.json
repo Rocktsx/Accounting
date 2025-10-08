@@ -236,6 +236,7 @@
     "Permission:VoucherStates": "传票状态",
     "Menu:VoucherState": "传票状态",
     "VoucherType": "传票类型",
-    "NewStatus": "新状态"
+    "NewStatus": "新状态",
+    "AccountingFeature.AccountTypeFunction": "科目类型功能"
   }
 }

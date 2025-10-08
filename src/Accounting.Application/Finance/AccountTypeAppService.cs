@@ -1,4 +1,5 @@
 ﻿using Accounting.Dtos;
+using Accounting.Features;
 using Accounting.Finance.AccountTypes;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Features;
 
 namespace Accounting.Finance
 {
@@ -26,6 +28,8 @@ namespace Accounting.Finance
             DeletePolicyName = AccountingPermissions.SubjectCategories.Delete;
             GetListPolicyName = AccountingPermissions.SubjectCategories.Default;
         }
+
+        [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
         [Authorize(AccountingPermissions.SubjectCategories.Create)]
         public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
         {
@@ -57,6 +61,8 @@ namespace Accounting.Finance
                     OtherName = x.OtherName
                 }));
         }
+
+        [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
         [Authorize(AccountingPermissions.SubjectCategories.Update)]
         public override async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
         {
@@ -73,6 +79,13 @@ namespace Accounting.Finance
                  .SetTrialBalanceSort(input.TrialBalanceSort);
             var updateEntity = await Repository.UpdateAsync(entity);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(updateEntity);
+        }
+
+        [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
+        [Authorize(AccountingPermissions.SubjectCategories.Default)]
+        public override Task DeleteAsync(Guid id)
+        {
+            return base.DeleteAsync(id);
         }
     }
 }

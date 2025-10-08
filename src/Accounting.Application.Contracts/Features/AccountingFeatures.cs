@@ -15,5 +15,10 @@ namespace Accounting.Features
         public const string DepartmentFunction = GroupName + ".DepartmentFunction";
         public const string Custom1Function = GroupName + ".Custom1Function";
         public const string Custom2Function = GroupName + ".Custom2Function";
+
+        /// <summary>
+        /// 科目类型管理功能
+        /// </summary>
+        public const string AccountTypeFunction = GroupName + ".AccountTypeFunction";
     }
 }
