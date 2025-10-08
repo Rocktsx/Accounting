@@ -203,6 +203,7 @@
     "Menu:VoucherState": "Voucher Status",
     "VoucherType": "Voucher Type",
     "NewStatus": "New Status",
-    "AccountingFeature.AccountTypeFunction": "Account Type Function"
+    "AccountingFeature.AccountTypeFunction": "Account Type Function",
+    "GeneralAccount": "General Account"
   }
 }
