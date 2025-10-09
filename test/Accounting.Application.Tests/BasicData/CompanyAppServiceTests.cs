@@ -354,9 +354,9 @@ namespace Accounting.BasicData
         public async Task Can_Import_Data()
         {
             // Arrange
-            var inputs = new List<CompayImportDto>
+            var inputs = new List<CompanyImportDto>
             {
-                new CompayImportDto
+                new CompanyImportDto
                 {
                     Code = "C001",
                     Name = "Company 1",
@@ -366,7 +366,7 @@ namespace Accounting.BasicData
                     IsClient = true,
                     IsVendor = false,
                 },
-                new CompayImportDto
+                new CompanyImportDto
                 {
                     Code = "C002",
                     Name = "Company 2",
@@ -376,7 +376,7 @@ namespace Accounting.BasicData
                     IsClient = false,
                     IsVendor = true,
                 },
-                 new CompayImportDto
+                 new CompanyImportDto
                 {
                     Code = string.Empty,
                     Name = string.Empty,
@@ -398,9 +398,9 @@ namespace Accounting.BasicData
         public async Task Cannot_Import_Data_With_In_Use_Code()
         {
             // Arrange
-            var inputs = new List<CompayImportDto>
+            var inputs = new List<CompanyImportDto>
             {
-                new CompayImportDto
+                new CompanyImportDto
                 {
                     Code = "C001",
                     Name = "Company 1",
@@ -410,7 +410,7 @@ namespace Accounting.BasicData
                     IsClient = true,
                     IsVendor = false,
                 },
-                new CompayImportDto
+                new CompanyImportDto
                 {
                     Code = "A-SUNKIST",
                     Name = "Company 2",

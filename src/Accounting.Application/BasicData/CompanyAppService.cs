@@ -157,7 +157,7 @@ namespace Accounting.BasicData
             return ObjectMapper.Map<Company, CompanyDto>(obj);
         }
         [RemoteService(false)]
-        public async Task<int> ImportDataAsync(IEnumerable<CompayImportDto> inputs)
+        public async Task<int> ImportDataAsync(IEnumerable<CompanyImportDto> inputs)
         {
             Check.NotNull(inputs, nameof(inputs));
 

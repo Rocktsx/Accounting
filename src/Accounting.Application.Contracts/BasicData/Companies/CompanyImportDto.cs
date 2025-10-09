@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.BasicData.Companies
 {
-    public class CompayImportDto
+    public class CompanyImportDto
     {
         public string Code { get; set; } 
         public string Name { get; set; }
