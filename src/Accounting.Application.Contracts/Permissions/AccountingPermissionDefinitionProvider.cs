@@ -12,22 +12,24 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
     {
         AddPermissionGroup(context, Currencies.Default, Currencies.Name, Currencies.Create, Currencies.Delete, Currencies.Update);
 
-        AddPermissionGroup(context, Clients.Default, Clients.Name, Clients.Create, Clients.Delete, Clients.Update);
+        var group = AddPermissionGroup(context, Clients.Default, Clients.Name, Clients.Create, Clients.Delete, Clients.Update);
+        group.Permissions[0].AddChild(Clients.Import, L(ImportDisplayName));
 
-        AddPermissionGroup(context, Vendors.Default, Vendors.Name, Vendors.Create, Vendors.Delete, Vendors.Update);
+        group = AddPermissionGroup(context, Vendors.Default, Vendors.Name, Vendors.Create, Vendors.Delete, Vendors.Update);
+        group.Permissions[0].AddChild(Vendors.Import, L(ImportDisplayName));
 
         AddPermissionGroup(context, AccountingPeriods.Default, AccountingPeriods.Name,
             AccountingPeriods.Create, AccountingPeriods.Delete, AccountingPeriods.Update);
 
-        var group = AddPermissionGroup(context, GeneralAccounts.Default, GeneralAccounts.Name,
+        group = AddPermissionGroup(context, GeneralAccounts.Default, GeneralAccounts.Name,
             GeneralAccounts.Create, GeneralAccounts.Delete, GeneralAccounts.Update);
-        group.Permissions.First().AddChild(GeneralAccounts.Import, L(ImportDisplayName));
+        group.Permissions[0].AddChild(GeneralAccounts.Import, L(ImportDisplayName));
 
         AddPermissionGroup(context, SubjectCategories.Default, SubjectCategories.Name,
             SubjectCategories.Create, SubjectCategories.Delete, SubjectCategories.Update);
 
         group = AddPermissionGroup(context, Subjects.Default, Subjects.Name, Subjects.Create, Subjects.Delete, Subjects.Update);
-        group.Permissions.First().AddChild(Subjects.Import, L(ImportDisplayName));
+        group.Permissions[0].AddChild(Subjects.Import, L(ImportDisplayName));
 
         var setttingDisplay = L(PermissionPrefix + nameof(AccountingSetting));
         context.AddGroup(AccountingSetting, setttingDisplay)
@@ -35,7 +37,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 
         group = AddPermissionGroup(context, TransferVouchers.Default, TransferVouchers.Name,
            TransferVouchers.Create, TransferVouchers.Delete, TransferVouchers.Update);
-        group.Permissions.First().AddChild(TransferVouchers.UpdateStatus, L(UpdateStatusDisplayName));
+        group.Permissions[0].AddChild(TransferVouchers.UpdateStatus, L(UpdateStatusDisplayName));
 
         var voucherStatesName = PermissionPrefix + VoucherStates.Name;
         group = context.AddGroup(VoucherStates.Default, L(voucherStatesName));

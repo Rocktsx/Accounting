@@ -24,16 +24,23 @@ namespace Accounting.Utility
             if (codes.Count() < inputs.Count())
             {
                 var repeatCodes = inputs.Select(getCode).GroupBy(item => item).Where(item => item.Count() > 1).Select(item => item.Key);
-                throw new BusinessException(AccountingDomainErrorCodes.CodeIsDuplicated).WithData("codes", string.Join(localizer["Comma"], repeatCodes));
+                ThrowBusinessException(AccountingDomainErrorCodes.CodeIsDuplicated, repeatCodes, localizer);
             }
+            await CheckExistsCodesAsync(codes, localizer, getExistItems);
+
+            return codes;
+        }
+        public static async Task CheckExistsCodesAsync(IEnumerable<string> codes, IStringLocalizer localizer, Func<IEnumerable<string>, Task<IEnumerable<string>>> getExistItems)
+        {
             var existsItems = await getExistItems(codes);
             if (existsItems.Any())
             {
-                throw new BusinessException(AccountingDomainErrorCodes.CodeIsInUse).WithData("codes", string.Join(localizer["Comma"],
-                    existsItems.Where(item => codes.Contains(item)).Select(item => item)));
+                ThrowBusinessException(AccountingDomainErrorCodes.CodeIsInUse, existsItems, localizer);
             }
-
-            return codes;
+        }
+        public static void ThrowBusinessException(string errorCode, IEnumerable<string> codes, IStringLocalizer localizer)
+        {
+            throw new BusinessException(errorCode).WithData("codes", string.Join(localizer["Comma"], codes));
         }
     }
 }

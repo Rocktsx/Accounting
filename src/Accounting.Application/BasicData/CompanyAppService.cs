@@ -10,6 +10,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Accounting.Permissions;
 using Accounting.BasicData.Companies;
+using Accounting.Utility;
 
 namespace Accounting.BasicData
 {
@@ -82,8 +83,8 @@ namespace Accounting.BasicData
         }
         protected virtual async Task<PagedResultDto<CompanyDto>> QueryListAsync(CompanySearchDto input)
         {
-            var queryable = await _companyRepository.GetQueryableAsync(); 
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.Name.Contains(input.Filter) 
+            var queryable = await _companyRepository.GetQueryableAsync();
+            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.Name.Contains(input.Filter)
                 || item.Code.Contains(input.Filter) || item.OtherName.Contains(input.Filter) || item.NickName.Contains(input.Filter));
             queryable = queryable.WhereIf(input.IsClient.HasValue && input.IsClient == true, item => item.IsClient == true);
             queryable = queryable.WhereIf(input.IsVendor.HasValue && input.IsVendor == true, item => item.IsVendor == true);
@@ -121,8 +122,8 @@ namespace Accounting.BasicData
                     if (address.Id.Equals(Guid.Empty))
                     {
                         entity.AddAddress(GuidGenerator.Create(), address.IsBilling, address.IsShipping,
-                       address.Name, address.Address, address.ContactPerson, address.Telephone, address.Email,
-                       address.Remark, address.Country, address.Region, address.District, address.Fax);
+                           address.Name, address.Address, address.ContactPerson, address.Telephone, address.Email,
+                           address.Remark, address.Country, address.Region, address.District, address.Fax);
                     }
                     else
                     {
@@ -154,6 +155,55 @@ namespace Accounting.BasicData
 
             var obj = await _companyRepository.UpdateAsync(entity);
             return ObjectMapper.Map<Company, CompanyDto>(obj);
+        }
+        [RemoteService(false)]
+        public async Task<int> ImportDataAsync(IEnumerable<CompayImportDto> inputs)
+        {
+            Check.NotNull(inputs, nameof(inputs));
+
+            var companyGroups = inputs.GroupBy(item => item.Code);
+            var codes = companyGroups.Select(item => item.Key).Distinct().ToList();
+            await ImportHelper.CheckExistsCodesAsync(codes, L, async (codes) =>
+                (await _companyRepository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
+
+            var entities = new List<Company>(inputs.Count());
+            foreach (var item in companyGroups)
+            {
+                if (string.IsNullOrWhiteSpace(item.Key))
+                {
+                    continue;
+                }
+                var firstItem = item.FirstOrDefault(obj => !string.IsNullOrWhiteSpace(obj.Name));
+                if (firstItem == null)
+                {
+                    continue;
+                }
+                var company = new Company(GuidGenerator.Create(), firstItem.Name, firstItem.OtherName,
+                    firstItem.NickName, firstItem.Currency, firstItem.CreditLimit, firstItem.PaymentTerm,
+                    firstItem.TradeTerm, firstItem.IsClient, firstItem.IsVendor, CurrentTenant.Id);
+
+                company.SetCode(firstItem.Code, firstItem.Code, 1);
+
+                foreach (var groupItem in item)
+                {
+                    if (!string.IsNullOrWhiteSpace(groupItem.Address))
+                    {
+                        company.AddAddress(GuidGenerator.Create(), groupItem.IsBilling, groupItem.IsShipping, groupItem.AddressName,
+                            groupItem.Address, groupItem.ContactPerson, groupItem.Telephone, groupItem.Email, groupItem.Remark,
+                            groupItem.Country, groupItem.Region, groupItem.District, groupItem.Fax);
+                    }
+                    if (!string.IsNullOrEmpty(groupItem.ContactPerson))
+                    {
+                        company.AddContact(GuidGenerator.Create(), groupItem.ContactPerson, groupItem.Department, groupItem.Position,
+                            groupItem.DirectLine, groupItem.Telephone, groupItem.Fax, groupItem.Email, groupItem.Remark);
+                    }
+                }
+                entities.Add(company);
+            }
+
+            await _companyRepository.InsertManyAsync(entities);
+
+            return entities.Count;
         }
     }
 }

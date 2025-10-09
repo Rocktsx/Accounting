@@ -13,5 +13,7 @@ namespace Accounting.BasicData.Companies
         Task<CompanyDto> CreateAsync(CompanyCreateDto input);
         Task<CompanyDto> UpdateAsync(Guid id,  CompanyUpdateDto input);
         Task DeleteAsync(Guid id);
+
+        Task<int> ImportDataAsync(IEnumerable<CompayImportDto> inputs);
     } 
 }

@@ -8,6 +8,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;
 using Accounting.BasicData.Companies;
+using Volo.Abp;
 
 namespace Accounting.BasicData
 {
@@ -347,6 +348,86 @@ namespace Accounting.BasicData
             var target = await _companyAppService.GetAsync(entry.Id);
             target.Addresses.ShouldBeEmpty();
             target.Contacts.ShouldBeEmpty();
+        }
+
+        [Fact]
+        public async Task Can_Import_Data()
+        {
+            // Arrange
+            var inputs = new List<CompayImportDto>
+            {
+                new CompayImportDto
+                {
+                    Code = "C001",
+                    Name = "Company 1",
+                    OtherName = "Co 1",
+                    NickName = "C1",
+                    Currency = "USD", 
+                    IsClient = true,
+                    IsVendor = false,
+                },
+                new CompayImportDto
+                {
+                    Code = "C002",
+                    Name = "Company 2",
+                    OtherName = "Co 2",
+                    NickName = "C2",
+                    Currency = "EUR", 
+                    IsClient = false,
+                    IsVendor = true,
+                },
+                 new CompayImportDto
+                {
+                    Code = string.Empty,
+                    Name = string.Empty,
+                    OtherName = "Co 2",
+                    NickName = "C2",
+                    Currency = "EUR",
+                    IsClient = false,
+                    IsVendor = true,
+                }
+            };
+
+            // Act
+            var result = await _companyAppService.ImportDataAsync(inputs);
+
+            // Assert
+            result.ShouldBe(2);
+        }
+        [Fact]
+        public async Task Cannot_Import_Data_With_In_Use_Code()
+        {
+            // Arrange
+            var inputs = new List<CompayImportDto>
+            {
+                new CompayImportDto
+                {
+                    Code = "C001",
+                    Name = "Company 1",
+                    OtherName = "Co 1",
+                    NickName = "C1",
+                    Currency = "USD",
+                    IsClient = true,
+                    IsVendor = false,
+                },
+                new CompayImportDto
+                {
+                    Code = "A-SUNKIST",
+                    Name = "Company 2",
+                    OtherName = "Co 2",
+                    NickName = "C2",
+                    Currency = "EUR",
+                    IsClient = false,
+                    IsVendor = true,
+                }
+            };
+
+            // Act
+            var result = await Should.ThrowAsync<BusinessException>(async ()=> await _companyAppService.ImportDataAsync(inputs));
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Code.ShouldBe(AccountingDomainErrorCodes.CodeIsInUse);
         }
     }
 }
