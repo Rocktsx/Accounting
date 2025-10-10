@@ -179,7 +179,7 @@ namespace Accounting.BasicData
                     continue;
                 }
                 var company = new Company(GuidGenerator.Create(), firstItem.Name, firstItem.OtherName,
-                    firstItem.NickName, firstItem.Currency, firstItem.CreditLimit, firstItem.PaymentTerm,
+                    firstItem.NickName, firstItem.Currency, firstItem.CreditLimit ?? 0, firstItem.PaymentTerm,
                     firstItem.TradeTerm, firstItem.IsClient, firstItem.IsVendor, CurrentTenant.Id);
 
                 company.SetCode(firstItem.Code, firstItem.Code, 1);

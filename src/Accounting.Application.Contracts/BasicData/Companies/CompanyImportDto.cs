@@ -13,7 +13,7 @@ namespace Accounting.BasicData.Companies
         public string? OtherName { get; set; }
         public string? NickName { get; set; }
         public string? Currency { get; set; }
-        public decimal CreditLimit { get; set; }
+        public decimal? CreditLimit { get; set; }
         public string? PaymentTerm { get; set; }
         public string? TradeTerm { get; set; }
         public bool IsClient { get; set; }
