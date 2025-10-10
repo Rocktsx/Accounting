@@ -238,6 +238,8 @@
     "VoucherType": "传票类型",
     "NewStatus": "新状态",
     "AccountingFeature.AccountTypeFunction": "科目类型功能",
-    "GeneralAccount": "总账类别"
+    "GeneralAccount": "总账类别",
+    "ImportVendor": "导入供应商",
+    "ImportClient": "导入客户"
   }
 }

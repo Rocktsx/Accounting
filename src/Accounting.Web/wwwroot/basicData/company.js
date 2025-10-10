@@ -446,4 +446,32 @@
         contactModal.close();
         return false;
     });
+    const importModal = new abp.ModalManager(abp.appPath + 'BasicData/Companies/ImportModal');
+    $(document).on('click', '#importCompanyBtn', function () {
+        importModal.open(isVendor ? { isVendor } : null);
+    });
+    $(document).on('click', '#importCompanyForm [type="submit"]', function (e) {
+        e.preventDefault();
+        const form = document.querySelector('#importCompanyForm');
+        const fileElement = document.querySelector('#importCompanyForm #file');
+        const formData = new FormData();
+        formData.append('file', fileElement.files[0]);
+        const bodySelector = '#importCompanyForm .modal-body';
+        abp.ui.setBusy(bodySelector)
+        abp.ajax({
+            url:  form.action,
+            processData: false,
+            contentType: false,
+            method: 'POST',
+            data: formData,
+            success: function () {
+                importModal.close();
+                dataTable.ajax.reload();
+                abp.notify.success(l('ImportDataSuccessfully'));
+            },
+            complete() {
+                abp.ui.clearBusy(bodySelector)
+            }
+        });
+    })
 });

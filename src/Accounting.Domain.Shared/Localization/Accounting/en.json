@@ -204,6 +204,8 @@
     "VoucherType": "Voucher Type",
     "NewStatus": "New Status",
     "AccountingFeature.AccountTypeFunction": "Account Type Function",
-    "GeneralAccount": "General Account"
+    "GeneralAccount": "General Account",
+    "ImportVendor": "Import Vendor",
+    "ImportClient": "Import Client"
   }
 }

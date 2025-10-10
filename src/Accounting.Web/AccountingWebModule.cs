@@ -133,7 +133,7 @@ public class AccountingWebModule : AbpModule
             {
                 options.DisableTransportSecurityRequirement = true;
             });
-            
+
             Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
@@ -281,7 +281,7 @@ public class AccountingWebModule : AbpModule
                         id: "newCurrency",
                         requiredPolicyName: AccountingPermissions.Currencies.Create
                     );
-                }); 
+                });
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
@@ -293,6 +293,12 @@ public class AccountingWebModule : AbpModule
                         icon: "plus",
                         id: "newCompanyBtn",
                         requiredPolicyName: AccountingPermissions.Clients.Create
+                    );
+                    toolbar.AddButton(
+                         L("ImportClient"),
+                         icon: "file-import",
+                         id: "importCompanyBtn",
+                         requiredPolicyName: AccountingPermissions.Clients.Import
                     );
                 });
         });
@@ -307,6 +313,12 @@ public class AccountingWebModule : AbpModule
                         id: "newCompanyBtn",
                         requiredPolicyName: AccountingPermissions.Vendors.Create
                     );
+                    toolbar.AddButton(
+                         L("ImportVendor"),
+                         icon: "file-import",
+                         id: "importCompanyBtn",
+                         requiredPolicyName: AccountingPermissions.Vendors.Import
+                     );
                 });
         });
         Configure<AbpPageToolbarOptions>(options =>
