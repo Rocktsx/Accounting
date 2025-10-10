@@ -19,31 +19,36 @@ namespace Accounting.Models
         [ImporterHeader(Name = "OtherName")]
         public string? OtherName { get; set; }
 
-        [ImporterHeader(Name = "SubjectCategoryCode")]
+        [ImporterHeader(Name = "SubjectCategory")]
         public string? SubjectCategoryCode { get; set; }
 
-        [ImporterHeader(Name = "AccountTypeCode")]
+        [ImporterHeader(Name = "AccountType")]
         public string? AccountTypeCode { get; set; }
 
         [ImporterHeader(Name = "DebitorCreditor")]
+        [ValueMapping("DR", 1)]
+        [ValueMapping("CR", -1)]
         public int DebitorCreditor { get; set; }
 
-        [ImporterHeader(Name = "CurrencyCode")]
+        [ImporterHeader(Name = "Currency")]
         public string? CurrencyCode { get; set; }
 
         [ImporterHeader(Name = "Description")]
         public string? Description { get; set; }
 
         [ImporterHeader(Name = "IsSubSubjectType")]
+        [ValueMapping("1", true)] 
         public bool IsSubSubjectType { get; set; }
 
         [ImporterHeader(Name = "IsActive")]
+        [ValueMapping("1", true)] 
         public bool IsActive { get; set; }
 
         [ImporterHeader(Name = "IsPayMethod")]
+        [ValueMapping("1", true)] 
         public bool IsPayMethod { get; set; }
 
-        [ImporterHeader(Name = "SeqCode")]
+        [ImporterHeader(Name = "Seq")]
         public int? SeqCode { get; set; }
     }
 }
