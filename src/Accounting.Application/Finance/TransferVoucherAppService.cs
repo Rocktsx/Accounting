@@ -1,5 +1,8 @@
-﻿using Accounting.Finance.Vouchers;
+﻿using Accounting.BasicData;
+using Accounting.Features;
+using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
+using Accounting.Utility;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
@@ -47,8 +50,8 @@ namespace Accounting.Finance
             input.VoucherType = VoucherType.JournalVoucher;
             return await base.CreateFilteredQueryAsync(input);
         }
-        [Authorize(AccountingPermissions.TransferVouchers.UpdateStatus)]
 
+        [Authorize(AccountingPermissions.TransferVouchers.UpdateStatus)]
         public override Task UpdateStatus(Guid id, VoucherStatus status)
         {
             return base.UpdateStatus(id, status);

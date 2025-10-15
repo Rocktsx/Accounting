@@ -38,6 +38,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group = AddPermissionGroup(context, TransferVouchers.Default, TransferVouchers.Name,
            TransferVouchers.Create, TransferVouchers.Delete, TransferVouchers.Update);
         group.Permissions[0].AddChild(TransferVouchers.UpdateStatus, L(UpdateStatusDisplayName));
+        group.Permissions[0].AddChild(TransferVouchers.Import, L(ImportDisplayName));
 
         var voucherStatesName = PermissionPrefix + VoucherStates.Name;
         group = context.AddGroup(VoucherStates.Default, L(voucherStatesName));

@@ -120,6 +120,7 @@ public static class AccountingPermissions
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
+        public const string Import = Default + Imports;
     }
     /// <summary>
     /// 传票状态

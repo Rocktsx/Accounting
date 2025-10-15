@@ -23,4 +23,5 @@ public static class AccountingDomainErrorCodes
     }
     public const string CodeIsDuplicated = "Accounting:CodeIsDuplicated";
     public const string CodeIsInUse = "Accounting:CodeIsInUse";
+    public const string CodeIsNotExists = "Accounting:CodeIsNotExists";
 }

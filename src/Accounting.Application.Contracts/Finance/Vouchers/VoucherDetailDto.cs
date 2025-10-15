@@ -5,23 +5,23 @@ namespace Accounting.Finance.Vouchers;
 
 public class VoucherDetailDto: EntityDto<Guid>
 {
-    public Guid VoucherId { get; private set; }
-    public Guid SubjectId { get; private set; }
-    public Guid? SubSubjectCode { get; private set; }
-    public string Description { get; private set; }
-    public DebitorCreditor DebitorCreditor { get; private set; }
-    public string CurrencyCode { get; private set; }
-    public decimal CurrencyRate { get; private set; }
-    public decimal ForeignAmount { get; private set; }
-    public decimal NativeAmount { get; private set; } 
-    public string DocNo { get; private set; }
-    public DateOnly? DueDate { get; private set; }
-    public string Project { get; private set; }
-    public string Department { get; private set; }
-    public string Region { get; private set; }
-    public string Custom1 { get; private set; }
-    public string Custom2 { get; private set; }
-    public int ItemQty { get; private set; }
-    public bool IsOriginal { get; private set; }
-    public string PaymentReference { get; private set; }
+    public Guid VoucherId { get; set; }
+    public Guid SubjectId { get; set; }
+    public Guid? SubSubjectCode { get; set; }
+    public string Description { get; set; }
+    public DebitorCreditor DebitorCreditor { get; set; }
+    public string CurrencyCode { get; set; }
+    public decimal CurrencyRate { get; set; }
+    public decimal ForeignAmount { get; set; }
+    public decimal NativeAmount { get; set; } 
+    public string DocNo { get; set; }
+    public DateOnly? DueDate { get; set; }
+    public string Project { get; set; }
+    public string Department { get; set; }
+    public string Region { get; set; }
+    public string Custom1 { get; set; }
+    public string Custom2 { get; set; }
+    public int ItemQty { get; set; }
+    public bool IsOriginal { get; set; }
+    public string PaymentReference { get; set; }
 }

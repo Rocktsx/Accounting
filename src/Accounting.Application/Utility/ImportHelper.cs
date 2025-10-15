@@ -24,7 +24,7 @@ namespace Accounting.Utility
             if (codes.Count() < inputs.Count())
             {
                 var repeatCodes = inputs.Select(getCode).GroupBy(item => item).Where(item => item.Count() > 1).Select(item => item.Key);
-                ThrowBusinessException(AccountingDomainErrorCodes.CodeIsDuplicated, repeatCodes, localizer);
+                ThrowBusinessExceptionWithCodes(AccountingDomainErrorCodes.CodeIsDuplicated, repeatCodes, localizer);
             }
             await CheckExistsCodesAsync(codes, localizer, getExistItems);
 
@@ -35,10 +35,10 @@ namespace Accounting.Utility
             var existsItems = await getExistItems(codes);
             if (existsItems.Any())
             {
-                ThrowBusinessException(AccountingDomainErrorCodes.CodeIsInUse, existsItems, localizer);
+                ThrowBusinessExceptionWithCodes(AccountingDomainErrorCodes.CodeIsInUse, existsItems, localizer);
             }
         }
-        public static void ThrowBusinessException(string errorCode, IEnumerable<string> codes, IStringLocalizer localizer)
+        public static void ThrowBusinessExceptionWithCodes(string errorCode, IEnumerable<string> codes, IStringLocalizer localizer)
         {
             throw new BusinessException(errorCode).WithData("codes", string.Join(localizer["Comma"], codes));
         }
