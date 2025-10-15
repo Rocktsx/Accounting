@@ -24,7 +24,7 @@ namespace Accounting
         private readonly IRepository<Voucher, Guid> _voucherRepository;
 
         private Guid? _subject2801Id = Guid.Empty;
-        private Guid? _subject88021Id = Guid.Empty;
+        private Guid? _subject8021Id = Guid.Empty;
         public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository,
             IGuidGenerator guidGenerator, IRepository<AccountingPeriod, Guid> accountingPeriodRepository,
             IRepository<AccountType, Guid> accountTypeRepository, IRepository<SubjectCategory, Guid> subjectCategoryRepository,
@@ -85,11 +85,11 @@ namespace Accounting
                 {
                     await AddSubjectAsync(true, context.TenantId);
                 }
-                if (_subject88021Id == null) {
+                if (_subject8021Id == null) {
                     await AddSubjectAsync(false, context.TenantId);
                 }
-                voucher.AddDetail(_guidGenerator.Create(), _subject2801Id.Value, null, "Rent & Rates 2011 01", DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
-                voucher.AddDetail(_guidGenerator.Create(), _subject88021Id.Value, null, "Rent & Rates 2011 01", DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, false, string.Empty);
+                voucher.AddDetail(_guidGenerator.Create(), _subject2801Id.Value, null, "Rent & Rates 2011 01", DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, 0, false, string.Empty);
+                voucher.AddDetail(_guidGenerator.Create(), _subject8021Id.Value, null, "Rent & Rates 2011 01", DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, 0, false, string.Empty);
                 await _voucherRepository.InsertAsync(voucher);
             }
         }
@@ -105,8 +105,8 @@ namespace Accounting
                 return subject1;
             }
             var accountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == "AEX");
-            _subject88021Id = _guidGenerator.Create();
-            var subject2 = new Subject(_subject88021Id.Value, "8021", "租金及差餉", "Rent & Rates", null, accountType?.Id,
+            _subject8021Id = _guidGenerator.Create();
+            var subject2 = new Subject(_subject8021Id.Value, "8021", "租金及差餉", "Rent & Rates", null, accountType?.Id,
                 DebitorCreditor.Debitor, "RMB", "购买固定资产", false, true, false, 0, tenantId);
             await _subjectRepository.InsertAsync(subject2);
             return subject2;
