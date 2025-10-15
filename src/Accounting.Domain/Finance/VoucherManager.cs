@@ -29,6 +29,35 @@ namespace Accounting.Finance
                 await ValidateReceivablePayableSubject(voucher);
             }
         }
+        public static void SetFunctionalFields(VoucherDetail item, bool enableProjectFunction, bool enableRegionFunction,
+            bool enableDepartmentFunction, bool enableCustom1Function, bool enableCustom2Function, string project,
+            string region, string department, string custom1, string custom2)
+        {
+            if (item == null)
+            {
+                return;
+            }
+            if (enableProjectFunction)
+            {
+                item.SetProject(project);
+            }
+            if (enableRegionFunction)
+            {
+                item.SetRegion(region);
+            }
+            if (enableDepartmentFunction)
+            {
+                item.SetDepartment(department);
+            }
+            if (enableCustom1Function)
+            {
+                item.SetCustom1(custom1);
+            }
+            if (enableCustom2Function)
+            {
+                item.SetCustom2(custom2);
+            }
+        }
         private void ValidateBalance(Voucher voucher)
         {
             var amount = voucher.Details.Sum(item => item.NativeAmount * (int)item.DebitorCreditor);

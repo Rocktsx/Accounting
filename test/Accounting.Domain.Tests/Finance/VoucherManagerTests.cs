@@ -77,16 +77,16 @@ namespace Accounting.Finance
             var arVoucher = CreateVoucher(voucherDate);
             arVoucher.SetCode("test0001", "test", 1);
             arVoucher.AddDetail(Guid.NewGuid(), _a11SubjectId, null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                100.0m, "SI0001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                100.0m, "SI0001", null, 0, true, string.Empty);
             arVoucher.AddDetail(Guid.NewGuid(), _arSubjectId, company.Id, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                100.0m, "SI0001", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                100.0m, "SI0001", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
             var apVoucher = CreateVoucher(voucherDate);
             apVoucher.SetCode("test0002", "test", 2);
             apVoucher.AddDetail(Guid.NewGuid(), _a11SubjectId, null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                100.0m, "PI0001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                100.0m, "PI0001", null, 0, true, string.Empty);
             apVoucher.AddDetail(Guid.NewGuid(), _apSubjectId, company.Id, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                100.0m, "PI0001", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                100.0m, "PI0001", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
             await _voucherRepository.InsertManyAsync([arVoucher, apVoucher]);
         }
@@ -99,9 +99,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", null, 0, true, string.Empty);
 
                 // Act
                 await _voucherManager.ValidateAsync(voucher);
@@ -118,9 +118,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 10.0m,
-                    10.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    10.0m, "DOC002", null, 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -144,9 +144,9 @@ namespace Accounting.Finance
                 var voucherDate = new DateOnly(year, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", null, 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -168,9 +168,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _arSubjectId, Guid.Empty, "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", null, 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -192,9 +192,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _arSubjectId, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, string.Empty, null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, string.Empty, null, 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -216,9 +216,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _arSubjectId, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", null, 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -240,9 +240,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _apSubjectId, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
                 // Act & Assert
                 await Should.NotThrowAsync(async () =>
@@ -261,11 +261,11 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 200.0m,
-                    200.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    200.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _arSubjectId, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", new DateOnly(2027, 1, 1), 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _arSubjectId, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                   100.0m, "DOC002", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                   100.0m, "DOC002", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -288,11 +288,11 @@ namespace Accounting.Finance
                 var voucher = CreateVoucher(voucherDate);
                 var subSubjectCode = Guid.NewGuid();
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 200.0m,
-                    200.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    200.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _apSubjectId, subSubjectCode, "Test2 Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC002", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC002", new DateOnly(2027, 1, 1), 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _apSubjectId, subSubjectCode, "Test2 Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                   100.0m, "DOC002", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                   100.0m, "DOC002", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -318,9 +318,9 @@ namespace Accounting.Finance
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _arSubjectId, Guid.NewGuid(), "Test2 Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "SI0001", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "SI0001", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -340,16 +340,16 @@ namespace Accounting.Finance
                 await InitData();
                 await InitVoucherData();
             });
-          
+
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
                 var voucherDate = DateOnly.FromDateTime(DateTime.Now);
-                var voucher = CreateVoucher(voucherDate); 
+                var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                    100.0m, "DOC001", null, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty);
+                    100.0m, "DOC001", null, 0, true, string.Empty);
                 voucher.AddDetail(Guid.NewGuid(), _apSubjectId, _companyId, "Test2 Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
-                    100.0m, "PI0001", new DateOnly(2027, 1, 1), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 0, true, string.Empty); 
+                    100.0m, "PI0001", new DateOnly(2027, 1, 1), 0, true, string.Empty);
 
                 // Act
                 var exception = await Should.ThrowAsync<BusinessException>(async () =>
@@ -360,6 +360,45 @@ namespace Accounting.Finance
                 exception.ShouldNotBeNull();
                 exception.Code.ShouldBe(AccountingDomainErrorCodes.DocNoHasBeenUsed);
             });
+        }
+
+        [Fact]
+        public void Can_Set_Enable_Function_Fields()
+        {
+            // Arrange   
+            var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+            var voucher = CreateVoucher(voucherDate);
+            var detail = voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                100.0m, "DOC001", null, 0, true, string.Empty);
+
+            // Act
+            VoucherManager.SetFunctionalFields(detail, true, true, true, true, true, "project", "region", "department", "custom1", "custom2");
+
+            // Assert 
+            detail.Region.ShouldBe("region");
+            detail.Project.ShouldBe("project");
+            detail.Department.ShouldBe("department");
+            detail.Custom1.ShouldBe("custom1");
+            detail.Custom2.ShouldBe("custom2");
+        }
+        [Fact]
+        public void Cannot_Set_Enable_Function_Fields()
+        {
+            // Arrange   
+            var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+            var voucher = CreateVoucher(voucherDate);
+            var detail = voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
+                100.0m, "DOC001", null, 0, true, string.Empty);
+
+            // Act
+            VoucherManager.SetFunctionalFields(detail, false, false, false, false, false, "project", "region", "department", "custom1", "custom2");
+
+            // Assert 
+            detail.Region.ShouldBe(string.Empty);
+            detail.Project.ShouldBe(string.Empty);
+            detail.Department.ShouldBe(string.Empty);
+            detail.Custom1.ShouldBe(string.Empty);
+            detail.Custom2.ShouldBe(string.Empty);
         }
     }
 }

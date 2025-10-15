@@ -35,12 +35,10 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
 
     private VoucherDetail()
     {
-    }
-
+    } 
     internal VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
-        DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
-        decimal nativeAmount, string docNo, DateOnly? dueDate, string project, string department,
-        string region, string custom1, string custom2, int itemQty, bool isOriginal, string paymentReference, Guid? tenantId = null) : base(id)
+        DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount, decimal nativeAmount, 
+        string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference, Guid? tenantId = null) : base(id)
     {
         SetVoucherId(voucherId);
         SetSubjectId(subjectId);
@@ -50,11 +48,11 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         SetCurrencyAndAmount(currencyCode, currencyRate, foreignAmount, nativeAmount);
         SetDocNo(docNo);
         SetDueDate(dueDate);
-        SetProject(project);
-        SetDepartment(department);
-        SetRegion(region);
-        SetCustom1(custom1);
-        SetCustom2(custom2);
+        SetProject(string.Empty);
+        SetDepartment(string.Empty);
+        SetRegion(string.Empty);
+        SetCustom1(string.Empty);
+        SetCustom2(string.Empty);
         SetItemQty(itemQty);
         SetIsOriginal(isOriginal);
         SetPaymentReference(paymentReference);
