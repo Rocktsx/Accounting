@@ -18,12 +18,12 @@ namespace Accounting.Controllers
     public class CompaniesController : AccountingController
     {
         private ICompanyAppService _companyAppService = null;
-       
+
         [HttpPost]
         [Route("clients/import")]
         [Authorize(AccountingPermissions.Clients.Import)]
         public async Task<IResult> ImportClientData(IFormFile file)
-        { 
+        {
             _companyAppService = LazyServiceProvider.LazyGetRequiredService<IClientAppService>();
             return await ImportCompanyData(file);
         }
@@ -39,16 +39,13 @@ namespace Accounting.Controllers
         {
             var importer = file.GetImporter(L, LazyServiceProvider);
             var result = 0;
-            if (importer != null)
+            var stream = file.OpenReadStream();
+            var importResult = await importer.Import<CompanyImportModel>(stream);
+            importResult.HandleErrors(L);
+            if (importResult.Data != null)
             {
-                var stream = file.OpenReadStream();
-                var importResult = await importer.Import<CompanyImportModel>(stream);
-                importResult.HandleErrors(L);
-                if (importResult.Data != null)
-                {
-                    var data = ObjectMapper.Map<List<CompanyImportModel>, List<CompanyImportDto>>(importResult.Data.ToList());
-                    result = await _companyAppService.ImportDataAsync(data);
-                }
+                var data = ObjectMapper.Map<List<CompanyImportModel>, List<CompanyImportDto>>(importResult.Data.ToList());
+                result = await _companyAppService.ImportDataAsync(data);
             }
 
             return Results.Json(new { Count = result });

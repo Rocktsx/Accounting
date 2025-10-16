@@ -39,16 +39,13 @@ namespace Accounting.Controllers
         {
             var importer = file.GetImporter(L, LazyServiceProvider);
             var result = 0;
-            if (importer != null)
+            var stream = file.OpenReadStream();
+            var importResult = await importer.Import<SubjectImportModel>(stream);
+            importResult.HandleErrors(L);
+            if (importResult.Data != null)
             {
-                var stream = file.OpenReadStream();
-                var importResult = await importer.Import<SubjectImportModel>(stream);
-                importResult.HandleErrors(L);
-                if (importResult.Data != null)
-                {
-                    var data = ObjectMapper.Map<List<SubjectImportModel>, List<SubjectImportDto>>(importResult.Data.ToList());
-                    result = await _subjectAppService.ImportDataAsync(data);
-                }
+                var data = ObjectMapper.Map<List<SubjectImportModel>, List<SubjectImportDto>>(importResult.Data.ToList());
+                result = await _subjectAppService.ImportDataAsync(data);
             }
 
             return Results.Json(new { Count = result });
