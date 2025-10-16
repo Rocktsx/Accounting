@@ -37,23 +37,23 @@ namespace Accounting.Finance
             {
                 return;
             }
-            if (enableProjectFunction)
+            if (enableProjectFunction == true)
             {
                 item.SetProject(project);
             }
-            if (enableRegionFunction)
+            if (enableRegionFunction == true)
             {
                 item.SetRegion(region);
             }
-            if (enableDepartmentFunction)
+            if (enableDepartmentFunction == true)
             {
                 item.SetDepartment(department);
             }
-            if (enableCustom1Function)
+            if (enableCustom1Function == true)
             {
                 item.SetCustom1(custom1);
             }
-            if (enableCustom2Function)
+            if (enableCustom2Function == true)
             {
                 item.SetCustom2(custom2);
             }
@@ -68,11 +68,15 @@ namespace Accounting.Finance
         }
         private async Task ValidateVoucherDateAsync(Voucher voucher)
         {
-            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
-            var periodQueryable = queryable.GroupBy(item => item.IsCurrentPeriod).Where(item => item.Key == true &&
-                item.Min(x => x.StartDate) > voucher.VoucherDate || item.Max(x => x.EndDate) < voucher.VoucherDate);
-            var isExists = await AsyncExecuter.AnyAsync(periodQueryable);
-            if (isExists)
+            var queryable = await _accountingPeriodRepository.GetQueryableAsync(); 
+            var periodQueryable = queryable.Where(item => item.IsCurrentPeriod).GroupBy(item => item.IsCurrentPeriod).Select(grp => new
+            {
+                StartDate = grp.Min(x => x.StartDate),
+                EndDate = grp.Max(x => x.EndDate)
+            });
+            var currentPeriod = await AsyncExecuter.FirstOrDefaultAsync(periodQueryable);
+            var isExists = currentPeriod != null && currentPeriod.StartDate <= voucher.VoucherDate && voucher.VoucherDate <= currentPeriod.EndDate ? true : false;
+            if (isExists == false)
             {
                 throw new BusinessException(AccountingDomainErrorCodes.VoucherDateIsNotInCurrentPeriodRange);
             }

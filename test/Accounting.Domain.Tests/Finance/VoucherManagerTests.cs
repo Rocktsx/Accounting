@@ -73,7 +73,7 @@ namespace Accounting.Finance
         {
             var company = await _companyRepository.FirstOrDefaultAsync();
             _companyId = company.Id;
-            var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+            var voucherDate = new DateOnly(2025, 1, 12);
             var arVoucher = CreateVoucher(voucherDate);
             arVoucher.SetCode("test0001", "test", 1);
             arVoucher.AddDetail(Guid.NewGuid(), _a11SubjectId, null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
@@ -96,7 +96,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange 
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 10, 13);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -115,7 +115,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange 
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -165,7 +165,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -189,7 +189,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -213,7 +213,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -237,7 +237,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange  
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -258,7 +258,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 200.0m,
                     200.0m, "DOC001", null, 0, true, string.Empty);
@@ -284,7 +284,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 var subSubjectCode = Guid.NewGuid();
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 200.0m,
@@ -315,7 +315,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Debitor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -344,7 +344,7 @@ namespace Accounting.Finance
             await WithUnitOfWorkAsync(async () =>
             {
                 // Arrange   
-                var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+                var voucherDate = new DateOnly(2025, 1, 12);
                 var voucher = CreateVoucher(voucherDate);
                 voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                     100.0m, "DOC001", null, 0, true, string.Empty);
@@ -366,7 +366,7 @@ namespace Accounting.Finance
         public void Can_Set_Enable_Function_Fields()
         {
             // Arrange   
-            var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+            var voucherDate = new DateOnly(2025, 1, 12);
             var voucher = CreateVoucher(voucherDate);
             var detail = voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                 100.0m, "DOC001", null, 0, true, string.Empty);
@@ -385,7 +385,7 @@ namespace Accounting.Finance
         public void Cannot_Set_Enable_Function_Fields()
         {
             // Arrange   
-            var voucherDate = DateOnly.FromDateTime(DateTime.Now);
+            var voucherDate = new DateOnly(2025, 1, 12);
             var voucher = CreateVoucher(voucherDate);
             var detail = voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
                 100.0m, "DOC001", null, 0, true, string.Empty);
