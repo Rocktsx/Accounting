@@ -364,7 +364,32 @@ $(function () {
             abp.notify.success(l('SavedSuccessfully'));
         }).catch(() => abp.ui.clearBusy(bodySelector));
     })
-
+    const importModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/TransferVouchers/ImportModal');
+    $(document).on('click', '#importTVBtn', function () {
+        importModal.open();
+    });
+    $(document).on('click', '#importDataForm [type="submit"]', function (e) {
+        e.preventDefault();
+        const fileElement = document.querySelector('#importDataForm #file');
+        const formData = new FormData();
+        formData.append('file', fileElement.files[0]);
+        abp.ui.setBusy('#importDataForm .modal-body')
+        abp.ajax({
+            url: abp.appPath + 'api/transfer-vouchers',
+            processData: false,
+            contentType: false,
+            method: 'POST',
+            data: formData,
+            success: function (result) {
+                importModal.close();
+                dataTable.ajax.reload();
+                abp.notify.success(l('ImportDataSuccessfully'));
+            },
+            complete() {
+                abp.ui.clearBusy('#importDataForm .modal-body')
+            }
+        });
+    })
     function getLocal(key) {
         return abp.localization.getResource('Accounting')(key);
     }

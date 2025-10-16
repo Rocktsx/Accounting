@@ -401,7 +401,13 @@ public class AccountingWebModule : AbpModule
                       icon: "plus",
                       id: "newVoucherBtn",
                       requiredPolicyName: AccountingPermissions.TransferVouchers.Create
-                  );
+                    );
+                    toolbar.AddButton(
+                         L("ImportTransferVoucher"),
+                         icon: "file-import",
+                         id: "importTVBtn",
+                         requiredPolicyName: AccountingPermissions.TransferVouchers.Import
+                     );
                 });
         });
         Configure<AbpPageToolbarOptions>(options =>

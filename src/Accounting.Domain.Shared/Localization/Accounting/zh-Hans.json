@@ -246,6 +246,7 @@
     "Accounting:SubSubjectCodeNotExists": "该辅助科目编号不存在：{codes}",
     "Accounting:DebitAndCreditCanNotBothBeGreaterThanZero": "借方和贷方金额不能同时大于0，在{Group}组。",
     "Accounting:InSingleEntrySubjectCodeCannotBeEmpty": "导入单式传票时科目编号不能为空在",
-    "Accounting:CurrencyNotSetUpInSubject": "该科目没有设置货币：{code}。"
+    "Accounting:CurrencyNotSetUpInSubject": "该科目没有设置货币：{code}。",
+    "ImportTransferVoucher": "导入转账传票"
   }
 }
