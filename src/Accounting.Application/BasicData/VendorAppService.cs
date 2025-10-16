@@ -11,7 +11,7 @@ namespace Accounting.BasicData
 { 
     public class VendorAppService : CompanyAppService, IClientAppService
     {
-        public VendorAppService(IRepository<Company, Guid> companyRepository) : base(companyRepository)
+        public VendorAppService(ICompanyRepository companyRepository) : base(companyRepository)
         {
         }
         [RemoteService(true)]

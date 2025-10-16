@@ -18,7 +18,7 @@ namespace Accounting.Finance
     public class SubjectAppService : CrudAppService<Subject, SubjectDto, Guid,
         SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>, ISubjectAppService
     {
-        public SubjectAppService(IRepository<Subject, Guid> repository) : base(repository)
+        public SubjectAppService(ISubjectRepository repository) : base(repository)
         {
             GetPolicyName = AccountingPermissions.Subjects.Default;
             DeletePolicyName = AccountingPermissions.Subjects.Delete;

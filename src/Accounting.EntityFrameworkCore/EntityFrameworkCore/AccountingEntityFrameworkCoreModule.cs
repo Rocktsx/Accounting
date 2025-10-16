@@ -14,6 +14,8 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Studio;
+using Accounting.BasicData;
+using Accounting.Finance;
 
 namespace Accounting.EntityFrameworkCore;
 
@@ -45,6 +47,13 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
                 /* Remove "includeAllEntities: true" to create
                  * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<Currency, CurrencyRepository>();
+            options.AddRepository<Company, CompanyRepository>();
+            options.AddRepository<AccountingPeriod, AccountingPeriodRepository>();
+            options.AddRepository<AccountType, AccountTypeRepository>();
+            options.AddRepository<SubjectCategory, SubjectCategoryRepository>();
+            options.AddRepository<Subject, SubjectRepository>();
+            options.AddRepository<Voucher, VoucherRepository>();
         });
 
         if (AbpStudioAnalyzeHelper.IsInAnalyzeMode)

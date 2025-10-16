@@ -16,9 +16,9 @@ namespace Accounting.Finance
 {
     public class ImportVoucherAppService : AccountingAppService, IImportVoucherAppService, IDisposable
     {
-        protected IRepository<Voucher, Guid> Repository { get; set; }
-        protected IRepository<Subject, Guid> SubjectRepository { get; set; }
-        protected IRepository<Company, Guid> CompanyRepository { get; set; }
+        protected IVoucherRepository Repository { get; set; }
+        protected ISubjectRepository SubjectRepository { get; set; }
+        protected ICompanyRepository CompanyRepository { get; set; }
         protected VoucherManager VoucherManager { get; set; }
 
         protected bool EnableProjectFunction { get; set; }
@@ -33,8 +33,8 @@ namespace Accounting.Finance
 
         protected const string GroupText = "Group";
 
-        public ImportVoucherAppService(IRepository<Voucher, Guid> repository, IRepository<Subject, Guid> subjectRepository,
-            IRepository<Company, Guid> companyRepository, VoucherManager voucherManager)
+        public ImportVoucherAppService(IVoucherRepository repository, ISubjectRepository subjectRepository,
+            ICompanyRepository companyRepository, VoucherManager voucherManager)
         {
             Repository = repository;
             SubjectRepository = subjectRepository;
@@ -117,7 +117,7 @@ namespace Accounting.Finance
             }
             if (!string.IsNullOrWhiteSpace(singleSubject.CurrencyCode))
             {
-                var currencyRepository = LazyServiceProvider.LazyGetRequiredService<IRepository<Currency, Guid>>();
+                var currencyRepository = LazyServiceProvider.LazyGetRequiredService<ICurrencyRepository>();
                 singleCurrency = await currencyRepository.FirstOrDefaultAsync(x => x.TargetCurrency == singleSubject.CurrencyCode);
             }
             if (singleCurrency == null)

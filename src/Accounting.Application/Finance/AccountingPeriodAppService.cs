@@ -8,14 +8,13 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
     public class AccountingPeriodAppService : AccountingAppService, IAccountingPeriodAppService
     {
-        private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
-        public AccountingPeriodAppService(IRepository<AccountingPeriod, Guid> accountingPeriodRepository)
+        private readonly IAccountingPeriodRepository _accountingPeriodRepository;
+        public AccountingPeriodAppService(IAccountingPeriodRepository accountingPeriodRepository)
         {
             _accountingPeriodRepository = accountingPeriodRepository;
         }

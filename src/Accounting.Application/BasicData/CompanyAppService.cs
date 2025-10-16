@@ -16,9 +16,9 @@ namespace Accounting.BasicData
 {
     public class CompanyAppService : AccountingAppService, ICompanyAppService
     {
-        private readonly IRepository<Company, Guid> _companyRepository;
+        private readonly ICompanyRepository _companyRepository;
 
-        public CompanyAppService(IRepository<Company, Guid> companyRepository)
+        public CompanyAppService(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
         }

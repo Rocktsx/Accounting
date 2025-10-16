@@ -14,21 +14,21 @@ namespace Accounting
 {
     public class AccountingDataSeederContributor : IDataSeedContributor, ITransientDependency
     {
-        private readonly IRepository<Currency> _currencyRepository;
-        private readonly IRepository<Company, Guid> _companyRepository;
-        private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
+        private readonly ICurrencyRepository _currencyRepository;
+        private readonly ICompanyRepository _companyRepository;
+        private readonly IAccountingPeriodRepository _accountingPeriodRepository;
         private IGuidGenerator _guidGenerator;
-        private readonly IRepository<AccountType, Guid> _accountTypeRepository;
-        private readonly IRepository<SubjectCategory, Guid> _subjectCategoryRepository;
-        private readonly IRepository<Subject, Guid> _subjectRepository;
-        private readonly IRepository<Voucher, Guid> _voucherRepository;
+        private readonly IAccountTypeRepository _accountTypeRepository;
+        private readonly ISubjectCategoryRepository _subjectCategoryRepository;
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly IVoucherRepository _voucherRepository;
 
         private Guid? _subject2801Id = Guid.Empty;
         private Guid? _subject8021Id = Guid.Empty;
-        public AccountingDataSeederContributor(IRepository<Currency> currencyRepository, IRepository<Company, Guid> companyRepository,
-            IGuidGenerator guidGenerator, IRepository<AccountingPeriod, Guid> accountingPeriodRepository,
-            IRepository<AccountType, Guid> accountTypeRepository, IRepository<SubjectCategory, Guid> subjectCategoryRepository,
-            IRepository<Subject, Guid> subjectRepository, IRepository<Voucher, Guid> voucherRepository)
+        public AccountingDataSeederContributor(ICurrencyRepository currencyRepository, ICompanyRepository companyRepository,
+            IGuidGenerator guidGenerator, IAccountingPeriodRepository accountingPeriodRepository,
+            IAccountTypeRepository accountTypeRepository, ISubjectCategoryRepository subjectCategoryRepository,
+            ISubjectRepository subjectRepository, IVoucherRepository voucherRepository)
         {
             _currencyRepository = currencyRepository;
             _companyRepository = companyRepository;

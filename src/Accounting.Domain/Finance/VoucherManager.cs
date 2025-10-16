@@ -13,9 +13,9 @@ namespace Accounting.Finance
 {
     public class VoucherManager : GenerateCodeService
     {
-        private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
+        private readonly IAccountingPeriodRepository _accountingPeriodRepository;
         private string _voucherDateFormat;
-        public VoucherManager(IRepository<AccountingPeriod, Guid> accountingPeriodRepository)
+        public VoucherManager(IAccountingPeriodRepository accountingPeriodRepository)
         {
             _accountingPeriodRepository = accountingPeriodRepository;
         }
@@ -84,7 +84,7 @@ namespace Accounting.Finance
         private async Task ValidateReceivablePayableSubject(Voucher voucher)
         {
             var subjectIds = voucher.Details.Select(item => item.SubjectId).Distinct().ToList();
-            var subjectRepository = LazyServiceProvider.LazyGetRequiredService<IRepository<Subject, Guid>>();
+            var subjectRepository = LazyServiceProvider.LazyGetRequiredService<ISubjectRepository>();
             var querable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
 
             var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id) && item.AccountType != null &&

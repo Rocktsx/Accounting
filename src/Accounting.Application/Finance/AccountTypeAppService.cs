@@ -22,7 +22,7 @@ namespace Accounting.Finance
     public class AccountTypeAppService : CrudAppService<AccountType, AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
     {
 
-        public AccountTypeAppService(IRepository<AccountType, Guid> repository) : base(repository)
+        public AccountTypeAppService(IAccountTypeRepository repository) : base(repository)
         {
             GetPolicyName = AccountingPermissions.SubjectCategories.Default;
             DeletePolicyName = AccountingPermissions.SubjectCategories.Delete;

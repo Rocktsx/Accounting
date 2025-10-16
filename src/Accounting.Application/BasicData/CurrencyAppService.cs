@@ -15,8 +15,8 @@ namespace Accounting.BasicData
 {
     public class CurrencyAppService : ApplicationService, ICurrencyAppService
     {
-        private IRepository<Currency, Guid> _currencyRepository; 
-        public CurrencyAppService(IRepository<Currency, Guid> repository)
+        private ICurrencyRepository _currencyRepository; 
+        public CurrencyAppService(ICurrencyRepository repository)
         {
             _currencyRepository = repository; 
         }

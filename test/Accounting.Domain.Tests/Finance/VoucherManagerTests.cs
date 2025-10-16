@@ -13,11 +13,11 @@ namespace Accounting.Finance
     where TStartupModule : IAbpModule
     {
         private readonly VoucherManager _voucherManager;
-        private readonly IRepository<Subject, Guid> _subjectRepository;
-        private readonly IRepository<AccountingPeriod, Guid> _accountingPeriodRepository;
-        private readonly IRepository<AccountType, Guid> _accountTypeRepository;
-        private readonly IRepository<Company, Guid> _companyRepository;
-        private readonly IRepository<Voucher, Guid> _voucherRepository;
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly IAccountingPeriodRepository _accountingPeriodRepository;
+        private readonly IAccountTypeRepository _accountTypeRepository;
+        private readonly ICompanyRepository _companyRepository;
+        private readonly IVoucherRepository _voucherRepository;
         private Guid _arSubjectId;
         private Guid _apSubjectId;
         private Guid _a11SubjectId;
@@ -25,11 +25,11 @@ namespace Accounting.Finance
         public VoucherManagerTests()
         {
             _voucherManager = GetRequiredService<VoucherManager>();
-            _subjectRepository = GetRequiredService<IRepository<Subject, Guid>>();
-            _accountingPeriodRepository = GetRequiredService<IRepository<AccountingPeriod, Guid>>();
-            _accountTypeRepository = GetRequiredService<IRepository<AccountType, Guid>>();
-            _companyRepository = GetRequiredService<IRepository<Company, Guid>>();
-            _voucherRepository = GetRequiredService<IRepository<Voucher, Guid>>();
+            _subjectRepository = GetRequiredService<ISubjectRepository>();
+            _accountingPeriodRepository = GetRequiredService<IAccountingPeriodRepository>();
+            _accountTypeRepository = GetRequiredService<IAccountTypeRepository>();
+            _companyRepository = GetRequiredService<ICompanyRepository>();
+            _voucherRepository = GetRequiredService<IVoucherRepository>();
         }
         private Voucher CreateVoucher(DateOnly voucherDate)
         {

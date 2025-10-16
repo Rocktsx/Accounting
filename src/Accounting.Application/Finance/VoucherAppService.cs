@@ -18,7 +18,7 @@ namespace Accounting.Finance;
 public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     VoucherFilterRequestDto, VoucherCreateDto, VoucherUpdateDto>, IVoucherAppService
 {
-    public VoucherAppService(IRepository<Voucher, Guid> repository) : base(repository)
+    public VoucherAppService(IVoucherRepository repository) : base(repository)
     {
     }
 

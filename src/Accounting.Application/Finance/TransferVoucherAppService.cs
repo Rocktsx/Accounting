@@ -17,7 +17,7 @@ namespace Accounting.Finance
     [RemoteService(true)]
     public class TransferVoucherAppService : VoucherAppService, ITransferVoucherAppService
     {
-        public TransferVoucherAppService(IRepository<Voucher, Guid> repository) : base(repository)
+        public TransferVoucherAppService(IVoucherRepository repository) : base(repository)
         {
             DeletePolicyName = AccountingPermissions.TransferVouchers.Delete;
             GetListPolicyName = AccountingPermissions.TransferVouchers.Default;
