@@ -21,9 +21,7 @@ namespace Accounting.Finance.Vouchers
         public string? Currency { get; set; }
         public decimal CurrencyRate { get; set; }
         public decimal Debit { get; set; }
-        public decimal Credit { get; set; }
-        public decimal ForeignAmount { get; set; }
-
+        public decimal Credit { get; set; } 
         public string? DocNo { get; set; }
         public string? PaymentReference { get; set; }
         public DateTime? DueDate { get; set; }
