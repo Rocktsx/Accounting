@@ -7,15 +7,13 @@
     $('#currencyForm').on('change', '[name="Currency.SourceAmount"],[name="Currency.TargetAmount"]', function () {
         var source = $('[name="Currency.SourceAmount"]').val();
         var target = $('[name="Currency.TargetAmount"]').val();
-        if (target) {
-            var sourceAmount = parseFloat(source);
-            var targetAmount = parseFloat(target);
-            if (targetAmount && !isNaN(sourceAmount) && !isNaN(targetAmount)) {
-                var rate = sourceAmount / targetAmount;
-                var amountRender = DataTable.render.number(null, null, 7, '', '').display;
-                $('[name="Currency.ExchangeRate"]').val(amountRender(rate));
-            }
-        }
+        source = source && source.replace(/,/g, '') || 0;
+        target = target && target.replace(/,/g, '') || 0;
+        var sourceAmount = Number(source);
+        var targetAmount = Number(target);
+        var rate = isNaN(sourceAmount) || isNaN(targetAmount) ? 0 : sourceAmount / targetAmount;
+        var amountRender = DataTable.render.number(null, null, 7, '', '').display;
+        $('[name="Currency.ExchangeRate"]').val(amountRender(rate));
     });
     var isEdit = $('#currencyForm').attr('data-edit');
     if (Boolean(isEdit)) {
