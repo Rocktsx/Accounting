@@ -147,7 +147,7 @@ namespace Accounting.Finance
             var codes = await inputs.CheckImportDataAsync(L, item => item.Code,
                 async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
 
-            var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
+            var accountTypeReposity = LazyServiceProvider.GetRequiredService<IAccountTypeRepository>();
             var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();
             var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
             var inputCategories = inputs.Select(item => item.ParentCode).Distinct();

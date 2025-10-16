@@ -131,8 +131,8 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.Subjects.Delete)]
         public override async Task DeleteAsync(Guid id)
         {
-            var voucherDetailRepository = LazyServiceProvider.LazyGetRequiredService<IRepository<VoucherDetail, Guid>>();
-            if (await voucherDetailRepository.AnyAsync(item => item.SubjectId == id))
+            var voucherRepository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
+            if (await voucherRepository.AnyAsync(item => item.Details.Any(detailItem => detailItem.SubjectId == id)))
             {
                 throw new BusinessException(AccountingDomainErrorCodes.Subjects.SubjectIsInUse);
             }
@@ -144,11 +144,11 @@ namespace Accounting.Finance
             var codes = await inputs.CheckImportDataAsync(L, item => item.Code,
                 async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
 
-            var accountTypeReposity = LazyServiceProvider.GetRequiredService<IRepository<AccountType, Guid>>();
+            var accountTypeReposity = LazyServiceProvider.GetRequiredService<IAccountTypeRepository>();
             var inputAccTypes = inputs.Where(item => !string.IsNullOrWhiteSpace(item.AccountTypeCode)).Select(item => item.AccountTypeCode).Distinct();
             var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
 
-            var categoryReposity = LazyServiceProvider.GetRequiredService<IRepository<SubjectCategory, Guid>>();
+            var categoryReposity = LazyServiceProvider.GetRequiredService<ISubjectCategoryRepository>();
             var inputCategories = inputs.Where(item => !string.IsNullOrWhiteSpace(item.SubjectCategoryCode)).Select(item => item.SubjectCategoryCode).Distinct();
             var categories = (await categoryReposity.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
 
@@ -160,7 +160,7 @@ namespace Accounting.Finance
                         Guid? categoryId = !string.IsNullOrWhiteSpace(item.SubjectCategoryCode) && categories.ContainsKey(item.SubjectCategoryCode) ? categories[item.SubjectCategoryCode].Id : null;
                         var entity = new Subject(GuidGenerator.Create(), item.Code, item.Name, item.OtherName, categoryId, accTypeId, drcr,
                             item.CurrencyCode, item.Description, item.IsSubSubjectType, item.IsActive, item.IsPayMethod, item.SeqCode, CurrentTenant.Id);
-                         
+
                         return entity;
                     }).ToList();
 
