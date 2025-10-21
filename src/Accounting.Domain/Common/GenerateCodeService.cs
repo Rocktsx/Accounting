@@ -9,7 +9,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 
-namespace Accounting
+namespace Accounting.Common
 {
     public class GenerateCodeService : DomainService
     {

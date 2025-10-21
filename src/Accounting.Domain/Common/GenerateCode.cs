@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 
-namespace Accounting
+namespace Accounting.Common
 {
     public class GenerateCode : IGenerateCode
     {

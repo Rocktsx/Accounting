@@ -11,6 +11,7 @@ using Volo.Abp.Domain.Repositories;
 using Accounting.Permissions;
 using Accounting.BasicData.Companies;
 using Accounting.Utility;
+using Accounting.Common;
 
 namespace Accounting.BasicData
 {

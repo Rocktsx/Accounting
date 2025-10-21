@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Accounting
+namespace Accounting.Common
 {
     public class AuditedAggregateRootWithCode<T> : AuditedAggregateRoot<T>, IGenerateCode
     {
