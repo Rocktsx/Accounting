@@ -2,9 +2,11 @@
   "id": "69c9040b-16f2-42c9-9475-bece53adb358",
   "template": "app",
   "versions": {
-    "AbpFramework": "9.1.1",
-    "AbpStudio": "0.9.26",
-    "TargetDotnetFramework": "net9.0"
+    "AbpFramework": "9.3.5",
+    "AbpStudio": "1.4.1",
+    "TargetDotnetFramework": "net9.0",
+    "AbpCommercial": "9.3.5",
+    "LeptonX": "4.3.5"
   },
   "modules": {
     "Accounting": {
@@ -18,9 +20,7 @@
   },
   "options": {
     "httpRequests": {
-      "ignoredUrls": [
-      
-      ]
+      "ignoredUrls": []
     }
   },
   "creatingStudioConfiguration": {
@@ -43,7 +43,6 @@
     "theme": "leptonx-lite",
     "themeStyle": "",
     "themeMenuPlacement": "",
-    "mobileFramework": "none",
     "publicWebsite": "false",
     "socialLogin": "true",
     "createCommand": "abp new Accounting -t app --ui-framework mvc --database-provider ef --database-management-system sqlserver --theme leptonx-lite --without-cms-kit --dont-run-bundling -no-file-management"
