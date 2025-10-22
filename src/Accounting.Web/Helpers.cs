@@ -1,5 +1,4 @@
-﻿using DeviceDetectorNET;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;

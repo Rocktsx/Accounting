@@ -12,7 +12,11 @@ namespace Accounting.Common
         public string Code { get ; private set ; }
         public string Prefix { get ; private set ; }
         public int GenNo { get ; private set; }
-
+        public GenerateCode()
+        {
+            Code = string.Empty;
+            Prefix = string.Empty;
+        }
         public void SetCode(string code, string prefix, int genNo)
         {
             Check.NotNullOrWhiteSpace(code, nameof(code));

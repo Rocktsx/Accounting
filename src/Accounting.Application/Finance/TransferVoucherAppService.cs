@@ -1,4 +1,5 @@
 ﻿using Accounting.BasicData;
+using Accounting.Common;
 using Accounting.Features;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
@@ -22,6 +23,8 @@ namespace Accounting.Finance
             DeletePolicyName = AccountingPermissions.TransferVouchers.Delete;
             GetListPolicyName = AccountingPermissions.TransferVouchers.Default;
             GetPolicyName = AccountingPermissions.TransferVouchers.Default;
+
+            FunctionCode = FunctionCodes.JournalVoucher;
         }
 
         [Authorize(AccountingPermissions.TransferVouchers.Create)]

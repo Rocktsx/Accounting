@@ -1,14 +1,14 @@
-﻿using Shouldly;
+﻿using Accounting.BasicData.Companies;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;
-using Accounting.BasicData.Companies;
-using Volo.Abp;
 
 namespace Accounting.BasicData
 {
@@ -114,6 +114,8 @@ namespace Accounting.BasicData
             target.Name.ShouldBe(input.Name);
             target.OtherName.ShouldBe(input.OtherName);
             target.NickName.ShouldBe(input.NickName);
+            target.Code.ShouldBe("C-0001");
+            target.GenNo.ShouldBe(1);
             target.Addresses.ShouldNotBeNull();
             target.Addresses.Count().ShouldBe(1);
             target.Contacts.ShouldNotBeNull();

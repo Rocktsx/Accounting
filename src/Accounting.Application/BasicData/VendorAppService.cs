@@ -1,18 +1,20 @@
-﻿using Accounting.Permissions;
+﻿using Accounting.BasicData.Companies;
+using Accounting.Common;
+using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
-using Accounting.BasicData.Companies;
 
 namespace Accounting.BasicData
-{ 
+{
     public class VendorAppService : CompanyAppService, IClientAppService
     {
         public VendorAppService(ICompanyRepository companyRepository) : base(companyRepository)
         {
+            FunctionCode = FunctionCodes.Vendor;
         }
         [RemoteService(true)]
         [Authorize(AccountingPermissions.Vendors.Create)]

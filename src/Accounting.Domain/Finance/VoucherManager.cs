@@ -12,7 +12,7 @@ using Volo.Abp.Domain.Services;
 
 namespace Accounting.Finance
 {
-    public class VoucherManager : GenerateCodeService
+    public class VoucherManager : DomainService
     {
         private readonly IAccountingPeriodRepository _accountingPeriodRepository;
         private string _voucherDateFormat;
@@ -69,7 +69,7 @@ namespace Accounting.Finance
         }
         private async Task ValidateVoucherDateAsync(Voucher voucher)
         {
-            var queryable = await _accountingPeriodRepository.GetQueryableAsync(); 
+            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
             var periodQueryable = queryable.Where(item => item.IsCurrentPeriod).GroupBy(item => item.IsCurrentPeriod).Select(grp => new
             {
                 StartDate = grp.Min(x => x.StartDate),
@@ -182,16 +182,16 @@ namespace Accounting.Finance
             _voucherDateFormat = format;
             return this;
         }
-        protected override string GetPrefix(IGenerateCode obj)
+        public static string GetPrefix(Voucher voucher, string dateFormat)
         {
-            if (string.IsNullOrWhiteSpace(_voucherDateFormat))
+            var prefix = voucher.Prefix;
+            if (string.IsNullOrWhiteSpace(dateFormat))
             {
-                return base.GetPrefix(obj);
+                return prefix;
             }
-            var prefix = base.GetPrefix(obj);
             try
             {
-                var datePrefix = (obj as Voucher).VoucherDate.ToString(_voucherDateFormat);
+                var datePrefix = voucher.VoucherDate.ToString(dateFormat);
                 if (!string.IsNullOrWhiteSpace(datePrefix))
                 {
                     prefix += "-" + datePrefix;
@@ -199,7 +199,7 @@ namespace Accounting.Finance
             }
             catch (Exception ex)
             {
-                throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, innerException: ex).WithData("Format", _voucherDateFormat);
+                throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, innerException: ex).WithData("Format", dateFormat);
             }
             return prefix;
         }

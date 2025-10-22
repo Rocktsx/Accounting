@@ -1,7 +1,9 @@
+using Accounting.Common;
 using Accounting.Features;
 using Accounting.Finance.Settings;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
+using Accounting.Utility;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ namespace Accounting.Finance;
 public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     VoucherFilterRequestDto, VoucherCreateDto, VoucherUpdateDto>, IVoucherAppService
 {
+    protected FunctionCodes FunctionCode { get; set; } = FunctionCodes.JournalVoucher;
     public VoucherAppService(IVoucherRepository repository) : base(repository)
     {
     }
@@ -47,7 +50,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
-        var(enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
+        var (enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
             enableCustom1Function, enableCustom2Function) = await GetEnabledFunctionsAsync();
 
         foreach (var item in input.Details)
@@ -61,15 +64,24 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
                    item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
         }
 
-        await ValidateAsync(entity, manager);
+        await ValidateAsync(entity, manager); 
 
-        var setting = LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
-        var voucherDateFormat = await GetVoucherDateFormatAsync(setting);
-        manager.SetVoucherDateFormat(voucherDateFormat);
-        await manager.GenerateCodeAsync(entity, Repository);
+        await GenerateCodeAsync(entity);
 
         entity = await Repository.InsertAsync(entity);
         return ObjectMapper.Map<Voucher, VoucherDto>(entity);
+    }
+    protected async Task GenerateCodeAsync(Voucher voucher)
+    {
+        var setting = LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
+        var voucherDateFormat = await GetVoucherDateFormatAsync(setting);
+        var codeGenerator = LazyServiceProvider.LazyGetRequiredService<CodeGenerator>();
+
+        await codeGenerator.GenerateCodeAsync(voucher, Repository, new CodeCacheItem
+        {
+            TenantId = CurrentTenant.Id,
+            FunctionCode = FunctionCode
+        }, () => VoucherManager.GetPrefix(voucher, voucherDateFormat));
     }
 
     protected override async Task<Voucher> GetEntityByIdAsync(Guid id)

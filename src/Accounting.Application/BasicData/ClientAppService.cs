@@ -6,6 +6,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Accounting.BasicData.Companies;
+using Accounting.Common;
 
 namespace Accounting.BasicData
 {
@@ -13,6 +14,7 @@ namespace Accounting.BasicData
     {
         public ClientAppService(ICompanyRepository companyRepository) : base(companyRepository)
         {
+            FunctionCode = FunctionCodes.Client;
         }
         [RemoteService(true)]
         [Authorize(AccountingPermissions.Clients.Create)]

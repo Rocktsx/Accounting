@@ -18,7 +18,7 @@ namespace Accounting.BasicData
     public class CompanyAppService : AccountingAppService, ICompanyAppService
     {
         private readonly ICompanyRepository _companyRepository;
-
+        protected FunctionCodes FunctionCode { get; set; } = FunctionCodes.Client;
         public CompanyAppService(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
@@ -48,8 +48,12 @@ namespace Accounting.BasicData
                         contact.DirectLine, contact.Telephone, contact.Fax, contact.Email, contact.Remark);
                 }
             }
-            var service = LazyServiceProvider.LazyGetRequiredService<GenerateCodeService>();
-            await service.GenerateCodeAsync(company, _companyRepository);
+            var service = LazyServiceProvider.LazyGetRequiredService<CodeGenerator>();
+            await service.GenerateCodeAsync(company, _companyRepository, new CodeCacheItem
+            {
+                TenantId = CurrentTenant.Id,
+                FunctionCode = FunctionCode
+            });
             var createdCompany = await _companyRepository.InsertAsync(company);
             return ObjectMapper.Map<Company, CompanyDto>(createdCompany);
         }

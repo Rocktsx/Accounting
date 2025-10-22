@@ -120,11 +120,13 @@ namespace Accounting
         {
             if (isAddBankOrAddRentRate)
             {
-                await AddOrGetSubjectAsync("2801", "BAK", "銀行 (往來戶口）", "Bank (C/A)", tenantId);
+                var subject2801= await AddOrGetSubjectAsync("2801", "BAK", "銀行 (往來戶口）", "Bank (C/A)", tenantId);
+                _subject2801Id = subject2801.Id;
                 return;
             }
 
-            await AddOrGetSubjectAsync("8021", "AEX", "租金及差餉", "Rent & Rates", tenantId);
+            var subject8021 = await AddOrGetSubjectAsync("8021", "AEX", "租金及差餉", "Rent & Rates", tenantId);
+            _subject8021Id = subject8021.Id;
         }
 
         private async Task<Subject> AddOrGetSubjectAsync(string subjectCode, string accountTypeCode, string name,
@@ -132,17 +134,15 @@ namespace Accounting
         {
             var existsSubject = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode);
             if (existsSubject != null)
-            {
-                _subject2801Id = existsSubject.Id;
+            { 
                 return existsSubject;
             }
 
-            var accountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == accountTypeCode);
-            _subject2801Id = _guidGenerator.Create();
-            var subject1 = new Subject(_subject2801Id.Value, subjectCode, name, otherName, null, accountType?.Id,
+            var accountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == accountTypeCode); 
+            var subject = new Subject(_guidGenerator.Create(), subjectCode, name, otherName, null, accountType?.Id,
                 DebitorCreditor.Debitor, "RMB", name, false, true, true, 0, tenantId);
-            await _subjectRepository.InsertAsync(subject1, true);
-            return subject1;
+            await _subjectRepository.InsertAsync(subject, true);
+            return subject;
         }
 
         private async Task AddAccountType(DataSeedContext context)
