@@ -15,6 +15,7 @@ public static class HealthChecksBuilderExtensions
         // Add your health checks here
         var healthChecksBuilder = services.AddHealthChecks();
         healthChecksBuilder.AddCheck<AccountingDatabaseCheck>("Accounting DbContext Check", tags: new string[] { "database" });
+        healthChecksBuilder.AddCheck<AccountingDistributedCacheCheck>("Accounting Distributed Cache Check", tags: ["cache"]);
 
         services.ConfigureHealthCheckEndpoint("/health-status");
 
