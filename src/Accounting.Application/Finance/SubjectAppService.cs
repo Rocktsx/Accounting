@@ -1,6 +1,6 @@
 ﻿using Accounting.Finance.Subjects;
 using Accounting.Permissions;
-using Accounting.Utility;
+using Accounting.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -1,5 +1,4 @@
-﻿using Accounting.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Linq;
 
-namespace Accounting.Utility
+namespace Accounting.Common
 {
     public class CodeGenerator
     {

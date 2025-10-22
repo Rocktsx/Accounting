@@ -1,4 +1,4 @@
-﻿using Accounting.Utility;
+﻿using Accounting.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Volo.Abp.Account;

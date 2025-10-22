@@ -10,7 +10,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
-namespace Accounting.Utility
+namespace Accounting.Common
 {
     internal static class ImportHelper
     {

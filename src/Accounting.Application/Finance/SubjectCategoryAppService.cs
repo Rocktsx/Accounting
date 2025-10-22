@@ -1,7 +1,7 @@
 ﻿using Accounting.Dtos;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Permissions;
-using Accounting.Utility;
+using Accounting.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
