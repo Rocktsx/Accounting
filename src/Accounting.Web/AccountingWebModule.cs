@@ -5,7 +5,9 @@ using Accounting.Permissions;
 using Accounting.Web.HealthChecks;
 using Accounting.Web.Menus;
 using Accounting.Web.Settings;
-
+using Medallion.Threading;
+using Medallion.Threading.Redis;
+using Medallion.Threading.WaitHandles;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
@@ -40,6 +42,8 @@ using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Caching;
+using Volo.Abp.Caching.StackExchangeRedis;
+using Volo.Abp.DistributedLocking;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.Web;
@@ -59,10 +63,6 @@ using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
-using Volo.Abp.DistributedLocking;
-using Medallion.Threading;
-using Medallion.Threading.Redis;
-using Volo.Abp.Caching.StackExchangeRedis;
 
 namespace Accounting.Web;
 
@@ -439,21 +439,28 @@ namespace Accounting.Web;
     {
         Configure<AbpDistributedCacheOptions>(options =>
         {
-            options.KeyPrefix = AccountingResource.Name; 
+            options.KeyPrefix = AccountingResource.Name;  
         });
-
-        var configuration = context.Services.GetConfiguration(); 
-        context.Services.AddSingleton<IDistributedLockProvider>(sp =>
-        {
-            var connection = ConnectionMultiplexer
-                .Connect(configuration["Redis:Configuration"]);
-            return new
-                RedisDistributedSynchronizationProvider(connection.GetDatabase());
-        });
+       
+        var configuration = context.Services.GetConfiguration();  
+       
         Configure<AbpDistributedLockOptions>(options =>
         {
             options.KeyPrefix = AccountingResource.Name;
         });
+        context.Services.AddSingleton<IDistributedLockProvider>(sp =>
+        {
+            var isEnabled = configuration.GetValue<bool>("Redis:IsEnabled");
+            if(isEnabled)
+            {
+                var connection = ConnectionMultiplexer
+               .Connect(configuration["Redis:Configuration"]);
+                return new
+                    RedisDistributedSynchronizationProvider(connection.GetDatabase());
+            }
+           return new WaitHandleDistributedSynchronizationProvider();
+        });
+      
 
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

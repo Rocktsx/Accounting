@@ -1,10 +1,11 @@
-﻿using System;
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Accounting.Web.HealthChecks;
 
@@ -15,11 +16,16 @@ public static class HealthChecksBuilderExtensions
         // Add your health checks here
         var healthChecksBuilder = services.AddHealthChecks();
         healthChecksBuilder.AddCheck<AccountingDatabaseCheck>("Accounting DbContext Check", tags: new string[] { "database" });
-        healthChecksBuilder.AddCheck<AccountingDistributedCacheCheck>("Accounting Distributed Cache Check", tags: ["cache"]);
+
+        var configuration = services.GetConfiguration();
+        var isRedisEnabled = configuration.GetValue<bool>("Redis:IsEnabled");
+        if (isRedisEnabled)
+        {
+            healthChecksBuilder.AddCheck<AccountingDistributedCacheCheck>("Accounting Distributed Cache Check", tags: ["cache"]);
+        }
 
         services.ConfigureHealthCheckEndpoint("/health-status");
 
-        var configuration = services.GetConfiguration();
         var healthCheckUrl = configuration["App:HealthCheckUrl"];
 
         if (string.IsNullOrEmpty(healthCheckUrl))
