@@ -9,6 +9,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.BasicData
@@ -66,6 +67,8 @@ namespace Accounting.BasicData
             var entity = await _currencyRepository.GetAsync(id);
             entity.SetAmountAndRate(input.SourceAmount, input.TargetAmount, input.ExchangeRate);
             entity.SetEffectiveDate(input.EffectiveDate).SetIsActive(input.IsActive);
+            entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
+
             await _currencyRepository.UpdateAsync(entity);
         }
     }

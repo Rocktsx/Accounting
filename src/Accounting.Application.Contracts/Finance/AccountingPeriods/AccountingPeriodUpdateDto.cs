@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.Finance.AccountingPeriods
 {
-    public class AccountingPeriodUpdateDto
+    public class AccountingPeriodUpdateDto: IHasConcurrencyStamp
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
@@ -14,5 +15,7 @@ namespace Accounting.Finance.AccountingPeriods
         [Required]
         public DateOnly EndDate { get; set; }
         public bool IsCurrentPeriod { get; set; }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }

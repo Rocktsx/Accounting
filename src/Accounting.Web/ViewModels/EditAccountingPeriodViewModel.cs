@@ -8,5 +8,8 @@ namespace Accounting.Web.ViewModels
     {
         [HiddenInput]
         public Guid Id { get; set; }
+
+        [HiddenInput]
+        public string? ConcurrencyStamp { get; set; }
     }
 }

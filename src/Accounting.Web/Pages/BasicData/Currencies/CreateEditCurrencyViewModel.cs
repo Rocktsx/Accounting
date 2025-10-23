@@ -28,7 +28,8 @@ namespace Accounting.Web.Pages.BasicData.Currencies
         [DataType(DataType.Date)]
         public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }
-
+        [HiddenInput]
+        public string? ConcurrencyStamp { get; set; }
         public CreateEditCurrencyViewModel()
         {
             IsActive = true;

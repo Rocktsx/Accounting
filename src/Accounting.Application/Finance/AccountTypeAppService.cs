@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Features;
 
@@ -77,7 +78,10 @@ namespace Accounting.Finance
                  .SetProfitAndLossSort(input.ProfitAndLossSort)
                  .SetTrialBalanceGroup(input.TrialBalanceGroup)
                  .SetTrialBalanceSort(input.TrialBalanceSort);
+            entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
+
             var updateEntity = await Repository.UpdateAsync(entity);
+
             return ObjectMapper.Map<AccountType, AccountTypeDto>(updateEntity);
         }
 

@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.Finance.AccountTypes
 {
-    public class AccountTypeUpdateDto
+    public class AccountTypeUpdateDto: IHasConcurrencyStamp
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
@@ -44,5 +45,7 @@ namespace Accounting.Finance.AccountTypes
         /// 资产负债表分组
         /// </summary>
         public int BalanceSheetGroup { get; set; }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }

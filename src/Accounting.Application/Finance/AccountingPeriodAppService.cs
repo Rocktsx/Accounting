@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Data;
 
 namespace Accounting.Finance
 {
@@ -69,6 +70,8 @@ namespace Accounting.Finance
                 .SetStartDate(input.StartDate)
                 .SetEndDate(input.EndDate)
                 .SetIsCurrentPeriod(input.IsCurrentPeriod);
+            entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
+
             await _accountingPeriodRepository.UpdateAsync(entity);
         }
     }

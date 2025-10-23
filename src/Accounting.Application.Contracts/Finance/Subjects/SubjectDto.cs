@@ -1,9 +1,10 @@
 ﻿using System;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.Finance.Subjects
 {
-    public class SubjectDto : AuditedEntityDto<Guid>
+    public class SubjectDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         public string Code { get; set; }
         public string Name { get; set; }
@@ -16,6 +17,8 @@ namespace Accounting.Finance.Subjects
         public bool IsSubSubjectType { get; set; }
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
-        public int? SeqCode { get; set; } 
+        public int? SeqCode { get; set; }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }

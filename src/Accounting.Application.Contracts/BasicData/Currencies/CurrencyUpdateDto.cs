@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.BasicData.Currencies
 {
-    public class CurrencyUpdateDto
+    public class CurrencyUpdateDto: IHasConcurrencyStamp
     {
         [Required]
         public decimal SourceAmount { get; set; }
@@ -17,5 +18,6 @@ namespace Accounting.BasicData.Currencies
         public decimal ExchangeRate { get; set; }
         public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }
+        public string ConcurrencyStamp { get; set; }
     }
 }

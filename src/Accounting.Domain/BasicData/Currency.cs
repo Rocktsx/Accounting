@@ -9,7 +9,7 @@ namespace Accounting.BasicData
     /// <summary>
     ///货币
     /// </summary>
-    public class Currency : AuditedEntity<Guid>, IMultiTenant
+    public class Currency : AuditedEntity<Guid>, IMultiTenant, IHasConcurrencyStamp
     { 
         public string SourceCurrency {get; private set; }
         public string TargetCurrency { get; private set; }
@@ -20,6 +20,7 @@ namespace Accounting.BasicData
         public bool IsActive { get; private set; }
 
         public Guid? TenantId { get; private set; }
+        public string ConcurrencyStamp { get; set; }
 
         private Currency() { } // For EF Core
         public Currency(Guid id, string sourceCurrency, string targetCurrency, decimal sourceAmount, decimal targetAmount, 

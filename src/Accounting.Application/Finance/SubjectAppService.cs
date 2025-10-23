@@ -1,6 +1,6 @@
-﻿using Accounting.Finance.Subjects;
+﻿using Accounting.Common;
+using Accounting.Finance.Subjects;
 using Accounting.Permissions;
-using Accounting.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
@@ -49,7 +50,10 @@ namespace Accounting.Finance
                 .SetIsActive(input.IsActive)
                 .SetIsPayMethod(input.IsPayMethod)
                 .SetSeqCode(input.SeqCode);
+            entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
+
             entity = await Repository.UpdateAsync(entity);
+
             return ObjectMapper.Map<Subject, SubjectDto>(entity);
         }
         protected override async Task<IQueryable<Subject>> CreateFilteredQueryAsync(SubjectFilterRequestDto input)

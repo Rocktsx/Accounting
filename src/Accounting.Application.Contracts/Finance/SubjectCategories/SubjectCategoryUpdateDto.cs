@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.Finance.SubjectCategories
 {
-    public class SubjectCategoryUpdateDto
+    public class SubjectCategoryUpdateDto: IHasConcurrencyStamp
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
@@ -19,5 +20,7 @@ namespace Accounting.Finance.SubjectCategories
         public bool ShowDetail { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
         public string Description { get; set; }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }

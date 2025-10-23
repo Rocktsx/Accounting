@@ -1,5 +1,6 @@
 ﻿using System;
-using Volo.Abp; 
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
@@ -8,7 +9,7 @@ namespace Accounting.Finance
     /// <summary>
     /// 科目
     /// </summary>
-    public class Subject : AuditedEntity<Guid>, IMultiTenant
+    public class Subject : AuditedEntity<Guid>, IMultiTenant, IHasConcurrencyStamp
     {
         public Guid? TenantId { get; private set; }
         public string Code { get; private set; }
@@ -24,6 +25,7 @@ namespace Accounting.Finance
         public bool IsPayMethod { get; private set; }
         public int? SeqCode { get; private set; }
 
+        public string ConcurrencyStamp { get; set; }
         public virtual SubjectCategory SubjectCategory { get; private set; }
         public virtual AccountType AccountType { get; private set; }
         private Subject() { }

@@ -1,7 +1,7 @@
-﻿using Accounting.Dtos;
+﻿using Accounting.Common;
+using Accounting.Dtos;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Permissions;
-using Accounting.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
@@ -53,8 +54,12 @@ namespace Accounting.Finance
                 .SetAccountTypeId(input.AccountTypeId)
                 .SetShowDetail(input.ShowDetail)
                 .SetDescription(input.Description);
+            entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
+
             await SetLevel(entity);
+
             entity = await Repository.UpdateAsync(entity);
+
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
         protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)

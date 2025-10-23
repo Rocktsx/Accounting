@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Volo.Abp; 
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
@@ -9,7 +10,7 @@ namespace Accounting.Finance
     /// <summary>
     /// 总账类别
     /// </summary>
-    public class SubjectCategory : AuditedEntity<Guid>, IMultiTenant
+    public class SubjectCategory : AuditedEntity<Guid>, IMultiTenant, IHasConcurrencyStamp
     {
         public Guid? TenantId { get; private set; }
         public string Code { get; private set; }
@@ -23,6 +24,7 @@ namespace Accounting.Finance
 
         public int Level { get; private set; }
 
+        public string ConcurrencyStamp { get; set; }
         public virtual AccountType AccountType { get; private set; }
 
         public virtual ICollection<Subject> Subjects { get; private set; }
@@ -67,7 +69,7 @@ namespace Accounting.Finance
         }
         public SubjectCategory SetOtherName(string otherName)
         {
-            OtherName = otherName??string.Empty;
+            OtherName = otherName ?? string.Empty;
             return this;
         }
         public SubjectCategory SetParentId(Guid? parentId)
@@ -81,7 +83,7 @@ namespace Accounting.Finance
             return this;
         }
         public SubjectCategory SetAccountTypeId(Guid? accountTypeId)
-        { 
+        {
             AccountTypeId = accountTypeId;
             return this;
         }

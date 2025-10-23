@@ -1,9 +1,10 @@
 ﻿using System;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.Finance.AccountTypes
 {
-    public class AccountTypeDto : AuditedEntityDto<Guid>
+    public class AccountTypeDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     { 
         public string Code { get; set; } 
         public string Name { get; set; } 
@@ -34,5 +35,7 @@ namespace Accounting.Finance.AccountTypes
         /// 资产负债表分组
         /// </summary>
         public int BalanceSheetGroup { get; set; }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }
