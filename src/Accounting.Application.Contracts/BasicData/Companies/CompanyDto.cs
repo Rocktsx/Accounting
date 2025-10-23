@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 
 namespace Accounting.BasicData.Companies
 {
-    public class CompanyDto: AuditedEntityDto<Guid>
+    public class CompanyDto: AuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         public string Code { get; set; }
         public string Prefix { get; set; }
@@ -18,7 +19,7 @@ namespace Accounting.BasicData.Companies
         public string TradeTerm { get; set; }
         public bool IsClient { get; set; }
         public bool IsVendor { get; set; }
-
+        public string ConcurrencyStamp { get; set; }
         public IEnumerable<CompanyAddressDto> Addresses { get; set; } = [];
         public IEnumerable<CompanyContactDto> Contacts { get; set; } = [];
     }

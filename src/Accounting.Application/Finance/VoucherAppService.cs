@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
@@ -99,6 +100,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
 
         var (enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
             enableCustom1Function, enableCustom2Function) = await GetEnabledFunctionsAsync();
+        entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
 
         foreach (var item in input.Details)
         {

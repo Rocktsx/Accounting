@@ -9,6 +9,7 @@ using Volo.Abp.Domain.Entities;
 using Accounting.Permissions;
 using Accounting.BasicData.Companies;
 using Accounting.Common;
+using Volo.Abp.Data;
 
 namespace Accounting.BasicData
 {
@@ -111,6 +112,7 @@ namespace Accounting.BasicData
                 .SetNickName(input.NickName)
                 .SetPaymentTerm(input.PaymentTerm)
                 .SetTradeTerm(input.TradeTerm);
+            entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
 
             if (input.Addresses == null || input.Addresses.Count == 0)
             {

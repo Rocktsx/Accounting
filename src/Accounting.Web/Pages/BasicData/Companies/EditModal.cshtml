@@ -23,6 +23,7 @@
         <abp-modal-header title="@L[Model.IsVendor?"EditVendor":"EditClient"].Value">
         </abp-modal-header>
         <abp-modal-body>
+            <abp-input asp-for="@Model.Company.ConcurrencyStamp" />
             <abp-row>
                 <abp-column>
                     <abp-input asp-for="@Model.Company.Code" disabled />
