@@ -413,6 +413,9 @@ $(function () {
       </div>
     </div>
 </form>`;
+    function getZIndex() {
+
+    }
     const Modal = {
         template: modalTemplate,
         props: ['value', 'title', 'modalId'],
@@ -422,7 +425,7 @@ $(function () {
                 document.body.appendChild(this.$refs.modal);
             })
         },
-        beforeDestroy() {
+        unmounted() { 
             document.body.classList.remove('modal-open');
             document.body.removeChild(this.$refs.modal);
         },
@@ -440,7 +443,7 @@ $(function () {
         }
     }
     const editDetailTemplate = `<div>
-<Modal :value="value" @input="input" @save="save" :title="l('Detail')" modal-id="edit-modal">
+<Modal v-if="isShow" :value="isShow" @input="input" @save="save" :title="l('Detail')" modal-id="edit-modal">
     <div>
        <div style="display: grid; grid-template-columns: 1fr 1fr;">
              <div class="mb-2 mx-1">
@@ -552,17 +555,26 @@ $(function () {
         data() {
             return {
                 debitorCreditors: [{ value: 1, text: getLocal('Debitor') }, { value: -1, text: getLocal('Creditor') }],
-                errors: {}
+                errors: {},
+                isShow: false,
             }
         },
         computed: {
             ...Vuex.mapGetters(['subjects', 'companyMap', 'currencies', 'subjectMap', 'clients', 'vendors',
                 'enableProject', 'enableRegion', 'enableDepartment', 'enableCustom1', 'enableCustom2'])
         },
+        watch: {
+            value: {
+                handler(newValue, oldValue) {
+                    this.isShow = newValue;
+                },
+                immediate: true
+            }
+        },
         mounted() {
             this.initSubjectSelect();
         },
-        beforeDestroy() {
+        unmounted() {
             $('#subjectId').off('select2:select');
         },
         methods: {
@@ -898,7 +910,7 @@ $(function () {
       </div>
     </div>
 </div> 
-</Modal><EditDetail v-if="isShowDetail" v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
+</Modal><EditDetail v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
     function getDefaultDetail() {
         return {
             subjectId: '-',
