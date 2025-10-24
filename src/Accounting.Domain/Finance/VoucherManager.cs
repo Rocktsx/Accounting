@@ -95,13 +95,14 @@ namespace Accounting.Finance
 
             var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id)
                 && item.AccountType != null &&
-                (item.AccountType.Code == AccountTypeConsts.AccountingReceivableType
-                || item.AccountType.Code == AccountTypeConsts.AccountingPayableType))
+                (item.AccountType.Category == AccountTypeTypes.Receivable
+                || item.AccountType.Category == AccountTypeTypes.Payable))
                 .Select(item => new SimpleSubject
                 {
                     Id = item.Id,
                     IsSubSubjectType = item.IsSubSubjectType,
-                    AccountTypeCode = item.AccountType.Code
+                    AccountTypeCode = item.AccountType.Code,
+                    Category = item.AccountType.Category
                 });
             var subjects = await AsyncExecuter.ToListAsync(arapQuerable);
 
@@ -135,8 +136,8 @@ namespace Accounting.Finance
                 }
 
                 if (docDics.TryGetValue(item.DocNo, out VoucherDetail? value)
-                    && (subject.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
-                    subject.AccountTypeCode == AccountTypeConsts.AccountingPayableType
+                    && (subject.Category == AccountTypeTypes.Receivable ||
+                    subject.Category == AccountTypeTypes.Payable
                     && item.SubSubjectCode == value.SubSubjectCode))
                 {
                     throw new BusinessException(AccountingDomainErrorCodes.DocNoIsDuplicated);
@@ -162,28 +163,29 @@ namespace Accounting.Finance
         {
             var docNos = voucherDetails.Select(item => item.DocNo);
             var repository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
-            var query = await repository.WithDetailsAsync(obj =>
-                obj.Details.Where(item =>
-                    docNos.Contains(item.DocNo)
-                    && (item.Subject.AccountType.Code == AccountTypeConsts.AccountingReceivableType
-                    || item.Subject.AccountType.Code == AccountTypeConsts.AccountingPayableType)
-            ));
+            var query = await repository.GetQueryableAsync();
             var voucherId = voucherDetails.First().VoucherId;
             var repeatQuery = query.Where(obj =>
                     obj.VoucherType == VoucherType.JournalVoucher
                     && obj.Id != voucherId
-                ).SelectMany(item => item.Details).GroupBy(
-                item => new
+                ).SelectMany(item => item.Details)
+                .Where(item =>
+                    docNos.Contains(item.DocNo)
+                    && (item.Subject.AccountType.Category == AccountTypeTypes.Receivable
+                    || item.Subject.AccountType.Category == AccountTypeTypes.Payable)
+                ).GroupBy(item => new
                 {
                     item.DocNo,
                     item.SubSubjectCode,
-                    AccountTypeCode = item.Subject.AccountType.Code
+                    AccountTypeCode = item.Subject.AccountType.Code,
+                    Category = item.Subject.AccountType.Category
                 })
                .Select(item => new
                {
                    item.Key.DocNo,
                    item.Key.SubSubjectCode,
                    item.Key.AccountTypeCode,
+                   item.Key.Category,
                    Count = item.Count()
                });
             var repeatList = await AsyncExecuter.ToListAsync(repeatQuery);
@@ -194,16 +196,16 @@ namespace Accounting.Finance
             var result = from r in repeatList
                          join d in voucherDetails on r.DocNo equals d.DocNo
                          where r.AccountTypeCode == subjects[d.SubjectId].AccountTypeCode
-                           && (r.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
-                               r.AccountTypeCode == AccountTypeConsts.AccountingPayableType
+                           && (r.Category == AccountTypeTypes.Receivable ||
+                               r.Category == AccountTypeTypes.Payable
                                && r.SubSubjectCode == d.SubSubjectCode)
                          group r by new
                          {
                              r.DocNo,
                              r.AccountTypeCode,
-                             SubSubjectCode = (r.AccountTypeCode ==
-                             AccountTypeConsts.AccountingReceivableType ?
-                             Guid.Empty : r.SubSubjectCode)
+                             SubSubjectCode = (r.Category ==
+                                AccountTypeTypes.Receivable ?
+                                Guid.Empty : r.SubSubjectCode)
                          } into grp
                          where grp.Count() > 0
                          select new
@@ -250,6 +252,7 @@ namespace Accounting.Finance
         {
             public Guid Id { get; set; }
             public string AccountTypeCode { get; set; }
+            public AccountTypeTypes Category { get; set; }
             public bool IsSubSubjectType { get; set; }
         }
     }

@@ -47,7 +47,7 @@ $(function () {
                     subjectName: '',
                     subSubjectName: '',
                     isSubSubjectType: false,
-                    accountTypeCode: ''
+                    accountTypeCategory: 0
                 }));
                 state.editItem = { ...others, details: newDetails };
                 state.editItem.voucherDate = formatDate(state.editItem.voucherDate);
@@ -65,9 +65,9 @@ $(function () {
                 (state.editItem.details || []).forEach(item => {
                     const subject = state.subjectMap[item.subjectId];
                     if (subject) {
-                        const { code, name, isSubSubjectType, accountTypeCode } = subject;
+                        const { code, name, isSubSubjectType, accountTypeCategory } = subject;
                         item.isSubSubjectType = isSubSubjectType;
-                        item.accountTypeCode = accountTypeCode;
+                        item.accountTypeCategory = accountTypeCategory;
                         item.subjectName = code + ' - ' + name;
                     }
                 });
@@ -226,7 +226,7 @@ $(function () {
     abp.modals.UpdateStatusModal = function () {
         function initModal(modalManager, args) {
             const { id } = args;
-            $("#updateStatusForm").attr('data-id', id); 
+            $("#updateStatusForm").attr('data-id', id);
         };
 
         return {
@@ -351,7 +351,7 @@ $(function () {
     });
     $(document).on('click', '#newVoucherBtn', function () {
         editHandle();
-    }); 
+    });
     $(document).on('click', '#updateStatusForm [type="submit"]', function (e) {
         e.preventDefault();
         const bodySelector = '#updateStatusForm .modal-body';
@@ -425,7 +425,7 @@ $(function () {
                 document.body.appendChild(this.$refs.modal);
             })
         },
-        unmounted() { 
+        unmounted() {
             document.body.classList.remove('modal-open');
             document.body.removeChild(this.$refs.modal);
         },
@@ -499,7 +499,7 @@ $(function () {
             </div>
              <div v-if="item.isSubSubjectType" class="mb-2 mx-1" id="subSubject" style="position: relative;">
                 <label for="subSubjectCode" :class="{'is-invalid': errors.subSubjectCode }" class="form-label">{{l('SubSubject')}}<span> * </span></label>
-                <select v-if="item.accountTypeCode ==='AR'" v-model="item.subSubjectCode" @change="arapFieldChange"  key="ar" class="form-control" id="subSubjectCode" name="subSubjectCode">
+                <select v-if="item.accountTypeCategory === accountTypes.receivable" v-model="item.subSubjectCode" @change="arapFieldChange"  key="ar" class="form-control" id="subSubjectCode" name="subSubjectCode">
                     <option value="-">--</option>
                     <option v-for="subItem in clients || []" :key="subItem.id" :value="subItem.id">{{subItem.code + ' - '+ subItem.name }}</option>
                  </select>
@@ -548,6 +548,10 @@ $(function () {
         </div> 
     </div>
 </Modal></div>`;
+    const accountTypes = {
+        receivable: 2,
+        payable : 3
+    }
     const EditDetail = {
         components: { Modal },
         template: editDetailTemplate,
@@ -557,6 +561,7 @@ $(function () {
                 debitorCreditors: [{ value: 1, text: getLocal('Debitor') }, { value: -1, text: getLocal('Creditor') }],
                 errors: {},
                 isShow: false,
+                accountTypes
             }
         },
         computed: {
@@ -663,9 +668,9 @@ $(function () {
                 const subject = this.subjectMap[this.item.subjectId];
                 this.item.isSubSubjectType = false;
                 if (subject) {
-                    const { isSubSubjectType, accountTypeCode, debitorCreditor, currencyCode, name, code } = subject;
+                    const { isSubSubjectType, accountTypeCategory, debitorCreditor, currencyCode, name, code } = subject;
                     this.item.isSubSubjectType = isSubSubjectType;
-                    this.item.accountTypeCode = accountTypeCode;
+                    this.item.accountTypeCategory = accountTypeCategory;
                     this.item.debitorCreditor = debitorCreditor;
                     this.item.subjectName = code + ' - ' + name;
                     this.errors.subjectId = false;
@@ -675,7 +680,7 @@ $(function () {
                     }
                     this.setNativeAmount();
                     if (this.item.isSubSubjectType) {
-                        this.$nextTick(() => this.initCompanySelect(accountTypeCode == 'AR'))
+                        this.$nextTick(() => this.initCompanySelect(accountTypeCategory == this.accountTypes.receivable))
                     }
                 }
                 this.item.subSubjectCode = '-';
@@ -707,7 +712,7 @@ $(function () {
             },
             initSubjectSelect: function () {
                 const _this = this;
-
+                
                 const $subjectId = $('#subjectId');
                 const language = this.getSelect2Language();
                 $subjectId.attr('data-language', language);
@@ -910,7 +915,7 @@ $(function () {
       </div>
     </div>
 </div> 
-</Modal><EditDetail v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
+</Modal><EditDetail v-if="showDetailModal" v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
     function getDefaultDetail() {
         return {
             subjectId: '-',
@@ -933,7 +938,8 @@ $(function () {
             paymentReference: '',
             isSubSubjectType: false,
             subjectName: '',
-            subSubjectName: ''
+            subSubjectName: '',
+            accountTypeCategory: 0
         };
     }
     const EditModal = {
@@ -943,7 +949,13 @@ $(function () {
             return {
                 isShowDetail: false,
                 item: {},
-                errors: {}
+                errors: {},
+                showDetailModal: false
+            }
+        },
+        watch: {
+            isShowDetail(value) {
+                this.$nextTick(() => { this.showDetailModal = value })
             }
         },
         computed: {

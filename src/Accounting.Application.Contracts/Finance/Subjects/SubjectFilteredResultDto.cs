@@ -24,5 +24,7 @@ namespace Accounting.Finance.Subjects
         public string AccountTypeCode { get; set; }
         public string AccountTypeName { get; set; }
         public string AccountTypeOtherName { get; set; }
+
+        public AccountTypeTypes AccountTypeCategory { get; set; }
     }
 }

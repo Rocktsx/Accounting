@@ -128,6 +128,7 @@ namespace Accounting.Finance
                 AccountTypeCode = item.AccountType != null ? item.AccountType.Code : null,
                 AccountTypeName = item.AccountType != null ? item.AccountType.Name : null,
                 AccountTypeOtherName = item.AccountType != null ? item.AccountType.OtherName : null,
+                AccountTypeCategory = item.AccountType != null ? item.AccountType.Category : AccountTypeTypes.Normal
             });
             var dtos = await AsyncExecuter.ToListAsync(newQueryable);
             return new PagedResultDto<SubjectFilteredResultDto>(totalCount, dtos);
