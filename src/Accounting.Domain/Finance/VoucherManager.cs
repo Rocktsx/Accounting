@@ -30,8 +30,10 @@ namespace Accounting.Finance
                 await ValidateReceivablePayableSubject(voucher);
             }
         }
-        public static void SetFunctionalFields(VoucherDetail item, bool enableProjectFunction, bool enableRegionFunction,
-            bool enableDepartmentFunction, bool enableCustom1Function, bool enableCustom2Function, string project,
+        public static void SetFunctionalFields(VoucherDetail item,
+            bool enableProjectFunction, bool enableRegionFunction,
+            bool enableDepartmentFunction, bool enableCustom1Function,
+            bool enableCustom2Function, string project,
             string region, string department, string custom1, string custom2)
         {
             if (item == null)
@@ -70,13 +72,16 @@ namespace Accounting.Finance
         private async Task ValidateVoucherDateAsync(Voucher voucher)
         {
             var queryable = await _accountingPeriodRepository.GetQueryableAsync();
-            var periodQueryable = queryable.Where(item => item.IsCurrentPeriod).GroupBy(item => item.IsCurrentPeriod).Select(grp => new
-            {
-                StartDate = grp.Min(x => x.StartDate),
-                EndDate = grp.Max(x => x.EndDate)
-            });
+            var periodQueryable = queryable.Where(item => item.IsCurrentPeriod).
+                GroupBy(item => item.IsCurrentPeriod).Select(grp => new
+                {
+                    StartDate = grp.Min(x => x.StartDate),
+                    EndDate = grp.Max(x => x.EndDate)
+                });
             var currentPeriod = await AsyncExecuter.FirstOrDefaultAsync(periodQueryable);
-            var isExists = currentPeriod != null && currentPeriod.StartDate <= voucher.VoucherDate && voucher.VoucherDate <= currentPeriod.EndDate ? true : false;
+            var isExists = currentPeriod != null
+                && currentPeriod.StartDate <= voucher.VoucherDate
+                && voucher.VoucherDate <= currentPeriod.EndDate ? true : false;
             if (isExists == false)
             {
                 throw new BusinessException(AccountingDomainErrorCodes.VoucherDateIsNotInCurrentPeriodRange);
@@ -88,9 +93,16 @@ namespace Accounting.Finance
             var subjectRepository = LazyServiceProvider.LazyGetRequiredService<ISubjectRepository>();
             var querable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
 
-            var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id) && item.AccountType != null &&
-                (item.AccountType.Code == AccountTypeConsts.AccountingReceivableType || item.AccountType.Code == AccountTypeConsts.AccountingPayableType))
-                .Select(item => new SimpleSubject { Id = item.Id, IsSubSubjectType = item.IsSubSubjectType, AccountTypeCode = item.AccountType.Code });
+            var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id)
+                && item.AccountType != null &&
+                (item.AccountType.Code == AccountTypeConsts.AccountingReceivableType
+                || item.AccountType.Code == AccountTypeConsts.AccountingPayableType))
+                .Select(item => new SimpleSubject
+                {
+                    Id = item.Id,
+                    IsSubSubjectType = item.IsSubSubjectType,
+                    AccountTypeCode = item.AccountType.Code
+                });
             var subjects = await AsyncExecuter.ToListAsync(arapQuerable);
 
             if (subjects.Count == 0)
@@ -108,7 +120,8 @@ namespace Accounting.Finance
                     continue;
                 }
                 var subject = arapSubjects[item.SubjectId];
-                if (subject.IsSubSubjectType && (item.SubSubjectCode == null || Guid.Empty.Equals(item.SubSubjectCode)))
+                if (subject.IsSubSubjectType && (item.SubSubjectCode == null
+                    || Guid.Empty.Equals(item.SubSubjectCode)))
                 {
                     throw new BusinessException(AccountingDomainErrorCodes.SubSubjectCodeCanNotBeEmpty);
                 }
@@ -121,8 +134,10 @@ namespace Accounting.Finance
                     throw new BusinessException(AccountingDomainErrorCodes.DueDateCanNotBeEmpty);
                 }
 
-                if (docDics.TryGetValue(item.DocNo, out VoucherDetail? value) && (subject.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
-                    subject.AccountTypeCode == AccountTypeConsts.AccountingPayableType && item.SubSubjectCode == value.SubSubjectCode))
+                if (docDics.TryGetValue(item.DocNo, out VoucherDetail? value)
+                    && (subject.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
+                    subject.AccountTypeCode == AccountTypeConsts.AccountingPayableType
+                    && item.SubSubjectCode == value.SubSubjectCode))
                 {
                     throw new BusinessException(AccountingDomainErrorCodes.DocNoIsDuplicated);
                 }
@@ -145,18 +160,32 @@ namespace Accounting.Finance
         /// <exception cref="BusinessException"></exception>
         private async Task CheckDocNoRepeatAsync(List<VoucherDetail> voucherDetails, Dictionary<Guid, SimpleSubject> subjects)
         {
-            var repository = LazyServiceProvider.LazyGetRequiredService<IRepository<VoucherDetail, Guid>>();
-            var query = await repository.GetQueryableAsync();
-            var voucherId = voucherDetails.First().VoucherId;
             var docNos = voucherDetails.Select(item => item.DocNo);
-
-            var repeatQuery = query.Where(item => item.Voucher.VoucherType == VoucherType.JournalVoucher
-                                        && item.VoucherId != voucherId
-                                        && docNos.Contains(item.DocNo)
-                                        && (item.Subject.AccountType.Code == AccountTypeConsts.AccountingReceivableType
-                                            || item.Subject.AccountType.Code == AccountTypeConsts.AccountingPayableType)
-                                  ).GroupBy(item => new { item.DocNo, item.SubSubjectCode, AccountTypeCode = item.Subject.AccountType.Code })
-                                  .Select(item => new { item.Key.DocNo, item.Key.SubSubjectCode, item.Key.AccountTypeCode, Count = item.Count() });
+            var repository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
+            var query = await repository.WithDetailsAsync(obj =>
+                obj.Details.Where(item =>
+                    docNos.Contains(item.DocNo)
+                    && (item.Subject.AccountType.Code == AccountTypeConsts.AccountingReceivableType
+                    || item.Subject.AccountType.Code == AccountTypeConsts.AccountingPayableType)
+            ));
+            var voucherId = voucherDetails.First().VoucherId;
+            var repeatQuery = query.Where(obj =>
+                    obj.VoucherType == VoucherType.JournalVoucher
+                    && obj.Id != voucherId
+                ).SelectMany(item => item.Details).GroupBy(
+                item => new
+                {
+                    item.DocNo,
+                    item.SubSubjectCode,
+                    AccountTypeCode = item.Subject.AccountType.Code
+                })
+               .Select(item => new
+               {
+                   item.Key.DocNo,
+                   item.Key.SubSubjectCode,
+                   item.Key.AccountTypeCode,
+                   Count = item.Count()
+               });
             var repeatList = await AsyncExecuter.ToListAsync(repeatQuery);
             if (repeatList.Count == 0)
             {
@@ -166,10 +195,24 @@ namespace Accounting.Finance
                          join d in voucherDetails on r.DocNo equals d.DocNo
                          where r.AccountTypeCode == subjects[d.SubjectId].AccountTypeCode
                            && (r.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ||
-                               r.AccountTypeCode == AccountTypeConsts.AccountingPayableType && r.SubSubjectCode == d.SubSubjectCode)
-                         group r by new { r.DocNo, r.AccountTypeCode, SubSubjectCode = (r.AccountTypeCode == AccountTypeConsts.AccountingReceivableType ? Guid.Empty : r.SubSubjectCode) } into grp
+                               r.AccountTypeCode == AccountTypeConsts.AccountingPayableType
+                               && r.SubSubjectCode == d.SubSubjectCode)
+                         group r by new
+                         {
+                             r.DocNo,
+                             r.AccountTypeCode,
+                             SubSubjectCode = (r.AccountTypeCode ==
+                             AccountTypeConsts.AccountingReceivableType ?
+                             Guid.Empty : r.SubSubjectCode)
+                         } into grp
                          where grp.Count() > 0
-                         select new { grp.Key.DocNo, grp.Key.SubSubjectCode, grp.Key.AccountTypeCode, Count = grp.Sum(g => g.Count) };
+                         select new
+                         {
+                             grp.Key.DocNo,
+                             grp.Key.SubSubjectCode,
+                             grp.Key.AccountTypeCode,
+                             Count = grp.Sum(g => g.Count)
+                         };
 
             if (result.Any(item => item.Count > 0))
             {
