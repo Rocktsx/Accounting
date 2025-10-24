@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accounting.Dtos;
+using System;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 
@@ -39,5 +40,7 @@ namespace Accounting.Finance.AccountTypes
         public string ConcurrencyStamp { get; set; }
 
         public AccountTypeTypes Category { get; set; }
+
+        public AccountTypeSimpleDto? Parent { get; set; }
     }
 }

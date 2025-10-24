@@ -7,6 +7,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Xunit;
 using Accounting.Dtos;
+using System.Linq;
 
 namespace Accounting.Finance
 {
@@ -102,7 +103,7 @@ namespace Accounting.Finance
             await _accountTypeAppService.CreateAsync(GetCreateDto("2033", "Bank2033"));
             await _accountTypeAppService.CreateAsync(GetCreateDto("2044", "Bank2044"));
             // Act
-            var list = await _accountTypeAppService.GetListAsync(new FilteredPagedAndSortedResultRequestDto
+            var list = await _accountTypeAppService.GetListAsync(new AccountTypePagedAndSortedResultRequestDto
             {
                 MaxResultCount = 2,
                 SkipCount = 0,
@@ -174,6 +175,23 @@ namespace Accounting.Finance
                 await _accountTypeAppService.GetAsync(newDto.Id);
             });
             exception.ShouldNotBeNull();
+        }
+        [Fact]
+        public async Task Can_Get_List_With_Parent()
+        {
+            // Arrange
+            var dto = new AccountTypePagedAndSortedResultRequestDto
+            {
+                Filter = "BAK",
+                IsIncludeParent = true
+            };
+
+            // Act
+            var result = await _accountTypeAppService.GetListAsync(dto);
+
+            // Assert
+            result.Items.Count.ShouldBe(1);
+            result.Items.First().Parent.ShouldNotBeNull();
         }
     }
 }

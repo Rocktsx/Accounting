@@ -9,7 +9,7 @@ namespace Accounting.Finance.AccountTypes
     /// <summary>
     /// 科目类别
     /// </summary>
-    public interface IAccountTypeAppService: IApplicationService, ICrudAppService<AccountTypeDto,Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>
+    public interface IAccountTypeAppService: IApplicationService, ICrudAppService<AccountTypeDto,Guid, AccountTypePagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>
     { 
         Task<IEnumerable<AccountTypeSimpleDto>> GetSimpleListAsync();
     }

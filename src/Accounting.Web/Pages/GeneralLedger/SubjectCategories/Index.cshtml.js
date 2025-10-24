@@ -1,10 +1,14 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
-    const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/SubjectCategories/EditModal'); 
+    const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/SubjectCategories/EditModal');
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.SubjectCategory.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.SubjectCategory.Deletion');
-    let accountTypes = [];
-    accounting.finance.accountType.getSimpleList().then(result => { accountTypes = result });
+     
+    const inputAction = function () {
+        return {
+            isIncludeParent: true
+        };
+    };
 
     const dataTable = $('#subjectCategoryTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -13,7 +17,7 @@
             order: [[1, "asc"]],
             searching: true,
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(accounting.finance.accountType.getList),
+            ajax: abp.libs.datatables.createAjax(accounting.finance.accountType.getList, inputAction),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -26,7 +30,7 @@
                                     text: l('Edit'),
                                     iconClass: '',
                                     action: function (data) {
-                                        editModal.open({ id: data.record.id});
+                                        editModal.open({ id: data.record.id });
                                     },
                                     visible: isGrantedEdit
                                 },
@@ -66,13 +70,12 @@
                 {
                     title: l('Parent'),
                     data: "parentId",
-                    orderable: true, 
-                    render: function (data) {
-                        if (!data || !accountTypes) {
+                    orderable: true,
+                    render: function (data, type, row) {
+                        if (!data || !row.parent) {
                             return '';
                         }
-                        const accountType = accountTypes.find(at => at.id === data);
-                        return accountType ? accountType.code : '';
+                        return row.parent.name;
                     }
                 },
                 {
@@ -115,7 +118,7 @@
     $(document).on('click', '#newSubjectCategoryBtn', function (e) {
         e.preventDefault();
         createModal.open();
-    }); 
+    });
 
     editModal.onResult(function () {
         dataTable.ajax.reload();

@@ -21,7 +21,7 @@ namespace Accounting.Finance
     /// 科目类别
     /// </summary>
     public class AccountTypeAppService : CrudAppService<AccountType,
-        AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto,
+        AccountTypeDto, Guid, AccountTypePagedAndSortedResultRequestDto,
         AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
     {
 
@@ -44,18 +44,46 @@ namespace Accounting.Finance
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
-        protected override async Task<IQueryable<AccountType>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)
+        protected override async Task<IQueryable<AccountType>> CreateFilteredQueryAsync(AccountTypePagedAndSortedResultRequestDto input)
         {
             var queryable = await Repository.GetQueryableAsync();
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
         }
+        public override async Task<PagedResultDto<AccountTypeDto>> GetListAsync(AccountTypePagedAndSortedResultRequestDto input)
+        {
+            var list = await base.GetListAsync(input);
+
+            if (input.IsIncludeParent == true)
+            {
+                var codes = list.Items.Where(item =>
+                        item.ParentId != null
+                        && !item.ParentId.Equals(Guid.Empty)).
+                        Select(item => item.ParentId);
+                var dtos = (await GetSimpleDtoListAsync(codes)).ToDictionary(
+                    item => item.Id, item => item);
+                foreach (var item in list.Items)
+                {
+                    if (item.ParentId != null &&
+                        dtos.TryGetValue(item.ParentId.Value, out var parent))
+                    {
+                        item.Parent = parent;
+                    }
+                }
+            }
+            return list;
+        }
 
         [Authorize]
         public async Task<IEnumerable<AccountTypeSimpleDto>> GetSimpleListAsync()
         {
+            return await GetSimpleDtoListAsync();
+        }
+        private async Task<IEnumerable<AccountTypeSimpleDto>> GetSimpleDtoListAsync(IEnumerable<Guid?> codes = null)
+        {
             var queryable = await Repository.GetQueryableAsync();
+            queryable = queryable.WhereIf(codes != null && codes.Any(), x => codes.Contains(x.Id));
             return await AsyncExecuter.ToListAsync(queryable
                 .OrderBy(x => x.Code)
                 .Select(x => new AccountTypeSimpleDto
@@ -66,7 +94,6 @@ namespace Accounting.Finance
                     OtherName = x.OtherName
                 }));
         }
-
         [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
         [Authorize(AccountingPermissions.SubjectCategories.Update)]
         public override async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
