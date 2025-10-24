@@ -394,8 +394,8 @@ $(function () {
         return abp.localization.getResource('Accounting')(key);
     }
     const modalTemplate = `
-<form ref="modal" class="needs-validation" novalidate>
-    <div :class="[value ? 'show d-block' : '']" :id="modalId" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(157, 159, 160, 0.8);">
+<form ref="form"  class="needs-validation" novalidate>
+    <div ref="modal" :class="[value ? 'show d-block' : '']" :id="modalId" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(157, 159, 160, 0.8);">
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -413,8 +413,11 @@ $(function () {
       </div>
     </div>
 </form>`;
-    function getZIndex() {
-
+    let openedModals = 0
+    function setZIndex(modal) {
+        openedModals++; 
+        let zIndex = parseInt($(modal).css('z-index')) + openedModals
+        modal.style.zIndex = zIndex; 
     }
     const Modal = {
         template: modalTemplate,
@@ -422,7 +425,8 @@ $(function () {
         mounted() {
             this.$nextTick(() => {
                 document.body.classList.add('modal-open');
-                document.body.appendChild(this.$refs.modal);
+                document.body.appendChild(this.$refs.form);
+                setZIndex(this.$refs.modal)
             })
         },
         unmounted() {
