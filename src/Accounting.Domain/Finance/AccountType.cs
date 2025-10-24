@@ -42,11 +42,13 @@ namespace Accounting.Finance
         /// </summary>
         public int BalanceSheetGroup { get; private set; }
 
+        public AccountTypeTypes Category { get; private set; }
+
         public Guid? TenantId { get; private set; }
 
         public string ConcurrencyStamp { get; set; }
         private AccountType() { }
-         
+
         public AccountType(
             Guid id,
             string code,
@@ -59,7 +61,8 @@ namespace Accounting.Finance
             int trialBalanceGroup,
             int profitAndLossGroup,
             int balanceSheetGroup,
-            Guid? tenantId = null
+            Guid? tenantId = null,
+            AccountTypeTypes category = 0
         ) : base(id)
         {
             SetCode(code);
@@ -72,6 +75,7 @@ namespace Accounting.Finance
             SetTrialBalanceGroup(trialBalanceGroup);
             SetProfitAndLossGroup(profitAndLossGroup);
             SetBalanceSheetGroup(balanceSheetGroup);
+            SetCategory(category);
             TenantId = tenantId;
         }
         public AccountType SetCode(string code)
@@ -123,7 +127,7 @@ namespace Accounting.Finance
 
         public AccountType SetOtherName(string otherName)
         {
-            OtherName = otherName?? string.Empty;
+            OtherName = otherName ?? string.Empty;
             return this;
         }
 
@@ -131,6 +135,11 @@ namespace Accounting.Finance
         {
             Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             return this;
-        } 
+        }
+        public AccountType SetCategory(AccountTypeTypes category)
+        {
+            Category = category;
+            return this;
+        }
     }
 }

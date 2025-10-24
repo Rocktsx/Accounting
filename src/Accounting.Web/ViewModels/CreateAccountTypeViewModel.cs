@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accounting.Finance;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
@@ -17,7 +18,8 @@ namespace Accounting.Web.ViewModels
 
         [SelectItems("AccountTypes")]
         [Display(Name = "Parent")]
-        public Guid? ParentId { get; set; }
+        public Guid? ParentId { get; set; } 
+        public AccountTypeTypes Category { get; set; }
         /// <summary>
         /// 试算表排序
         /// </summary>

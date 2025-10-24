@@ -247,6 +247,11 @@
     "Accounting:DebitAndCreditCanNotBothBeGreaterThanZero": "借方和贷方金额不能同时大于0，在{Group}组。",
     "Accounting:InSingleEntrySubjectCodeCannotBeEmpty": "导入单式传票时科目编号不能为空在",
     "Accounting:CurrencyNotSetUpInSubject": "该科目没有设置货币：{code}。",
-    "ImportTransferVoucher": "导入转账传票"
+    "ImportTransferVoucher": "导入转账传票",
+    "Category": "类别",
+    "Normal": "一般",
+    "Bank": "银行",
+    "Receivable": "应收账",
+    "Payable": "应付账"
   }
 }

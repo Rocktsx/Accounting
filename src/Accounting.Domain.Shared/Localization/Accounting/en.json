@@ -213,6 +213,11 @@
     "Accounting:DebitAndCreditCanNotBothBeGreaterThanZero": "The debit and credit cannot both be greater than 0 in {Group}.",
     "Accounting:InSingleEntrySubjectCodeCannotBeEmpty": "Import single entry type data, subject code cannot be empty.",
     "Accounting:CurrencyNotSetUpInSubject": "The subject does not have a currency set: {code}.",
-    "ImportTransferVoucher": "Import Transfer Voucher"
+    "ImportTransferVoucher": "Import Transfer Voucher",
+    "Category": "Category",
+    "Normal": "Normal",
+    "Bank": "Bank",
+    "Receivable": "Receivable",
+    "Payable": "Payable"
   }
 }

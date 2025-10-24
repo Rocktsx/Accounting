@@ -198,6 +198,7 @@ public class AccountingDbContext :
             b.Property(x => x.Id).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
             b.Property(x => x.OtherName).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.Property(x => x.Category).IsRequired().HasDefaultValue(AccountTypeTypes.Normal);
             b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
         });
     }

@@ -47,5 +47,7 @@ namespace Accounting.Finance.AccountTypes
         public int BalanceSheetGroup { get; set; }
 
         public string ConcurrencyStamp { get; set; }
+
+        public AccountTypeTypes Category { get; set; }
     }
 }

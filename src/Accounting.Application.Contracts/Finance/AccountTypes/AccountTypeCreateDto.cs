@@ -44,5 +44,7 @@ namespace Accounting.Finance.AccountTypes
         /// 资产负债表分组
         /// </summary>
         public int BalanceSheetGroup { get; set; }
+
+        public AccountTypeTypes Category { get; set; }
     }
 }

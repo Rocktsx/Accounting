@@ -20,7 +20,9 @@ namespace Accounting.Finance
     /// <summary>
     /// 科目类别
     /// </summary>
-    public class AccountTypeAppService : CrudAppService<AccountType, AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto, AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
+    public class AccountTypeAppService : CrudAppService<AccountType,
+        AccountTypeDto, Guid, FilteredPagedAndSortedResultRequestDto,
+        AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
     {
 
         public AccountTypeAppService(IAccountTypeRepository repository) : base(repository)
@@ -34,9 +36,11 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.SubjectCategories.Create)]
         public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
         {
-            var item = new AccountType(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
-                input.TrialBalanceSort, input.ProfitAndLossSort, input.BalanceSheetSort, input.TrialBalanceGroup,
-                input.ProfitAndLossGroup, input.BalanceSheetGroup, CurrentTenant.Id);
+            var item = new AccountType(GuidGenerator.Create(), input.Code,
+                input.Name, input.OtherName, input.ParentId, input.TrialBalanceSort,
+                input.ProfitAndLossSort, input.BalanceSheetSort, input.TrialBalanceGroup,
+                input.ProfitAndLossGroup, input.BalanceSheetGroup,
+                CurrentTenant.Id, input.Category);
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
@@ -77,7 +81,8 @@ namespace Accounting.Finance
                  .SetProfitAndLossGroup(input.ProfitAndLossGroup)
                  .SetProfitAndLossSort(input.ProfitAndLossSort)
                  .SetTrialBalanceGroup(input.TrialBalanceGroup)
-                 .SetTrialBalanceSort(input.TrialBalanceSort);
+                 .SetTrialBalanceSort(input.TrialBalanceSort)
+                 .SetCategory(input.Category);
             entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
 
             var updateEntity = await Repository.UpdateAsync(entity);
