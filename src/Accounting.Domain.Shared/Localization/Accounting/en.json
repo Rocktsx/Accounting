@@ -218,6 +218,7 @@
     "Normal": "Normal",
     "Bank": "Bank",
     "Receivable": "Receivable",
-    "Payable": "Payable"
+    "Payable": "Payable",
+    "AutoBalance": "Auto Balance"
   }
 }

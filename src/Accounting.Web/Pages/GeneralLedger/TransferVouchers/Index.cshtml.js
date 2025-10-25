@@ -406,6 +406,7 @@ $(function () {
             <slot></slot>
           </div>
           <div class="modal-footer">
+            <slot name="footer"></slot>
             <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" @click="close">{{l('Cancel')}}</button>
             <button type="submit" class="btn btn-primary" @click="save"><i class="fa fa-check"></i> {{l('Save')}}</button>
           </div>
@@ -415,13 +416,17 @@ $(function () {
 </form>`;
     let openedModals = 0
     function setZIndex(modal) {
-        openedModals++; 
+        openedModals++;
         let zIndex = parseInt($(modal).css('z-index')) + openedModals
-        modal.style.zIndex = zIndex; 
+        modal.style.zIndex = zIndex;
     }
     const Modal = {
         template: modalTemplate,
-        props: ['value', 'title', 'modalId'],
+        props: {
+            value: Boolean,
+            title: String,
+            modalId: String
+        },
         mounted() {
             this.$nextTick(() => {
                 document.body.classList.add('modal-open');
@@ -549,12 +554,15 @@ $(function () {
                 <label for="custom2" class="form-label">{{l('Custom2')}}</label>
                 <input v-model="item.custom2" type="text" class="form-control" id="custom2" name="custom2">
             </div>
-        </div> 
+        </div>
     </div>
+         <template #footer>
+            <button type="button" class="btn btn-secondary" @click="autoBalance">{{l('AutoBalance')}}</button>
+         </template>
 </Modal></div>`;
     const accountTypes = {
         receivable: 2,
-        payable : 3
+        payable: 3
     }
     const EditDetail = {
         components: { Modal },
@@ -714,9 +722,9 @@ $(function () {
                 const cultureName = abp.localization.currentCulture.cultureName;
                 return languageMap[cultureName] || 'en';
             },
-            initSubjectSelect: function () {
+            initSubjectSelect() {
                 const _this = this;
-                
+
                 const $subjectId = $('#subjectId');
                 const language = this.getSelect2Language();
                 $subjectId.attr('data-language', language);
@@ -754,7 +762,7 @@ $(function () {
                     _this.subjectChange();
                 });
             },
-            initCompanySelect: function (isClient) {
+            initCompanySelect(isClient) {
                 const _this = this;
                 const $target = $('#subSubjectCode');
                 const url = isClient ? '/api/app/client' : '/api/app/vendor'
@@ -798,6 +806,9 @@ $(function () {
                         _this.currencyChange();
                     }
                 });
+            },
+            autoBalance() {
+                this.$emit('auto-balance')
             }
         }
     }
@@ -919,7 +930,7 @@ $(function () {
       </div>
     </div>
 </div> 
-</Modal><EditDetail v-if="showDetailModal" v-model="isShowDetail" :item="item" @save="saveDetail"></EditDetail></div>`;
+</Modal><EditDetail v-if="showDetailModal" v-model="isShowDetail" :item="item" @save="saveDetail" @auto-balance="autoBalance"></EditDetail></div>`;
     function getDefaultDetail() {
         return {
             subjectId: '-',
@@ -967,7 +978,7 @@ $(function () {
                 'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency',
                 'enableProject', 'enableRegion', 'enableDepartment', 'enableCustom1', 'enableCustom2']),
             showSubSubject() {
-                return this.editItem.details.findIndex(item => item.subSubjectCode) > -1
+                return this.editItem.details.filter(item => item.isSubSubjectType).length > 0
             },
             tableStyle() {
                 let minWidth = 970, maxWidth = 1140;
@@ -1072,6 +1083,25 @@ $(function () {
             },
             formatRowDate(value) {
                 return value ? new Date(value).toLocaleDateString() : ''
+            },
+            autoBalance() {
+                const item = this.item;
+                const currencyRate = Number(item.currencyRate);
+                if (!currencyRate) {
+                    return
+                }
+                let balanceAmount = this.totalDebitorAmount - this.totalCreditorAmount
+                if (item.nativeAmount) {
+                    if (item.debitorCreditor === 1) {
+                        balanceAmount -= Number(item.nativeAmount);
+                    } else {
+                        balanceAmount += Number(item.nativeAmount);
+                    }
+                }
+                const debitorCreditor = balanceAmount > 0 ? -1 : 1;
+                item.nativeAmount = Math.abs(balanceAmount);
+                item.foreignAmount = Number((item.nativeAmount / currencyRate).toFixed(2))
+                item.debitorCreditor = debitorCreditor;
             }
         }
     }

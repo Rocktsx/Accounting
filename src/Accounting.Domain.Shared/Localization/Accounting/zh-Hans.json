@@ -252,6 +252,7 @@
     "Normal": "一般",
     "Bank": "银行",
     "Receivable": "应收账",
-    "Payable": "应付账"
+    "Payable": "应付账",
+    "AutoBalance": "自动平衡"
   }
 }
