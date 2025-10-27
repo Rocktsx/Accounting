@@ -142,9 +142,9 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         query = query.WhereIf(input.EndNo != null, item => item.GenNo <= input.EndNo);
         query = query.WhereIf(input.StartDate != null, item => item.VoucherDate >= input.StartDate);
         query = query.WhereIf(input.EndDate != null, item => item.VoucherDate <= input.EndDate);
-        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
-        query = query.Where(item =>
-            input.Status != null ? item.Status == input.Status : item.Status != VoucherStatus.Void);
+        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType); 
+        query = query.WhereIf(input.Status == null ,new NoVoidVoucherSpecification());
+        query = query.WhereIf(input.Status != null ,item => item.Status == input.Status);
         query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
         return query;
     }

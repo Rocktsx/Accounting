@@ -319,16 +319,10 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     {
         // Arrange
         var createDto = await GetCreateDtoAsync();
-        var dto = await _voucherAppService.CreateAsync(createDto);
-        var firstDetailItem = GetDetailUpdateDto(dto.Details.First());
-        var secondDetailItem = GetDetailUpdateDto(dto.Details.Last());
         var voucherDate = new DateTime(2025, 10, 10);
-        var updateDto = new VoucherUpdateDto()
-        {
-            VoucherDate = voucherDate,
-            Details = [firstDetailItem, secondDetailItem]
-        };
-        await _voucherAppService.UpdateAsync(dto.Id, updateDto);
+        createDto.VoucherDate = voucherDate;
+        var dto = await _voucherAppService.CreateAsync(createDto);
+        
         await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Approval);
 
         //Act
@@ -341,7 +335,9 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         // Assert
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(1);
-        result.Items.First().VoucherDate.ShouldBe(DateOnly.FromDateTime(voucherDate));
+        var firstItem = result.Items.First();
+        firstItem.Status.ShouldBe(VoucherStatus.Approval);
+        firstItem.VoucherDate.ShouldBe(DateOnly.FromDateTime(voucherDate));
     }
     [Fact]
     public async Task Can_Get_Voucher_List_With_No_Void_Status()
@@ -349,14 +345,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         // Arrange
         var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
-        var firstDetailItem = GetDetailUpdateDto(dto.Details.First());
-        var secondDetailItem = GetDetailUpdateDto(dto.Details.Last());
-        var updateDto = new VoucherUpdateDto()
-        {
-            VoucherDate = new DateTime(2025, 10, 10),
-            Details = [firstDetailItem, secondDetailItem]
-        };
-        await _voucherAppService.UpdateAsync(dto.Id, updateDto);
+       
         await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Void);
 
         //Act
@@ -465,7 +454,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         }, VoucherStatus.Void);
 
         // Assert
-        var result = await _voucherAppService.GetAsync(dto.Id); 
+        var result = await _voucherAppService.GetAsync(dto.Id);
         result.Status.ShouldBe(VoucherStatus.Void);
     }
 }
