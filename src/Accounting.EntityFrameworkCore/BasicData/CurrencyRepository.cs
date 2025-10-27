@@ -1,4 +1,5 @@
-﻿using Accounting.EntityFrameworkCore;
+﻿using Accounting.BasicData.Currencies;
+using Accounting.EntityFrameworkCore;
 using System;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;

@@ -1,5 +1,6 @@
 ﻿namespace Accounting.Finance
 {
+    using Accounting.Finance.Subjects;
     using Accounting.Finance.Vouchers;
     using Shouldly;
     using System;

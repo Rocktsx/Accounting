@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Accounting.Finance.SubjectCategories;
+using Shouldly;
 using System;
 using Xunit;
 

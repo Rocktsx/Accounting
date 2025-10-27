@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.Subjects
 {
-    public interface IAccountTypeRepository: IRepository<AccountType, Guid>
+    public interface ISubjectRepository: IRepository<Subject, Guid>
     {
     }
 }

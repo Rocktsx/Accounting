@@ -1,10 +1,10 @@
-﻿using System; 
+﻿using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Currencies
 {
     /// <summary>
     ///货币

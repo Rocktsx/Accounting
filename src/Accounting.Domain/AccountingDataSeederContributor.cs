@@ -1,5 +1,11 @@
-﻿using Accounting.BasicData;
+﻿using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 using Accounting.Finance;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.SubjectCategories;
+using Accounting.Finance.Subjects;
+using Accounting.Finance.Vouchers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

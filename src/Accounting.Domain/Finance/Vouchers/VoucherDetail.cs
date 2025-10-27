@@ -1,10 +1,11 @@
-using Accounting.BasicData;
+using Accounting.BasicData.Companies;
+using Accounting.Finance.Subjects;
 using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.Finance;
+namespace Accounting.Finance.Vouchers;
 
 public class VoucherDetail : Entity<Guid>, IMultiTenant
 {

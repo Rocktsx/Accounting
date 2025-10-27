@@ -1,4 +1,5 @@
 ﻿using Accounting.EntityFrameworkCore;
+using Accounting.Finance.AccountingPeriods;
 using System;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;

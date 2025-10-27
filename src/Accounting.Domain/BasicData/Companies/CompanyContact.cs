@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Companies
 {
     public class CompanyContact : Entity<Guid>
     {

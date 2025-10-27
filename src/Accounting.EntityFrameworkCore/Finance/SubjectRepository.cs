@@ -1,4 +1,5 @@
 ﻿using Accounting.EntityFrameworkCore;
+using Accounting.Finance.Subjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

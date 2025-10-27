@@ -1,11 +1,11 @@
 ﻿using Accounting.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq; 
-using Volo.Abp; 
+using System.Linq;
+using Volo.Abp;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.BasicData
+namespace Accounting.BasicData.Companies
 {
     public class Company : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     {

@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Accounting.BasicData.Companies;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,10 +1,10 @@
 using Accounting.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.Finance;
+namespace Accounting.Finance.Vouchers;
 
 public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
 {
@@ -50,7 +50,7 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
         decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference)
     {
-        var item = new VoucherDetail(id, this.Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
+        var item = new VoucherDetail(id, Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
             currencyRate, foreignAmount, nativeAmount, docNo, dueDate, itemQty, isOriginal,paymentReference, TenantId);
         Details.Add(item);
         return item;

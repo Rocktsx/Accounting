@@ -1,5 +1,4 @@
-﻿using Accounting.BasicData;
-using Accounting.Features;
+﻿using Accounting.Features;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Accounting.Common;
@@ -11,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
+using Accounting.Finance.Subjects;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 
 namespace Accounting.Finance
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.SubjectCategories
 {
     public interface ISubjectCategoryRepository: IRepository<SubjectCategory, Guid>
     {

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Accounting.Finance.AccountTypes;
+using Accounting.Finance.SubjectCategories;
+using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.Subjects
 {
     /// <summary>
     /// 科目

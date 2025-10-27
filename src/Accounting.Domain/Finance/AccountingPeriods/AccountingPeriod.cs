@@ -4,7 +4,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.AccountingPeriods
 {
     /// <summary>
     /// 会计年度

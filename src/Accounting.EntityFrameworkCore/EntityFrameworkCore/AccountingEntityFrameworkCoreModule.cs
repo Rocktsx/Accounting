@@ -16,6 +16,13 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Studio;
 using Accounting.BasicData;
 using Accounting.Finance;
+using Accounting.Finance.Vouchers;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.Subjects;
+using Accounting.Finance.SubjectCategories;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 
 namespace Accounting.EntityFrameworkCore;
 

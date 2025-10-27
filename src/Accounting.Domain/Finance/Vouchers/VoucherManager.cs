@@ -1,4 +1,6 @@
 ﻿using Accounting.Common;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.Subjects;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +12,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.Vouchers
 {
     public class VoucherManager : DomainService
     {
@@ -178,7 +180,7 @@ namespace Accounting.Finance
                     item.DocNo,
                     item.SubSubjectCode,
                     AccountTypeCode = item.Subject.AccountType.Code,
-                    Category = item.Subject.AccountType.Category
+                    item.Subject.AccountType.Category
                 })
                .Select(item => new
                {
@@ -203,9 +205,9 @@ namespace Accounting.Finance
                          {
                              r.DocNo,
                              r.AccountTypeCode,
-                             SubSubjectCode = (r.Category ==
+                             SubSubjectCode = r.Category ==
                                 AccountTypeTypes.Receivable ?
-                                Guid.Empty : r.SubSubjectCode)
+                                Guid.Empty : r.SubSubjectCode
                          } into grp
                          where grp.Count() > 0
                          select new
@@ -218,7 +220,7 @@ namespace Accounting.Finance
 
             if (result.Any(item => item.Count > 0))
             {
-                var repeatDocNos = String.Join(',', result.Where(item => item.Count > 0).Select(item => item.DocNo));
+                var repeatDocNos = string.Join(',', result.Where(item => item.Count > 0).Select(item => item.DocNo));
                 throw new BusinessException(AccountingDomainErrorCodes.DocNoHasBeenUsed).WithData("DocNos", repeatDocNos);
             }
         }

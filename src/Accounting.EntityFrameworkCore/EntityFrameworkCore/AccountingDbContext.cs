@@ -18,6 +18,13 @@ using System.Collections.Generic;
 using Accounting.BasicData;
 using System;
 using Accounting.Finance;
+using Accounting.Finance.Vouchers;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.Subjects;
+using Accounting.Finance.SubjectCategories;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
 
 namespace Accounting.EntityFrameworkCore;
 

@@ -1,4 +1,8 @@
-﻿using Accounting.BasicData;
+﻿using Accounting.BasicData.Companies;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.Subjects;
+using Accounting.Finance.Vouchers;
 using Shouldly;
 using System;
 using System.Threading.Tasks;

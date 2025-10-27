@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Accounting.Finance.AccountTypes;
+using Accounting.Finance.Subjects;
+using System;
 using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.SubjectCategories
 {
     /// <summary>
     /// 总账类别
