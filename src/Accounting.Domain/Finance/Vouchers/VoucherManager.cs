@@ -166,6 +166,8 @@ namespace Accounting.Finance.Vouchers
             var docNos = voucherDetails.Select(item => item.DocNo);
             var repository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
             var query = await repository.GetQueryableAsync();
+            query = query.Where(new NoVoidVoucherSpecification());
+
             var voucherId = voucherDetails.First().VoucherId;
             var repeatQuery = query.Where(obj =>
                     obj.VoucherType == VoucherType.JournalVoucher
