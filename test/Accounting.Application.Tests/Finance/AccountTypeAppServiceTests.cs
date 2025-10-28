@@ -29,7 +29,7 @@ namespace Accounting.Finance
             var currentTenant = GetRequiredService<ICurrentTenant>();
             var featureManager = GetRequiredService<IFeatureManager>();
             featureManager.SetAsync(AccountingFeatures.AccountTypeFunction,
-                "true", TenantFeatureValueProvider.ProviderName,
+                _testData.True, TenantFeatureValueProvider.ProviderName,
                 currentTenant.Id?.ToString());
         }
         private static AccountTypeCreateDto GetCreateDto(string code, string name, Guid? parentId = null)

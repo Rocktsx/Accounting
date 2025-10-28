@@ -71,5 +71,6 @@ namespace Accounting
         public string VoucherCode { get; } = "JV-0001";
         public string VoucherPrefx { get; } = "JV";
         public string VoucherDescription { get; } = "Rent & Rates 2011 01";
+        public string True { get; } = "true";
     }
 }
