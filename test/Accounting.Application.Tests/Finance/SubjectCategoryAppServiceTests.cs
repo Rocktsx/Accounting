@@ -19,29 +19,15 @@ namespace Accounting.Finance
         where TStartupModule : IAbpModule
     {
         private readonly ISubjectCategoryAppService _subjectCategoryAppService;
-        private readonly IAccountTypeAppService _accountTypeAppService;
+        private readonly IAccountTypeRepository _accountTypeRepository;
+        private readonly AccountingTestData _testData;
         public SubjectCategoryAppServiceTests()
         {
             _subjectCategoryAppService = GetRequiredService<ISubjectCategoryAppService>();
-            _accountTypeAppService = GetRequiredService<IAccountTypeAppService>();
+            _accountTypeRepository = GetRequiredService<IAccountTypeRepository>();
+            _testData = GetRequiredService<AccountingTestData>();
         }
-        private async Task<AccountTypeDto> CreateAccountTypeAsync()
-        {
-            var newdto = new AccountTypeCreateDto()
-            {
-                Code ="AAAA",
-                Name = "AAAA",
-                OtherName = "AAAA",
-                TrialBalanceGroup =1,
-                TrialBalanceSort= 1,
-                BalanceSheetGroup= 1,
-                BalanceSheetSort=1,
-                ProfitAndLossGroup =1,
-                ProfitAndLossSort =1
-            };
-            var dto = await _accountTypeAppService.CreateAsync(newdto);
-            return dto;
-        } 
+        
         [Fact]
         public async Task Can_Create_A_SubjectCategory()
         {
@@ -230,7 +216,7 @@ namespace Accounting.Finance
         }
         private async Task<Tuple<SubjectCategoryCreateDto, SubjectCategoryCreateDto, SubjectCategoryDto>> InitGetListDataAsync()
         {
-            var accountType = await CreateAccountTypeAsync();
+            var accountType = await _accountTypeRepository.GetAsync(item => item.Code == _testData.AccountTypeAex);
             var dto1 = new SubjectCategoryCreateDto()
             {
                 Code = "2001",

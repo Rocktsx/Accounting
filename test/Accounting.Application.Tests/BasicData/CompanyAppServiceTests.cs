@@ -223,8 +223,8 @@ namespace Accounting.BasicData
             var result = await _companyAppService.GetListAsync(dto);
 
             // assert
-            result.TotalCount.ShouldBe(1);
-            result.Items.Count.ShouldBe(1);
+            result.TotalCount.ShouldBe(2);
+            result.Items.Count.ShouldBe(2);
         }
         [Fact]
         public async Task Should_Get_Client_Companies()
@@ -252,10 +252,6 @@ namespace Accounting.BasicData
         {
             // arrange
             var input = GetCompanyCreateDto();
-            input.IsVendor = true;
-            input.IsClient = false;
-            await _companyAppService.CreateAsync(input);
-            input = GetCompanyCreateDto();
             input.IsVendor = true;
             input.IsClient = false;
             await _companyAppService.CreateAsync(input);

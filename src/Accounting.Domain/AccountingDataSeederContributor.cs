@@ -20,138 +20,21 @@ namespace Accounting
 {
     public class AccountingDataSeederContributor : IDataSeedContributor, ITransientDependency
     {
-        private readonly ICurrencyRepository _currencyRepository;
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IAccountingPeriodRepository _accountingPeriodRepository;
         private IGuidGenerator _guidGenerator;
         private readonly IAccountTypeRepository _accountTypeRepository;
-        private readonly ISubjectCategoryRepository _subjectCategoryRepository;
-        private readonly ISubjectRepository _subjectRepository;
-        private readonly IVoucherRepository _voucherRepository;
 
-        private Guid? _subject2801Id = Guid.Empty;
-        private Guid? _subject8021Id = Guid.Empty;
-
-        public AccountingDataSeederContributor(ICurrencyRepository currencyRepository,
-            ICompanyRepository companyRepository,
-            IGuidGenerator guidGenerator, IAccountingPeriodRepository accountingPeriodRepository,
-            IAccountTypeRepository accountTypeRepository, ISubjectCategoryRepository subjectCategoryRepository,
-            ISubjectRepository subjectRepository, IVoucherRepository voucherRepository)
+        public AccountingDataSeederContributor(IGuidGenerator guidGenerator,
+            IAccountTypeRepository accountTypeRepository)
         {
-            _currencyRepository = currencyRepository;
-            _companyRepository = companyRepository;
-            _guidGenerator = guidGenerator;
-            _accountingPeriodRepository = accountingPeriodRepository;
+            _guidGenerator = guidGenerator; 
             _accountTypeRepository = accountTypeRepository;
-            _subjectCategoryRepository = subjectCategoryRepository;
-            _subjectRepository = subjectRepository;
-            _voucherRepository = voucherRepository;
         }
 
         public async Task SeedAsync(DataSeedContext context)
         {
-            if (!await _currencyRepository.AnyAsync())
-            {
-                await _currencyRepository.InsertAsync(new Currency(_guidGenerator.Create(), "RMB", "RMB", 1, 1, 1,
-                    DateOnly.FromDateTime(DateTime.Now), true, context.TenantId));
-                await _currencyRepository.InsertAsync(new Currency(_guidGenerator.Create(), "RMB", "USD", 720, 100,
-                    7.2m, DateOnly.FromDateTime(DateTime.Now), true, context.TenantId));
-            }
-
-            if (!await _companyRepository.AnyAsync())
-            {
-                var company = new Company(Guid.NewGuid(), "SUNKIST (FAR EAST) PROMOTION LTD.",
-                    "SUNKIST (FAR EAST) PROMOTION LTD.", "A-SUNKIST",
-                    "RMB", 0, "C.O.D.", string.Empty, true, false, context.TenantId);
-                company.SetCode("A-SUNKIST", "A-SUNKIST", 1);
-                company.AddAddress(Guid.NewGuid(), true, false, "MANAGING DIRECTOR",
-                    "1303 BANK OF AMERICA TOWER12 HARCOURT ROADCENTRAL", "MARIA KWOK",
-                    "28453454", "SZ@SZ.COM", "SZ", "HK", "SZ", "SZ", "28453454");
-                company.AddContact(Guid.NewGuid(), "MARIA KWOK", "SZ", "SZ", "0755-01254125", "0755-01254125",
-                    "0755-01254122", "", "SZ");
-                await _companyRepository.InsertAsync(company);
-            }
-
-            if (!await _accountingPeriodRepository.AnyAsync())
-            {
-                var year = 2025;
-                var accountingPeriod = new AccountingPeriod(Guid.NewGuid(), year.ToString(), new DateOnly(year, 1, 1),
-                    new DateOnly(year, 12, 31), true, context.TenantId);
-                await _accountingPeriodRepository.InsertAsync(accountingPeriod);
-            }
-
-            await AddAccountType(context);
-            if (!await _subjectCategoryRepository.AnyAsync())
-            { 
-                var nonCurrentAccountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == "NA");
-
-                var subjectCategory = new SubjectCategory(_guidGenerator.Create(), "1", "非流动资产", "Non-Current Assets",
-                    null, DebitorCreditor.Debitor,
-                    nonCurrentAccountType?.Id, true, "Non-Current Assets", context.TenantId);
-                await _subjectCategoryRepository.InsertAsync(subjectCategory, true);
-            }
-
-            if (!await _subjectRepository.AnyAsync())
-            {
-                await AddSubjectAsync(true, context.TenantId);
-                await AddSubjectAsync(false, context.TenantId);
-            }
-
-            if (!await _voucherRepository.AnyAsync())
-            {
-                var voucher = new Voucher(_guidGenerator.Create(), new DateOnly(2025, 1, 1), VoucherType.JournalVoucher,
-                    VoucherStatus.Draft, context.TenantId);
-                voucher.SetCode("JV-0001", "JV", 1);
-                if (_subject2801Id == null || _subject2801Id.Value.Equals(Guid.Empty))
-                {
-                    await AddSubjectAsync(true, context.TenantId);
-                }
-
-                if (_subject8021Id == null || _subject8021Id.Value.Equals(Guid.Empty))
-                {
-                    await AddSubjectAsync(false, context.TenantId);
-                }
-
-                voucher.AddDetail(_guidGenerator.Create(), _subject2801Id.Value, null, "Rent & Rates 2011 01",
-                    DebitorCreditor.Debitor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, 0, false,
-                    string.Empty);
-                voucher.AddDetail(_guidGenerator.Create(), _subject8021Id.Value, null, "Rent & Rates 2011 01",
-                    DebitorCreditor.Creditor, "RMB", 1, 12600.0000m, 12600.0000m, string.Empty, null, 0, false,
-                    string.Empty);
-                await _voucherRepository.InsertAsync(voucher);
-            }
+            await AddAccountTypesAsync(context);
         }
-
-        private async Task AddSubjectAsync(bool isAddBankOrAddRentRate, Guid? tenantId = null)
-        {
-            if (isAddBankOrAddRentRate)
-            {
-                var subject2801= await AddOrGetSubjectAsync("2801", "BAK", "銀行 (往來戶口）", "Bank (C/A)", tenantId);
-                _subject2801Id = subject2801.Id;
-                return;
-            }
-
-            var subject8021 = await AddOrGetSubjectAsync("8021", "AEX", "租金及差餉", "Rent & Rates", tenantId);
-            _subject8021Id = subject8021.Id;
-        }
-
-        private async Task<Subject> AddOrGetSubjectAsync(string subjectCode, string accountTypeCode, string name,
-            string otherName, Guid? tenantId = null)
-        {
-            var existsSubject = await _subjectRepository.FirstOrDefaultAsync(item => item.Code == subjectCode);
-            if (existsSubject != null)
-            { 
-                return existsSubject;
-            }
-
-            var accountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == accountTypeCode); 
-            var subject = new Subject(_guidGenerator.Create(), subjectCode, name, otherName, null, accountType?.Id,
-                DebitorCreditor.Debitor, "RMB", name, false, true, true, 0, tenantId);
-            await _subjectRepository.InsertAsync(subject, true);
-            return subject;
-        }
-
-        private async Task AddAccountType(DataSeedContext context)
+        private async Task AddAccountTypesAsync(DataSeedContext context)
         {
             if (await _accountTypeRepository.AnyAsync())
             {

@@ -27,7 +27,7 @@ public abstract class SampleDomainTests<TStartupModule> : AccountingDomainTestBa
     public async Task Should_Set_Email_Of_A_User()
     {
         IdentityUser adminUser;
-
+       
         /* Need to manually start Unit Of Work because
          * FirstOrDefaultAsync should be executed while db connection / context is available.
          */

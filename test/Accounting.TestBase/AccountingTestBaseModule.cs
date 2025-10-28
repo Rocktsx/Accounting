@@ -24,7 +24,7 @@ public class AccountingTestBaseModule : AbpModule
             options.IsJobExecutionEnabled = false;
         });
 
-        context.Services.AddAlwaysAllowAuthorization();
+        context.Services.AddAlwaysAllowAuthorization(); 
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

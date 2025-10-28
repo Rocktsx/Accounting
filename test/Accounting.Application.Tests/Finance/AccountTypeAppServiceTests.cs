@@ -1,13 +1,18 @@
-﻿using Accounting.Finance.AccountTypes; 
+﻿using Accounting.Dtos;
+using Accounting.Features;
+using Accounting.Finance.AccountTypes;
 using Shouldly;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.FeatureManagement;
+using Volo.Abp.Features;
 using Volo.Abp.Modularity;
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Validation;
 using Xunit;
-using Accounting.Dtos;
-using System.Linq;
 
 namespace Accounting.Finance
 {
@@ -15,9 +20,17 @@ namespace Accounting.Finance
         where TStartupModule : IAbpModule
     {
         private readonly IAccountTypeAppService _accountTypeAppService;
+        private readonly AccountingTestData _testData;
         public AccountTypeAppServiceTests()
         {
             _accountTypeAppService = GetRequiredService<IAccountTypeAppService>();
+            _testData = GetRequiredService<AccountingTestData>();
+
+            var currentTenant = GetRequiredService<ICurrentTenant>();
+            var featureManager = GetRequiredService<IFeatureManager>();
+            featureManager.SetAsync(AccountingFeatures.AccountTypeFunction,
+                "true", TenantFeatureValueProvider.ProviderName,
+                currentTenant.Id?.ToString());
         }
         private static AccountTypeCreateDto GetCreateDto(string code, string name, Guid? parentId = null)
         {
@@ -39,7 +52,8 @@ namespace Accounting.Finance
         public async Task Can_Create_A_AccountType()
         {
             // Arrange
-            var dto = GetCreateDto("1000", "Cash");
+            var dto = GetCreateDto(_testData.AccountTypeCashCode,
+                _testData.AccountTypeCashName);
             // Act
             var newDto = await _accountTypeAppService.CreateAsync(dto);
             // Assert
@@ -53,10 +67,10 @@ namespace Accounting.Finance
         public async Task Cannot_Create_AccountType_With_Empty_Code()
         {
             // Arrange
-            var dto = GetCreateDto(string.Empty, "Cash");
+            var dto = GetCreateDto(string.Empty, _testData.AccountTypeCashName);
             // Act
             var exception = await Assert.ThrowsAsync<AbpValidationException>(async () =>
-            { 
+            {
                 await _accountTypeAppService.CreateAsync(dto);
             });
             // Assert
@@ -79,7 +93,8 @@ namespace Accounting.Finance
         public async Task Can_Get_A_Exist_AccountType()
         {
             // Arrange
-            var dto = GetCreateDto("1000", "Cash");
+            var dto = GetCreateDto(_testData.AccountTypeCashCode,
+                _testData.AccountTypeCashName);
             var newDto = await _accountTypeAppService.CreateAsync(dto);
             // Act
             var existDto = await _accountTypeAppService.GetAsync(newDto.Id);
@@ -95,7 +110,7 @@ namespace Accounting.Finance
         public async Task Can_Get_AccountType_List()
         {
             // Arrange
-            var dto1 = GetCreateDto("1000", "Cash11");
+            var dto1 = GetCreateDto(_testData.AccountTypeCashCode, "Cash11");
             var dto2 = GetCreateDto("2010", "Bank2010");
             await _accountTypeAppService.CreateAsync(dto1);
             await _accountTypeAppService.CreateAsync(dto2);
@@ -121,7 +136,7 @@ namespace Accounting.Finance
         public async Task Can_Update_A_AccountType()
         {
             // Arrange
-            var dto = GetCreateDto("1000", "Cash");
+            var dto = GetCreateDto("1000", _testData.AccountTypeCashName);
             var newDto = await _accountTypeAppService.CreateAsync(dto);
             var updateDto = new AccountTypeUpdateDto()
             {
@@ -150,7 +165,8 @@ namespace Accounting.Finance
         public async Task Can_Get_AccountType_SelectList()
         {
             // Arrange
-            var dto1 = GetCreateDto("1000", "Cash");
+            var dto1 = GetCreateDto(_testData.AccountTypeCashCode,
+                _testData.AccountTypeCashName);
             var dto2 = GetCreateDto("2000", "Bank");
             await _accountTypeAppService.CreateAsync(dto1);
             await _accountTypeAppService.CreateAsync(dto2);
@@ -159,13 +175,14 @@ namespace Accounting.Finance
             // Assert
             list.ShouldNotBeNull();
             list.ShouldContain(x => x.Code == dto1.Code);
-            list.ShouldContain(x => x.Code == dto2.Code); 
+            list.ShouldContain(x => x.Code == dto2.Code);
         }
         [Fact]
         public async Task Can_Delete_A_AccountType()
         {
             // Arrange
-            var dto = GetCreateDto("1000", "Cash");
+            var dto = GetCreateDto(_testData.AccountTypeCashCode,
+                _testData.AccountTypeCashName);
             var newDto = await _accountTypeAppService.CreateAsync(dto);
             // Act
             await _accountTypeAppService.DeleteAsync(newDto.Id);
@@ -182,7 +199,7 @@ namespace Accounting.Finance
             // Arrange
             var dto = new AccountTypePagedAndSortedResultRequestDto
             {
-                Filter = "BAK",
+                Filter = _testData.AccountTypeBank,
                 IsIncludeParent = true
             };
 

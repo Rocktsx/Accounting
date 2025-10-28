@@ -42,4 +42,9 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Accounting.Domain.Shared\Accounting.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Accounting.Domain\Accounting.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
