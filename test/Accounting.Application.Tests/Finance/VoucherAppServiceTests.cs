@@ -20,15 +20,15 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
 {
     private readonly IVoucherAppService _voucherAppService;
     private readonly ISubjectAppService _subjectAppService;
-    private const string BankSubjectCode = "2801";
-    private const string RentAndRatesSubjectCode = "8021";
     private readonly IAccountingSettingAppService _accountingSettingAppService;
+    private readonly AccountingTestData _testData;
 
     public VoucherAppServiceTests()
     {
         _voucherAppService = GetRequiredService<IVoucherAppService>();
         _subjectAppService = GetRequiredService<ISubjectAppService>();
         _accountingSettingAppService = GetRequiredService<IAccountingSettingAppService>();
+        _testData = GetRequiredService<AccountingTestData>();
     }
 
     private async Task<VoucherCreateDto> GetCreateDtoAsync()
@@ -36,29 +36,29 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var subjects = await _subjectAppService.GetSimpleListAsync();
         var dto = new VoucherCreateDto()
         {
-            Prefix = "JV",
+            Prefix = _testData.VoucherPrefix,
             VoucherType = VoucherType.JournalVoucher,
             VoucherDate = new DateTime(2025, 1, 12),
             Details =
             [
                 new VoucherDetailCreateDto()
                 {
-                    CurrencyCode = "RMB",
+                    CurrencyCode = _testData.RmbCurrency,
                     CurrencyRate = 1m,
                     ForeignAmount = 1000m,
                     NativeAmount = 1000m,
                     Description = "Rent & Rates 2025 01",
-                    SubjectId = subjects.First(item => item.Code == BankSubjectCode).Id,
+                    SubjectId = _testData.SubjectBankId,
                     DebitorCreditor = DebitorCreditor.Creditor
                 },
                 new VoucherDetailCreateDto()
                 {
-                    CurrencyCode = "RMB",
+                    CurrencyCode = _testData.RmbCurrency,
                     CurrencyRate = 1m,
                     ForeignAmount = 1000m,
                     NativeAmount = 1000m,
                     Description = "Rent & Rates 2025 01",
-                    SubjectId = subjects.First(item => item.Code == RentAndRatesSubjectCode).Id,
+                    SubjectId = _testData.SubjectRentId,
                     DebitorCreditor = DebitorCreditor.Debitor,
                     ItemQty = 0,
                     IsOriginal = false
@@ -322,7 +322,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         var voucherDate = new DateTime(2025, 10, 10);
         createDto.VoucherDate = voucherDate;
         var dto = await _voucherAppService.CreateAsync(createDto);
-        
+
         await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Approval);
 
         //Act
@@ -345,7 +345,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
         // Arrange
         var createDto = await GetCreateDtoAsync();
         var dto = await _voucherAppService.CreateAsync(createDto);
-       
+
         await _voucherAppService.UpdateStatus(dto.Id, VoucherStatus.Void);
 
         //Act
@@ -356,7 +356,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
 
         // Assert
         result.ShouldNotBeNull();
-        result.Items.Count.ShouldBe(1);
+        result.Items.Count.ShouldBe(_testData.InsertedVouchers);
         result.Items.ShouldNotContain(item => item.Status == VoucherStatus.Void);
     }
     [Fact]
@@ -414,7 +414,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
 
         // Assert
         result.ShouldNotBeNull();
-        result.Items.Count.ShouldBe(2);
+        result.Items.Count.ShouldBe(_testData.InsertedVouchers + 1);
         result.Items.ShouldContain(item => item.GenNo == dto.GenNo);
     }
     [Fact]

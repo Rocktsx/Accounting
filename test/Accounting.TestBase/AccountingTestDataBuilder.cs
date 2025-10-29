@@ -148,21 +148,21 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
         }
         var tenantId = context?.TenantId;
 
-        await AddSubjectAsync(_testData.Subject2801Id, _testData.Subject2801Code,
-            _testData.AccountTypeBank, _testData.Subject2801Name,
-            _testData.Subject2801OtherName, tenantId);
+        await AddSubjectAsync(_testData.SubjectBankId, _testData.SubjectBankCode,
+            _testData.AccountTypeBank, _testData.SubjectBankName,
+            _testData.SubjectBankOtherName, tenantId);
 
-        await AddSubjectAsync(_testData.Subject8021Id, _testData.Subject8021Code,
-            _testData.AccountTypeAex, _testData.Subject8021Name,
-            _testData.Subject8021OtherName, tenantId);
+        await AddSubjectAsync(_testData.SubjectRentId, _testData.SubjectRentCode,
+            _testData.AccountTypeAex, _testData.SubjectRentName,
+            _testData.SubjectRentOtherName, tenantId);
 
-        await AddSubjectAsync(_testData.Subject25Id, _testData.Subject25Code,
-          _testData.AccountTypeAr, _testData.Subject25Name,
-          _testData.Subject25OtherName, tenantId, true);
+        await AddSubjectAsync(_testData.SubjectArId, _testData.SubjectArCode,
+          _testData.AccountTypeAr, _testData.SubjectArName,
+          _testData.SubjectArOtherName, tenantId, true);
 
-        await AddSubjectAsync(_testData.Subject42Id, _testData.Subject42Code,
-         _testData.AccountTypeAp, _testData.Subject42Name,
-         _testData.Subject42OtherName, tenantId, true);
+        await AddSubjectAsync(_testData.SubjectApId, _testData.SubjectApCode,
+         _testData.AccountTypeAp, _testData.SubjectApName,
+         _testData.SubjectApOtherName, tenantId, true);
     }
     private async Task AddSubjectAsync(Guid id, string subjectCode, string accountTypeCode, string name,
            string otherName, Guid? tenantId = null, bool isSubSubjectType = false)
@@ -178,20 +178,71 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     {
         if (!await _voucherRepository.AnyAsync())
         {
+            var year = _testData.AccountingPeriodYear;
             var voucher = new Voucher(_guidGenerator.Create(),
-                new DateOnly(2025, 1, 1), VoucherType.JournalVoucher,
+                new DateOnly(year, 1, 1), VoucherType.JournalVoucher,
                 VoucherStatus.Draft, context.TenantId);
-            voucher.SetCode(_testData.VoucherCode, _testData.VoucherPrefx, 1);
-
-            voucher.AddDetail(_guidGenerator.Create(), _testData.Subject2801Id,
+            voucher.SetCode(_testData.VoucherCode, _testData.VoucherPrefix, 1);
+            voucher.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
                 null, _testData.VoucherDescription, DebitorCreditor.Debitor,
-                _testData.RmbCurrency, 1, 12600.0m, 12600.0m, string.Empty,
-                null, 0, false, string.Empty);
-            voucher.AddDetail(_guidGenerator.Create(), _testData.Subject8021Id,
+                _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
+                _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
+                string.Empty);
+            voucher.AddDetail(_guidGenerator.Create(), _testData.SubjectRentId,
                 null, _testData.VoucherDescription, DebitorCreditor.Creditor,
-                _testData.RmbCurrency, 1, 12600.0m, 12600.0m, string.Empty,
-                null, 0, false, string.Empty);
-            await _voucherRepository.InsertAsync(voucher);
+                _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
+                _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
+                string.Empty);
+
+            var arVoucher1 = new Voucher(_guidGenerator.Create(),
+                new DateOnly(year, 2, 12), VoucherType.JournalVoucher,
+                VoucherStatus.Draft, context.TenantId);
+            arVoucher1.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 2);
+            arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+                null, _testData.VoucherDescription, DebitorCreditor.Creditor,
+                _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
+                _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
+                string.Empty);
+            arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
+                null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
+                _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
+                _testData.DocNo1NativeAmount, _testData.DocNo1,
+                new DateOnly(year, 11, 12), 0, true, string.Empty);
+
+            var arVoucher2 = new Voucher(_guidGenerator.Create(),
+               new DateOnly(year, 2, 13), VoucherType.JournalVoucher,
+               VoucherStatus.Draft, context.TenantId);
+            arVoucher2.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 3);
+            arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+                null, _testData.VoucherDescription2, DebitorCreditor.Creditor,
+                _testData.RmbCurrency, 1, _testData.DocNo2NativeAmount,
+                _testData.DocNo2NativeAmount, string.Empty, null, 0, true,
+                string.Empty);
+            arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
+                null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
+                _testData.UsdCurrency, _testData.UsdCurrencyRate,
+                _testData.DocNo2Amount, _testData.DocNo2NativeAmount,
+                _testData.DocNo2, new DateOnly(year, 11, 17), 0, true,
+                string.Empty);
+
+            var rvVoucher1 = new Voucher(_guidGenerator.Create(),
+              new DateOnly(year, 2, 23), VoucherType.ReceivableVoucher,
+              VoucherStatus.Draft, context.TenantId);
+            rvVoucher1.SetCode(_testData.VoucherRvCode, _testData.VoucherRvPrefix, 3);
+            rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+                null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
+                _testData.RmbCurrency, 1, _testData.DocNo2PaidNativeAmount,
+                _testData.DocNo2PaidNativeAmount, string.Empty, null, 0, true,
+                string.Empty);
+            rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
+                null, _testData.VoucherDescription2, DebitorCreditor.Creditor,
+                _testData.UsdCurrency, _testData.UsdCurrencyRate,
+                _testData.DocNo2PaidAmount, _testData.DocNo2PaidNativeAmount,
+                _testData.DocNo2, null, 0, false, string.Empty);
+
+            await _voucherRepository.InsertManyAsync(
+                [voucher, arVoucher1, arVoucher2, rvVoucher1]);
         }
     }
+
 }

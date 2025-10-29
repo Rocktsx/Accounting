@@ -28,10 +28,10 @@ namespace Accounting
         public string ClientAddressRegion{ get; } = "SZ";
         public int AccountingPeriodYear { get; } = 2025;
         public DateOnly AccountingPeriodStartDate { get; } = new DateOnly(2025, 1, 1);
-        public DateOnly AccountingPeriodEndDate { get; } = new DateOnly(2025, 1, 1);
+        public DateOnly AccountingPeriodEndDate { get; } = new DateOnly(2025, 12, 31);
         public int AccountingPeriod2024Year { get; } = 2024;
         public string AccountingPeriod2024Code { get; } = "2024-Updated";
-
+        public int InsertedVouchers { get; } = 4;
         public Guid VendorId { get; } = Guid.NewGuid();
         public string VendorCode { get; } = "B-TEST";
         public string VendorName { get; } = "TEST COMPANY LTD.";
@@ -42,26 +42,26 @@ namespace Accounting
         public string AccountTypeBank { get; } = "BAK";
         public string AccountTypeCashCode{ get; } = "1000";
         public string AccountTypeCashName { get; } = "Cash";
-        public Guid Subject2801Id { get; } = Guid.NewGuid();
-        public string Subject2801Code { get; } = "2801";
-        public string Subject2801Name { get; } = "銀行 (往來戶口）";
-        public string Subject2801OtherName { get; } = "Bank (C/A)"; 
+        public Guid SubjectBankId { get; } = Guid.NewGuid();
+        public string SubjectBankCode { get; } = "2801";
+        public string SubjectBankName { get; } = "銀行 (往來戶口）";
+        public string SubjectBankOtherName { get; } = "Bank (C/A)"; 
         public string AccountTypeAex { get; } = "AEX";
-        public Guid Subject8021Id { get; } = Guid.NewGuid();
-        public string Subject8021Code { get; } = "8021";
-        public string Subject8021Name { get; } = "租金及差餉";
-        public string Subject8021OtherName { get; } = "Rent & Rates";
+        public Guid SubjectRentId { get; } = Guid.NewGuid();
+        public string SubjectRentCode { get; } = "8021";
+        public string SubjectRentName { get; } = "租金及差餉";
+        public string SubjectRentOtherName { get; } = "Rent & Rates";
 
         public string AccountTypeAr { get; } = "AR";
-        public Guid Subject25Id { get; } = Guid.NewGuid();
-        public string Subject25Code { get; } = "25";
-        public string Subject25Name { get; } = "应收账款";
-        public string Subject25OtherName { get; } = "Trade Receivables";
+        public Guid SubjectArId { get; } = Guid.NewGuid();
+        public string SubjectArCode { get; } = "25";
+        public string SubjectArName { get; } = "应收账款";
+        public string SubjectArOtherName { get; } = "Trade Receivables";
         public string AccountTypeAp { get; } = "AP";
-        public Guid Subject42Id { get; } = Guid.NewGuid();
-        public string Subject42Code { get; } = "42";
-        public string Subject42Name { get; } = "应付账款";
-        public string Subject42OtherName { get; } = "Trade Payables";
+        public Guid SubjectApId { get; } = Guid.NewGuid();
+        public string SubjectApCode { get; } = "42";
+        public string SubjectApName { get; } = "应付账款";
+        public string SubjectApOtherName { get; } = "Trade Payables";
         public string AccountTypeNa { get; } = "NA";
         public Guid SubjectCategoryId { get; } = Guid.NewGuid();
         public string SubjectCategoryCode { get; } = "1";
@@ -69,8 +69,21 @@ namespace Accounting
         public string SubjectCategoryOtherName { get; } = "Non-Current Assets";
 
         public string VoucherCode { get; } = "JV-0001";
-        public string VoucherPrefx { get; } = "JV";
+        public string VoucherPrefix { get; } = "JV";
         public string VoucherDescription { get; } = "Rent & Rates 2011 01";
         public string True { get; } = "true";
+        public string DocNo1 { get; } = "INV-0001";
+        public decimal DocNo1NativeAmount { get; } = 12600.0m;
+        public string DocNo2 { get; } = "INV-0002";
+        public decimal DocNo2Amount { get; } = 1000m;
+        public decimal DocNo2NativeAmount { get; } = 7200m;
+        public decimal DocNo2PaidAmount { get; } = 100m;
+        public decimal DocNo2PaidNativeAmount { get; } = 720m;
+        public string VoucherDescription2 { get; } = "Test Receivalbe";
+        public string VoucherCode2 { get; } = "JV-0002";
+        public string VoucherCode3 { get; } = "JV-0003";
+        public string VoucherRvCode { get; } = "RV-0001";
+        public string VoucherRvPrefix { get; } = "RV-0001";
+        public decimal UsdCurrencyRate { get; } = 7.2m;
     }
 }
