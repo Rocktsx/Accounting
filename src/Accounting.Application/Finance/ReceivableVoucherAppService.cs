@@ -1,5 +1,7 @@
 ﻿using Accounting.Finance.ReceivableVouchers;
+using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,11 @@ namespace Accounting.Finance
         public ReceivableVoucherAppService(IVoucherRepository repository) : base(repository)
         {
         }
-       
+        /// <summary>
+        /// 获取收款明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<PagedResultDto<ReceivableDetailDto>>
             GetReceivableDetailsByDebitor(ReceivableDetailsByDebitorRequestDto input)
         {
@@ -27,7 +33,7 @@ namespace Accounting.Finance
             var queryable = await Repository.WithDetailsAsync(item =>
                 item.Details.Where(obj => obj.SubSubjectCode == input.DebitorId));
             queryable = queryable.Where(new NoVoidVoucherSpecification());
-             
+
             var notReceivedQueryable = queryable
                 .SelectMany(item => item.Details)
                 .GroupBy(item => new { item.DocNo })
@@ -38,8 +44,9 @@ namespace Accounting.Finance
                     grp.FirstOrDefault(item => item.IsOriginal == true).Voucher.VoucherDate,
                     grp.Key.DocNo,
                     PaidNativeAmount = grp.Sum(item => item.IsOriginal == false ?
-                        item.NativeAmount * (-(int)item.DebitorCreditor) : 0 ),
+                        item.NativeAmount * (-(int)item.DebitorCreditor) : 0),
                 });
+
             var pageQuerable = notReceivedQueryable
                 .OrderBy(item => item.VoucherDate)
                 .ThenBy(item => item.DocNo)
@@ -54,12 +61,20 @@ namespace Accounting.Finance
                         docNos.Contains(item.DocNo));
             var details = await AsyncExecuter.ToListAsync(detailQueryable);
 
+            var subjectIds = details.Select(item => item.SubjectId).Distinct();
+            var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
+            var subjectQueryable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
+            var subjectQuery = subjectQueryable.Where(item => subjectIds.Contains(item.Id));
+            var subjects = await AsyncExecuter.ToListAsync(subjectQuery);
+            var subjectDic = subjects.ToDictionary(item => item.Id, item => item);
+
             var notReceivedDic = notReceiveList.ToDictionary(
                     item => item.DocNo, item => item);
             var list = details.Select(item =>
             {
                 notReceivedDic.TryGetValue(item.DocNo, out var received);
-                var dto = new ReceivableDetailDto
+                var hasSubject = subjectDic.TryGetValue(item.SubjectId, out var subject);
+                return new ReceivableDetailDto
                 {
                     SourceId = item.Id,
                     SubjectId = item.SubjectId,
@@ -70,21 +85,20 @@ namespace Accounting.Finance
                     CurrencyCode = item.CurrencyCode,
                     CurrencyRate = item.CurrencyRate,
                     NativeAmount = item.NativeAmount,
-                    PaidAmount = Math.Round(received.PaidNativeAmount / 
-                                    item.CurrencyRate,2),
+                    PaidAmount = Math.Round(received.PaidNativeAmount /
+                                    item.CurrencyRate, 2),
                     PaidNativeAmount = received.PaidNativeAmount,
                     CurrentPaid = 0,
                     NativeCurrentPaid = 0,
                     SubjectCategoryCode = null,
-                    AccType = string.Empty,
-                    AccTypeCategory = AccountTypeTypes.Normal,
+                    AccType = hasSubject == true ? subject.AccountType.Code : string.Empty,
+                    AccTypeCategory = hasSubject == true ? subject.AccountType.Category : AccountTypeTypes.Normal,
                     OsAmount = item.ForeignAmount - Math.Round(
-                        received.PaidNativeAmount / item.CurrencyRate,2),
+                        received.PaidNativeAmount / item.CurrencyRate, 2),
                     DueDate = item.DueDate.Value
                 };
-                return dto;
             }).ToList();
-           
+
             return new PagedResultDto<ReceivableDetailDto>(count, list);
         }
     }
