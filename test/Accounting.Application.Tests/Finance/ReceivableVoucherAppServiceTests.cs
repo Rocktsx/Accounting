@@ -31,9 +31,9 @@ namespace Accounting.Finance
             };
 
             // Act
-            var result = await _service.GetReceivableDetailsByDebitor(dto);
+            var result = await _service.GetReceivableDetailsByDebitorAsync(dto);
 
-
+            // Assert
             result.ShouldNotBeNull();
             result.TotalCount.ShouldBe(2);
             result.Items.Count.ShouldBe(2);
@@ -48,6 +48,25 @@ namespace Accounting.Finance
             docNo2Item.PaidAmount.ShouldBe(_testData.DocNo2PaidAmount);
             docNo2Item.PaidNativeAmount.ShouldBe(_testData.DocNo2PaidNativeAmount);
             docNo2Item.OsAmount.ShouldBe(docNo2OsAmount);
+        }
+        [Fact]
+        public async Task Can_Get_Receivable_Details_By_Id()
+        {
+            // Arrange
+            var id = _testData.VoucherRvId;
+
+            // Act
+            var result = await _service.GetReceivableDetailsAsync(id);
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(1);
+             
+            var item = result.First();
+            var osAmount = _testData.DocNo2Amount - _testData.DocNo2PaidAmount;
+            item.PaidAmount.ShouldBe(_testData.DocNo2PaidAmount);
+            item.PaidNativeAmount.ShouldBe(_testData.DocNo2PaidNativeAmount);
+            item.OsAmount.ShouldBe(osAmount);
         }
     }
 }
