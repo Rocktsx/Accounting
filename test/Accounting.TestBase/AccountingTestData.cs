@@ -85,5 +85,6 @@ namespace Accounting
         public string VoucherRvCode { get; } = "RV-0001";
         public string VoucherRvPrefix { get; } = "RV-0001";
         public decimal UsdCurrencyRate { get; } = 7.2m;
+        public Guid VoucherRvId { get; } = Guid.NewGuid();
     }
 }

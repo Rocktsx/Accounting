@@ -40,7 +40,7 @@ namespace Accounting.Finance.ReceivableVouchers
 
         public decimal OsAmount { get; set; }
 
-        public DateOnly DueDate { get; set; }
+        public DateOnly? DueDate { get; set; }
         public AccountTypeTypes AccTypeCategory { get; set; }
     }
 }
