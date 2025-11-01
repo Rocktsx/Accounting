@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accounting.Finance.AccountTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,10 +22,6 @@ namespace Accounting.Finance.Subjects
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
         public int? SeqCode { get; set; }
-        public string AccountTypeCode { get; set; }
-        public string AccountTypeName { get; set; }
-        public string AccountTypeOtherName { get; set; }
-
-        public AccountTypeTypes AccountTypeCategory { get; set; }
+        public AccountTypeSimpleDto? AccountType { get; set; }
     }
 }

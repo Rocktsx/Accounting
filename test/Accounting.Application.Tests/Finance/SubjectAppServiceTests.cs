@@ -220,12 +220,13 @@ namespace Accounting.Finance
             var input1 = items.Item1;
             var input2 = items.Item2;
             // Act
-            var result = await _subjectAppService.GetFilteredQueryListAsync(new SubjectFilterRequestDto
+            var result = await _subjectAppService.GetListAsync(new SubjectFilterRequestDto
             {
                 MaxResultCount = 10,
                 SkipCount = 0,
                 Sorting = "Code",
-                Filter = "Account222"
+                Filter = "Account222",
+                IsIncludeAccountType = true
             });
             // Assert
             result.ShouldNotBeNull();
@@ -242,7 +243,7 @@ namespace Accounting.Finance
             var input1 = items.Item1;
             var dto1 = items.Item3;
             // Act
-            var result = await _subjectAppService.GetFilteredQueryListAsync(new SubjectFilterRequestDto
+            var result = await _subjectAppService.GetListAsync(new SubjectFilterRequestDto
             {
                 MaxResultCount = 10,
                 SkipCount = 0,

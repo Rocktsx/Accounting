@@ -19,7 +19,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
-    public class SubjectAppService : CrudAppService<Subject, SubjectDto, Guid,
+    public class SubjectAppService : CrudAppService<Subject, SubjectDto, SubjectFilteredResultDto, Guid,
         SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>, ISubjectAppService
     {
         public SubjectAppService(ISubjectRepository repository) : base(repository)
@@ -61,15 +61,16 @@ namespace Accounting.Finance
         }
         protected override async Task<IQueryable<Subject>> CreateFilteredQueryAsync(SubjectFilterRequestDto input)
         {
-            return await NewFilteredQueryAsync(input);
-        }
-        private async Task<IQueryable<Subject>> NewFilteredQueryAsync(SubjectFilterRequestDto input, bool withDetails = false)
-        {
-            var queryable = await (withDetails ? Repository.WithDetailsAsync(item => item.AccountType) : Repository.GetQueryableAsync());
+            var queryable = await (input.IsIncludeAccountType == true ?
+                Repository.WithDetailsAsync(item => item.AccountType)
+                : Repository.GetQueryableAsync());
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            queryable = queryable.WhereIf(input.SubjectCategoryId != null, x => x.SubjectCategoryId == input.SubjectCategoryId);
-            queryable = queryable.WhereIf(input.SubjectIds != null, item => input.SubjectIds.Contains(item.Id));
+                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter)
+                || x.OtherName.Contains(input.Filter));
+            queryable = queryable.WhereIf(input.SubjectCategoryId != null,
+                x => x.SubjectCategoryId == input.SubjectCategoryId);
+            queryable = queryable.WhereIf(input.SubjectIds != null,
+                item => input.SubjectIds.Contains(item.Id));
             return queryable;
         }
 
@@ -107,35 +108,7 @@ namespace Accounting.Finance
                     AccountTypeCode = x.AccountType != null ? x.AccountType.Code : null,
                 }));
         }
-        [Authorize(AccountingPermissions.Subjects.Default)]
-        public async Task<PagedResultDto<SubjectFilteredResultDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input)
-        {
-            var queryable = await NewFilteredQueryAsync(input, true);
-            var totalCount = await AsyncExecuter.CountAsync(queryable);
-            queryable = ApplySorting(queryable, input);
-            var newQueryable = ApplyPaging(queryable, input).Select(item => new SubjectFilteredResultDto
-            {
-                Id = item.Id,
-                Code = item.Code,
-                Name = item.Name,
-                OtherName = item.OtherName,
-                SubjectCategoryId = item.SubjectCategoryId,
-                AccountTypeId = item.AccountTypeId,
-                DebitorCreditor = item.DebitorCreditor,
-                CurrencyCode = item.CurrencyCode,
-                Description = item.Description,
-                IsSubSubjectType = item.IsSubSubjectType,
-                IsActive = item.IsActive,
-                IsPayMethod = item.IsPayMethod,
-                SeqCode = item.SeqCode,
-                AccountTypeCode = item.AccountType != null ? item.AccountType.Code : null,
-                AccountTypeName = item.AccountType != null ? item.AccountType.Name : null,
-                AccountTypeOtherName = item.AccountType != null ? item.AccountType.OtherName : null,
-                AccountTypeCategory = item.AccountType != null ? item.AccountType.Category : AccountTypeTypes.Normal
-            });
-            var dtos = await AsyncExecuter.ToListAsync(newQueryable);
-            return new PagedResultDto<SubjectFilteredResultDto>(totalCount, dtos);
-        }
+
         [Authorize(AccountingPermissions.Subjects.Delete)]
         public override async Task DeleteAsync(Guid id)
         {

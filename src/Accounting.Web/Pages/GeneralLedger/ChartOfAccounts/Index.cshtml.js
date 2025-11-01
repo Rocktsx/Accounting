@@ -62,6 +62,7 @@
         const id = selectedCategory.id || null;
         return {
             subjectCategoryId: id,
+            isIncludeAccountType: true
         };
     };
     function boolRender(data) {
@@ -87,7 +88,7 @@
             order: [[1, "asc"]],
             searching: true,
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(accounting.finance.subject.getFilteredQueryList, subjectInputAction),
+            ajax: abp.libs.datatables.createAjax(accounting.finance.subject.getList, subjectInputAction),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -139,8 +140,11 @@
                 },
                 {
                     title: l('AccountType'),
-                    data: "accountTypeName",
-                    orderable: false
+                    data: "accountTypeId",
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return data && row.accountType ? row.accountType.name : '';
+                    }
                 },
                 {
                     title: l('DebitorCreditor'),

@@ -6,12 +6,11 @@ using Volo.Abp.Application.Services;
 
 namespace Accounting.Finance.Subjects
 {
-    public interface ISubjectAppService : IApplicationService, ICrudAppService<SubjectDto, Guid,
+    public interface ISubjectAppService : IApplicationService, ICrudAppService<SubjectDto, SubjectFilteredResultDto, Guid,
         SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>
     {
         Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync();
         Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync();
-        Task<PagedResultDto<SubjectFilteredResultDto>> GetFilteredQueryListAsync(SubjectFilterRequestDto input);
 
         Task<int> ImportDataAsync(IEnumerable<SubjectImportDto> inputs);
     } 

@@ -65,9 +65,9 @@ $(function () {
                 (state.editItem.details || []).forEach(item => {
                     const subject = state.subjectMap[item.subjectId];
                     if (subject) {
-                        const { code, name, isSubSubjectType, accountTypeCategory } = subject;
+                        const { code, name, isSubSubjectType, accountType } = subject;
                         item.isSubSubjectType = isSubSubjectType;
-                        item.accountTypeCategory = accountTypeCategory;
+                        item.accountTypeCategory = accountType ? accountType.category : 0;
                         item.subjectName = code + ' - ' + name;
                     }
                 });
@@ -122,10 +122,14 @@ $(function () {
             isShowModal: state => state.isShowModal,
             editItem: state => state.editItem,
             totalDebitorAmount: state => {
-                return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === 1 ? Number(item.nativeAmount) : 0), 0)
+                return (state.editItem.details || []).reduce((init, item) =>
+                    init + (item.debitorCreditor === 1 ?
+                        Number(item.nativeAmount) : 0), 0)
             },
             totalCreditorAmount: state => {
-                return (state.editItem.details || []).reduce((init, item) => init + (item.debitorCreditor === -1 ? Number(item.nativeAmount) : 0), 0)
+                return (state.editItem.details || []).reduce((init, item) =>
+                    init + (item.debitorCreditor === -1 ?
+                        Number(item.nativeAmount) : 0), 0)
             },
             subjects: state => state.subjects,
             subjectMap: state => state.subjectMap,
@@ -159,12 +163,17 @@ $(function () {
         if (id) {
             requests.push(accounting.finance.transferVoucher.get(id));
         } else {
-            requests.push(new Promise(resolve => resolve({ voucherDate: new Date(), prefix: 'JV', genNo: 0, details: [] })));
+            requests.push(new Promise(resolve => resolve({
+                voucherDate: new Date(),
+                prefix: 'JV', genNo: 0, details: []
+            })));
         }
 
         if (!store.getters.isRequestData) {
-            requests.push(accounting.basicData.currency.getActiveList().then(result => store.commit('setCurrencies', { currencies: result })));
-            requests.push(accounting.finance.accountingSetting.getNativeCurrency().then(result => store.commit('setNativeCurrency', result)));
+            requests.push(accounting.basicData.currency.getActiveList().then(result =>
+                store.commit('setCurrencies', { currencies: result })));
+            requests.push(accounting.finance.accountingSetting.getNativeCurrency()
+                .then(result => store.commit('setNativeCurrency', result)));
         }
 
         store.commit('showModal', { isShowModal: true });
@@ -186,21 +195,29 @@ $(function () {
             store.commit('setEditItem', { item });
             if (id) {
                 const details = (item.details || [])
-                const subjectIds = details.filter(obj => !store.state.subjectMap[obj.subjectId]).map(detailItem => detailItem.subjectId);
+                const subjectIds = details.filter(obj =>
+                    !store.state.subjectMap[obj.subjectId]).map(
+                        detailItem => detailItem.subjectId);
                 let setDetail = false
                 if (subjectIds.length > 0) {
-                    accounting.finance.subject.getFilteredQueryList({
+                    accounting.finance.subject.getList({
                         maxResultCount: subjectIds.length,
                         sorting: '',
-                        subjectIds
+                        subjectIds,
+                        isIncludeAccountType: true
                     }).then(subjectResult => {
-                        store.commit('setSubjects', { subjects: subjectResult.items, setDetail: true })
+                        store.commit('setSubjects', {
+                            subjects: subjectResult.items,
+                            setDetail: true
+                        })
                         store.commit('setDetails')
                     })
                 } else {
                     setDetail = true
                 }
-                const companyIds = details.filter(obj => obj.subSubjectCode && !store.state.companyMap[obj.subSubjectCode]).map(detailItem => detailItem.subSubjectCode)
+                const companyIds = details.filter(obj => obj.subSubjectCode &&
+                    !store.state.companyMap[obj.subSubjectCode]).map(
+                        detailItem => detailItem.subSubjectCode)
                 if (companyIds.length) {
                     accounting.basicData.company.getList({
                         maxResultCount: companyIds.length,
@@ -680,9 +697,9 @@ $(function () {
                 const subject = this.subjectMap[this.item.subjectId];
                 this.item.isSubSubjectType = false;
                 if (subject) {
-                    const { isSubSubjectType, accountTypeCategory, debitorCreditor, currencyCode, name, code } = subject;
+                    const { isSubSubjectType, accountType, debitorCreditor, currencyCode, name, code } = subject;
                     this.item.isSubSubjectType = isSubSubjectType;
-                    this.item.accountTypeCategory = accountTypeCategory;
+                    this.item.accountTypeCategory = accountType ? accountType.category : 0;
                     this.item.debitorCreditor = debitorCreditor;
                     this.item.subjectName = code + ' - ' + name;
                     this.errors.subjectId = false;
@@ -730,11 +747,15 @@ $(function () {
                 $subjectId.attr('data-language', language);
                 $subjectId.select2({
                     ajax: {
-                        url: '/api/app/subject/filtered-query-list',
+                        url: '/api/app/subject',
                         delay: 250,
                         dataType: "json",
                         data: function (params) {
-                            return { filter: params.term || '', maxResultCount: 10 };
+                            return {
+                                filter: params.term || '',
+                                maxResultCount: 10,
+                                isIncludeAccountType: true
+                            };
                         },
                         processResults: function (data) {
                             const items = data.items;
