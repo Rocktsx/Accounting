@@ -6,5 +6,6 @@ namespace Accounting.Finance.AccountTypes
 {
     public class AccountTypeSimpleDto : SimpleDto<Guid>
     { 
+        public AccountTypeTypes Category {  get; set; }
     }
 }

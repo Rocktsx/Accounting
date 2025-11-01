@@ -10,11 +10,10 @@ namespace Accounting.Finance.SubjectCategories
     /// <summary>
     /// 总账类别
     /// </summary>
-    public interface ISubjectCategoryAppService : IApplicationService, ICrudAppService<SubjectCategoryDto, Guid,
-        FilteredPagedAndSortedResultRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>
+    public interface ISubjectCategoryAppService : IApplicationService, ICrudAppService<SubjectCategoryDto, SubjectCategoryFilteredResultDto, Guid,
+        SubjectCategoryFilteredRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>
     {
         Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync();
-        Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input);
 
         Task<int> ImportDataAsync(IEnumerable<SubjectCategoryImportDto> inputs);
     }

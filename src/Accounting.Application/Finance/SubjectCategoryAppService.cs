@@ -26,8 +26,8 @@ namespace Accounting.Finance
     /// <summary>
     /// 总账类别
     /// </summary>
-    public class SubjectCategoryAppService : CrudAppService<SubjectCategory, SubjectCategoryDto, Guid,
-        FilteredPagedAndSortedResultRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>, ISubjectCategoryAppService
+    public class SubjectCategoryAppService : CrudAppService<SubjectCategory, SubjectCategoryDto, SubjectCategoryFilteredResultDto, Guid,
+        SubjectCategoryFilteredRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>, ISubjectCategoryAppService
     {
         public SubjectCategoryAppService(ISubjectCategoryRepository repository) : base(repository)
         {
@@ -64,9 +64,13 @@ namespace Accounting.Finance
 
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
-        protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input)
+        protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(SubjectCategoryFilteredRequestDto input)
         {
-            return await NewFilteredQueryAsync(input);
+            var queryable = await (input.IsIncludeAccountType == true ?
+                    Repository.WithDetailsAsync(item => item.AccountType) : Repository.GetQueryableAsync());
+            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
+                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
+            return queryable;
         }
         private async Task<IQueryable<SubjectCategory>> NewFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input, bool withDetails = false)
         {
@@ -108,46 +112,30 @@ namespace Accounting.Finance
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory", category.ParentId));
             }
         }
-        [Authorize(AccountingPermissions.GeneralAccounts.Default)]
-        public async Task<PagedResultDto<SubjectCategoryFilteredQueryDto>> GetFilteredQueryListAsync(FilteredPagedAndSortedResultRequestDto input)
+        public override async Task<PagedResultDto<SubjectCategoryFilteredResultDto>> GetListAsync(SubjectCategoryFilteredRequestDto input)
         {
-            var queryable = await NewFilteredQueryAsync(input, true);
-            var pageQueryable = queryable.Skip(input.SkipCount)
-                                .Take(input.MaxResultCount)
-                                .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate))
-                                .Select(item => new SubjectCategoryFilteredQueryDto()
-                                {
-                                    Id = item.Id,
-                                    Code = item.Code,
-                                    Name = item.Name,
-                                    OtherName = item.OtherName,
-                                    ParentId = item.ParentId,
-                                    DebitorCreditor = item.DebitorCreditor,
-                                    AccountTypeId = item.AccountTypeId,
-                                    ShowDetail = item.ShowDetail,
-                                    Description = item.Description,
-                                    Level = item.Level,
-                                    AccountTypeCode = item.AccountType != null ? item.AccountType.Code : null,
-                                    AccountTypeName = item.AccountType != null ? item.AccountType.Name : null,
-                                    AccountTypeOtherName = item.AccountType != null ? item.AccountType.OtherName : null,
-                                });
-            var list = await AsyncExecuter.ToListAsync(pageQueryable);
-            var count = await AsyncExecuter.CountAsync(queryable);
-            var categoryIds = list.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
-            var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
-            var categoriesDic = categories.ToDictionary(x => x.Id, x => x);
-            list.ForEach(x =>
+            var reuslt = await base.GetListAsync(input);
+            if (input.IsIncludeParent == true)
             {
-                if (x.ParentId != null && categoriesDic.ContainsKey(x.ParentId.Value))
+                var categoryIds = reuslt.Items.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
+                var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
+                var categoriesDic = categories.ToDictionary(x => x.Id, x => x);
+                foreach (var item in reuslt.Items)
                 {
-                    var category = categoriesDic[x.ParentId.Value];
-                    x.ParentCode = category.Code;
-                    x.ParentName = category.Name;
-                    x.ParentOtherName = category.OtherName;
+                    if (item.ParentId != null && categoriesDic.TryGetValue(item.ParentId.Value, out SubjectCategory? category))
+                    {
+                        item.Parent = new SubjectCategorySimpleDto
+                        {
+                            Code = category.Code,
+                            Name = category.Name,
+                            OtherName = category.OtherName,
+                        };
+                    }
                 }
-            });
-            return new PagedResultDto<SubjectCategoryFilteredQueryDto>(count, list);
+            }
+            return reuslt;
         }
+         
         [Authorize(AccountingPermissions.GeneralAccounts.Import)]
         public async Task<int> ImportDataAsync(IEnumerable<SubjectCategoryImportDto> inputs)
         {
@@ -169,7 +157,7 @@ namespace Accounting.Finance
                         var entity = new SubjectCategory(GuidGenerator.Create(), item.Code, item.Name, item.OtherName, null,
                             drcr, accTypeId, item.ShowDetail, item.Description, CurrentTenant.Id, item.Level);
 
-                        categories[entity.Code] = entity; 
+                        categories[entity.Code] = entity;
                         inputDics.Add(item.Code, item);
 
                         return entity;

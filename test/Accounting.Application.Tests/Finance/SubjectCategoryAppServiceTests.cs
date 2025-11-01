@@ -250,7 +250,7 @@ namespace Accounting.Finance
         {
             // Arrange 
             var (dto1, dto2, createdDto2) = await InitGetListDataAsync();
-            var input = new FilteredPagedAndSortedResultRequestDto()
+            var input = new SubjectCategoryFilteredRequestDto()
             {
                 MaxResultCount = 10,
                 SkipCount = 0,
@@ -333,21 +333,24 @@ namespace Accounting.Finance
         {
             // Arrange 
             var (dto1, dto2, _) = await InitGetListDataAsync();
-            var input = new FilteredPagedAndSortedResultRequestDto()
+            var input = new SubjectCategoryFilteredRequestDto()
             {
                 MaxResultCount = 10,
                 SkipCount = 0,
                 Sorting = nameof(SubjectCategory.Code),
-                Filter = "Revenue"
+                Filter = "Revenue",
+                IsIncludeParent = true,
+                IsIncludeAccountType = true
             };
             // Act
-            var result = await _subjectCategoryAppService.GetFilteredQueryListAsync(input);
+            var result = await _subjectCategoryAppService.GetListAsync(input);
             // Assert 
             result.ShouldNotBeNull();
             result.Items.Count.ShouldBe(2);
             result.TotalCount.ShouldBe(2);
             result.Items.ShouldContain(x => x.Code == dto1.Code);
-            result.Items.ShouldContain(x => x.Code == dto2.Code && x.ParentCode == dto1.Code);
+            result.Items.ShouldContain(x => x.Code == dto2.Code 
+                && x.Parent.Code == dto1.Code && x.AccountType != null);
         }
         [Fact]
         public async Task Can_Import_Datas()

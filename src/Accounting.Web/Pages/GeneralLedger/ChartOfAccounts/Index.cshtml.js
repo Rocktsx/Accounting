@@ -4,9 +4,11 @@
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.Subject.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.Subject.Deletion');
     let categories = [], selectedCategory = {};
-
+    
     function getCategories() {
-        const cagegoryPromise = accounting.finance.subjectCategory.getFilteredQueryList({ maxResultCount: 1000, sorting: 'code' });
+        const cagegoryPromise = accounting.finance.subjectCategory.getList({
+            maxResultCount: 1000, sorting: 'code', isIncludeAccountType: true, isIncludeParent: true
+        });
         const subjectPromise = accounting.finance.subject.getList({ maxResultCount: 1000, sorting: 'code' });
         Promise.all([cagegoryPromise, subjectPromise]).then(results => {
             categories = results[0].items.map(item => ({ text: item.code + ' - ' + item.name, item, isCategory: true }));
@@ -26,7 +28,6 @@
                 selectedIcon: 'fa fa-check', uncheckedIcon: ''
             });
         });
-
     }
     function getNodes(items, parentItem, isCategory) {
         return items.filter(o => isCategory ? o.item.parentId === parentItem.id && o.item.level === parentItem.level + 1 :
@@ -74,9 +75,9 @@
         $("#name").text(category.name || '');
         $("#otherName").text(category.otherName || '');
         $("#debitorCreditor").text(debitorCreditorRender(category.debitorCreditor || ''));
-        $("#accountType").text(category.accountTypeName || '');
+        $("#accountType").text(category.accountType ? category.accountType.name : '');
         $("#showDetail").html(category.code ? boolRender(category.showDetail) : '');
-        $("#parentCode").text(category.parnetName || '');
+        $("#parentCode").text(category.parent ? category.parent.name : '');
     }
     getCategories();
     const dataTable = $('#subjectTable').DataTable(

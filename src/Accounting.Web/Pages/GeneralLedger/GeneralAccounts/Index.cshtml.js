@@ -1,8 +1,10 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
-    const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/GeneralAccounts/EditModal'); 
+    const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/GeneralAccounts/EditModal');
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.GeneralAccount.Edit');
-    const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.GeneralAccount.Deletion'); 
+    const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.GeneralAccount.Deletion');
+
+    const inputAction = () => ({ isIncludeAccountType: true, isIncludeParent: true });
 
     const dataTable = $('#generalAccountTable').DataTable(
         abp.libs.datatables.normalizeConfiguration({
@@ -11,7 +13,7 @@
             order: [[1, "asc"]],
             searching: true,
             scrollX: true,
-            ajax: abp.libs.datatables.createAjax(accounting.finance.subjectCategory.getFilteredQueryList),
+            ajax: abp.libs.datatables.createAjax(accounting.finance.subjectCategory.getList, inputAction),
             columnDefs: [
                 {
                     title: l('Actions'),
@@ -24,7 +26,7 @@
                                     text: l('Edit'),
                                     iconClass: '',
                                     action: function (data) {
-                                        editModal.open({ id: data.record.id});
+                                        editModal.open({ id: data.record.id });
                                     },
                                     visible: isGrantedEdit
                                 },
@@ -63,13 +65,19 @@
                 },
                 {
                     title: l('Parent'),
-                    data: "parentName",
-                    orderable: false
+                    data: "parentId",
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return data && row.parent ? row.parent.name : '';
+                    }
                 },
                 {
                     title: l('SubjectCategory'),
-                    data: "accountTypeName",
-                    orderable: false
+                    data: "accountTypeId",
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return data && row.accountType ? row.accountType.name : '';
+                    }
                 },
                 {
                     title: l('DebitorCreditor'),
@@ -102,7 +110,7 @@
     $(document).on('click', '#newGeneralAccountBtn', function (e) {
         e.preventDefault();
         createModal.open();
-    }); 
+    });
 
     editModal.onResult(function () {
         dataTable.ajax.reload();
@@ -128,11 +136,11 @@
             contentType: false,
             method: 'POST',
             data: formData,
-            success: function (result) { 
+            success: function (result) {
                 importModal.close();
                 dataTable.ajax.reload();
                 abp.notify.success(l('ImportDataSuccessfully'));
-            }, 
+            },
             complete() {
                 abp.ui.clearBusy('#importDataForm .modal-body')
             }
