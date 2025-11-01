@@ -72,14 +72,7 @@ namespace Accounting.Finance
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
             return queryable;
         }
-        private async Task<IQueryable<SubjectCategory>> NewFilteredQueryAsync(FilteredPagedAndSortedResultRequestDto input, bool withDetails = false)
-        {
-            var queryable = await (withDetails ? Repository.WithDetailsAsync(item => item.AccountType) : Repository.GetQueryableAsync());
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            return queryable;
-        }
-
+       
         [Authorize(AccountingPermissions.GeneralAccounts.Default)]
         public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
         {
@@ -115,7 +108,7 @@ namespace Accounting.Finance
         public override async Task<PagedResultDto<SubjectCategoryFilteredResultDto>> GetListAsync(SubjectCategoryFilteredRequestDto input)
         {
             var reuslt = await base.GetListAsync(input);
-            if (input.IsIncludeParent == true)
+            if (input.IsIncludeParent == true && reuslt.Items.Count > 0)
             {
                 var categoryIds = reuslt.Items.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
                 var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
