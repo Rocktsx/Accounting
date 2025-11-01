@@ -347,7 +347,7 @@ namespace Accounting.Web;
         });
         Configure<AbpPageToolbarOptions>(options =>
         {
-            options.Configure<Pages.GeneralLedger.ChartOfAccount.IndexModel>(
+            options.Configure<Pages.GeneralLedger.ChartOfAccounts.IndexModel>(
                 toolbar =>
                 {
                     toolbar.AddButton(

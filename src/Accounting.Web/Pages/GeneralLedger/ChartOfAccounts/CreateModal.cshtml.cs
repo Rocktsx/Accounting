@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccount
+namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
 {
     public class CreateModalModel : AccountingPageModel
     {

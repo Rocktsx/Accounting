@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccount
+namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
 {
-    public class ImportModalModel : PageModel
+    public class IndexModel : PageModel
     {
         public void OnGet()
         {

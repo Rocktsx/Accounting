@@ -134,7 +134,7 @@ public class AccountingMenuContributor : IMenuContributor
                 AccountingMenus.Subject,
                 l[AccountingMenus.DisplayNames.Subject],
                 icon: "fas fa-key",
-                url: "/GeneralLedger/ChartOfAccount"
+                url: "/GeneralLedger/ChartOfAccounts"
             ).RequirePermissions(AccountingPermissions.Subjects.Default)
         );
 

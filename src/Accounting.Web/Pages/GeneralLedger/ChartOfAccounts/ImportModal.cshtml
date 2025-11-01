@@ -3,11 +3,12 @@
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @inject IStringLocalizer<AccountingResource> L
-@model Accounting.Web.Pages.GeneralLedger.ChartOfAccount.ImportModalModel
+@model Accounting.Web.Pages.GeneralLedger.ChartOfAccounts.ImportModalModel
 @{
     Layout = null;
 }
-<form id="importSubjectsForm" data-check-form-on-close="false" data-ajaxform="true" asp-page="/api/subjects" method="post" enctype="multipart/form-data">
+<form id="importSubjectsForm" data-check-form-on-close="false" data-ajaxform="true" 
+    asp-page="/api/subjects" method="post" enctype="multipart/form-data">
     <abp-modal>
         <abp-modal-header title="@L["ImportSubject"].Value">
         </abp-modal-header>

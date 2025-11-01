@@ -3,12 +3,12 @@
 @using Accounting.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @inject IStringLocalizer<AccountingResource> L
-@model Accounting.Web.Pages.GeneralLedger.ChartOfAccount.EditModalModel
+@model Accounting.Web.Pages.GeneralLedger.ChartOfAccounts.EditModalModel
 @{
     Layout = null;
 }
 <abp-dynamic-form abp-model="Item" id="subjectForm" data-ajaxform="true" column-size="_6"
-                  asp-page="/GeneralLedger/ChartOfAccount/EditModal">
+                  asp-page="/GeneralLedger/ChartOfAccounts/EditModal">
     <abp-modal size="ExtraLarge">
         <abp-modal-header title="@L["EditSubject"].Value">
         </abp-modal-header>

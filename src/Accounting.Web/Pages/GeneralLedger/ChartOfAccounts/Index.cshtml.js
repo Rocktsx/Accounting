@@ -1,6 +1,6 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
-    const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccount/EditModal');
+    const editModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccounts/EditModal');
     const isGrantedEdit = abp.auth.isGranted('Accounting.GeneralLedger.Subject.Edit');
     const isGrantedDelete = abp.auth.isGranted('Accounting.GeneralLedger.Subject.Deletion');
     let categories = [], selectedCategory = {};
@@ -182,7 +182,7 @@
             ]
         })
     );
-    const createModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccount/CreateModal');
+    const createModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccounts/CreateModal');
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
@@ -213,7 +213,7 @@
             setCategory(selectedCategory || {});
         }
     })
-    const importModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccount/ImportModal');
+    const importModal = new abp.ModalManager(abp.appPath + 'GeneralLedger/ChartOfAccounts/ImportModal');
     $(document).on('click', '#importSubjectBtn', function () {
         importModal.open();
     });

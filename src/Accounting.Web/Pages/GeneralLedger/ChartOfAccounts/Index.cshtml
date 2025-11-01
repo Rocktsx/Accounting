@@ -3,12 +3,12 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
 @using Accounting.Localization
-@using Accounting.Web.Pages.GeneralLedger.ChartOfAccount;
+@using Accounting.Web.Pages.GeneralLedger.ChartOfAccounts;
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
 @inject IStringLocalizer<AccountingResource> L
 @inject IAuthorizationService AuthorizationService
-@model Accounting.Web.Pages.GeneralLedger.ChartOfAccount.IndexModel
+@model Accounting.Web.Pages.GeneralLedger.ChartOfAccounts.IndexModel
 @inject IPageLayout PageLayout
 @{
     PageLayout.Content.Title = L[AccountingMenus.DisplayNames.Subject].Value;
@@ -21,7 +21,7 @@
 @section scripts
 {
     <abp-script src="/libs/bootstrap-treeview/bootstrap-treeview.min.js"></abp-script>
-    <abp-script src="/Pages/GeneralLedger/ChartOfAccount/Index.cshtml.js" />
+    <abp-script src="/Pages/GeneralLedger/ChartOfAccounts/Index.cshtml.js" />
 }
 <style>
     .title {
