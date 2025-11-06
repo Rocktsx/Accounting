@@ -1,19 +1,17 @@
 using Accounting.EntityFrameworkCore;
 using Accounting.Localization;
 using Accounting.MultiTenancy;
-using Accounting.Permissions;
 using Accounting.Web.HealthChecks;
 using Accounting.Web.Menus;
+using Accounting.Web.Pages;
 using Accounting.Web.Settings;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
 using Medallion.Threading.WaitHandles;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -168,7 +166,7 @@ namespace Accounting.Web;
         {
             options.Contributors.Add(new AccountingSettingPageContributor());
         });
-        ConfigurePageToolbarOptions();
+        context.ConfigurePageToolbarOptions();
         ConfigureDistributedCacheAndLockOptions(context);
     }
 
@@ -275,185 +273,7 @@ namespace Accounting.Web;
             }
         );
     }
-    private static LocalizableString L(string name)
-    {
-        return LocalizableString.Create<AccountingResource>(name);
-    }
-    private void ConfigurePageToolbarOptions()
-    {
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.BasicData.Currencies.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewCurrency"),
-                        icon: "plus",
-                        id: "newCurrency",
-                        requiredPolicyName: AccountingPermissions.Currencies.Create
-                    );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.BasicData.Clients.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewClient"),
-                        icon: "plus",
-                        id: "newCompanyBtn",
-                        requiredPolicyName: AccountingPermissions.Clients.Create
-                    );
-                    toolbar.AddButton(
-                         L("ImportClient"),
-                         icon: "file-import",
-                         id: "importCompanyBtn",
-                         requiredPolicyName: AccountingPermissions.Clients.Import
-                    );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.BasicData.Vendors.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewVendor"),
-                        icon: "plus",
-                        id: "newCompanyBtn",
-                        requiredPolicyName: AccountingPermissions.Vendors.Create
-                    );
-                    toolbar.AddButton(
-                         L("ImportVendor"),
-                         icon: "file-import",
-                         id: "importCompanyBtn",
-                         requiredPolicyName: AccountingPermissions.Vendors.Import
-                     );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.GeneralLedger.AccountingPeriods.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewAccountingPeriod"),
-                        icon: "plus",
-                        id: "newAccountingPeriodBtn",
-                        requiredPolicyName: AccountingPermissions.AccountingPeriods.Create
-                    );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.GeneralLedger.ChartOfAccounts.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewSubject"),
-                        icon: "plus",
-                        id: "newSubjectBtn",
-                        requiredPolicyName: AccountingPermissions.Subjects.Create
-                    );
-                    toolbar.AddButton(
-                      L("ImportSubject"),
-                      icon: "file-import",
-                      id: "importSubjectBtn",
-                      requiredPolicyName: AccountingPermissions.Subjects.Import
-                  );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.GeneralLedger.GeneralAccounts.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewGeneralAccount"),
-                        icon: "plus",
-                        id: "newGeneralAccountBtn",
-                        requiredPolicyName: AccountingPermissions.GeneralAccounts.Create
-                    );
-                    toolbar.AddButton(
-                      L("ImportGeneralAccount"),
-                      icon: "file-import",
-                      id: "importGeneralAccountBtn",
-                      requiredPolicyName: AccountingPermissions.GeneralAccounts.Import
-                  );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.GeneralLedger.SubjectCategories.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("NewSubjectCategory"),
-                        icon: "plus",
-                        id: "newSubjectCategoryBtn",
-                        requiredPolicyName: AccountingPermissions.SubjectCategories.Create
-                    );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.GeneralLedger.TransferVouchers.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("Search"),
-                        icon: "magnifying-glass",
-                        id: "searchBtn",
-                        requiredPolicyName: AccountingPermissions.TransferVouchers.Default
-                    );
-                    toolbar.AddButton(
-                      L("NewTransferVoucher"),
-                      icon: "plus",
-                      id: "newVoucherBtn",
-                      requiredPolicyName: AccountingPermissions.TransferVouchers.Create
-                    );
-                    toolbar.AddButton(
-                         L("ImportTransferVoucher"),
-                         icon: "file-import",
-                         id: "importTVBtn",
-                         requiredPolicyName: AccountingPermissions.TransferVouchers.Import
-                     );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.GeneralLedger.VoucherStates.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("UpdateStatus"),
-                        icon: "pencil",
-                        id: "updateStatusBtn",
-                        requiredPolicyName: AccountingPermissions.VoucherStates.UpdateStatus
-                    );
-                });
-        });
-        Configure<AbpPageToolbarOptions>(options =>
-        {
-            options.Configure<Pages.Receivable.ReceivableVouchers.IndexModel>(
-                toolbar =>
-                {
-                    toolbar.AddButton(
-                        L("Search"),
-                        icon: "magnifying-glass",
-                        id: "searchBtn",
-                        requiredPolicyName: AccountingPermissions.ReceivableVouchers.Default
-                    );
-                    toolbar.AddButton(
-                      L("NewReceivableVoucher"),
-                      icon: "plus",
-                      id: "newVoucherBtn",
-                      requiredPolicyName: AccountingPermissions.ReceivableVouchers.Create
-                    );
-                });
-        });
-    }
+    
     private void ConfigureDistributedCacheAndLockOptions(ServiceConfigurationContext context)
     {
         Configure<AbpDistributedCacheOptions>(options =>
