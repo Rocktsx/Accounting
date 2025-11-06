@@ -222,6 +222,10 @@
     "AutoBalance": "Auto Balance",
     "ReceiptAmtGreaterThanSettlementAmt": "Receipt amount should be greater than settlement amount!",
     "Accounting:PleaseEnterArSubjectInSetting": "Please enter a default AR subject code in the account setting!",
-    "Accounting:PaymentReferenceCannotBeEmpty": "If no receivable voucher are selected, the voucher reference cannot be empty."
+    "Accounting:PaymentReferenceCannotBeEmpty": "If no receivable voucher are selected, the voucher reference cannot be empty.",
+    "Menu:Receivable": "Receivable",
+    "Permission:ReceivableVoucher": "Receivable Voucher",
+    "Menu:ReceivableVoucher": "Receivable Voucher",
+    "NewReceivableVoucher": "New Receivable Voucher"
   }
 }

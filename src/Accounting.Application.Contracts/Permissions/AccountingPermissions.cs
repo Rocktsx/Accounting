@@ -12,7 +12,7 @@ public static class AccountingPermissions
     public const string ImportText = "Import";
     public const string ExportText = "Export";
     public const string UpdateStatusText = "UpdateStatus";
-    public const string PrintText = "Print"; 
+    public const string PrintText = "Print";
 
     public const string Creation = Dot + CreationText;
     public const string Deletion = Dot + DeletionText;
@@ -129,6 +129,23 @@ public static class AccountingPermissions
     {
         public const string Name = "VoucherStates";
         public const string Default = GeneralLedgerGroup + Dot + Name;
+        public const string UpdateStatus = Default + UpdateStatusDot;
+    }
+
+    /// <summary>
+    /// 应收账组
+    /// </summary>
+    public const string ReceivableGroup = GroupName + Dot + "Receivable";
+    /// <summary>
+    /// 收款传票
+    /// </summary>
+    public class ReceivableVouchers
+    {
+        public const string Name = "ReceivableVoucher";
+        public const string Default = ReceivableGroup + Dot + Name;
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
     }
 }

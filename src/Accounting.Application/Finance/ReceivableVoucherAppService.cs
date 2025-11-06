@@ -3,6 +3,8 @@ using Accounting.Finance.ReceivableVouchers;
 using Accounting.Finance.Settings;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,16 +16,48 @@ using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance
 {
+    [RemoteService(true)]
     public class ReceivableVoucherAppService : VoucherAppService, IReceivableVoucherAppService
     {
         public ReceivableVoucherAppService(IVoucherRepository repository) : base(repository)
         {
+            DeletePolicyName = AccountingPermissions.ReceivableVouchers.Delete;
+            GetListPolicyName = AccountingPermissions.ReceivableVouchers.Default;
+            GetPolicyName = AccountingPermissions.ReceivableVouchers.Default;
+
+            FunctionCode = FunctionCodes.ReceivableVoucher;
+        }
+
+        [Authorize(AccountingPermissions.ReceivableVouchers.Create)]
+        public override Task<VoucherDto> CreateAsync(VoucherCreateDto input)
+        {
+            input.VoucherType = VoucherType.ReceivableVoucher;
+            return base.CreateAsync(input);
+        }
+
+        [Authorize(AccountingPermissions.ReceivableVouchers.Update)]
+        public override Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
+        { 
+            return base.UpdateAsync(id, input);
+        }
+
+        protected override async Task<IQueryable<Voucher>> CreateFilteredQueryAsync(VoucherFilterRequestDto input)
+        {
+            input.VoucherType = VoucherType.ReceivableVoucher;
+            return await base.CreateFilteredQueryAsync(input);
+        }
+
+        [Authorize(AccountingPermissions.ReceivableVouchers.UpdateStatus)]
+        public override Task UpdateStatus(Guid id, VoucherStatus status)
+        {
+            return base.UpdateStatus(id, status);
         }
         /// <summary>
         /// 通过客户id获取收款明细
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [Authorize(AccountingPermissions.ReceivableVouchers.Default)]
         public async Task<PagedResultDto<ReceivableDetailDto>>
             GetReceivableDetailsByDebitorAsync(ReceivableDetailsByDebitorRequestDto input)
         {
@@ -72,6 +106,7 @@ namespace Accounting.Finance
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(AccountingPermissions.ReceivableVouchers.Default)]
         public async Task<IEnumerable<ReceivableDetailDto>>
             GetReceivableDetailsAsync(Guid id)
         {
@@ -161,6 +196,7 @@ namespace Accounting.Finance
         /// </summary>
         /// <param name="input">input</param>
         /// <returns></returns>
+        [Authorize(AccountingPermissions.ReceivableVouchers.Default)]
         public async Task<IEnumerable<VoucherDetailDto>> GenerateDetailsAsync(
             GenerateReceivableDetailRequestDto input)
         {

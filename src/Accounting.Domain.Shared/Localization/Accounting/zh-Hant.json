@@ -256,6 +256,10 @@
     "AutoBalance": "自動平衡",
     "ReceiptAmtGreaterThanSettlementAmt": "收款金額必須大於結算金額",
     "Accounting:PleaseEnterArSubjectInSetting": "請在會計設定里設置默認應收科目",
-    "Accounting:PaymentReferenceCannotBeEmpty": "如果没有选择应收的传票，传票参考不能为空"
+    "Accounting:PaymentReferenceCannotBeEmpty": "如果没有选择应收的传票，传票参考不能为空",
+    "Menu:Receivable": "應收賬",
+    "Permission:ReceivableVoucher": "收款傳票",
+    "Menu:ReceivableVoucher": "收款傳票",
+    "NewReceivableVoucher": "新收款傳票"
   }
 }
