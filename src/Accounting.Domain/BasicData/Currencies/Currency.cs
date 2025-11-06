@@ -48,7 +48,7 @@ namespace Accounting.BasicData.Currencies
             {
                 throw new BusinessException(AccountingDomainErrorCodes.AmountsMustNotBeZero);
             }
-            if (sourceAmount / targetAmount != rate)
+            if (Math.Round(sourceAmount / targetAmount, AccountingCommonConsts.AmountScale) != rate)
             {
                 throw new BusinessException(AccountingDomainErrorCodes.ExchangeRateMatchAmounts);
             }

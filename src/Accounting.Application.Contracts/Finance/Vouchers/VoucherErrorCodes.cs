@@ -14,5 +14,8 @@ namespace Accounting.Finance.Vouchers
         public const string DebitAndCreditCanNotBothBeGreaterThanZero = "Accounting:DebitAndCreditCanNotBothBeGreaterThanZero";
         public const string InSingleEntrySubjectCodeCannotBeEmpty = "Accounting:InSingleEntrySubjectCodeCannotBeEmpty";
         public const string CurrencyNotSetUpInSubject = "Accounting:CurrencyNotSetUpInSubject";
+        public const string ReceiptAmtGreaterThanSettlementAmt = "Accounting:ReceiptAmtGreaterThanSettlementAmt";
+        public const string PaymentReferenceCannotBeEmpty = "Accounting:PaymentReferenceCannotBeEmpty";
+        public const string PleaseEnterArSubjectInSetting = "Accounting:PleaseEnterArSubjectInSetting";
     }
 }

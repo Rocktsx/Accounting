@@ -1,4 +1,6 @@
-﻿using Accounting.Finance.ReceivableVouchers;
+﻿using Accounting.Common;
+using Accounting.Finance.ReceivableVouchers;
+using Accounting.Finance.Settings;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +27,7 @@ namespace Accounting.Finance
         public async Task<PagedResultDto<ReceivableDetailDto>>
             GetReceivableDetailsByDebitorAsync(ReceivableDetailsByDebitorRequestDto input)
         {
-            if (input.DebitorId == null || Guid.Empty.Equals(input.DebitorId))
+            if (input.DebitorId.IsEmptyOrNull())
             {
                 return new PagedResultDto<ReceivableDetailDto>();
             }
@@ -73,9 +75,9 @@ namespace Accounting.Finance
         public async Task<IEnumerable<ReceivableDetailDto>>
             GetReceivableDetailsAsync(Guid id)
         {
-            if (Guid.Empty.Equals(id))
+            if (id.IsEmpty())
             {
-                return new List<ReceivableDetailDto>(0);
+                return [];
             }
 
             var voucher = await GetEntityByIdAsync(id);
@@ -107,13 +109,10 @@ namespace Accounting.Finance
 
             var details = await AsyncExecuter.ToListAsync(detailsQueryable);
 
-            var subjectIds = details.Select(item => item.item.SubjectId).Distinct();
-            var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
-            var subjectQueryable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
-            var subjectQuery = subjectQueryable.Where(item => subjectIds.Contains(item.Id));
-            var subjects = await AsyncExecuter.ToListAsync(subjectQuery);
-            var subjectDic = subjects.ToDictionary(item => item.Id, item => item);
+            var subjectIds = details.Select(item => item.item.SubjectId).Distinct(); 
+            var subjectDic = await GetSubjectsAsync(subjectIds);
 
+            var roundScale = AccountingCommonConsts.AmountRoundScale;
             var list = details.Select(obj =>
             {
                 var item = obj.item;
@@ -133,7 +132,7 @@ namespace Accounting.Finance
                     CurrencyRate = item.CurrencyRate,
                     NativeAmount = item.NativeAmount,
                     PaidAmount = Math.Round(paidNativeAmount /
-                                    item.CurrencyRate, 2),
+                                    item.CurrencyRate, roundScale),
                     PaidNativeAmount = paidNativeAmount,
                     CurrentPaid = 0,
                     NativeCurrentPaid = 0,
@@ -143,11 +142,31 @@ namespace Accounting.Finance
                     AccTypeCategory = hasSubject == true ?
                         subject.AccountType.Category : AccountTypeTypes.Normal,
                     OsAmount = item.ForeignAmount - Math.Round(
-                        paidNativeAmount / item.CurrencyRate, 2),
+                        paidNativeAmount / item.CurrencyRate, roundScale),
                     DueDate = item.DueDate
                 };
             });
             return list;
+        }
+        private async Task<Dictionary<Guid,Subject>> GetSubjectsAsync(IEnumerable<Guid> ids)
+        {
+            var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
+            var subjectQueryable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
+            var subjectQuery = subjectQueryable.Where(item => ids.Contains(item.Id));
+            var subjects = await AsyncExecuter.ToListAsync(subjectQuery);
+            return subjects.ToDictionary(item => item.Id, item => item);
+        }
+        /// <summary>
+        /// 生成传票明细
+        /// </summary>
+        /// <param name="input">input</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<VoucherDetailDto>> GenerateDetailsAsync(
+            GenerateReceivableDetailRequestDto input)
+        {
+            using var generator = new ReceivableVoucherDetailGenerator(
+                LazyServiceProvider, input);
+            return await generator.GenerateAsync();
         }
     }
 }

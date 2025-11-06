@@ -219,6 +219,9 @@
     "Bank": "Bank",
     "Receivable": "Receivable",
     "Payable": "Payable",
-    "AutoBalance": "Auto Balance"
+    "AutoBalance": "Auto Balance",
+    "ReceiptAmtGreaterThanSettlementAmt": "Receipt amount should be greater than settlement amount!",
+    "Accounting:PleaseEnterArSubjectInSetting": "Please enter a default AR subject code in the account setting!",
+    "Accounting:PaymentReferenceCannotBeEmpty": "If no receivable voucher are selected, the voucher reference cannot be empty."
   }
 }
