@@ -434,6 +434,25 @@ namespace Accounting.Web;
                     );
                 });
         });
+        Configure<AbpPageToolbarOptions>(options =>
+        {
+            options.Configure<Pages.Receivable.ReceivableVouchers.IndexModel>(
+                toolbar =>
+                {
+                    toolbar.AddButton(
+                        L("Search"),
+                        icon: "magnifying-glass",
+                        id: "searchBtn",
+                        requiredPolicyName: AccountingPermissions.ReceivableVouchers.Default
+                    );
+                    toolbar.AddButton(
+                      L("NewReceivableVoucher"),
+                      icon: "plus",
+                      id: "newVoucherBtn",
+                      requiredPolicyName: AccountingPermissions.ReceivableVouchers.Create
+                    );
+                });
+        });
     }
     private void ConfigureDistributedCacheAndLockOptions(ServiceConfigurationContext context)
     {

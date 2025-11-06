@@ -159,6 +159,23 @@ public class AccountingMenuContributor : IMenuContributor
             context.Menu.AddItem(generalLedgerMenu);
         }
 
+        var receivableMenus = new ApplicationMenuItem(
+          AccountingMenus.Receivable,
+          l[AccountingMenus.DisplayNames.Receivable],
+          icon: "fas fa-calendar"
+        );
+        receivableMenus.AddItem(
+               new ApplicationMenuItem(
+                   AccountingMenus.ReceivableVoucher,
+                   l[AccountingMenus.DisplayNames.ReceivableVoucher],
+                   icon: "fas fa-folder-open",
+                   url: "/Receivable/ReceivableVouchers"
+               ).RequirePermissions(AccountingPermissions.ReceivableVouchers.Default)
+         );
+        if (receivableMenus.Items.Count > 0)
+        {
+            context.Menu.AddItem(receivableMenus);
+        }
         return Task.CompletedTask;
     }
 }

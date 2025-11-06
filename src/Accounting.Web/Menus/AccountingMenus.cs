@@ -13,6 +13,7 @@ public class AccountingMenus
     private const string ClientText = "Client";
     private const string CurrencyText = "Currency";
     private const string VendorText = "Vendor";
+
     private const string GeneralLedgerText = "GeneralLedger";
     private const string AccountingPeriodText = "AccountingPeriod";
     private const string SubjectCategoryText = "SubjectCategory";
@@ -21,10 +22,14 @@ public class AccountingMenus
     private const string TransferVoucherText = "TransferVoucher";
     private const string VoucherStateText = "VoucherState";
 
+    private const string ReceivableText = "Receivable";
+    private const string ReceivableVoucherText = "ReceivableVoucher";
+
     public const string BasicData = Prefix + Dot + BasicDataText;
     public const string Client = BasicData + Dot + ClientText;
     public const string Currency = BasicData + Dot + CurrencyText;
     public const string Vendor = BasicData + Dot + VendorText;
+
     public const string GeneralLedger = Prefix + Dot + GeneralLedgerText;
     public const string AccountingPeriod = GeneralLedger + Dot + AccountingPeriodText;
     public const string SubjectCategory = GeneralLedger + Dot + SubjectCategoryText;
@@ -33,12 +38,16 @@ public class AccountingMenus
     public const string TransferVoucher = GeneralLedger + Dot + TransferVoucherText;
     public const string VoucherState = GeneralLedger + Dot + VoucherStateText;
 
+    public const string Receivable = Prefix + Dot + ReceivableVoucherText;
+    public const string ReceivableVoucher = ReceivableText + Dot + ReceivableVoucherText;
+
     public class DisplayNames
     {
         public const string BasicData = DisplayNamePrefix + BasicDataText;
         public const string Client = DisplayNamePrefix + ClientText;
         public const string Currency = DisplayNamePrefix + CurrencyText;
         public const string Vendor = DisplayNamePrefix + VendorText;
+
         public const string GeneralLedger = DisplayNamePrefix + GeneralLedgerText;
         public const string AccountingPeriod = DisplayNamePrefix + AccountingPeriodText;
         public const string SubjectCategory = DisplayNamePrefix + SubjectCategoryText;
@@ -46,6 +55,9 @@ public class AccountingMenus
         public const string Subject = DisplayNamePrefix + SubjectText;
         public const string TransferVoucher = DisplayNamePrefix + TransferVoucherText;
         public const string VoucherState = DisplayNamePrefix + VoucherStateText;
+
+        public const string Receivable = DisplayNamePrefix + ReceivableText;
+        public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;
     }
 
 }
