@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +21,7 @@ public class Program
         {
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
+            builder.AddServiceDefaults();
             builder.Host
                 .AddAppSettingsSecretsJson()
                 .UseAutofac()
@@ -41,6 +42,7 @@ public class Program
                 });
             await builder.AddApplicationAsync<AccountingWebModule>();
             var app = builder.Build();
+            app.MapDefaultEndpoints();
             await app.InitializeApplicationAsync();
             await app.RunAsync();
             return 0;

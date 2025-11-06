@@ -69,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\aspire\Accounting.ServiceDefaults\Accounting.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Accounting.Application\Accounting.Application.csproj" />
     <ProjectReference Include="..\Accounting.HttpApi\Accounting.HttpApi.csproj" />
     <ProjectReference Include="..\Accounting.EntityFrameworkCore\Accounting.EntityFrameworkCore.csproj" />
