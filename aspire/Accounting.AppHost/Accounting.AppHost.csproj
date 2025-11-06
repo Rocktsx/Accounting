@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Accounting.DbMigrator\Accounting.DbMigrator.csproj" />
     <ProjectReference Include="..\..\src\Accounting.Web\Accounting.Web.csproj" />
   </ItemGroup>
 
