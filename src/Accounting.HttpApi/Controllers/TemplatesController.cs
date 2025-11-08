@@ -27,7 +27,6 @@ namespace Accounting.Controllers
         public async Task<IActionResult> GetTemplate(string template)
         {
             var fileName = template + ".xlsx";
-
             var filePath = Path.Combine("Templates/", fileName);
             var fileInfo = _fileProvider.GetFileInfo(filePath);
             if (!fileInfo.Exists)
@@ -36,7 +35,8 @@ namespace Accounting.Controllers
                 return NotFound();
             }
 
-            var stream = fileInfo.CreateReadStream();
+            var stream = await Task.Factory.StartNew(() => fileInfo.CreateReadStream());
+            
             HttpContext.Response.Headers.Append("Content-Disposition", $"Attachment; filename={fileName}");
             HttpContext.Response.Headers.Append("Content-Length", stream.Length.ToString());
             HttpContext.Response.Headers.Append("Access-Control-Expose-Headers", "Content-Disposition, Request-Context");
