@@ -709,7 +709,7 @@ $(function () {
                     }
                     this.setNativeAmount();
                     if (this.item.isSubSubjectType) {
-                        this.$nextTick(() => this.initCompanySelect(accountTypeCategory == this.accountTypes.receivable))
+                        this.$nextTick(() => this.initCompanySelect(this.item.accountTypeCategory == this.accountTypes.receivable))
                     }
                 }
                 this.item.subSubjectCode = '-';
