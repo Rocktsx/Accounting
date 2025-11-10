@@ -64,13 +64,20 @@ namespace Accounting.Finance
             var queryable = await (input.IsIncludeAccountType == true ?
                 Repository.WithDetailsAsync(item => item.AccountType)
                 : Repository.GetQueryableAsync());
+
             queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
                 x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter)
                 || x.OtherName.Contains(input.Filter));
+
             queryable = queryable.WhereIf(input.SubjectCategoryId != null,
                 x => x.SubjectCategoryId == input.SubjectCategoryId);
+
             queryable = queryable.WhereIf(input.SubjectIds != null,
                 item => input.SubjectIds.Contains(item.Id));
+
+            queryable = queryable.WhereIf(input.IsPaymentMethod != null,
+                item => item.IsPayMethod == input.IsPaymentMethod);
+
             return queryable;
         }
 

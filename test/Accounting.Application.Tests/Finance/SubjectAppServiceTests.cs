@@ -173,7 +173,8 @@ namespace Accounting.Finance
                 MaxResultCount = 10,
                 SkipCount = 0,
                 Sorting = "Code",
-                Filter = "Account222"
+                Filter = "Account222",
+                IsPaymentMethod = false
             });
             // Assert
             result.ShouldNotBeNull();
