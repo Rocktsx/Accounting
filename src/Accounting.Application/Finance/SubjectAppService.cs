@@ -1,5 +1,6 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.AccountTypes;
+using Accounting.Finance.Settings;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
@@ -72,6 +73,21 @@ namespace Accounting.Finance
             queryable = queryable.WhereIf(input.SubjectCategoryId != null,
                 x => x.SubjectCategoryId == input.SubjectCategoryId);
 
+            if(input.IsIncludeReceivableSubject == true || input.IsIncludePayableSubject == true)
+            {
+                var accountingSettings =LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
+                if(input.IsIncludeReceivableSubject == true)
+                {
+                     var receivableSubjectCode = await accountingSettings.GetAccountReceivableSubjectCodeAsync();
+                    input.AddSubjectId(receivableSubjectCode);
+                }
+                if (input.IsIncludePayableSubject == true)
+                {
+                    var payableSubjectCode = await accountingSettings.GetAccountPayableSubjectCodeAsync();
+                    input.AddSubjectId(payableSubjectCode);
+                }
+            }
+            
             queryable = queryable.WhereIf(input.SubjectIds != null,
                 item => input.SubjectIds.Contains(item.Id));
 

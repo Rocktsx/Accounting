@@ -1,4 +1,5 @@
-﻿using Accounting.Finance.Subjects;
+﻿using Accounting.Finance.Settings;
+using Accounting.Finance.Subjects;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,11 @@ namespace Accounting.Finance
         where TStartupModule : IAbpModule
     {
         private readonly ISubjectAppService _subjectAppService;
+        private readonly AccountingTestData _testData;
         public SubjectAppServiceTests()
         {
             _subjectAppService = GetRequiredService<ISubjectAppService>();
+            _testData = GetRequiredService<AccountingTestData>();
         }
         private SubjectCreateDto GetCreateDto(string code, string name, string otherName, string description, int? seqCode)
         {
@@ -31,7 +34,7 @@ namespace Accounting.Finance
                 SubjectCategoryId = null,
                 AccountTypeId = null,
                 DebitorCreditor = DebitorCreditor.Creditor,
-                CurrencyCode = "USD",
+                CurrencyCode = _testData.UsdCurrency,
                 Description = description,
                 IsSubSujectType = false,
                 IsActive = true,
@@ -337,6 +340,31 @@ namespace Accounting.Finance
             // Assert
             result.ShouldNotBeNull();
             result.Code.ShouldBe(AccountingDomainErrorCodes.CodeIsInUse);
+        }
+        [Fact]
+        public async Task Can_Get_Payable_Receivable_Subject()
+        {
+            // Arrange
+            var settings = GetRequiredService<IAccountingSettingAppService>();
+            await settings.UpdateAsync(new AccountingSettingDto
+            {
+                AccountReceivableSubjectCode = _testData.SubjectArId.ToString(),
+                AccountPayableSubjectCode = _testData.SubjectApId.ToString()
+            });
+            // Act
+            var result = await _subjectAppService.GetListAsync(new SubjectFilterRequestDto
+            {
+                MaxResultCount = 10,
+                SkipCount = 0,
+                IsIncludePayableSubject = true,
+                IsIncludeReceivableSubject = true,
+            });
+            // Assert
+            result.ShouldNotBeNull();
+            result.Items.Count.ShouldBe(2);
+            result.TotalCount.ShouldBe(2);
+            result.Items.ShouldContain(item => item.Id == _testData.SubjectArId) ;
+            result.Items.ShouldContain(item => item.Id == _testData.SubjectApId);
         }
     }
 }
