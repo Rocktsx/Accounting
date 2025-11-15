@@ -19,7 +19,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
-    public class SubjectAppService : CrudAppService<Subject, SubjectDto, SubjectFilteredResultDto, Guid,
+    public class SubjectAppService : CrudAppService<Subject, SubjectDto, SubjectFilterResultDto, Guid,
         SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>, ISubjectAppService
     {
         public SubjectAppService(ISubjectRepository repository) : base(repository)

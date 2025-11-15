@@ -6,7 +6,7 @@ using Volo.Abp.Application.Services;
 
 namespace Accounting.Finance.Subjects
 {
-    public interface ISubjectAppService : IApplicationService, ICrudAppService<SubjectDto, SubjectFilteredResultDto, Guid,
+    public interface ISubjectAppService : IApplicationService, ICrudAppService<SubjectDto, SubjectFilterResultDto, Guid,
         SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>
     {
         Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync();

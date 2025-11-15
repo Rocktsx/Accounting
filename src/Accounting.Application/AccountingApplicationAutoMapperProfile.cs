@@ -32,7 +32,7 @@ public class AccountingApplicationAutoMapperProfile : Profile
         CreateMap<SubjectCategory,SubjectCategoryDto>();
         CreateMap<SubjectCategory, SubjectCategoryFilteredResultDto>();
         CreateMap<Subject, SubjectDto>();
-        CreateMap<Subject, SubjectFilteredResultDto>();
+        CreateMap<Subject, SubjectFilterResultDto>();
 
         CreateMap<Voucher, VoucherDto>();
         CreateMap<VoucherDetail, VoucherDetailDto>();
