@@ -155,6 +155,8 @@ namespace Accounting.Finance
                 receiveds.TryGetValue(item.DocNo, out paidNativeAmount);
                 var hasSubject = subjectDic.TryGetValue(item.SubjectId,
                     out var subject);
+                var paidAmount = item.CurrencyRate ==0? 0 : Math.Round(paidNativeAmount /
+                                    item.CurrencyRate, roundScale);
                 return new ReceivableDetailDto
                 {
                     SourceId = item.Id,
@@ -166,18 +168,16 @@ namespace Accounting.Finance
                     CurrencyCode = item.CurrencyCode,
                     CurrencyRate = item.CurrencyRate,
                     NativeAmount = item.NativeAmount,
-                    PaidAmount = Math.Round(paidNativeAmount /
-                                    item.CurrencyRate, roundScale),
+                    PaidAmount = paidAmount,
                     PaidNativeAmount = paidNativeAmount,
-                    CurrentPaid = 0,
-                    NativeCurrentPaid = 0,
+                    CurrentPaid = paidAmount,
+                    NativeCurrentPaid = paidNativeAmount,
                     SubjectCategoryCode = null,
                     AccType = hasSubject == true ?
                         subject.AccountType.Code : string.Empty,
                     AccTypeCategory = hasSubject == true ?
                         subject.AccountType.Category : AccountTypeTypes.Normal,
-                    OsAmount = item.ForeignAmount - Math.Round(
-                        paidNativeAmount / item.CurrencyRate, roundScale),
+                    OsAmount = item.ForeignAmount - paidAmount,
                     DueDate = item.DueDate
                 };
             });

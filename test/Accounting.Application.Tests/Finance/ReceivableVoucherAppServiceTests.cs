@@ -80,12 +80,16 @@ namespace Accounting.Finance
             var docNo1Item = result.Items.First(item => item.DocNo == _testData.DocNo1);
             docNo1Item.PaidAmount.ShouldBe(0);
             docNo1Item.PaidNativeAmount.ShouldBe(0);
+            docNo1Item.CurrentPaid.ShouldBe(0);
+            docNo1Item.NativeCurrentPaid.ShouldBe(0);
             docNo1Item.OsAmount.ShouldBe(_testData.DocNo1NativeAmount);
 
             var docNo2Item = result.Items.First(item => item.DocNo == _testData.DocNo2);
             var docNo2OsAmount = _testData.DocNo2Amount - _testData.DocNo2PaidAmount;
             docNo2Item.PaidAmount.ShouldBe(_testData.DocNo2PaidAmount);
             docNo2Item.PaidNativeAmount.ShouldBe(_testData.DocNo2PaidNativeAmount);
+            docNo2Item.CurrentPaid.ShouldBe(_testData.DocNo2PaidAmount);
+            docNo2Item.NativeCurrentPaid.ShouldBe(_testData.DocNo2PaidNativeAmount);
             docNo2Item.OsAmount.ShouldBe(docNo2OsAmount);
         }
         [Fact]
@@ -106,6 +110,8 @@ namespace Accounting.Finance
             item.PaidAmount.ShouldBe(_testData.DocNo2PaidAmount);
             item.PaidNativeAmount.ShouldBe(_testData.DocNo2PaidNativeAmount);
             item.OsAmount.ShouldBe(osAmount);
+            item.CurrentPaid.ShouldBe(_testData.DocNo2PaidAmount);
+            item.NativeCurrentPaid.ShouldBe(_testData.DocNo2PaidNativeAmount);
         }
         [Fact]
         public async Task Cannot_Generate_Details_With_Empty_Creditor()
