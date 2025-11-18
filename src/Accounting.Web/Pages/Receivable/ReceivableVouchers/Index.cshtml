@@ -29,9 +29,13 @@
         font-size: 1em;
     }
 
-    #details .items {
+    #details-tab-pane .items {
         overflow: auto;
     }
+
+    .select2-container--default .select2-results > .select2-results__options {
+        max-height: 350px;
+    } 
 </style>
 @section content_toolbar {
     @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
