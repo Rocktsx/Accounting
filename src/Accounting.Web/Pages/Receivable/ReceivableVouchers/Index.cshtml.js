@@ -558,6 +558,9 @@ $(function () {
     }
     
     const maxResultCount = 10
+    function formatRowDate(value) {
+        return value ? new Date(value).toLocaleDateString() : ''
+    }
 
     const modalTemplate = `
 <form ref="form"  class="needs-validation" novalidate>
@@ -856,7 +859,7 @@ $(function () {
                 <tbody>
                     <tr v-for="item in receipts.items || []" :key="item.docNo">
                         <td>{{ getItemType(item) }}</td>
-                        <td>{{ item.dueDate }}</td>
+                        <td>{{ formatRowDate(item.dueDate) }}</td>
                         <td>{{ item.docNo }}</td>
                         <td>{{ item.currencyCode }}</td>
                         <td>{{ renderAmount(item.currencyRate, 7) }}</td>
@@ -919,6 +922,7 @@ $(function () {
         methods: {
             renderAmount,
             l,
+            formatRowDate,
             fullPay(item) {
                 const { currencyRate, foreignAmount } = item;
                 const foreignAmt = Number(foreignAmount);
@@ -1478,12 +1482,10 @@ $(function () {
         methods: {
             l,
             renderAmount,
+            formatRowDate,
             addDetail() {
                 this.$emit('add-detail');
-            },
-            formatRowDate(value) {
-                return value ? new Date(value).toLocaleDateString() : ''
-            },
+            }
         }
     }
 
