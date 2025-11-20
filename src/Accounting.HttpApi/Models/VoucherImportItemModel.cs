@@ -1,12 +1,9 @@
-﻿using Accounting.Finance;
-using Accounting.Finance.Vouchers;
-using AutoMapper;
+﻿using Accounting.Finance; 
 using Magicodes.ExporterAndImporter.Core;
 using System;
 
 namespace Accounting.Models
 {
-    [AutoMap(typeof(VoucherImportItemDto), ReverseMap = true)]
     public class VoucherImportItemModel
     {
         [ImporterHeader(Name = "Group No.")]

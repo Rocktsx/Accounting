@@ -11,8 +11,7 @@ namespace Accounting.Common
         public Guid? TenantId { get; set; }
         public FunctionCodes FunctionCode { get; set; }
         public string Prefix { get; set; }
-        public int LastNumber { get; set; }
-
+        public int LastNumber { get; set; } 
         public string GetKey()
         {
             return GetKey(TenantId, FunctionCode, Prefix);

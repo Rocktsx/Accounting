@@ -1,11 +1,7 @@
-﻿using Accounting.Finance.SubjectCategories;
-using AutoMapper;
-using Magicodes.ExporterAndImporter.Core;
+﻿using Magicodes.ExporterAndImporter.Core;
 
 namespace Accounting.Models
 {
-    [AutoMap(typeof(SubjectCategoryImportDto), ReverseMap =true)]     
-    
     public class SubjectCategoryImportModel
     {
         [ImporterHeader(Name = "Code")]

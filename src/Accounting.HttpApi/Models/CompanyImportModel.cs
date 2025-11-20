@@ -1,10 +1,7 @@
-﻿using Accounting.BasicData.Companies;
-using AutoMapper;
-using Magicodes.ExporterAndImporter.Core; 
+﻿using Magicodes.ExporterAndImporter.Core; 
 
 namespace Accounting.Models
 {
-    [AutoMap(typeof(CompanyImportDto), ReverseMap = true)]
     public class CompanyImportModel
     {
         [ImporterHeader(Name = "Code")]

@@ -105,6 +105,15 @@ namespace Accounting.Finance
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory", category.ParentId));
             }
         }
+        protected override SubjectCategoryFilteredResultDto MapToGetListOutputDto(SubjectCategory entity)
+        {
+            var item = base.MapToGetListOutputDto(entity);
+            if(entity.AccountType != null)
+            {
+                item.AccountType = ObjectMapper.Map<AccountType, AccountTypeSimpleDto>(entity.AccountType);
+            }
+            return item;
+        }
         public override async Task<PagedResultDto<SubjectCategoryFilteredResultDto>> GetListAsync(SubjectCategoryFilteredRequestDto input)
         {
             var reuslt = await base.GetListAsync(input);

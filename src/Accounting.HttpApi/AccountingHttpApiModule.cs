@@ -8,32 +8,28 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.Localization;
 using Volo.Abp.TenantManagement;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Microsoft.Extensions.DependencyInjection;
 using Magicodes.ExporterAndImporter.Csv;
 using Magicodes.ExporterAndImporter.Excel;
 namespace Accounting;
 
- [DependsOn(
-    typeof(AccountingApplicationContractsModule),
-    typeof(AbpPermissionManagementHttpApiModule),
-    typeof(AbpSettingManagementHttpApiModule),
-    typeof(AbpAccountHttpApiModule),
-    typeof(AbpIdentityHttpApiModule),
-    typeof(AbpTenantManagementHttpApiModule),
-    typeof(AbpFeatureManagementHttpApiModule)
-    )]
+[DependsOn(
+   typeof(AccountingApplicationContractsModule),
+   typeof(AbpPermissionManagementHttpApiModule),
+   typeof(AbpSettingManagementHttpApiModule),
+   typeof(AbpAccountHttpApiModule),
+   typeof(AbpIdentityHttpApiModule),
+   typeof(AbpTenantManagementHttpApiModule),
+   typeof(AbpFeatureManagementHttpApiModule)
+   )]
 public class AccountingHttpApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        ConfigureLocalization();
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<AccountingHttpApiModule>();
-        });
+        ConfigureLocalization(); 
         context.Services.AddScoped<ICsvImporter, CsvImporter>();
-        context.Services.AddScoped<IExcelImporter,  ExcelImporter>();
+        context.Services.AddScoped<IExcelImporter, ExcelImporter>();
     }
 
     private void ConfigureLocalization()

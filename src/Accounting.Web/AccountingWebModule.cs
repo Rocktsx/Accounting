@@ -38,7 +38,7 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.PageToolbars;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Caching;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
@@ -79,8 +79,8 @@ namespace Accounting.Web;
     typeof(AbpAspNetCoreSerilogModule)
 )]
 [DependsOn(typeof(AbpDistributedLockingModule))]
-    [DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
-    public class AccountingWebModule : AbpModule
+[DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
+public class AccountingWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -152,7 +152,7 @@ namespace Accounting.Web;
         ConfigureUrls(configuration);
         ConfigureHealthChecks(context);
         ConfigureAuthentication(context);
-        ConfigureAutoMapper();
+        //ConfigureAutoMapper();
         ConfigureVirtualFileSystem(hostingEnvironment);
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
@@ -215,13 +215,13 @@ namespace Accounting.Web;
         });
     }
 
-    private void ConfigureAutoMapper()
-    {
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<AccountingWebModule>();
-        });
-    }
+    //private void ConfigureAutoMapper()
+    //{
+    //    Configure<AbpAutoMapperOptions>(options =>
+    //    {
+    //        options.AddMaps<AccountingWebModule>();
+    //    });
+    //}
 
     private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
     {
@@ -273,16 +273,16 @@ namespace Accounting.Web;
             }
         );
     }
-    
+
     private void ConfigureDistributedCacheAndLockOptions(ServiceConfigurationContext context)
     {
         Configure<AbpDistributedCacheOptions>(options =>
         {
-            options.KeyPrefix = AccountingResource.Name;  
+            options.KeyPrefix = AccountingResource.Name;
         });
-       
-        var configuration = context.Services.GetConfiguration();  
-       
+
+        var configuration = context.Services.GetConfiguration();
+
         Configure<AbpDistributedLockOptions>(options =>
         {
             options.KeyPrefix = AccountingResource.Name;
@@ -290,16 +290,16 @@ namespace Accounting.Web;
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
             var isEnabled = configuration.GetValue<bool>("Redis:IsEnabled");
-            if(isEnabled)
+            if (isEnabled)
             {
                 var connection = ConnectionMultiplexer
                .Connect(configuration["Redis:Configuration"]);
                 return new
                     RedisDistributedSynchronizationProvider(connection.GetDatabase());
             }
-           return new WaitHandleDistributedSynchronizationProvider();
+            return new WaitHandleDistributedSynchronizationProvider();
         });
-      
+
 
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

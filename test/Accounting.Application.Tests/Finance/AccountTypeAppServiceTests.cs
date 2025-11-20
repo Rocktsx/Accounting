@@ -187,7 +187,7 @@ namespace Accounting.Finance
             // Act
             await _accountTypeAppService.DeleteAsync(newDto.Id);
             // Assert
-            var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            var exception = await Assert.ThrowsAsync<EntityNotFoundException<AccountType>>(async () =>
             {
                 await _accountTypeAppService.GetAsync(newDto.Id);
             });

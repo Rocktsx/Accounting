@@ -1,11 +1,8 @@
-﻿using Accounting.Finance.Subjects;
-using AutoMapper;
-using Magicodes.ExporterAndImporter.Core; 
+﻿using Magicodes.ExporterAndImporter.Core; 
 using System.ComponentModel.DataAnnotations; 
 
 namespace Accounting.Models
 {
-    [AutoMap(typeof(SubjectImportDto),ReverseMap = true)]
     internal class SubjectImportModel
     {
         [Required]

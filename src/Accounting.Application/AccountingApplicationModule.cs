@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Volo.Abp.Account;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.DistributedLocking;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
@@ -27,11 +27,7 @@ namespace Accounting;
 public class AccountingApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
-    {
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<AccountingApplicationModule>();
-        });
+    { 
         context.Services.AddTransient<CodeGenerator>();
     }
 }

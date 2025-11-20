@@ -77,7 +77,7 @@ namespace Accounting.BasicData
                 await currencyAppService.DeleteAsync(dto.Id);
 
                 // assert 
-                var exception = await Assert.ThrowsAsync<EntityNotFoundException>( async () =>
+                var exception = await Assert.ThrowsAsync<EntityNotFoundException<Currency>>( async () =>
                 {
                     await currencyAppService.GetAsync(dto.Id);
                 });

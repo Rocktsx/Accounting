@@ -78,7 +78,7 @@ namespace Accounting.Finance
             await _accountingPeriodAppService.DeleteAsync(newDto.Id);
 
             // Assert 
-            var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            var exception = await Assert.ThrowsAsync<EntityNotFoundException<AccountingPeriod>>(async () =>
             {
                 await _accountingPeriodAppService.GetAsync(newDto.Id);
             });
@@ -172,7 +172,7 @@ namespace Accounting.Finance
                 IsCurrentPeriod = true
             };
             // Act
-            var exception = await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            var exception = await Assert.ThrowsAsync<EntityNotFoundException<AccountingPeriod>>(async () =>
             {
                 await _accountingPeriodAppService.UpdateAsync(dtoId, updateDto);
             });
