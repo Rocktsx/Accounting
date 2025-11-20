@@ -100,6 +100,7 @@ namespace Accounting.Finance
         private int HandleReceipts(List<VoucherDetailDto> result)
         {
             var sb = new StringBuilder();
+            var count = 0;
             var list = Input.Receipts.Where(item => item.NativeCurrentPaid > 0)
                 .Select(item =>
                 {
@@ -116,6 +117,10 @@ namespace Accounting.Finance
                         IsOriginal = false,
                         Description = $"{item.DebitorCreditor.GetShortName()} {item.DocNo}"
                     };
+                    if(count != 0) {
+                        sb.Append(' ');
+                    }
+                    count++;
                     sb.Append(obj.Description);
                     return obj;
                 });
