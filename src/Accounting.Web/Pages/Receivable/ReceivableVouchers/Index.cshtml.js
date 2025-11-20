@@ -22,7 +22,7 @@ $(function () {
     }
 
     const emptyReceipts = { items: [], totalCount: 0, currentPage: 0 }
-    const getRowId = (function(){
+    const getRowId = (function () {
         let rowId = 0;
         return function () {
             return rowId++;
@@ -47,7 +47,7 @@ $(function () {
             }
         });
     }
-  
+
     // 创建一个新的 store 实例 
     const store = new Vuex.Store({
         state() {
@@ -96,7 +96,7 @@ $(function () {
                         subSubjectName: '',
                         isSubSubjectType: false,
                         accountTypeCategory: 0,
-                        rowid : getRowId()
+                        rowid: getRowId()
                     };
                 });
                 state.editItem = { ...others, details: newDetails, creditorId };
@@ -117,7 +117,7 @@ $(function () {
                         item.accountTypeCategory = category;
                         item.subjectName = code + ' - ' + name;
                         if (category != accountTypes.receivable && category != accountTypes.payable) {
-                            state.payments.push({...item});
+                            state.payments.push({ ...item });
                         }
                     }
                     const company = state.companyMap[item.subSubjectCode];
@@ -126,7 +126,7 @@ $(function () {
                         item.subSubjectName = code + ' - ' + name;
                     }
                 });
-               
+
             },
             setCompanies(state, payload) {
                 const { items } = payload;
@@ -327,7 +327,7 @@ $(function () {
                 }
                 voucherRequests.getReceivableDetails(id).then(result => {
                     const items = result || [];
-                    store.commit('setReceipts', { items: items, totalCount: items.length, currentPage : 1 })
+                    store.commit('setReceipts', { items: items, totalCount: items.length, currentPage: 1 })
                 });
             }
             if (!store.getters.isRequestData) {
@@ -556,7 +556,7 @@ $(function () {
             rowid: getRowId()
         };
     }
-    
+
     const maxResultCount = 10
     function formatRowDate(value) {
         return value ? new Date(value).toLocaleDateString() : ''
@@ -1031,10 +1031,26 @@ $(function () {
                 })
             },
             generateDetails() {
+                const receipts = this.receipts.items.filter(item => item.currentPaid > 0);
+                const payments = this.payments.filter(item =>
+                    item.foreignAmount > 0
+                    && item.subjectId
+                    && item.currencyCode
+                    && item.currencyRate > 0
+                );
+                const creditorId = this.editItem.creditorId;
+                if (!creditorId) {
+                    abp.message.info(this.l('PleaseEnterCreditor'));
+                    return
+                }
+                if (payments.length === 0) {
+                    abp.message.info(this.l('PleaseEnterPaymentItemInfo'));
+                    return
+                }
                 const param = {
-                    creditor: this.editItem.creditorId,
-                    receipts: this.receipts.items,
-                    payments: this.payments
+                    creditor: creditorId,
+                    receipts,
+                    payments
                 };
                 voucherRequests.generateDetails
                     (param).then(result => {

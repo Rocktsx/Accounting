@@ -276,6 +276,9 @@
     "FullPay": "全付",
     "Unpaid": "未付",
     "EditReceivableVoucher": "编辑收款传票",
-    "PaymentReference": "参考"
+    "PaymentReference": "参考",
+    "PleaseChoicePaymentItem": "请选择一个付款项",
+    "PleaseEnterCreditor": "请输入贷方",
+    "PleaseEnterPaymentItemInfo": "请输入付款信息"
   }
 }

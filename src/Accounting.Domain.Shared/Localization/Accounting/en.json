@@ -243,6 +243,8 @@
     "Unpaid": "Unpaid",
     "EditReceivableVoucher": "Edit Receivable Voucher",
     "PleaseChoicePaymentItem": "Please choice a payment item",
-    "PaymentReference": "Payment Reference"
+    "PaymentReference": "Payment Reference",
+    "PleaseEnterCreditor": "Please enter a creditor",
+    "PleaseEnterPaymentItemInfo": "Please enter payment information"
   }
 }
