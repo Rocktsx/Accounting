@@ -101,6 +101,8 @@ $(function () {
                 });
                 state.editItem = { ...others, details: newDetails, creditorId };
                 state.editItem.voucherDate = formatDate(state.editItem.voucherDate);
+                state.payments = [];
+                state.receipts = emptyReceipts;
             },
             setSubjects(state, payload) {
                 const { subjects } = payload;
