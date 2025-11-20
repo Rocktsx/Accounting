@@ -47,7 +47,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
                     CurrencyRate = 1m,
                     ForeignAmount = 1000m,
                     NativeAmount = 1000m,
-                    Description = "Rent & Rates 2025 01",
+                    Description = _testData.VoucherDescription3,
                     SubjectId = _testData.SubjectBankId,
                     DebitorCreditor = DebitorCreditor.Creditor
                 },
@@ -57,7 +57,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
                     CurrencyRate = 1m,
                     ForeignAmount = 1000m,
                     NativeAmount = 1000m,
-                    Description = "Rent & Rates 2025 01",
+                    Description = _testData.VoucherDescription3,
                     SubjectId = _testData.SubjectRentId,
                     DebitorCreditor = DebitorCreditor.Debitor,
                     ItemQty = 0,
@@ -364,20 +364,20 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
     {
         // Arrange
         var createDto = await GetCreateDtoAsync();
-        createDto.Prefix = "TV";
+        createDto.Prefix = _testData.VoucherPrefixTv;
         var dto = await _voucherAppService.CreateAsync(createDto);
 
         //Act
         var result = await _voucherAppService.GetListAsync(new VoucherFilterRequestDto()
         {
             MaxResultCount = 10,
-            Prefix = "TV"
+            Prefix = createDto.Prefix
         });
 
         // Assert
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(1);
-        result.Items.First().Prefix.ShouldBe("TV");
+        result.Items.First().Prefix.ShouldBe(createDto.Prefix);
     }
     [Fact]
     public async Task Can_Get_Voucher_List_Start_No()

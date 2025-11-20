@@ -15,43 +15,43 @@ namespace Accounting.Finance
     where TStartupModule : IAbpModule
     {
         private readonly ITransferVoucherAppService _transferVoucherAppService;
-        private readonly ISubjectAppService _subjectAppService;
-        private const string BankSubjectCode = "2801";
-        private const string RentAndRatesSubjectCode = "8021";
+        private readonly ISubjectAppService _subjectAppService;  
+        private readonly AccountingTestData _testData;
 
         public TransferVoucherAppServiceTests()
         {
             _transferVoucherAppService = GetRequiredService<ITransferVoucherAppService>();
             _subjectAppService = GetRequiredService<ISubjectAppService>();
+            _testData = GetRequiredService<AccountingTestData>();
         }
         private async Task<VoucherCreateDto> GetCreateDtoAsync()
         {
             var subjects = await _subjectAppService.GetSimpleListAsync();
             var dto = new VoucherCreateDto()
             {
-                Prefix = "JV",
+                Prefix = _testData.VoucherPrefix,
                 VoucherType = VoucherType.JournalVoucher,
                 VoucherDate = new DateTime(2025, 1, 12),
                 Details =
                 [
                     new VoucherDetailCreateDto()
                 {
-                    CurrencyCode = "RMB",
+                    CurrencyCode = _testData.RmbCurrency,
                     CurrencyRate = 1m,
                     ForeignAmount = 1000m,
                     NativeAmount = 1000m,
-                    Description = "Rent & Rates 2025 01",
-                    SubjectId = subjects.First(item => item.Code == BankSubjectCode).Id,
+                    Description = _testData.VoucherDescription3,
+                    SubjectId = subjects.First(item => item.Code == _testData.SubjectBankCode).Id,
                     DebitorCreditor = DebitorCreditor.Creditor
                 },
                 new VoucherDetailCreateDto()
                 {
-                    CurrencyCode = "RMB",
+                    CurrencyCode = _testData.RmbCurrency,
                     CurrencyRate = 1m,
                     ForeignAmount = 1000m,
                     NativeAmount = 1000m,
-                    Description = "Rent & Rates 2025 01",
-                    SubjectId = subjects.First(item => item.Code == RentAndRatesSubjectCode).Id,
+                    Description =_testData.VoucherDescription3,
+                    SubjectId = subjects.First(item => item.Code == _testData.SubjectRentCode).Id,
                     DebitorCreditor = DebitorCreditor.Debitor,
                     ItemQty = 0,
                     IsOriginal = false
@@ -92,7 +92,7 @@ namespace Accounting.Finance
 
             // Assert
             result.ShouldNotBeNull();
-            result.Items.Count.ShouldBe(2);
+            result.Items.Count.ShouldBe(_testData.InsertedVouchers);
         }
     }
 }

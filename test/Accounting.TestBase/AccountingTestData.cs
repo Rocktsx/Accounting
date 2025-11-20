@@ -70,7 +70,9 @@ namespace Accounting
 
         public string VoucherCode { get; } = "JV-0001";
         public string VoucherPrefix { get; } = "JV";
+        public string VoucherPrefixTv { get; } = "TV";
         public string VoucherDescription { get; } = "Rent & Rates 2011 01";
+        public string VoucherDescription3 { get; } = "Rent & Rates 2025 01";
         public string True { get; } = "true";
         public string DocNo1 { get; } = "INV-0001";
         public decimal DocNo1NativeAmount { get; } = 12600.0m;
