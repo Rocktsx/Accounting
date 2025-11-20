@@ -1557,6 +1557,7 @@ $(function () {
             ...Vuex.mapMutations(['showModal', 'saveDetailItem', 'setReceipts',
                 'removeDetailItem']),
             input(value) {
+                this.showDetailTab = false;
                 this.showModal({ isShowModal: value })
             },
             validate() {
