@@ -1,4 +1,5 @@
-﻿using Accounting.Finance.Settings;
+﻿using Accounting.Finance.AccountTypes;
+using Accounting.Finance.Settings;
 using Accounting.Finance.Subjects;
 using Shouldly;
 using System;
@@ -19,20 +20,23 @@ namespace Accounting.Finance
     {
         private readonly ISubjectAppService _subjectAppService;
         private readonly AccountingTestData _testData;
+        private readonly IAccountTypeRepository _accountTypeRepository;
         public SubjectAppServiceTests()
         {
             _subjectAppService = GetRequiredService<ISubjectAppService>();
             _testData = GetRequiredService<AccountingTestData>();
+            _accountTypeRepository = GetRequiredService<IAccountTypeRepository>();
         }
-        private SubjectCreateDto GetCreateDto(string code, string name, string otherName, string description, int? seqCode)
+        private async Task<SubjectCreateDto> GetCreateDtoAsync(string code, string name, string otherName, string description, int? seqCode)
         {
+            var bankAccountType = await _accountTypeRepository.GetAsync(item => item.Code == _testData.AccountTypeBank); ;
             return new SubjectCreateDto
             {
                 Code = code,
                 Name = name,
                 OtherName = otherName,
                 SubjectCategoryId = null,
-                AccountTypeId = null,
+                AccountTypeId = bankAccountType.Id,
                 DebitorCreditor = DebitorCreditor.Creditor,
                 CurrencyCode = _testData.UsdCurrency,
                 Description = description,
@@ -44,8 +48,8 @@ namespace Accounting.Finance
         }
         private async Task<Tuple<SubjectCreateDto, SubjectCreateDto, SubjectDto, SubjectDto>> InsertNewSubjectsAsync()
         {
-            var input1 = GetCreateDto("3001", "Cash", "Cash Account222", "Main cash account", 1);
-            var input2 = GetCreateDto("3002", "Bank", "Bank Account222", "Main bank account", 2);
+            var input1 = await GetCreateDtoAsync("3001", "Cash", "Cash Account222", "Main cash account", 1);
+            var input2 = await GetCreateDtoAsync("3002", "Bank", "Bank Account222", "Main bank account", 2);
             var dto1 = await _subjectAppService.CreateAsync(input1);
             var dto2 = await _subjectAppService.CreateAsync(input2);
 
@@ -55,7 +59,7 @@ namespace Accounting.Finance
         public async Task Can_Create_A_Subject()
         {
             // Arrange
-            var input = GetCreateDto("3001", "Cash", "Cash Account222", "Main cash account", 1);
+            var input = await GetCreateDtoAsync("3001", "Cash", "Cash Account222", "Main cash account", 1);
             // Act
             var dto = await _subjectAppService.CreateAsync(input);
             // Assert
@@ -76,7 +80,7 @@ namespace Accounting.Finance
         public async Task Cannot_Create_A_SubjectC_With_Empty_Code()
         {
             // Arrange
-            var input = GetCreateDto(string.Empty, "Cash", "Cash Account222", "Main cash account", 1);
+            var input = await GetCreateDtoAsync(string.Empty, "Cash", "Cash Account222", "Main cash account", 1);
             // Act
             var exception = await Should.ThrowAsync<AbpValidationException>(async () =>
             {
@@ -90,7 +94,7 @@ namespace Accounting.Finance
         public async Task Cannot_Create_A_Subject_With_Empty_Name()
         {
             // Arrange
-            var input = GetCreateDto("30021", string.Empty, "Cash Account", "Main cash account", 1);
+            var input = await GetCreateDtoAsync("30021", string.Empty, "Cash Account", "Main cash account", 1);
             // Act
             var exception = await Should.ThrowAsync<AbpValidationException>(async () =>
             {
@@ -104,7 +108,7 @@ namespace Accounting.Finance
         public async Task Can_Get_A_Subject()
         {
             // Arrange
-            var input = GetCreateDto("30021", "Cash2", "Cash Account33", "Main cash a11ccount", 1); ;
+            var input = await GetCreateDtoAsync("30021", "Cash2", "Cash Account33", "Main cash a11ccount", 1); ;
             var dto = await _subjectAppService.CreateAsync(input);
             // Act
             var fetchedDto = await _subjectAppService.GetAsync(dto.Id);
@@ -119,7 +123,7 @@ namespace Accounting.Finance
         public async Task Can_Update_A_Subject()
         {
             // Arrange
-            var input = GetCreateDto("10033", "Receivables", "Accounts Receivable", "Customer receivables", 2);
+            var input = await GetCreateDtoAsync("10033", "Receivables", "Accounts Receivable", "Customer receivables", 2);
             var dto = await _subjectAppService.CreateAsync(input);
             var updateInput = new SubjectUpdateDto
             {
@@ -151,7 +155,7 @@ namespace Accounting.Finance
         public async Task Can_Delete_A_Subject()
         {
             // Arrange
-            var input = GetCreateDto("10033", "Receivables", "Accounts Receivable", "Customer receivables", 2);
+            var input =await GetCreateDtoAsync("10033", "Receivables", "Accounts Receivable", "Customer receivables", 2);
             var dto = await _subjectAppService.CreateAsync(input);
 
             // Act
@@ -236,8 +240,8 @@ namespace Accounting.Finance
             result.ShouldNotBeNull();
             result.Items.Count.ShouldBe(2);
             result.TotalCount.ShouldBe(2);
-            result.Items.ShouldContain(x => x.Code == input1.Code);
-            result.Items.ShouldContain(x => x.Code == input2.Code);
+            result.Items.ShouldContain(x => x.Code == input1.Code && x.AccountType != null);
+            result.Items.ShouldContain(x => x.Code == input2.Code && x.AccountType != null);
         }
         [Fact]
         public async Task Can_Get_Filtered_Query_List_With_Id()

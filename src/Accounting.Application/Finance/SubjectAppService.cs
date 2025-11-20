@@ -73,12 +73,12 @@ namespace Accounting.Finance
             queryable = queryable.WhereIf(input.SubjectCategoryId != null,
                 x => x.SubjectCategoryId == input.SubjectCategoryId);
 
-            if(input.IsIncludeReceivableSubject == true || input.IsIncludePayableSubject == true)
+            if (input.IsIncludeReceivableSubject == true || input.IsIncludePayableSubject == true)
             {
-                var accountingSettings =LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
-                if(input.IsIncludeReceivableSubject == true)
+                var accountingSettings = LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
+                if (input.IsIncludeReceivableSubject == true)
                 {
-                     var receivableSubjectCode = await accountingSettings.GetAccountReceivableSubjectCodeAsync();
+                    var receivableSubjectCode = await accountingSettings.GetAccountReceivableSubjectCodeAsync();
                     input.AddSubjectId(receivableSubjectCode);
                 }
                 if (input.IsIncludePayableSubject == true)
@@ -87,7 +87,7 @@ namespace Accounting.Finance
                     input.AddSubjectId(payableSubjectCode);
                 }
             }
-            
+
             queryable = queryable.WhereIf(input.SubjectIds != null,
                 item => input.SubjectIds.Contains(item.Id));
 
@@ -95,6 +95,15 @@ namespace Accounting.Finance
                 item => item.IsPayMethod == input.IsPaymentMethod);
 
             return queryable;
+        }
+        protected override SubjectFilterResultDto MapToGetListOutputDto(Subject entity)
+        {
+            var item = base.MapToGetListOutputDto(entity);
+            if (entity.AccountType != null)
+            {
+                item.AccountType = ObjectMapper.Map<AccountType, AccountTypeSimpleDto>(entity.AccountType);
+            }
+            return item;
         }
 
         [Authorize(AccountingPermissions.Subjects.Default)]
