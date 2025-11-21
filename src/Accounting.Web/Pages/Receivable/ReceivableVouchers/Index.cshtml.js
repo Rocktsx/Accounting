@@ -238,7 +238,7 @@ $(function () {
         };
     };
     const prefix = 'RV'
-    const editHandle = function (id, isCopy) {
+    const editHandle = function (id) {
         const requests = [];
         if (id) {
             requests.push(voucherRequests.get(id));
@@ -278,16 +278,6 @@ $(function () {
             const item = results[0];
             if (!item.details) {
                 item.details = [];
-            }
-            if (isCopy) {
-                item.id = null;
-                item.code = '';
-                item.prefix = prefix;
-                item.genNo = 0;
-                item.details.forEach(detail => {
-                    detail.id = null;
-                    detail.voucherId = null;
-                })
             }
             store.commit('setEditItem', { item });
             if (id) {
@@ -380,14 +370,6 @@ $(function () {
                                         editHandle(data.record.id);
                                     },
                                     visible: isGrantedEdit
-                                },
-                                {
-                                    text: l('Copy'),
-                                    iconClass: '',
-                                    action: function (data) {
-                                        editHandle(data.record.id, true);
-                                    },
-                                    visible: abp.auth.isGranted('Accounting.Receivable.ReceivableVoucher.Creation')
                                 },
                                 {
                                     text: l('UpdateStatus'),
