@@ -78,7 +78,10 @@ $(function () {
                 state.count++
             },
             showModal(state, payload) {
-                state.isShowModal = payload.isShowModal;
+                const { id, isShowModal } = payload
+                state.isShowModal = isShowModal;
+                state.editItem.id = id;
+                state.editItem.creditorId = '';
             },
             setIsEdit(state, payload) {
                 state.isEdit = payload.isEdit;
@@ -270,7 +273,7 @@ $(function () {
             }))
         }
 
-        store.commit('showModal', { isShowModal: true });
+        store.commit('showModal', { isShowModal: true, id });
         Promise.all(requests).then(results => {
             const item = results[0];
             if (!item.details) {
@@ -1260,6 +1263,7 @@ $(function () {
             subjectChange() {
                 const subject = this.subjectMap[this.item.subjectId];
                 this.item.isSubSubjectType = false;
+                this.item.isOriginal = true;
                 if (subject) {
                     const { isSubSubjectType, accountType, debitorCreditor, currencyCode, name, code } = subject;
                     this.item.isSubSubjectType = isSubSubjectType;
@@ -1273,6 +1277,7 @@ $(function () {
                     }
                     this.setNativeAmount();
                     if (this.item.isSubSubjectType) {
+                        this.item.isOriginal = false;
                         this.$nextTick(() => this.initCompanySelect(this.item.accountTypeCategory == this.accountTypes.receivable))
                     }
                 }
@@ -1281,7 +1286,7 @@ $(function () {
                 this.item.dueDate = null;
             },
             arapFieldChange() {
-                const { isSubSubjectType, subSubjectCode, docNo, dueDate } = this.item
+                const { isSubSubjectType, subSubjectCode, docNo } = this.item
                 if (isSubSubjectType) {
                     if (subSubjectCode) {
                         this.errors.subSubjectCode = false;
@@ -1509,7 +1514,7 @@ $(function () {
 
     const editModalTemplate = `<div><Modal  v-if="isShowModal" :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditReceivableVoucher' : 'NewReceivableVoucher' )">
 <div id="content">
-    <EditHeader v-if="isShowHeader" :errors="errors" @creditor-change="getDetailsByDebitor" />
+    <EditHeader v-if="isShowHeader && (editItem.id && editItem.creditorId  || !editItem.id )" :errors="errors" @creditor-change="getDetailsByDebitor" />
     <ul class="nav nav-tabs"  id="detailTab" role="tablist">
       <li class="nav-item" role="presentation">
         <a :class="[showDetailTab? 'active':'']" class="nav-link" aria-current="page" href="#" data-bs-toggle="tab" data-bs-target="#details-tab-pane"
