@@ -132,7 +132,7 @@ namespace Accounting.Finance
             // Arrange
             var input = new GenerateReceivableDetailRequestDto()
             {
-                Creditor = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 Payments = [new() { NativeAmount = 0 }]
             };
 
@@ -150,7 +150,7 @@ namespace Accounting.Finance
             var receipt = GetReceivableItem();
             var input = new GenerateReceivableDetailRequestDto()
             {
-                Creditor = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 Payments = [payment],
                 Receipts = [receipt]
             };
@@ -187,7 +187,7 @@ namespace Accounting.Finance
             await InitArSubject();
             var input = new GenerateReceivableDetailRequestDto()
             {
-                Creditor = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 Payments = [payment],
                 Receipts = []
             };
@@ -225,7 +225,7 @@ namespace Accounting.Finance
             await InitArSubject();
             var input = new GenerateReceivableDetailRequestDto()
             {
-                Creditor = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 Payments = [payment],
                 Receipts = [receipt]
             };
@@ -270,7 +270,7 @@ namespace Accounting.Finance
             await InitArSubject();
             var input = new GenerateReceivableDetailRequestDto()
             {
-                Creditor = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 Payments = [GetPaymentItem()],
                 Receipts = []
             };
@@ -289,7 +289,7 @@ namespace Accounting.Finance
             // Arrange  
             var input = new GenerateReceivableDetailRequestDto()
             {
-                Creditor = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 Payments = [GetPaymentItem(paymentReference: _testData.PaymentReference)],
                 Receipts = []
             };

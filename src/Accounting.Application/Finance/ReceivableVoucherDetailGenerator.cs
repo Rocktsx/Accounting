@@ -36,7 +36,7 @@ namespace Accounting.Finance
            )
         {
             Check.NotNull(Input, nameof(Input));
-            Check.NotDefaultOrNull(Input.Creditor, nameof(Input.Creditor));
+            Check.NotDefaultOrNull(Input.CreditorId, nameof(Input.CreditorId));
 
             var input = Input;
             var payments = input.Payments.Where(item => item.NativeAmount > 0);
@@ -113,7 +113,7 @@ namespace Accounting.Finance
                         CurrencyRate = item.CurrencyRate,
                         ForeignAmount = item.CurrentPaid,
                         NativeAmount = item.NativeCurrentPaid,
-                        SubSubjectCode = Input.Creditor,
+                        SubSubjectCode = Input.CreditorId,
                         IsOriginal = false,
                         Description = $"{item.DebitorCreditor.GetShortName()} {item.DocNo}"
                     };
@@ -151,7 +151,7 @@ namespace Accounting.Finance
                     CurrencyRate = item.CurrencyRate,
                     ForeignAmount = item.ForeignAmount,
                     NativeAmount = item.NativeAmount,
-                    SubSubjectCode = Input.Creditor,
+                    SubSubjectCode = Input.CreditorId,
                     PaymentReference = item.PaymentReference,
                     Description = $"{DepositText} {item.PaymentReference}"
                 });
@@ -183,7 +183,7 @@ namespace Accounting.Finance
                 CurrencyRate = item.CurrencyRate,
                 ForeignAmount = Math.Round(balance / item.CurrencyRate, roundScale),
                 NativeAmount = balance,
-                SubSubjectCode = Input.Creditor,
+                SubSubjectCode = Input.CreditorId,
                 PaymentReference = paymentReference,
                 Description = $"{DepositText} {paymentReference}"
             });

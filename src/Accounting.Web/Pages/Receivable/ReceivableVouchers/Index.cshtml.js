@@ -1035,7 +1035,7 @@ $(function () {
                     return
                 }
                 const param = {
-                    creditor: creditorId,
+                    creditorId: creditorId,
                     receipts,
                     payments
                 };

@@ -15,6 +15,6 @@ namespace Accounting.Finance.ReceivableVouchers
         /// </summary>
         public IEnumerable<ReceivableDetailDto> Receipts { get; set; } = [];
 
-        public Guid? Creditor { get; set; }
+        public Guid? CreditorId { get; set; }
     }
 }
