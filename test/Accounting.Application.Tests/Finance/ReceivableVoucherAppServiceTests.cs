@@ -63,14 +63,14 @@ namespace Accounting.Finance
         public async Task Can_Get_Receivable_Details()
         {
             // Arrange
-            var dto = new ReceivableDetailsByDebitorRequestDto
+            var dto = new ReceivableDetailsByCreditorRequestDto
             {
-                DebitorId = _testData.ClientId,
+                CreditorId = _testData.ClientId,
                 MaxResultCount = 10
             };
 
             // Act
-            var result = await _service.GetReceivableDetailsByDebitorAsync(dto);
+            var result = await _service.GetReceivableDetailsByCreditorAsync(dto);
 
             // Assert
             result.ShouldNotBeNull();

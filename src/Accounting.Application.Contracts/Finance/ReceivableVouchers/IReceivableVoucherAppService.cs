@@ -1,8 +1,6 @@
 ﻿using Accounting.Finance.Vouchers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -15,8 +13,8 @@ namespace Accounting.Finance.ReceivableVouchers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<ReceivableDetailDto>> GetReceivableDetailsByDebitorAsync
-            (ReceivableDetailsByDebitorRequestDto input);
+        Task<PagedResultDto<ReceivableDetailDto>> GetReceivableDetailsByCreditorAsync
+            (ReceivableDetailsByCreditorRequestDto input);
         /// <summary>
         /// 通过传票id获取收款明细
         /// </summary>

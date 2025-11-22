@@ -1619,12 +1619,12 @@ $(function () {
             },
             getDetailsByDebitor(newPage) {
                 const params = {
-                    debitorId: this.editItem.creditorId,
+                    creditorId: this.editItem.creditorId,
                     maxResultCount,
                     skipCount: (newPage - 1) * maxResultCount
                 };
                 voucherRequests
-                    .getReceivableDetailsByDebitor(params)
+                    .getReceivableDetailsByCreditor(params)
                     .then(response => {
                         this.setReceipts({ ...(response || {}), currentPage: newPage });
                     }).catch(() => { });

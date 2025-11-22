@@ -59,9 +59,9 @@ namespace Accounting.Finance
         /// <returns></returns>
         [Authorize(AccountingPermissions.ReceivableVouchers.Default)]
         public async Task<PagedResultDto<ReceivableDetailDto>>
-            GetReceivableDetailsByDebitorAsync(ReceivableDetailsByDebitorRequestDto input)
+            GetReceivableDetailsByCreditorAsync(ReceivableDetailsByCreditorRequestDto input)
         {
-            if (input.DebitorId.IsEmptyOrNull())
+            if (input.CreditorId.IsEmptyOrNull())
             {
                 return new PagedResultDto<ReceivableDetailDto>();
             }
@@ -71,7 +71,7 @@ namespace Accounting.Finance
 
             var detailQueryable = queryable
                 .SelectMany(item => item.Details)
-                .Where(item => item.SubSubjectCode == input.DebitorId);
+                .Where(item => item.SubSubjectCode == input.CreditorId);
 
             var notReceivedQueryable = detailQueryable
                 .GroupBy(item => new { item.DocNo })
