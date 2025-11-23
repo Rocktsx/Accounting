@@ -194,57 +194,117 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
                 _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
                 string.Empty);
 
-            var arVoucher1 = new Voucher(_guidGenerator.Create(),
-                new DateOnly(year, 2, 12), VoucherType.JournalVoucher,
-                VoucherStatus.Draft, context.TenantId);
-            arVoucher1.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 2);
-            arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
-                null, _testData.VoucherDescription, DebitorCreditor.Creditor,
-                _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
-                _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
-                string.Empty);
-            arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
-                _testData.ClientId, _testData.VoucherDescription2,
-                DebitorCreditor.Debitor, _testData.RmbCurrency, 1,
-                _testData.DocNo1NativeAmount, _testData.DocNo1NativeAmount,
-                _testData.DocNo1, new DateOnly(year, 11, 12), 0, true,
-                string.Empty);
-
-            var arVoucher2 = new Voucher(_guidGenerator.Create(),
-               new DateOnly(year, 2, 13), VoucherType.JournalVoucher,
-               VoucherStatus.Draft, context.TenantId);
-            arVoucher2.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 3);
-            arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
-                null, _testData.VoucherDescription2, DebitorCreditor.Creditor,
-                _testData.RmbCurrency, 1, _testData.DocNo2NativeAmount,
-                _testData.DocNo2NativeAmount, string.Empty, null, 0, true,
-                string.Empty);
-            arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
-                _testData.ClientId, _testData.VoucherDescription2,
-                DebitorCreditor.Debitor, _testData.UsdCurrency,
-                _testData.UsdCurrencyRate, _testData.DocNo2Amount,
-                _testData.DocNo2NativeAmount, _testData.DocNo2,
-                new DateOnly(year, 11, 17), 0, true, string.Empty);
-
-            var rvVoucher1 = new Voucher(_testData.VoucherRvId,
-              new DateOnly(year, 2, 23), VoucherType.ReceivableVoucher,
-              VoucherStatus.Draft, context.TenantId);
-            rvVoucher1.SetCode(_testData.VoucherRvCode, _testData.VoucherRvPrefix, 3);
-            rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
-                null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
-                _testData.RmbCurrency, 1, _testData.DocNo2PaidNativeAmount,
-                _testData.DocNo2PaidNativeAmount, string.Empty, null, 0, true,
-                string.Empty);
-            rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
-                _testData.ClientId, _testData.VoucherDescription2,
-                DebitorCreditor.Creditor, _testData.UsdCurrency,
-                _testData.UsdCurrencyRate, _testData.DocNo2PaidAmount,
-                _testData.DocNo2PaidNativeAmount, _testData.DocNo2, null, 0,
-                false, string.Empty);
+            var rvVouchers = GetReceivableVouchers(context?.TenantId);
+            var pvVouchers = GetPayableVouchers(context?.TenantId);
 
             await _voucherRepository.InsertManyAsync(
-                [voucher, arVoucher1, arVoucher2, rvVoucher1]);
+                [voucher, .. rvVouchers, .. pvVouchers]);
         }
     }
+    private Voucher[] GetReceivableVouchers(Guid? tenantId)
+    {
+        var year = _testData.AccountingPeriodYear;
+        var arVoucher1 = new Voucher(_guidGenerator.Create(),
+                new DateOnly(year, 2, 12), VoucherType.JournalVoucher,
+                VoucherStatus.Draft, tenantId);
+        arVoucher1.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 2);
+        arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            null, _testData.VoucherDescription, DebitorCreditor.Creditor,
+            _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
+            _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
+            string.Empty);
+        arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
+            _testData.ClientId, _testData.VoucherDescription2,
+            DebitorCreditor.Debitor, _testData.RmbCurrency, 1,
+            _testData.DocNo1NativeAmount, _testData.DocNo1NativeAmount,
+            _testData.DocNo1, new DateOnly(year, 11, 12), 0, true,
+            string.Empty);
 
+        var arVoucher2 = new Voucher(_guidGenerator.Create(),
+           new DateOnly(year, 2, 13), VoucherType.JournalVoucher,
+           VoucherStatus.Draft, tenantId);
+        arVoucher2.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 3);
+        arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            null, _testData.VoucherDescription2, DebitorCreditor.Creditor,
+            _testData.RmbCurrency, 1, _testData.DocNo2NativeAmount,
+            _testData.DocNo2NativeAmount, string.Empty, null, 0, true,
+            string.Empty);
+        arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
+            _testData.ClientId, _testData.VoucherDescription2,
+            DebitorCreditor.Debitor, _testData.UsdCurrency,
+            _testData.UsdCurrencyRate, _testData.DocNo2Amount,
+            _testData.DocNo2NativeAmount, _testData.DocNo2,
+            new DateOnly(year, 11, 17), 0, true, string.Empty);
+
+        var rvVoucher1 = new Voucher(_testData.VoucherRvId,
+          new DateOnly(year, 2, 23), VoucherType.ReceivableVoucher,
+          VoucherStatus.Draft, tenantId);
+        rvVoucher1.SetCode(_testData.VoucherRvCode, _testData.VoucherRvPrefix, 1);
+        rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
+            _testData.RmbCurrency, 1, _testData.DocNo2PaidNativeAmount,
+            _testData.DocNo2PaidNativeAmount, string.Empty, null, 0, true,
+            string.Empty);
+        rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectArId,
+            _testData.ClientId, _testData.VoucherDescription2,
+            DebitorCreditor.Creditor, _testData.UsdCurrency,
+            _testData.UsdCurrencyRate, _testData.DocNo2PaidAmount,
+            _testData.DocNo2PaidNativeAmount, _testData.DocNo2, null, 0,
+            false, string.Empty);
+
+        return [arVoucher1, arVoucher2, rvVoucher1];
+    }
+    private Voucher[] GetPayableVouchers(Guid? tenantId)
+    {
+        var year = _testData.AccountingPeriodYear;
+        var apVoucher1 = new Voucher(_guidGenerator.Create(),
+                new DateOnly(year, 2, 12), VoucherType.JournalVoucher,
+                VoucherStatus.Draft, tenantId);
+        apVoucher1.SetCode(_testData.VoucherCode4, _testData.VoucherPrefix, 4);
+        apVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            null, _testData.VoucherDescription, DebitorCreditor.Debitor,
+            _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
+            _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
+            string.Empty);
+        apVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectApId,
+            _testData.VendorId, _testData.VoucherDescription2,
+            DebitorCreditor.Creditor, _testData.RmbCurrency, 1,
+            _testData.DocNo1NativeAmount, _testData.DocNo1NativeAmount,
+            _testData.DocNo3, new DateOnly(year, 11, 12), 0, true,
+            string.Empty);
+
+        var apVoucher2 = new Voucher(_guidGenerator.Create(),
+           new DateOnly(year, 2, 13), VoucherType.JournalVoucher,
+           VoucherStatus.Draft, tenantId);
+        apVoucher2.SetCode(_testData.VoucherCode5, _testData.VoucherPrefix, 5);
+        apVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
+            _testData.RmbCurrency, 1, _testData.DocNo2NativeAmount,
+            _testData.DocNo2NativeAmount, string.Empty, null, 0, true,
+            string.Empty);
+        apVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectApId,
+            _testData.VendorId, _testData.VoucherDescription2,
+            DebitorCreditor.Creditor, _testData.UsdCurrency,
+            _testData.UsdCurrencyRate, _testData.DocNo2Amount,
+            _testData.DocNo2NativeAmount, _testData.DocNo4,
+            new DateOnly(year, 11, 17), 0, true, string.Empty);
+
+        var pvVoucher1 = new Voucher(_testData.VoucherPvId,
+          new DateOnly(year, 2, 23), VoucherType.PayableVoucher,
+          VoucherStatus.Draft, tenantId);
+        pvVoucher1.SetCode(_testData.VoucherPvCode, _testData.VoucherPvPrefix, 1);
+        pvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            null, _testData.VoucherDescription2, DebitorCreditor.Creditor,
+            _testData.RmbCurrency, 1, _testData.DocNo2PaidNativeAmount,
+            _testData.DocNo2PaidNativeAmount, string.Empty, null, 0, true,
+            string.Empty);
+        pvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectApId,
+            _testData.VendorId, _testData.VoucherDescription2,
+            DebitorCreditor.Debitor, _testData.UsdCurrency,
+            _testData.UsdCurrencyRate, _testData.DocNo2PaidAmount,
+            _testData.DocNo2PaidNativeAmount, _testData.DocNo4, null, 0,
+            false, string.Empty);
+
+        return [apVoucher1, apVoucher2, pvVoucher1];
+    }
 }

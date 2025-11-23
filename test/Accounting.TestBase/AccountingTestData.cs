@@ -31,7 +31,10 @@ namespace Accounting
         public DateOnly AccountingPeriodEndDate { get; } = new DateOnly(2025, 12, 31);
         public int AccountingPeriod2024Year { get; } = 2024;
         public string AccountingPeriod2024Code { get; } = "2024-Updated";
-        public int InsertedVouchers { get; } = 4;
+        public int InsertedVouchers { get; } = 7;
+        public int InsertedJournalVouchers { get; } = 5;
+        public int InsertedReceivableVouchers { get; } = 1;
+        public int InsertedPayableVouchers { get; } = 1;
         public Guid VendorId { get; } = Guid.NewGuid();
         public string VendorCode { get; } = "B-TEST";
         public string VendorName { get; } = "TEST COMPANY LTD.";
@@ -84,10 +87,17 @@ namespace Accounting
         public string VoucherDescription2 { get; } = "Test Receivalbe";
         public string VoucherCode2 { get; } = "JV-0002";
         public string VoucherCode3 { get; } = "JV-0003";
+        public string VoucherCode4{ get; } = "JV-0004";
+        public string VoucherCode5 { get; } = "JV-0005";
         public string VoucherRvCode { get; } = "RV-0001";
-        public string VoucherRvPrefix { get; } = "RV-0001";
+        public string VoucherRvPrefix { get; } = "RV";
         public decimal UsdCurrencyRate { get; } = 7.2m;
         public Guid VoucherRvId { get; } = Guid.NewGuid();
         public string PaymentReference { get; } = "Ref0001";
+        public string DocNo3 { get; } = "PI-0001";
+        public string DocNo4 { get; } = "PI-0002";
+        public string VoucherPvCode { get; } = "PV-0001";
+        public string VoucherPvPrefix { get; } = "PV";
+        public Guid VoucherPvId { get; } = Guid.NewGuid();
     }
 }

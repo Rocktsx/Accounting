@@ -1,9 +1,11 @@
 using Accounting.Common;
 using Accounting.Features;
 using Accounting.Finance.Settings;
+using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,5 +171,14 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         list.ForEach(item => item.SetStatus(status));
 
         await Repository.UpdateManyAsync(list);
+    }
+
+    protected async Task<Dictionary<Guid, Subject>> GetSubjectsAsync(IEnumerable<Guid> ids)
+    {
+        var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
+        var subjectQueryable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
+        var subjectQuery = subjectQueryable.Where(item => ids.Contains(item.Id));
+        var subjects = await AsyncExecuter.ToListAsync(subjectQuery);
+        return subjects.ToDictionary(item => item.Id, item => item);
     }
 }
