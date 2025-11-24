@@ -47,7 +47,11 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 
         group = AddPermissionGroup(context, ReceivableVouchers.Default, ReceivableVouchers.Name,
            ReceivableVouchers.Create, ReceivableVouchers.Delete, ReceivableVouchers.Update);
-        group.Permissions[0].AddChild(ReceivableVouchers.UpdateStatus, L(UpdateStatusDisplayName)); 
+        group.Permissions[0].AddChild(ReceivableVouchers.UpdateStatus, L(UpdateStatusDisplayName));
+
+        group = AddPermissionGroup(context, PayableVouchers.Default, PayableVouchers.Name,
+         PayableVouchers.Create, PayableVouchers.Delete, PayableVouchers.Update);
+        group.Permissions[0].AddChild(PayableVouchers.UpdateStatus, L(UpdateStatusDisplayName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

@@ -1,6 +1,8 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.PayableVouchers;
 using Accounting.Finance.Vouchers;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +15,44 @@ namespace Accounting.Finance
     {
         public PayableVoucherAppService(IVoucherRepository repository) : base(repository)
         {
+            DeletePolicyName = AccountingPermissions.PayableVouchers.Delete;
+            GetListPolicyName = AccountingPermissions.PayableVouchers.Default;
+            GetPolicyName = AccountingPermissions.PayableVouchers.Default;
+
+            FunctionCode = FunctionCodes.PayableVoucher;
+        }
+        [Authorize(AccountingPermissions.PayableVouchers.Create)]
+        public override Task<VoucherDto> CreateAsync(VoucherCreateDto input)
+        {
+            input.VoucherType = VoucherType.ReceivableVoucher;
+            return base.CreateAsync(input);
         }
 
+        [Authorize(AccountingPermissions.PayableVouchers.Update)]
+        public override Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
+        {
+            return base.UpdateAsync(id, input);
+        }
+
+        protected override async Task<IQueryable<Voucher>> CreateFilteredQueryAsync(VoucherFilterRequestDto input)
+        {
+            input.VoucherType = VoucherType.PayableVoucher;
+            return await base.CreateFilteredQueryAsync(input);
+        }
+
+        [Authorize(AccountingPermissions.PayableVouchers.UpdateStatus)]
+        public override Task UpdateStatus(Guid id, VoucherStatus status)
+        {
+            return base.UpdateStatus(id, status);
+        }
+        [Authorize(AccountingPermissions.PayableVouchers.Default)]
         public async Task<IEnumerable<VoucherDetailDto>> GenerateDetailsAsync(GeneratePayableDetailRequestDto input)
         {
             using var generator = new PayableVoucherDetailGenerator(
                 LazyServiceProvider, input);
             return await generator.GenerateAsync();
         }
-
+        [Authorize(AccountingPermissions.PayableVouchers.Default)]
         public async Task<IEnumerable<PayableDetailDto>> GetPayableDetailsAsync(Guid id)
         {
             if (id.IsEmpty())
@@ -64,7 +95,7 @@ namespace Accounting.Finance
             var list = await GetPayableDetailsAsync(detailsQueryable, docNos, notReceivedDic, receivedDic);
             return list;
         }
-
+        [Authorize(AccountingPermissions.PayableVouchers.Default)]
         public async Task<PagedResultDto<PayableDetailDto>> GetPayableDetailsByDebitorAsync(
             PayableDetailByDebitorRequestDto input)
         {

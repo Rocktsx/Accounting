@@ -122,6 +122,7 @@ public static class AccountingPermissions
         public const string UpdateStatus = Default + UpdateStatusDot;
         public const string Import = Default + Imports;
     }
+
     /// <summary>
     /// 传票状态
     /// </summary>
@@ -136,6 +137,7 @@ public static class AccountingPermissions
     /// 应收账组
     /// </summary>
     public const string ReceivableGroup = GroupName + Dot + "Receivable";
+
     /// <summary>
     /// 收款传票
     /// </summary>
@@ -143,6 +145,24 @@ public static class AccountingPermissions
     {
         public const string Name = "ReceivableVoucher";
         public const string Default = ReceivableGroup + Dot + Name;
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+        public const string UpdateStatus = Default + UpdateStatusDot;
+    }
+
+    /// <summary>
+    /// 应付账组
+    /// </summary>
+    public const string PayableGroup = GroupName + Dot + "Payable";
+
+    /// <summary>
+    /// 付款传票
+    /// </summary>
+    public class PayableVouchers
+    {
+        public const string Name = "PayableableVoucher";
+        public const string Default = PayableGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
