@@ -17,5 +17,6 @@ namespace Accounting.Finance.Vouchers
         public const string ReceiptAmtGreaterThanSettlementAmt = "Accounting:ReceiptAmtGreaterThanSettlementAmt";
         public const string PaymentReferenceCannotBeEmpty = "Accounting:PaymentReferenceCannotBeEmpty";
         public const string PleaseEnterArSubjectInSetting = "Accounting:PleaseEnterArSubjectInSetting";
+        public const string PleaseEnterApSubjectInSetting = "Accounting:PleaseEnterApSubjectInSetting";
     }
 }

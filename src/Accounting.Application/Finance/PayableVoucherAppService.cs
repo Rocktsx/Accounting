@@ -14,7 +14,14 @@ namespace Accounting.Finance
         public PayableVoucherAppService(IVoucherRepository repository) : base(repository)
         {
         }
-         
+
+        public async Task<IEnumerable<VoucherDetailDto>> GenerateDetailsAsync(GeneratePayableDetailRequestDto input)
+        {
+            using var generator = new PayableVoucherDetailGenerator(
+                LazyServiceProvider, input);
+            return await generator.GenerateAsync();
+        }
+
         public async Task<IEnumerable<PayableDetailDto>> GetPayableDetailsAsync(Guid id)
         {
             if (id.IsEmpty())

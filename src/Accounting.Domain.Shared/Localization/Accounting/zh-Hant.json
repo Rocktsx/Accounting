@@ -279,6 +279,7 @@
     "PaymentReference": "參考",
     "PleaseChoicePaymentItem": "請選擇一個付款項",
     "PleaseEnterCreditor": "請輸入貸方",
-    "PleaseEnterPaymentItemInfo": "請輸入付款信息"
+    "PleaseEnterPaymentItemInfo": "請輸入付款信息",
+    "Accounting:PleaseEnterApSubjectInSetting": "請在會計設定里設置默認應付科目"
   }
 }

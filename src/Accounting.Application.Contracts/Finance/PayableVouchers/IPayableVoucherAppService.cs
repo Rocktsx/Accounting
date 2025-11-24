@@ -21,6 +21,12 @@ namespace Accounting.Finance.PayableVouchers
         /// <param name="id"></param>
         /// <returns></returns>
         Task<IEnumerable<PayableDetailDto>> GetPayableDetailsAsync(Guid id);
-       
+        /// <summary>
+        /// 生成传票明细
+        /// </summary>
+        /// <param name="input">input</param>
+        /// <returns></returns>
+        Task<IEnumerable<VoucherDetailDto>> GenerateDetailsAsync(
+            GeneratePayableDetailRequestDto input);
     }
 }

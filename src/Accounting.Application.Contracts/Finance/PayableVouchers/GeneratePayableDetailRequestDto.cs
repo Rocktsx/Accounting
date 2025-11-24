@@ -17,6 +17,6 @@ namespace Accounting.Finance.PayableVouchers
         /// </summary>
         public IEnumerable<PayableDetailDto> Receipts { get; set; } = [];
 
-        public Guid? Debitor { get; set; }
+        public Guid? DebitorId { get; set; }
     }
 }
