@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance
 {
+    [RemoteService(true)]
     public class PayableVoucherAppService : VoucherAppService, IPayableVoucherAppService
     {
         public PayableVoucherAppService(IVoucherRepository repository) : base(repository)
