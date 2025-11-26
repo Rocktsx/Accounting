@@ -1,11 +1,13 @@
 ﻿using Accounting.Finance.PayableVouchers;
 using Accounting.Finance.Settings;
+using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
 using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Modularity;
 using Xunit;
 
@@ -15,11 +17,52 @@ namespace Accounting.Finance
         where TStartupModule : IAbpModule
     {
         private readonly IPayableVoucherAppService _service;
+        private readonly ISubjectRepository _subjectRepository;
         private readonly AccountingTestData _testData;
         public PayableVoucherAppServiceTests()
         {
             _service = GetRequiredService<IPayableVoucherAppService>();
             _testData = GetRequiredService<AccountingTestData>();
+            _subjectRepository = GetRequiredService<ISubjectRepository>();
+        }
+        private async Task<VoucherCreateDto> GetCreateDtoAsync()
+        {
+            var bankSubject = await _subjectRepository.GetAsync(item => item.Id == _testData.SubjectBankId);
+            var apSubject = await _subjectRepository.GetAsync(item => item.Id == _testData.SubjectApId);
+
+            var dto = new VoucherCreateDto()
+            {
+                Prefix = _testData.VoucherPrefix,
+                VoucherType = VoucherType.PayableVoucher,
+                VoucherDate = new DateTime(2025, 1, 12),
+                Details =
+                [
+                    new VoucherDetailCreateDto()
+                    {
+                        CurrencyCode = _testData.RmbCurrency,
+                        CurrencyRate = 1m,
+                        ForeignAmount = 1000m,
+                        NativeAmount = 1000m,
+                        Description = _testData.VoucherDescription3,
+                        SubjectId = bankSubject.Id,
+                        DebitorCreditor = DebitorCreditor.Creditor
+                    },
+                    new VoucherDetailCreateDto()
+                    {
+                        CurrencyCode = _testData.RmbCurrency,
+                        CurrencyRate = 1m,
+                        ForeignAmount = 1000m,
+                        NativeAmount = 1000m,
+                        Description =_testData.VoucherDescription3,
+                        SubjectId = apSubject.Id,
+                        DebitorCreditor = DebitorCreditor.Debitor,
+                        ItemQty = 0,
+                        IsOriginal = false
+                    }
+                ]
+            };
+
+            return dto;
         }
         private PaymentDetailDto GetPaymentItem(int count = 1, string paymentReference = "")
         {
@@ -56,6 +99,38 @@ namespace Accounting.Finance
             {
                 AccountPayableSubjectCode = _testData.SubjectApId.ToString(),
             });
+        }
+        [Fact]
+        public async Task Can_Create_Voucher()
+        {
+            // Arrange
+            var createDto = await GetCreateDtoAsync();
+            createDto.VoucherType = VoucherType.JournalVoucher;
+
+            // Act
+            var dto = await _service.CreateAsync(createDto);
+
+            // Assert
+            dto.ShouldNotBeNull();
+            dto.VoucherType.ShouldBe(VoucherType.PayableVoucher);
+        }
+        [Fact]
+        public async Task Can_Get_Voucher_List_With_Voucher_Type()
+        {
+            // Arrange
+            var createDto = await GetCreateDtoAsync();
+            await _service.CreateAsync(createDto);
+
+            // Act
+            var result = await _service.GetListAsync(new VoucherFilterRequestDto()
+            {
+                MaxResultCount = 10,
+                VoucherType = VoucherType.JournalVoucher
+            });
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Items.Count.ShouldBe(_testData.InsertedPayableVouchers + 1);
         }
         [Fact]
         public async Task Can_Get_Payable_Details()

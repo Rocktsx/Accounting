@@ -26,7 +26,7 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.PayableVouchers.Create)]
         public override Task<VoucherDto> CreateAsync(VoucherCreateDto input)
         {
-            input.VoucherType = VoucherType.ReceivableVoucher;
+            input.VoucherType = VoucherType.PayableVoucher;
             return base.CreateAsync(input);
         }
 
