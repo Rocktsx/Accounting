@@ -1125,9 +1125,9 @@ $(function () {
                     {{l('PleaseEnterAValue')}}
                 </div>
             </div>
-            <div v-if="item.isSubSubjectType" class="mb-2 mx-1">
-                <label for="dueDate" class="form-label">{{l('DueDate')}}<span> * </span></label>
-                <input v-model="item.dueDate" @change="arapFieldChange" type="date" class="form-control" id="dueDate" name="dueDate">
+            <div class="mb-2 mx-1">
+                <label for="paymentReference" class="form-label">{{l('PaymentReference')}}</label>
+                <input v-model="item.paymentReference" type="text" class="form-control" id="paymentReference" name="paymentReference">
             </div>
         </div>
     </div>
@@ -1435,7 +1435,7 @@ $(function () {
                         <th class="text-end normal"><div>{{l('ForeignAmount')}}</div><div>{{l('ExchangeRate')}}</div></th>
                         <th>{{l('SubSubject')}}</th>
                         <th>{{l('DocNo')}}</th>
-                        <th>{{l('DueDate')}}</th>
+                        <th>{{l('PaymentReference')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -1460,7 +1460,7 @@ $(function () {
                         <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
                         <td>{{ item.subSubjectName }}</td>
                         <td>{{item.docNo}}</td>
-                        <td>{{formatRowDate(item.dueDate)}}</td>
+                        <td>{{ item.paymentReference }}</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -1493,6 +1493,12 @@ $(function () {
             formatRowDate,
             addDetail() {
                 this.$emit('add-detail');
+            },
+            showDetail(item) {
+                this.$emit('show-detail', item);
+            },
+            deleteDetail(item) {
+                this.$emit('delete-detail', item);
             }
         }
     }
@@ -1512,7 +1518,7 @@ $(function () {
     </ul>
     <div class="tab-content pt-0 pb-0" id="detailTabContent">
       <div :class="[showDetailTab? 'show active':'']" class="tab-pane fade" id="details-tab-pane" role="tabpanel" aria-labelledby="details-tab" tabindex="0">
-        <VoucherDetails  @add-detail="addDetail"/>
+        <VoucherDetails  @add-detail="addDetail"  @show-detail="showDetail" @delete-detail="deleteDetail"/>
       </div>
      <div :class="[!showDetailTab? 'show active':'']" class="tab-pane fade" id="receipts-tab-pane" role="tabpanel" aria-labelledby="receipts-tab" tabindex="0">
       <ReceivableDetail  @change-page="changeReceiptPage"/>
