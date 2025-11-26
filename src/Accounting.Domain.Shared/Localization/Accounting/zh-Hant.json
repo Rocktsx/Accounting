@@ -280,6 +280,12 @@
     "PleaseChoicePaymentItem": "請選擇一個付款項",
     "PleaseEnterCreditor": "請輸入貸方",
     "PleaseEnterPaymentItemInfo": "請輸入付款信息",
-    "Accounting:PleaseEnterApSubjectInSetting": "請在會計設定里設置默認應付科目"
+    "Accounting:PleaseEnterApSubjectInSetting": "請在會計設定里設置默認應付科目",
+    "PleaseEnterDebitor": "請輸入借方",
+    "Menu:Payable": "應付賬",
+    "Permission:PayableVoucher": "付款傳票",
+    "Menu:PayableVoucher": "付款傳票",
+    "NewPayableVoucher": "新付款傳票",
+    "EditPayableVoucher": "編輯付款傳票"
   }
 }

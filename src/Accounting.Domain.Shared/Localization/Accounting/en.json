@@ -246,6 +246,12 @@
     "PaymentReference": "Payment Reference",
     "PleaseEnterCreditor": "Please enter a creditor",
     "PleaseEnterPaymentItemInfo": "Please enter payment information",
-    "Accounting:PleaseEnterApSubjectInSetting": "Please enter a default AP subject code in the account setting!"
+    "Accounting:PleaseEnterApSubjectInSetting": "Please enter a default AP subject code in the account setting!",
+    "PleaseEnterDebitor": "Please enter a debitor",
+    "Menu:Payable": "Payable",
+    "Permission:PayableVoucher": "Payable Voucher",
+    "Menu:PayableVoucher": "Payable Voucher",
+    "NewPayableVoucher": "New Payable Voucher",
+    "EditPayableVoucher": "Edit Payable Voucher"
   }
 }
