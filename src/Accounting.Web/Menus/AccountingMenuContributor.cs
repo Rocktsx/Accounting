@@ -162,13 +162,13 @@ public class AccountingMenuContributor : IMenuContributor
         var receivableMenus = new ApplicationMenuItem(
           AccountingMenus.Receivable,
           l[AccountingMenus.DisplayNames.Receivable],
-          icon: "fas fa-calendar"
+          icon: "fas fa-book"
         );
         receivableMenus.AddItem(
                new ApplicationMenuItem(
                    AccountingMenus.ReceivableVoucher,
                    l[AccountingMenus.DisplayNames.ReceivableVoucher],
-                   icon: "fas fa-folder-open",
+                   icon: "fas fa-folder",
                    url: "/Receivable/ReceivableVouchers"
                ).RequirePermissions(AccountingPermissions.ReceivableVouchers.Default)
          );
@@ -176,6 +176,25 @@ public class AccountingMenuContributor : IMenuContributor
         {
             context.Menu.AddItem(receivableMenus);
         }
+
+        var payableMenus = new ApplicationMenuItem(
+          AccountingMenus.Payable,
+          l[AccountingMenus.DisplayNames.Payable],
+          icon: "fas fa-book-open"
+        );
+        payableMenus.AddItem(
+               new ApplicationMenuItem(
+                   AccountingMenus.PayableVoucher,
+                   l[AccountingMenus.DisplayNames.PayableVoucher],
+                   icon: "fas fa-folder-open",
+                   url: "/Payable/PayableVouchers"
+               ).RequirePermissions(AccountingPermissions.PayableVouchers.Default)
+         );
+        if (payableMenus.Items.Count > 0)
+        {
+            context.Menu.AddItem(payableMenus);
+        }
+
         return Task.CompletedTask;
     }
 }

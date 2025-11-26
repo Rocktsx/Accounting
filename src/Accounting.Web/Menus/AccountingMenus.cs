@@ -25,6 +25,9 @@ public class AccountingMenus
     private const string ReceivableText = "Receivable";
     private const string ReceivableVoucherText = "ReceivableVoucher";
 
+    private const string PayableText = "Payable";
+    private const string PayableVoucherText = "PayableVoucher";
+
     public const string BasicData = Prefix + Dot + BasicDataText;
     public const string Client = BasicData + Dot + ClientText;
     public const string Currency = BasicData + Dot + CurrencyText;
@@ -38,8 +41,11 @@ public class AccountingMenus
     public const string TransferVoucher = GeneralLedger + Dot + TransferVoucherText;
     public const string VoucherState = GeneralLedger + Dot + VoucherStateText;
 
-    public const string Receivable = Prefix + Dot + ReceivableVoucherText;
-    public const string ReceivableVoucher = ReceivableText + Dot + ReceivableVoucherText;
+    public const string Receivable = Prefix + Dot + ReceivableText;
+    public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
+
+    public const string Payable = Prefix + Dot + PayableText;
+    public const string PayableVoucher = Payable + Dot + PayableVoucherText;
 
     public class DisplayNames
     {
@@ -58,6 +64,9 @@ public class AccountingMenus
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;
         public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;
+
+        public const string Payable = DisplayNamePrefix + PayableText;
+        public const string PayableVoucher = DisplayNamePrefix + PayableVoucherText;
     }
 
 }

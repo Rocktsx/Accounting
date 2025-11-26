@@ -13,7 +13,7 @@ namespace Accounting.Web.Pages
         {
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.BasicData.Currencies.IndexModel>(
+                options.Configure<BasicData.Currencies.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -26,7 +26,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.BasicData.Clients.IndexModel>(
+                options.Configure<BasicData.Clients.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -45,7 +45,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.BasicData.Vendors.IndexModel>(
+                options.Configure<BasicData.Vendors.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -64,7 +64,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.GeneralLedger.AccountingPeriods.IndexModel>(
+                options.Configure<GeneralLedger.AccountingPeriods.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -77,7 +77,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.GeneralLedger.ChartOfAccounts.IndexModel>(
+                options.Configure<GeneralLedger.ChartOfAccounts.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -96,7 +96,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.GeneralLedger.GeneralAccounts.IndexModel>(
+                options.Configure<GeneralLedger.GeneralAccounts.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -115,7 +115,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.GeneralLedger.SubjectCategories.IndexModel>(
+                options.Configure<GeneralLedger.SubjectCategories.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -128,7 +128,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.GeneralLedger.TransferVouchers.IndexModel>(
+                options.Configure<GeneralLedger.TransferVouchers.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -153,7 +153,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.GeneralLedger.VoucherStates.IndexModel>(
+                options.Configure<GeneralLedger.VoucherStates.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -166,7 +166,7 @@ namespace Accounting.Web.Pages
             });
             context.Services.Configure<AbpPageToolbarOptions>(options =>
             {
-                options.Configure<Pages.Receivable.ReceivableVouchers.IndexModel>(
+                options.Configure<Receivable.ReceivableVouchers.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -180,6 +180,26 @@ namespace Accounting.Web.Pages
                           icon: "plus",
                           id: "newVoucherBtn",
                           requiredPolicyName: AccountingPermissions.ReceivableVouchers.Create
+                        );
+                    });
+            });
+
+            context.Services.Configure<AbpPageToolbarOptions>(options =>
+            {
+                options.Configure<Payable.PayableVouchers.IndexModel>(
+                    toolbar =>
+                    {
+                        toolbar.AddButton(
+                            L("Search"),
+                            icon: "magnifying-glass",
+                            id: "searchBtn",
+                            requiredPolicyName: AccountingPermissions.PayableVouchers.Default
+                        );
+                        toolbar.AddButton(
+                          L("NewPayableVoucher"),
+                          icon: "plus",
+                          id: "newVoucherBtn",
+                          requiredPolicyName: AccountingPermissions.PayableVouchers.Create
                         );
                     });
             });
