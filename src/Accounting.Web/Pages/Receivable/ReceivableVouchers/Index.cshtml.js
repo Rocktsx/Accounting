@@ -141,7 +141,7 @@ $(function () {
                         state.clientMap[c.id] = c;
                         state.clients.push(c)
                     }
-                    if (!state.vendorMap[c.id] && c.isVender) {
+                    if (!state.vendorMap[c.id] && c.isVendor) {
                         state.vendorMap[c.id] = c;
                         state.vendors.push(c)
                     }
@@ -493,7 +493,7 @@ $(function () {
                 },
                 processResults: function (data) {
                     const items = data.items;
-                    const results = items.map(function (item, index) {
+                    const results = items.map(function (item) {
                         const { name, id, code } = item;
                         const text = code + ' - ' + name;
                         return {
@@ -1163,6 +1163,9 @@ $(function () {
         },
         mounted() {
             this.initSubjectSelect();
+            if (this.item.isSubSubjectType) {
+                this.$nextTick(() => this.initCompanySelect(this.item.accountTypeCategory == this.accountTypes.receivable))
+            }
         },
         unmounted() {
             $('#subjectId').off('select2:select');
