@@ -161,7 +161,7 @@ public static class AccountingPermissions
     /// </summary>
     public class PayableVouchers
     {
-        public const string Name = "PayableableVoucher";
+        public const string Name = "PayableVoucher";
         public const string Default = PayableGroup + Dot + Name;
         public const string Create = Default + Creation;
         public const string Delete = Default + Deletion;
