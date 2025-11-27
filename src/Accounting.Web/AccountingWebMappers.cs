@@ -101,11 +101,11 @@ public partial class AccountTypeDtoToEditAccountTypeViewModelMapper : MapperBase
 }
 
 [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-public partial class CreateSubjectCategoryViewModelToAccountTypeCreateDtoMapper : MapperBase<CreateSubjectCategoryViewModel, AccountTypeCreateDto>
+public partial class CreateAccountTypeViewModelToAccountTypeCreateDtoMapper : MapperBase<CreateAccountTypeViewModel, AccountTypeCreateDto>
 {
-    public override partial AccountTypeCreateDto Map(CreateSubjectCategoryViewModel source);
+    public override partial AccountTypeCreateDto Map(CreateAccountTypeViewModel source);
 
-    public override partial void Map(CreateSubjectCategoryViewModel source, AccountTypeCreateDto destination);
+    public override partial void Map(CreateAccountTypeViewModel source, AccountTypeCreateDto destination);
 }
 [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
 public partial class EditAccountTypeViewModelToAccountTypeUpdateDtoMapper : MapperBase<EditAccountTypeViewModel, AccountTypeUpdateDto>
