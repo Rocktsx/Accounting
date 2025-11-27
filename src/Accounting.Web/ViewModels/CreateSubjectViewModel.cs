@@ -9,10 +9,10 @@ namespace Accounting.Web.ViewModels
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
-        public required string Code { get; set; }
+        public string Code { get; set; }
         [Required]
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
-        public required string Name { get; set; }
+        public string Name { get; set; }
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string? OtherName { get; set; }
         [SelectItems("Categories")]
@@ -25,12 +25,19 @@ namespace Accounting.Web.ViewModels
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
         [SelectItems("Currencies")]
         [Display(Name = "Currency")]
-        public required string CurrencyCode { get; set; }
+        public string CurrencyCode { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
         public string? Description { get; set; }
         public bool IsSubSubjectType { get; set; }
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
         public int? SeqCode { get; set; }
+
+        public CreateSubjectViewModel()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            CurrencyCode = string.Empty;
+        }
     }
 }

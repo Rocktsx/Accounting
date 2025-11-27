@@ -8,7 +8,7 @@ namespace Accounting.Web.ViewModels
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
         [Display(Name = "AccPeriod")]
-        public required string Code { get; set; }
+        public string Code { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public DateOnly StartDate { get; set; }
@@ -16,5 +16,10 @@ namespace Accounting.Web.ViewModels
         [DataType(DataType.Date)]
         public DateOnly EndDate { get; set; }
         public bool IsCurrentPeriod { get; set; }
+
+        public CreateAccountingPeriodViewModel()
+        {
+            Code = string.Empty; 
+        }
     }
 }

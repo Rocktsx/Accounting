@@ -9,20 +9,20 @@ namespace Accounting.Web.ViewModels
     public class CreateOrEditCompanyViewModel
     {
         public Guid Id { get; set; }
-        public required string Code { get; set; }
+        public string Code { get; set; }
         [Required]
         [MaxLength(AccountingCommonConsts.MaxPrefixLength)]
-        public required string Prefix { get; set; }
+        public string Prefix { get; set; }
         public int? GenNo { get; set; }
         [Required]
         [MaxLength(CompanyConsts.MaxNameLength)]
-        public required string Name { get; set; }
+        public string Name { get; set; }
         [MaxLength(CompanyConsts.MaxNameLength)]
         public string? OtherName { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string? NickName { get; set; }
         [MaxLength(CurrencyConsts.MaxCurrencyLength)]
-        public required string Currency { get; set; }
+        public string Currency { get; set; }
         public decimal CreditLimit { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string? PaymentTerm { get; set; }
@@ -36,5 +36,13 @@ namespace Accounting.Web.ViewModels
 
         public List<CreateOrEditCompanyAddressViewModel> Addresses { get; set; } = [];
         public List<CreateOrEditCompanyContactViewModel> Contacts { get; set; } = [];
+
+        public CreateOrEditCompanyViewModel()
+        {
+            Code = string.Empty;
+            Prefix = string.Empty;
+            Name = string.Empty;
+            Currency = string.Empty;
+        }
     }
 }

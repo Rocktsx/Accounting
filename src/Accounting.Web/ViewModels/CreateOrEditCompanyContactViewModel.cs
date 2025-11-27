@@ -14,7 +14,7 @@ namespace Accounting.Web.ViewModels
         public Guid CompanyId { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [Required]
-        public required string ContactName { get; set; }
+        public string ContactName { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string? Department { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
@@ -25,7 +25,7 @@ namespace Accounting.Web.ViewModels
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [DataType(DataType.PhoneNumber)]
         [Required]
-        public required string Telephone { get; set; }
+        public string Telephone { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string? Fax { get; set; }
         [MaxLength(CompanyConsts.MaxEmailLength)]
@@ -34,5 +34,11 @@ namespace Accounting.Web.ViewModels
         [MaxLength(CompanyConsts.MaxRemarkLength)]
         [TextArea(Rows = 2)]
         public string? Remark { get; set; }
+
+        public CreateOrEditCompanyContactViewModel()
+        {
+            ContactName = string.Empty;
+            Telephone = string.Empty;
+        }
     }
 }

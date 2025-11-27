@@ -9,10 +9,10 @@ namespace Accounting.Web.ViewModels
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
-        public required string Code { get; set; }
+        public string Code { get; set; }
         [Required]
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
-        public required string Name { get; set; }
+        public string Name { get; set; }
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string? OtherName { get; set; }
         [SelectItems("Categories")]
@@ -26,5 +26,11 @@ namespace Accounting.Web.ViewModels
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
         [TextArea(Rows = 3)]
         public string? Description { get; set; }
+
+        public CreateSubjectCategoryViewModel()
+        {
+            Code = string.Empty;
+            Name = string.Empty; 
+        }
     }
 }
