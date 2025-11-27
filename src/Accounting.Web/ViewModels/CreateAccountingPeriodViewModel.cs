@@ -8,7 +8,7 @@ namespace Accounting.Web.ViewModels
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
         [Display(Name = "AccPeriod")]
-        public string Code { get; set; }
+        public required string Code { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public DateOnly StartDate { get; set; }

@@ -9,10 +9,10 @@ namespace Accounting.Web.ViewModels
     {
         [Required]
         [MaxLength(AccountingCommonConsts.MaxCodeLength)]
-        public string Code { get; set; }
+        public required string Code { get; set; }
         [Required]
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string? OtherName { get; set; }
         [SelectItems("Categories")]

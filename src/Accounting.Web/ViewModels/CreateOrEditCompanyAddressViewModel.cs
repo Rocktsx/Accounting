@@ -19,14 +19,14 @@ namespace Accounting.Web.ViewModels
         [Required]
         [MaxLength(CompanyAddressConsts.MaxAddressLength)]
         [TextArea(Rows = 3)]
-        public string Address { get; set; }
+        public required string Address { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [Required]
-        public string ContactPerson { get; set; }
+        public required string ContactPerson { get; set; }
         [Required]
         [MaxLength(CompanyConsts.CommonMaxLength)]
         [DataType(DataType.PhoneNumber)]
-        public string Telephone { get; set; }
+        public required string Telephone { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string? Fax { get; set; }
         [MaxLength(CompanyConsts.MaxEmailLength)]
