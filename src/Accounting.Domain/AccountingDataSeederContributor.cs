@@ -26,7 +26,7 @@ namespace Accounting
         public AccountingDataSeederContributor(IGuidGenerator guidGenerator,
             IAccountTypeRepository accountTypeRepository)
         {
-            _guidGenerator = guidGenerator; 
+            _guidGenerator = guidGenerator;
             _accountTypeRepository = accountTypeRepository;
         }
 
@@ -50,51 +50,58 @@ namespace Accounting
             var nonCurrentAssetsId = _guidGenerator.Create();
             var liabilitiesId = _guidGenerator.Create();
             var nonCurrentLiabilitiesId = _guidGenerator.Create();
+
+            var aGroup = AccountTypeGroup.Assets;
+            var lGroup = AccountTypeGroup.Liabilities;
+            var cGroup = AccountTypeGroup.Capital;
+            var iGroup = AccountTypeGroup.Income;
+            var eGroup = AccountTypeGroup.Expenses;
+
             var accountTypes = new List<AccountType>
             {
-                new AccountType(assetsId, "A", "资产", "Assets", null, 1, 0, 1, 1, 0, 1, context.TenantId),
-                new AccountType(nonCurrentAssetsId, "NA", "非流动资产", "Non-Current Assets", assetsId, 2, 0, 2, 1, 0, 1,
+                new(assetsId, "A", "资产", "Assets", null, 1, 0, 1, aGroup, 0, 1, context.TenantId),
+                new(nonCurrentAssetsId, "NA", "非流动资产", "Non-Current Assets", assetsId, 2, 0, 2, aGroup, 0, 1,
                     context.TenantId),
-                new AccountType(_guidGenerator.Create(), "FA", "固定资产", "Fixed Assets", nonCurrentAssetsId, 2, 0, 3, 1,
+                new(_guidGenerator.Create(), "FA", "固定资产", "Fixed Assets", nonCurrentAssetsId, 2, 0, 3, aGroup,
                     0, 1, context.TenantId),
-                new AccountType(currentAssetsId, "CA", "流动资产", "Current Assets", assetsId, 3, 0, 4, 1, 0, 1,
+                new(currentAssetsId, "CA", "流动资产", "Current Assets", assetsId, 3, 0, 4, aGroup, 0, 1,
                     context.TenantId),
-                new AccountType(_guidGenerator.Create(), "AR", "应收账", "Receivable", currentAssetsId, 6, 0, 6, 1, 0, 1,
+                new(_guidGenerator.Create(), "AR", "应收账", "Receivable", currentAssetsId, 6, 0, 6, aGroup, 0, 1,
                     context.TenantId, AccountTypeTypes.Receivable),
-                new AccountType(_guidGenerator.Create(), "BAK", "银行", "Bank", currentAssetsId, 4, 0, 7, 1, 0, 1,
+                new(_guidGenerator.Create(), "BAK", "银行", "Bank", currentAssetsId, 4, 0, 7, aGroup, 0, 1,
                     context.TenantId, AccountTypeTypes.Bank),
-                new AccountType(_guidGenerator.Create(), "CSH", "现金", "Cash", currentAssetsId, 5, 0, 5, 1, 0, 1,
+                new(_guidGenerator.Create(), "CSH", "现金", "Cash", currentAssetsId, 5, 0, 5, aGroup, 0, 1,
                     context.TenantId),
-                new AccountType(capitalId, "C", "资本", "Capital", null, 12, 0, 8, 3, 0, 2, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "PL", "损益账", "Profit And Loss", capitalId, 14, 0, 16, 3, 0, 2,
+                new(capitalId, "C", "资本", "Capital", null, 12, 0, 8,cGroup, 0, 2, context.TenantId),
+                new(_guidGenerator.Create(), "PL", "损益账", "Profit And Loss", capitalId, 14, 0, 16, cGroup, 0, 2,
                     context.TenantId),
-                new AccountType(_guidGenerator.Create(), "SH", "股本", "Share", capitalId, 13, 0, 15, 3, 0, 2,
+                new(_guidGenerator.Create(), "SH", "股本", "Share", capitalId, 13, 0, 15, cGroup, 0, 2,
                     context.TenantId),
-                new AccountType(expensesId, "E", "支出", "Expenses", null, 19, 0, 0, 5, 1, 0, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "DEX", "直接成本", "Direct Cost", expensesId, 20, 2, 0, 5, 1, 0,
+                new(expensesId, "E", "支出", "Expenses", null, 19, 0, 0, eGroup, 1, 0, context.TenantId),
+                new(_guidGenerator.Create(), "DEX", "直接成本", "Direct Cost", expensesId, 20, 2, 0, eGroup, 1, 0,
                     context.TenantId),
-                new AccountType(_guidGenerator.Create(), "AEX", "行政费用", "Administration Cost", expensesId, 22, 6, 0, 5,
+                new(_guidGenerator.Create(), "AEX", "行政费用", "Administration Cost", expensesId, 22, 6, 0,eGroup,
                     2, 0, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "FEX", "财务支出", "Financial Expense", expensesId, 21, 5, 0, 5, 2,
+                new(_guidGenerator.Create(), "FEX", "财务支出", "Financial Expense", expensesId, 21, 5, 0, eGroup, 2,
                     0, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "TEX", "稅務及股息支出", "Tax & Dividend Expenses", expensesId, 23, 7,
-                    0, 5, 2, 0, context.TenantId),
-                new AccountType(incomeId, "I", "收入", "Income", null, 15, 0, 0, 4, 1, 0, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "DIN", "业绩", "Revenue", incomeId, 16, 1, 0, 4, 1, 0,
+                new(_guidGenerator.Create(), "TEX", "稅務及股息支出", "Tax & Dividend Expenses", expensesId, 23, 7,
+                    0, eGroup, 2, 0, context.TenantId),
+                new(incomeId, "I", "收入", "Income", null, 15, 0, 0, iGroup, 1, 0, context.TenantId),
+                new(_guidGenerator.Create(), "DIN", "业绩", "Revenue", incomeId, 16, 1, 0, iGroup, 1, 0,
                     context.TenantId),
-                new AccountType(_guidGenerator.Create(), "EIN", "非经常性收入", "Extra-ordinatory Income", incomeId, 18, 4, 0,
-                    4, 2, 0, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "OIN", "其他收入", "Other Income", incomeId, 17, 3, 0, 4, 1, 0,
+                new(_guidGenerator.Create(), "EIN", "非经常性收入", "Extra-ordinatory Income", incomeId, 18, 4, 0,
+                    iGroup, 2, 0, context.TenantId),
+                new(_guidGenerator.Create(), "OIN", "其他收入", "Other Income", incomeId, 17, 3, 0, iGroup, 1, 0,
                     context.TenantId),
-                new AccountType(liabilitiesId, "L", "负债", "Liabilities", null, 8, 0, 11, 2, 0, 2, context.TenantId),
-                new AccountType(currentLiabilitiesId, "CL", "流动负债", "Current Liabilities", liabilitiesId, 9, 0, 14, 2,
+                new(liabilitiesId, "L", "负债", "Liabilities", null, 8, 0, 11, lGroup, 0, 2, context.TenantId),
+                new(currentLiabilitiesId, "CL", "流动负债", "Current Liabilities", liabilitiesId, 9, 0, 14, lGroup,
                     0, 2, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "AP", "应付账", "Payable", currentLiabilitiesId, 10, 0, 15, 2, 0,
+                new(_guidGenerator.Create(), "AP", "应付账", "Payable", currentLiabilitiesId, 10, 0, 15, lGroup, 0,
                     2, context.TenantId, AccountTypeTypes.Payable),
-                new AccountType(nonCurrentLiabilitiesId, "NL", "非流动负债", "Non-Current Liabilities", liabilitiesId, 11, 0,
-                    12, 2, 0, 2, context.TenantId),
-                new AccountType(_guidGenerator.Create(), "LL", "长期负债", "Long Term Liabilities", nonCurrentLiabilitiesId,
-                    11, 0, 13, 2, 0, 2, context.TenantId)
+                new(nonCurrentLiabilitiesId, "NL", "非流动负债", "Non-Current Liabilities", liabilitiesId, 11, 0,
+                    12, lGroup, 0, 2, context.TenantId),
+                new(_guidGenerator.Create(), "LL", "长期负债", "Long Term Liabilities", nonCurrentLiabilitiesId,
+                    11, 0, 13, lGroup, 0, 2, context.TenantId)
             };
             await _accountTypeRepository.InsertManyAsync(accountTypes, true);
         }

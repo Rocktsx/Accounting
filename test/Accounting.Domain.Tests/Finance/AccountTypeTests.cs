@@ -12,7 +12,7 @@ namespace Accounting.Finance
         { 
             // Arrange & Act
             var parentId = Guid.NewGuid();
-            var entity = new AccountType(Guid.NewGuid(), "A", "資產", "Assets", parentId, 1,0,1,1,0,1);
+            var entity = new AccountType(Guid.NewGuid(), "A", "資產", "Assets", parentId, 1,0,1, AccountTypeGroup.Assets, 0,1);
             // Assert
             entity.ShouldNotBeNull();
             entity.Code.ShouldBe("A");
@@ -22,7 +22,7 @@ namespace Accounting.Finance
             entity.TrialBalanceSort.ShouldBe(1);
             entity.ProfitAndLossSort.ShouldBe(0);
             entity.BalanceSheetSort.ShouldBe(1);
-            entity.TrialBalanceGroup.ShouldBe(1);
+            entity.TrialBalanceGroup.ShouldBe(AccountTypeGroup.Assets);
             entity.ProfitAndLossGroup.ShouldBe(0);
             entity.BalanceSheetGroup.ShouldBe(1); 
         } 
@@ -30,7 +30,7 @@ namespace Accounting.Finance
         public void Cannot_Create_A_AccountType_Without_Name()
         {
             // Arrange & Act
-            var exception = Should.Throw<ArgumentException>(() => new AccountType(Guid.NewGuid(),"A", string.Empty, "Assets", Guid.NewGuid(), 1, 0, 1, 1, 0, 1));
+            var exception = Should.Throw<ArgumentException>(() => new AccountType(Guid.NewGuid(),"A", string.Empty, "Assets", Guid.NewGuid(), 1, 0, 1, AccountTypeGroup.Assets, 0, 1));
             // Assert
             exception.ShouldNotBeNull();
             exception.ShouldBeOfType<ArgumentException>();
@@ -39,7 +39,7 @@ namespace Accounting.Finance
         public void Cannot_Create_A_AccountType_Without_Code()
         {
             // Arrange & Act
-            var exception = Should.Throw<ArgumentException>(() => new AccountType(Guid.NewGuid(), string.Empty, "資產", "Assets", Guid.NewGuid(), 1, 0, 1, 1, 0, 1));
+            var exception = Should.Throw<ArgumentException>(() => new AccountType(Guid.NewGuid(), string.Empty, "資產", "Assets", Guid.NewGuid(), 1, 0, 1, AccountTypeGroup.Assets, 0, 1));
             // Assert
             exception.ShouldNotBeNull();
             exception.ShouldBeOfType<ArgumentException>();

@@ -252,6 +252,11 @@
     "Permission:PayableVoucher": "Payable Voucher",
     "Menu:PayableVoucher": "Payable Voucher",
     "NewPayableVoucher": "New Payable Voucher",
-    "EditPayableVoucher": "Edit Payable Voucher"
+    "EditPayableVoucher": "Edit Payable Voucher",
+    "Assets": "Assets",
+    "Liabilities": "Liabilities",
+    "Capital": "Capital",
+    "Income": "Income",
+    "Expenses": "Expenses"
   }
 }

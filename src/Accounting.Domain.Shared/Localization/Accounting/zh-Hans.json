@@ -286,6 +286,11 @@
     "Permission:PayableVoucher": "付款传票",
     "Menu:PayableVoucher": "付款传票",
     "NewPayableVoucher": "新付款传票",
-    "EditPayableVoucher": "编辑付款传票"
+    "EditPayableVoucher": "编辑付款传票",
+    "Assets": "资产",
+    "Liabilities": "负债",
+    "Capital": "资本",
+    "Income": "收入",
+    "Expenses": "支出"
   }
 }

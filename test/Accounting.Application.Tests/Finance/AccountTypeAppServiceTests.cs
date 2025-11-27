@@ -1,11 +1,9 @@
-﻿using Accounting.Dtos;
-using Accounting.Features;
+﻿using Accounting.Features;
 using Accounting.Finance.AccountTypes;
 using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Features;
@@ -43,7 +41,7 @@ namespace Accounting.Finance
                 TrialBalanceSort = 0,
                 ProfitAndLossSort = 0,
                 BalanceSheetSort = 0,
-                TrialBalanceGroup = 0,
+                TrialBalanceGroup = AccountTypeGroup.Assets,
                 ProfitAndLossGroup = 0,
                 BalanceSheetGroup = 0
             };
@@ -147,7 +145,7 @@ namespace Accounting.Finance
                 TrialBalanceSort = 1,
                 ProfitAndLossSort = 1,
                 BalanceSheetSort = 1,
-                TrialBalanceGroup = 1,
+                TrialBalanceGroup = AccountTypeGroup.Assets,
                 ProfitAndLossGroup = 1,
                 BalanceSheetGroup = 1
             };

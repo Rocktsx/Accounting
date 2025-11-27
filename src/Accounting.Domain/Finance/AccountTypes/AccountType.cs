@@ -32,7 +32,7 @@ namespace Accounting.Finance.AccountTypes
         /// <summary>
         /// 试算表分组
         /// </summary>
-        public int TrialBalanceGroup { get; private set; }
+        public AccountTypeGroup TrialBalanceGroup { get; private set; }
         /// <summary>
         /// 损益表分组
         /// </summary>
@@ -58,7 +58,7 @@ namespace Accounting.Finance.AccountTypes
             int trialBalanceSort,
             int profitAndLossSort,
             int balanceSheetSort,
-            int trialBalanceGroup,
+            AccountTypeGroup trialBalanceGroup,
             int profitAndLossGroup,
             int balanceSheetGroup,
             Guid? tenantId = null,
@@ -95,7 +95,7 @@ namespace Accounting.Finance.AccountTypes
             return this;
         }
 
-        public AccountType SetTrialBalanceGroup(int trialBalanceGroup)
+        public AccountType SetTrialBalanceGroup(AccountTypeGroup trialBalanceGroup)
         {
             TrialBalanceGroup = trialBalanceGroup;
             return this;

@@ -36,7 +36,7 @@ namespace Accounting.Web.ViewModels
         /// <summary>
         /// 试算表分组
         /// </summary>
-        public int TrialBalanceGroup { get; set; }
+        public AccountTypeGroup TrialBalanceGroup { get; set; }
         /// <summary>
         /// 损益表分组
         /// </summary>
@@ -45,5 +45,13 @@ namespace Accounting.Web.ViewModels
         /// 资产负债表分组
         /// </summary>
         public int BalanceSheetGroup { get; set; }
+
+        public CreateAccountTypeViewModel()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            TrialBalanceGroup = AccountTypeGroup.Assets;
+        }
     }
 }

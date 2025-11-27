@@ -36,7 +36,7 @@ namespace Accounting.Finance.AccountTypes
         /// <summary>
         /// 试算表分组
         /// </summary>
-        public int TrialBalanceGroup { get; set; }
+        public AccountTypeGroup TrialBalanceGroup { get; set; }
         /// <summary>
         /// 损益表分组
         /// </summary>

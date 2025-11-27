@@ -16,6 +16,7 @@ namespace Accounting.Web.ViewModels
         [MaxLength(AccountingCommonConsts.MaxNameLength)]
         public string? OtherName { get; set; }
         [SelectItems("Categories")]
+        [Display(Name = "Parent")]
         public Guid? ParentId { get; set; }
         public DebitorCreditor DebitorCreditor { get; set; }
         [SelectItems("AccountTypes")]
