@@ -66,7 +66,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
                    item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
         }
 
-        await ValidateAsync(entity, manager); 
+        await ValidateAsync(entity, manager);
 
         await GenerateCodeAsync(entity);
 
@@ -79,11 +79,19 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         var voucherDateFormat = await GetVoucherDateFormatAsync(setting);
         var codeGenerator = LazyServiceProvider.LazyGetRequiredService<CodeGenerator>();
 
-        await codeGenerator.GenerateCodeAsync(voucher, Repository, new CodeCacheItem
+        await codeGenerator.GenerateCodeAsync(voucher, new CodeCacheItem
         {
             TenantId = CurrentTenant.Id,
             FunctionCode = FunctionCode
-        }, () => VoucherManager.GetPrefix(voucher, voucherDateFormat));
+        }, () => VoucherManager.GetPrefix(voucher, voucherDateFormat),
+        getLastNumber: async (prefix) =>
+        {
+            var queryable = await Repository.GetQueryableAsync();
+            return await AsyncExecuter.FirstOrDefaultAsync(
+                 queryable.Where(item => item.Prefix == prefix).
+                 OrderByDescending(item => item.GenNo).Select(
+                     item => item.GenNo));
+        });
     }
 
     protected override async Task<Voucher> GetEntityByIdAsync(Guid id)
@@ -144,9 +152,9 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         query = query.WhereIf(input.EndNo != null, item => item.GenNo <= input.EndNo);
         query = query.WhereIf(input.StartDate != null, item => item.VoucherDate >= input.StartDate);
         query = query.WhereIf(input.EndDate != null, item => item.VoucherDate <= input.EndDate);
-        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType); 
-        query = query.WhereIf(input.Status == null ,new NoVoidVoucherSpecification());
-        query = query.WhereIf(input.Status != null ,item => item.Status == input.Status);
+        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
+        query = query.WhereIf(input.Status == null, new NoVoidVoucherSpecification());
+        query = query.WhereIf(input.Status != null, item => item.Status == input.Status);
         query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
         return query;
     }

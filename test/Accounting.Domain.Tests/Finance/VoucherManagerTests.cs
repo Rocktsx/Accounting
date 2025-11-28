@@ -5,6 +5,7 @@ using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
 using Shouldly;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
@@ -75,7 +76,7 @@ namespace Accounting.Finance
         }
         private async Task InitVoucherData()
         {
-            var company = await _companyRepository.FirstOrDefaultAsync();
+            var company = (await _companyRepository.GetPagedListAsync()).FirstOrDefault();
             _companyId = company.Id;
             var voucherDate = new DateOnly(2025, 1, 12);
             var arVoucher = CreateVoucher(voucherDate);

@@ -35,11 +35,9 @@ namespace Accounting.Common
                 await action();
             }
         }
-        public async Task GenerateCodeAsync<TEntity, TKey>(
-            IGenerateCode obj, IRepository<TEntity, TKey> repository,
-            CodeCacheItem cacheItem, Func<string> getPrefix = null,
-            string format = "")
-            where TEntity : class, IAggregateRoot<TKey>, IGenerateCode
+        public async Task GenerateCodeAsync(
+            IGenerateCode obj, CodeCacheItem cacheItem, Func<string> getPrefix = null,
+            Func<string, Task<int>> getLastNumber = null, string format = null)
         {
             var prefix = getPrefix == null ? obj.Prefix : getPrefix();
             cacheItem.Prefix = prefix;
@@ -49,11 +47,7 @@ namespace Accounting.Common
                 var existsCacheItem = await _cache.GetAsync(cacheKey);
                 if (existsCacheItem == null)
                 {
-                    var queryable = await repository.GetQueryableAsync();
-                    var lastNum = await AsyncExecuter.FirstOrDefaultAsync(
-                        queryable.Where(item => item.Prefix == prefix).
-                        OrderByDescending(item => item.GenNo).Select(
-                            item => item.GenNo));
+                    var lastNum = getLastNumber == null ? 0 : await getLastNumber(prefix);
                     cacheItem.LastNumber = lastNum;
                     existsCacheItem = cacheItem;
                 }

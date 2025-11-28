@@ -47,11 +47,11 @@ namespace Accounting.BasicData
                 }
             }
             var service = LazyServiceProvider.LazyGetRequiredService<CodeGenerator>();
-            await service.GenerateCodeAsync(company, _companyRepository, new CodeCacheItem
+            await service.GenerateCodeAsync(company, new CodeCacheItem
             {
                 TenantId = CurrentTenant.Id,
                 FunctionCode = FunctionCode
-            });
+            }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
             var createdCompany = await _companyRepository.InsertAsync(company);
             return ObjectMapper.Map<Company, CompanyDto>(createdCompany);
         }
@@ -70,10 +70,8 @@ namespace Accounting.BasicData
         }
         private async Task<Company> GetItemWithDetailsAsync(Guid companyId)
         {
-            var queryable = await _companyRepository.WithDetailsAsync(item => item.Addresses, item => item.Contacts);
-
-            var item = await AsyncExecuter.FirstOrDefaultAsync(queryable.Where(item => item.Id == companyId));
-            return item == null ? throw new EntityNotFoundException() : item;
+            var item = await _companyRepository.FindWithDetailsAsync(companyId);
+            return item ?? throw new EntityNotFoundException();
         }
 
         public virtual async Task<PagedResultDto<CompanyDto>> GetListAsync(CompanySearchDto dto)
@@ -86,17 +84,10 @@ namespace Accounting.BasicData
         }
         protected virtual async Task<PagedResultDto<CompanyDto>> QueryListAsync(CompanySearchDto input)
         {
-            var queryable = await _companyRepository.GetQueryableAsync();
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.Name.Contains(input.Filter)
-                || item.Code.Contains(input.Filter) || item.OtherName.Contains(input.Filter) || item.NickName.Contains(input.Filter));
-            queryable = queryable.WhereIf(input.IsClient.HasValue && input.IsClient == true, item => item.IsClient == true);
-            queryable = queryable.WhereIf(input.IsVendor.HasValue && input.IsVendor == true, item => item.IsVendor == true);
-            queryable = queryable.WhereIf(input.Ids != null, item => input.Ids.Contains(item.Id));
-
-            var listQuery = queryable.OrderBy(input.Sorting ?? nameof(Company.Name)).Skip(input.SkipCount).Take(input.MaxResultCount);
-            var count = await AsyncExecuter.CountAsync(queryable);
-            var list = await AsyncExecuter.ToListAsync(listQuery);
-            return new PagedResultDto<CompanyDto>(count, ObjectMapper.Map<List<Company>, List<CompanyDto>>(list));
+            var list = await _companyRepository.GetPagedListAsync(input.Filter, input.IsClient, input.IsVendor,
+                input.Ids, null, false, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var count = await _companyRepository.GetCountAsync(input.Filter, input.IsClient, input.IsVendor, input.Ids);
+            return new PagedResultDto<CompanyDto>(count, ObjectMapper.Map<IEnumerable<Company>, List<CompanyDto>>(list));
         }
 
         [RemoteService(false)]
@@ -168,7 +159,7 @@ namespace Accounting.BasicData
             var companyGroups = inputs.GroupBy(item => item.Code);
             var codes = companyGroups.Select(item => item.Key).Distinct().ToList();
             await ImportHelper.CheckExistsCodesAsync(codes, L, async (codes) =>
-                (await _companyRepository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
+                (await _companyRepository.GetPagedListAsync(codes: codes)).Select(item => item.Code));
 
             var entities = new List<Company>(inputs.Count());
             foreach (var item in companyGroups)

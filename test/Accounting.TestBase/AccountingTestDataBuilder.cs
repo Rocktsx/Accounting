@@ -109,7 +109,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     }
     private async Task SeedCompanyDataAsync(DataSeedContext context)
     {
-        if (!await _companyRepository.AnyAsync())
+        if (await _companyRepository.GetCountAsync() == 0)
         {
             var company = new Company(_testData.ClientId, _testData.ClientName,
                 _testData.ClientOtherName, _testData.ClientNickName,

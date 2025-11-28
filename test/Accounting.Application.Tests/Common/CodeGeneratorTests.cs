@@ -39,20 +39,21 @@ namespace Accounting.Common
             await WithUnitOfWorkAsync(async () =>
             {
                 await _codeGenerator.GenerateCodeAsync(company,
-                _companyRepository, new CodeCacheItem
+                  new CodeCacheItem
+                  {
+                      FunctionCode = FunctionCodes.Client
+                  }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
+                await _codeGenerator.GenerateCodeAsync(company2,
+                 new CodeCacheItem
+                 {
+                     FunctionCode = FunctionCodes.Client
+                 }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
+                await _codeGenerator.GenerateCodeAsync(company3,
+                new CodeCacheItem
                 {
                     FunctionCode = FunctionCodes.Client
-                });
-                await _codeGenerator.GenerateCodeAsync(company2,
-               _companyRepository, new CodeCacheItem
-               {
-                   FunctionCode = FunctionCodes.Client
-               });
-                await _codeGenerator.GenerateCodeAsync(company3,
-               _companyRepository, new CodeCacheItem
-               {
-                   FunctionCode = FunctionCodes.Client
-               },()=> "VC", "{0:###000}");
+                }, () => "VC", format: "{0:###000}",
+                getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
             });
 
             // Assert
