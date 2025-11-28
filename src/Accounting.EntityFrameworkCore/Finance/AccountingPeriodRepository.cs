@@ -23,7 +23,7 @@ namespace Accounting.Finance
         {
             return await (await GetDbSetAsync())
                 .WhereIf(!string.IsNullOrWhiteSpace(filter), item => item.Code.Contains(filter))
-                .OrderBy(sorting)
+                .OrderBy(string.IsNullOrWhiteSpace(sorting) ? nameof(AccountingPeriod.StartDate) : sorting)
                 .Skip(skipCount).Take(maxResultCount)
                 .ToListAsync(cancellationToken);
         }

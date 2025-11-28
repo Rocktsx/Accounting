@@ -34,7 +34,7 @@ namespace Accounting.BasicData
         [Authorize(AccountingPermissions.Currencies.Default)]
         public async Task<IEnumerable<CurrencyDto>> GetActiveListAsync()
         {
-            var list = await _currencyRepository.GetPagedListAsync(isActive: true, sorting: nameof(Currency.TargetCurrency));
+            var list = await _currencyRepository.GetPagedListAsync(isActive: true);
             return ObjectMapper.Map<IEnumerable<Currency>, IEnumerable<CurrencyDto>>(list);
         }
         [Authorize(AccountingPermissions.Currencies.Default)]
@@ -47,7 +47,7 @@ namespace Accounting.BasicData
         public async Task<PagedResultDto<CurrencyDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
 
-            var list = await _currencyRepository.GetPagedListAsync(input.Filter, sorting: input.Sorting ?? nameof(Currency.TargetCurrency),
+            var list = await _currencyRepository.GetPagedListAsync(input.Filter, sorting: input.Sorting,
                 maxResultCount: input.MaxResultCount, skipCount: input.SkipCount);
             var count = await _currencyRepository.GetCountAsync(input.Filter);
 

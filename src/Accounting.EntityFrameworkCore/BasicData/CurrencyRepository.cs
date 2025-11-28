@@ -31,7 +31,7 @@ namespace Accounting.BasicData
             return await (await GetDbSetAsync())
                .WhereIf(!string.IsNullOrWhiteSpace(filter), item => item.TargetCurrency.Contains(filter))
                .WhereIf(isActive != null, item => item.IsActive == isActive)
-               .OrderBy(sorting)
+               .OrderBy(string.IsNullOrWhiteSpace(sorting) ? nameof(Currency.TargetCurrency) : sorting)
                .Skip(skipCount).Take(maxResultCount)
                .ToListAsync(cancellationToken);
         }

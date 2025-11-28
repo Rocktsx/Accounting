@@ -27,7 +27,7 @@ namespace Accounting.EntityFrameworkCore.Domains
             // arrange
             var filter = _testData.UsdCurrency;
             // act
-            var result = await _currencyRepository.GetPagedListAsync(filter, true, nameof(Currency.TargetCurrency));
+            var result = await _currencyRepository.GetPagedListAsync(filter, true);
             // assert
             result.ShouldNotBeNull();
             result.Count().ShouldBe(1);

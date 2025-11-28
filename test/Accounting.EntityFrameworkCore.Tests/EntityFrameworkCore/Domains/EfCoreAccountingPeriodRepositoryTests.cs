@@ -37,7 +37,7 @@ namespace Accounting.EntityFrameworkCore.Domains
             // arrange
             var filter = _testData.AccountingPeriodYear.ToString();
             // act
-            var result = await _periodPepository.GetPagedListAsync(filter,nameof(AccountingPeriod.StartDate));
+            var result = await _periodPepository.GetPagedListAsync(filter);
 
             // assert
             result.ShouldNotBeNull();

@@ -52,7 +52,7 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.AccountingPeriods.Default)]
         public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
-            var list = await _accountingPeriodRepository.GetPagedListAsync(input.Filter, input.Sorting ?? nameof(AccountingPeriod.StartDate),
+            var list = await _accountingPeriodRepository.GetPagedListAsync(input.Filter, input.Sorting,
                 input.MaxResultCount, input.SkipCount);
             var count = await _accountingPeriodRepository.GetCountAsync(input.Filter);
 
