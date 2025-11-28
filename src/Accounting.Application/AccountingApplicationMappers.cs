@@ -8,7 +8,7 @@ using Accounting.Finance.Vouchers;
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
 
-namespace Accountin
+namespace Accounting
 {
     
     [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)] 
