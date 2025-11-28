@@ -115,12 +115,12 @@ namespace Accounting.Finance
             Currency? singleCurrency = null;
             if(singleSubject == null)
             {
-                throw new BusinessException(VoucherErrorCodes.SubjectCodeNotExists).WithData("SubjectCode", input.SubjectCode);
+                throw new BusinessException(VoucherErrorCodes.SubjectCodeNotExists).WithData(nameof(input.SubjectCode), input.SubjectCode);
             }
             if (!string.IsNullOrWhiteSpace(singleSubject.CurrencyCode))
             {
                 var currencyRepository = LazyServiceProvider.LazyGetRequiredService<ICurrencyRepository>();
-                singleCurrency = await currencyRepository.FirstOrDefaultAsync(x => x.TargetCurrency == singleSubject.CurrencyCode);
+                singleCurrency = (await currencyRepository.GetPagedListAsync(singleSubject.CurrencyCode)).FirstOrDefault();
             }
             if (singleCurrency == null)
             {

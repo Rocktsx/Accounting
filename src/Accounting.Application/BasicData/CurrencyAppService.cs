@@ -4,22 +4,19 @@ using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Data;
-using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.BasicData
 {
     public class CurrencyAppService : ApplicationService, ICurrencyAppService
     {
-        private ICurrencyRepository _currencyRepository; 
+        private ICurrencyRepository _currencyRepository;
         public CurrencyAppService(ICurrencyRepository repository)
         {
-            _currencyRepository = repository; 
+            _currencyRepository = repository;
         }
         [Authorize(AccountingPermissions.Currencies.Create)]
         public async Task<CurrencyDto> CreateAsync(CurrencyCreateDto input)
@@ -37,9 +34,8 @@ namespace Accounting.BasicData
         [Authorize(AccountingPermissions.Currencies.Default)]
         public async Task<IEnumerable<CurrencyDto>> GetActiveListAsync()
         {
-            var queryable = await _currencyRepository.GetQueryableAsync();
-            var list = await AsyncExecuter.ToListAsync(queryable.Where(item => item.IsActive == true));
-            return ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list);
+            var list = await _currencyRepository.GetPagedListAsync(isActive: true, sorting: nameof(Currency.TargetCurrency));
+            return ObjectMapper.Map<IEnumerable<Currency>, IEnumerable<CurrencyDto>>(list);
         }
         [Authorize(AccountingPermissions.Currencies.Default)]
         public async Task<CurrencyDto> GetAsync(Guid id)
@@ -50,16 +46,12 @@ namespace Accounting.BasicData
         [Authorize(AccountingPermissions.Currencies.Default)]
         public async Task<PagedResultDto<CurrencyDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
-            var queryable = await _currencyRepository.GetQueryableAsync();
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.TargetCurrency.Contains(input.Filter));
-            var pageQueryable = queryable
-                                .OrderBy(input.Sorting ?? nameof(Currency.TargetCurrency))
-                                .Skip(input.SkipCount)
-                                .Take(input.MaxResultCount);
-            var list = await AsyncExecuter.ToListAsync(pageQueryable);
-            var count = await AsyncExecuter.CountAsync(queryable);
 
-            return new PagedResultDto<CurrencyDto>(count, ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(list));
+            var list = await _currencyRepository.GetPagedListAsync(input.Filter, sorting: input.Sorting ?? nameof(Currency.TargetCurrency),
+                maxResultCount: input.MaxResultCount, skipCount: input.SkipCount);
+            var count = await _currencyRepository.GetCountAsync(input.Filter);
+
+            return new PagedResultDto<CurrencyDto>(count, ObjectMapper.Map<IEnumerable<Currency>, List<CurrencyDto>>(list));
         }
         [Authorize(AccountingPermissions.Currencies.Update)]
         public async Task UpdateAsync(Guid id, CurrencyUpdateDto input)

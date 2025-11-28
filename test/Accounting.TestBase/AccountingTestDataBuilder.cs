@@ -95,7 +95,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     }
     private async Task SeedCurrencyDataAsync(DataSeedContext context)
     {
-        if (!await _currencyRepository.AnyAsync())
+        if (await _currencyRepository.GetCountAsync() == 0)
         {
             await _currencyRepository.InsertManyAsync([
                 new Currency(_guidGenerator.Create(), _testData.RmbCurrency,
