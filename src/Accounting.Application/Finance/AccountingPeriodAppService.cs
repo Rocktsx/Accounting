@@ -41,26 +41,22 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.AccountingPeriods.Default)]
         public async Task<CurrentAccountingPeriodDto> GetCurrentPeriodAsync()
         {
-            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
-            var newQueryable = queryable.Where(x => x.IsCurrentPeriod).GroupBy(item => 1).Select(grp => new CurrentAccountingPeriodDto()
+            var list = await _accountingPeriodRepository.GetCurrentPeriodsAsync();
+            var queryable = list.GroupBy(item => item.IsCurrentPeriod).Select(grp => new CurrentAccountingPeriodDto()
             {
                 StartDate = grp.Min(x => x.StartDate),
                 EndDate = grp.Max(x => x.EndDate)
             });
-            return await AsyncExecuter.FirstOrDefaultAsync(newQueryable) ?? new CurrentAccountingPeriodDto();
+            return queryable.FirstOrDefault() ?? new CurrentAccountingPeriodDto();
         }
         [Authorize(AccountingPermissions.AccountingPeriods.Default)]
         public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
         {
-            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), x => x.Code.Contains(input.Filter));
-            var pageQueryable = queryable.Skip(input.SkipCount)
-                                .Take(input.MaxResultCount)
-                                .OrderBy(input.Sorting ?? nameof(AccountingPeriod.StartDate));
-            var list = await AsyncExecuter.ToListAsync(pageQueryable);
-            var count = await AsyncExecuter.CountAsync(queryable);
+            var list = await _accountingPeriodRepository.GetPagedListAsync(input.Filter, input.Sorting ?? nameof(AccountingPeriod.StartDate),
+                input.MaxResultCount, input.SkipCount);
+            var count = await _accountingPeriodRepository.GetCountAsync(input.Filter);
 
-            return new PagedResultDto<AccountingPeriodDto>(count, ObjectMapper.Map<List<AccountingPeriod>, List<AccountingPeriodDto>>(list));
+            return new PagedResultDto<AccountingPeriodDto>(count, ObjectMapper.Map<List<AccountingPeriod>, List<AccountingPeriodDto>>([.. list]));
         }
         [Authorize(AccountingPermissions.AccountingPeriods.Update)]
         public async Task UpdateAsync(Guid id, AccountingPeriodUpdateDto input)

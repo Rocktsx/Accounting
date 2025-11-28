@@ -84,7 +84,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     }
     private async Task SeedAccountingPeriodDataAsync(DataSeedContext context)
     {
-        if (!await _accountingPeriodRepository.AnyAsync())
+        if (await _accountingPeriodRepository.GetCountAsync() == 0)
         {
             var year = _testData.AccountingPeriodYear;
             var accountingPeriod = new AccountingPeriod(Guid.NewGuid(),

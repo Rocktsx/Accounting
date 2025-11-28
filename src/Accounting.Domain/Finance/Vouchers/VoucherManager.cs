@@ -73,14 +73,14 @@ namespace Accounting.Finance.Vouchers
         }
         private async Task ValidateVoucherDateAsync(Voucher voucher)
         {
-            var queryable = await _accountingPeriodRepository.GetQueryableAsync();
-            var periodQueryable = queryable.Where(item => item.IsCurrentPeriod).
+            var list = await _accountingPeriodRepository.GetCurrentPeriodsAsync();
+            var currentPeriod = list.
                 GroupBy(item => item.IsCurrentPeriod).Select(grp => new
                 {
                     StartDate = grp.Min(x => x.StartDate),
                     EndDate = grp.Max(x => x.EndDate)
-                });
-            var currentPeriod = await AsyncExecuter.FirstOrDefaultAsync(periodQueryable);
+                }).FirstOrDefault();
+
             var isExists = currentPeriod != null
                 && currentPeriod.StartDate <= voucher.VoucherDate
                 && voucher.VoucherDate <= currentPeriod.EndDate ? true : false;
