@@ -92,7 +92,7 @@ namespace Accounting.Finance
 
             // Assert
             result.ShouldNotBeNull();
-            result.Items.Count.ShouldBe(_testData.InsertedVouchers);
+            result.Items.Count.ShouldBe(_testData.InsertedJournalVouchers + 1);
         }
     }
 }

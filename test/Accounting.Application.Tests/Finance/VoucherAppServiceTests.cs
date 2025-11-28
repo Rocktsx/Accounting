@@ -289,7 +289,7 @@ public abstract class VoucherAppServiceTests<TStartupModule> : AccountingApplica
 
         // Assert
         result.ShouldNotBeNull();
-        result.Items.Count.ShouldBe(0);
+        result.Items.Count.ShouldBe(_testData.InsertedPayableVouchers);
     }
 
     [Fact]
