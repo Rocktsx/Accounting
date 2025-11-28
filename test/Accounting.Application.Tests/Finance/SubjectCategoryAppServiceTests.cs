@@ -216,7 +216,7 @@ namespace Accounting.Finance
         }
         private async Task<Tuple<SubjectCategoryCreateDto, SubjectCategoryCreateDto, SubjectCategoryDto>> InitGetListDataAsync()
         {
-            var accountType = await _accountTypeRepository.GetAsync(item => item.Code == _testData.AccountTypeAex);
+            var accountType = (await _accountTypeRepository.GetPagedListAsync(_testData.AccountTypeAex)).FirstOrDefault();
             var dto1 = new SubjectCategoryCreateDto()
             {
                 Code = "2001",

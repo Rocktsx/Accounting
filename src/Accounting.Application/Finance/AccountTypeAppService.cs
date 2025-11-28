@@ -1,4 +1,4 @@
-﻿using Accounting.Dtos;
+﻿using Accounting.Common;
 using Accounting.Features;
 using Accounting.Finance.AccountTypes;
 using Accounting.Permissions;
@@ -7,12 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 using Volo.Abp.Data;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Features;
 
 namespace Accounting.Finance
@@ -20,21 +17,18 @@ namespace Accounting.Finance
     /// <summary>
     /// 科目类别
     /// </summary>
-    public class AccountTypeAppService : CrudAppService<AccountType,
-        AccountTypeDto, Guid, AccountTypePagedAndSortedResultRequestDto,
-        AccountTypeCreateDto, AccountTypeUpdateDto>, IAccountTypeAppService
+    public class AccountTypeAppService : AccountingAppService, IAccountTypeAppService
     {
+        protected IAccountTypeRepository Repository { get; set; }
 
-        public AccountTypeAppService(IAccountTypeRepository repository) : base(repository)
+        public AccountTypeAppService(IAccountTypeRepository repository) 
         {
-            GetPolicyName = AccountingPermissions.SubjectCategories.Default;
-            DeletePolicyName = AccountingPermissions.SubjectCategories.Delete;
-            GetListPolicyName = AccountingPermissions.SubjectCategories.Default;
+            Repository = repository;
         }
 
         [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
         [Authorize(AccountingPermissions.SubjectCategories.Create)]
-        public override async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
+        public async Task<AccountTypeDto> CreateAsync(AccountTypeCreateDto input)
         {
             var item = new AccountType(GuidGenerator.Create(), input.Code,
                 input.Name, input.OtherName, input.ParentId, input.TrialBalanceSort,
@@ -44,26 +38,20 @@ namespace Accounting.Finance
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
-        protected override async Task<IQueryable<AccountType>> CreateFilteredQueryAsync(AccountTypePagedAndSortedResultRequestDto input)
+     
+        public  async Task<PagedResultDto<AccountTypeDto>> GetListAsync(AccountTypePagedAndSortedResultRequestDto input)
         {
-            var queryable = await Repository.GetQueryableAsync();
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            return queryable;
-        }
-        public override async Task<PagedResultDto<AccountTypeDto>> GetListAsync(AccountTypePagedAndSortedResultRequestDto input)
-        {
-            var list = await base.GetListAsync(input);
-
+            var list = await Repository.GetPagedListAsync(input.Filter, sorting: input.Sorting, maxResultCount: input.MaxResultCount, skipCount: input.SkipCount);
+            var count = await Repository.GetCountAsync(input.Filter);
+            var result = new PagedResultDto<AccountTypeDto>(count, ObjectMapper.Map<IEnumerable<AccountType>, List<AccountTypeDto>>(list));
             if (input.IsIncludeParent == true)
             {
-                var codes = list.Items.Where(item =>
-                        item.ParentId != null
-                        && !item.ParentId.Equals(Guid.Empty)).
+                var codes = result.Items.Where(item =>
+                        !item.ParentId.IsEmptyOrNull()).
                         Select(item => item.ParentId);
                 var dtos = (await GetSimpleDtoListAsync(codes)).ToDictionary(
                     item => item.Id, item => item);
-                foreach (var item in list.Items)
+                foreach (var item in result.Items)
                 {
                     if (item.ParentId != null &&
                         dtos.TryGetValue(item.ParentId.Value, out var parent))
@@ -72,7 +60,7 @@ namespace Accounting.Finance
                     }
                 }
             }
-            return list;
+            return result;
         }
 
         [Authorize]
@@ -81,10 +69,8 @@ namespace Accounting.Finance
             return await GetSimpleDtoListAsync();
         }
         private async Task<IEnumerable<AccountTypeSimpleDto>> GetSimpleDtoListAsync(IEnumerable<Guid?> codes = null)
-        {
-            var queryable = await Repository.GetQueryableAsync();
-            queryable = queryable.WhereIf(codes != null && codes.Any(), x => codes.Contains(x.Id));
-            return await AsyncExecuter.ToListAsync(queryable
+        { 
+            return (await Repository.GetPagedListAsync(ids: codes))
                 .OrderBy(x => x.Code)
                 .Select(x => new AccountTypeSimpleDto
                 {
@@ -92,11 +78,11 @@ namespace Accounting.Finance
                     Code = x.Code,
                     Name = x.Name,
                     OtherName = x.OtherName
-                }));
+                });
         }
         [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
         [Authorize(AccountingPermissions.SubjectCategories.Update)]
-        public override async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
+        public async Task<AccountTypeDto> UpdateAsync(Guid id, AccountTypeUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);
             entity.SetCode(input.Code)
@@ -119,9 +105,15 @@ namespace Accounting.Finance
 
         [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
         [Authorize(AccountingPermissions.SubjectCategories.Default)]
-        public override Task DeleteAsync(Guid id)
+        public Task DeleteAsync(Guid id)
         {
-            return base.DeleteAsync(id);
+            return Repository.DeleteAsync(id);
+        }
+
+        public async Task<AccountTypeDto> GetAsync(Guid id)
+        {
+            var entity = await Repository.GetAsync(id);
+            return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
     }
 }

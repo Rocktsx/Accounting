@@ -58,8 +58,8 @@ namespace Accounting.Finance
                 new AccountingPeriod(Guid.NewGuid(), "2022", new DateOnly(2022,1,1),new DateOnly(2022,12,31),true),
             ]);
 
-            var arAccountType = await _accountTypeRepository.GetAsync(item => item.Code == AccountTypeConsts.AccountingReceivableType);
-            var apAccounType = await _accountTypeRepository.GetAsync(item => item.Code == AccountTypeConsts.AccountingPayableType);
+            var arAccountType = (await _accountTypeRepository.GetPagedListAsync(AccountTypeConsts.AccountingReceivableType)).FirstOrDefault();
+            var apAccounType = (await _accountTypeRepository.GetPagedListAsync(AccountTypeConsts.AccountingPayableType)).FirstOrDefault();
             var arSubject = GetSubject("21", arAccountType.Id, true);
             var apSubject = GetSubject("41", apAccounType.Id, true);
             _arSubjectId = arSubject.Id;

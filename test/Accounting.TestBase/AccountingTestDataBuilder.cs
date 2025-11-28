@@ -8,6 +8,7 @@ using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
 using Polly;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Volo.Abp.Data;
@@ -71,7 +72,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     {
         if (!await _subjectCategoryRepository.AnyAsync())
         {
-            var nonCurrentAccountType = await _accountTypeRepository.FirstOrDefaultAsync(a => a.Code == _testData.AccountTypeNa);
+            var nonCurrentAccountType = (await _accountTypeRepository.GetPagedListAsync(_testData.AccountTypeNa)).FirstOrDefault();
 
             var subjectCategory = new SubjectCategory(_testData.SubjectCategoryId,
                 _testData.SubjectCategoryCode, _testData.SubjectCategoryName,
@@ -167,8 +168,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     private async Task AddSubjectAsync(Guid id, string subjectCode, string accountTypeCode, string name,
            string otherName, Guid? tenantId = null, bool isSubSubjectType = false)
     {
-        var accountType = await _accountTypeRepository.FirstOrDefaultAsync(
-                a => a.Code == accountTypeCode);
+        var accountType = (await _accountTypeRepository.GetPagedListAsync(accountTypeCode)).FirstOrDefault();
         var subject = new Subject(id, subjectCode, name,
             otherName, null, accountType?.Id, DebitorCreditor.Debitor,
             _testData.RmbCurrency, name, isSubSubjectType, true, true, 0, tenantId);

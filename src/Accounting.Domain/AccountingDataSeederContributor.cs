@@ -36,7 +36,7 @@ namespace Accounting
         }
         private async Task AddAccountTypesAsync(DataSeedContext context)
         {
-            if (await _accountTypeRepository.AnyAsync())
+            if (await _accountTypeRepository.GetCountAsync() != 0)
             {
                 return;
             }

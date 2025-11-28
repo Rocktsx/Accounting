@@ -29,7 +29,7 @@ namespace Accounting.Finance
         }
         private async Task<SubjectCreateDto> GetCreateDtoAsync(string code, string name, string otherName, string description, int? seqCode)
         {
-            var bankAccountType = await _accountTypeRepository.GetAsync(item => item.Code == _testData.AccountTypeBank); ;
+            var bankAccountType = (await _accountTypeRepository.GetPagedListAsync(_testData.AccountTypeBank)).FirstOrDefault(); ;
             return new SubjectCreateDto
             {
                 Code = code,

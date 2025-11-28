@@ -159,7 +159,7 @@ namespace Accounting.Finance
 
             var accountTypeReposity = LazyServiceProvider.GetRequiredService<IAccountTypeRepository>();
             var inputAccTypes = inputs.Where(item => !string.IsNullOrWhiteSpace(item.AccountTypeCode)).Select(item => item.AccountTypeCode).Distinct();
-            var accountTypes = (await accountTypeReposity.GetListAsync(item => inputAccTypes.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+            var accountTypes = (await accountTypeReposity.GetPagedListAsync(codes: inputAccTypes)).ToDictionary(item => item.Code, item => item);
 
             var categoryReposity = LazyServiceProvider.GetRequiredService<ISubjectCategoryRepository>();
             var inputCategories = inputs.Where(item => !string.IsNullOrWhiteSpace(item.SubjectCategoryCode)).Select(item => item.SubjectCategoryCode).Distinct();

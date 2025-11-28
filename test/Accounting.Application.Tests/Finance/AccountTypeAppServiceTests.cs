@@ -194,7 +194,7 @@ namespace Accounting.Finance
         [Fact]
         public async Task Can_Get_List_With_Parent()
         {
-            // Arrange
+            // Arrange 
             var dto = new AccountTypePagedAndSortedResultRequestDto
             {
                 Filter = _testData.AccountTypeBank,
