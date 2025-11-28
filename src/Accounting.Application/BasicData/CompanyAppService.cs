@@ -70,7 +70,7 @@ namespace Accounting.BasicData
         }
         private async Task<Company> GetItemWithDetailsAsync(Guid companyId)
         {
-            var item = await _companyRepository.FindWithDetailsAsync(companyId);
+            var item = await _companyRepository.FindAsync(companyId);
             return item ?? throw new EntityNotFoundException();
         }
 

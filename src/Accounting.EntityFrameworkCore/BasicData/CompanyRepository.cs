@@ -49,13 +49,16 @@ namespace Accounting.BasicData
               .Skip(skipCount).Take(maxResultCount)
               .ToListAsync(cancellationToken);
         }
-        public async Task<Company?> FindWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
+        public override async Task<Company?> FindAsync(Guid id, bool includeDetails = true, CancellationToken cancellationToken = default)
         {
-                return await (await GetDbSetAsync())
-                .Include(item => item.Addresses)
-                .Include(item => item.Contacts) 
-                .FirstOrDefaultAsync(item => item.Id == id, cancellationToken);
-
+            if(includeDetails)
+            {
+                return await(await GetDbSetAsync())
+               .Include(item => item.Addresses)
+               .Include(item => item.Contacts)
+               .FirstOrDefaultAsync(item => item.Id == id, cancellationToken);
+            }
+            return await base.FindAsync(id, includeDetails, cancellationToken);
         }
     }
 }

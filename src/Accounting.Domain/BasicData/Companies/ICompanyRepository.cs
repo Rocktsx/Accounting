@@ -27,7 +27,5 @@ namespace Accounting.BasicData.Companies
             IEnumerable<string>? codes = null,
             CancellationToken cancellationToken = default);
         Task<long> GetLastNumber(string prefix, CancellationToken cancellationToken = default);
-
-        Task<Company?> FindWithDetailsAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }
