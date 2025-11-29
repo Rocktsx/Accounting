@@ -62,6 +62,22 @@ namespace Accounting.EntityFrameworkCore.Domains
             result.Contacts.ShouldNotBeNull();
             result.Contacts.Count().ShouldBe(1);
         }
+        [Fact]
+        public async Task Can_Find_Company_With_No_Detail()
+        {
+            // arrange
+            var item = (await _companyRepository.GetPagedListAsync(isClient: true)).FirstOrDefault();
+
+            // act
+            var result = await _companyRepository.FindAsync(item.Id, false);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.Addresses.ShouldNotBeNull();
+            result.Addresses.Count().ShouldBe(0);
+            result.Contacts.ShouldNotBeNull();
+            result.Contacts.Count().ShouldBe(0);
+        }
 
         [Fact]
         public async Task Can_Get_Last_Number()
