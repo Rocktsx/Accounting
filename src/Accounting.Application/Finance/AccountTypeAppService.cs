@@ -38,7 +38,9 @@ namespace Accounting.Finance
             var entity = await Repository.InsertAsync(item);
             return ObjectMapper.Map<AccountType, AccountTypeDto>(entity);
         }
-     
+
+        [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
+        [Authorize(AccountingPermissions.SubjectCategories.Default)]
         public  async Task<PagedResultDto<AccountTypeDto>> GetListAsync(AccountTypePagedAndSortedResultRequestDto input)
         {
             var list = await Repository.GetPagedListAsync(input.Filter, sorting: input.Sorting, maxResultCount: input.MaxResultCount, skipCount: input.SkipCount);
@@ -104,12 +106,14 @@ namespace Accounting.Finance
         }
 
         [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
-        [Authorize(AccountingPermissions.SubjectCategories.Default)]
+        [Authorize(AccountingPermissions.SubjectCategories.Delete)]
         public Task DeleteAsync(Guid id)
         {
             return Repository.DeleteAsync(id);
         }
 
+        [RequiresFeature(AccountingFeatures.AccountTypeFunction)]
+        [Authorize(AccountingPermissions.SubjectCategories.Default)]
         public async Task<AccountTypeDto> GetAsync(Guid id)
         {
             var entity = await Repository.GetAsync(id);

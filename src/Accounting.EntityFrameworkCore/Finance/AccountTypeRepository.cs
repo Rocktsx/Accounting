@@ -22,8 +22,7 @@ namespace Accounting.Finance
 
         public async Task<long> GetCountAsync(string? filter = null, IEnumerable<Guid?> ids = null, IEnumerable<string> codes = null, CancellationToken cancellationToken = default)
         {
-            return await(await GetQueryable(filter, ids, codes)) 
-               .WhereIf(codes != null && codes.Any(), item => codes.Contains(item.Code))
+            return await(await GetQueryable(filter, ids, codes))  
                .LongCountAsync(cancellationToken);
         }
 
