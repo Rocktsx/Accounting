@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Caching;
 using Volo.Abp.DistributedLocking;
-using Volo.Abp.Domain.Entities;
-using Volo.Abp.Domain.Repositories;
-using Volo.Abp.Linq;
 
 namespace Accounting.Common
 {
@@ -15,16 +9,13 @@ namespace Accounting.Common
     {
         IAbpDistributedLock _distributedLock;
         IDistributedCache<CodeCacheItem> _cache;
-        IAsyncQueryableExecuter AsyncExecuter { get; set; }
         TimeSpan _waitTime = TimeSpan.FromSeconds(3);
         private const string Format = "{0:###0000}";
         public CodeGenerator(IAbpDistributedLock distributedLock,
-            IDistributedCache<CodeCacheItem> cache,
-            IAsyncQueryableExecuter asyncExecuter)
+            IDistributedCache<CodeCacheItem> cache)
         {
             _distributedLock = distributedLock;
             _cache = cache;
-            AsyncExecuter = asyncExecuter;
         }
         public async Task LockAsync(string lockName, Func<Task> action)
         {
