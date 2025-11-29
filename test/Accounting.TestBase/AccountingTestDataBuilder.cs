@@ -70,7 +70,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
 
     private async Task SeedSubjectCategoryDataAsync(DataSeedContext context)
     {
-        if (!await _subjectCategoryRepository.AnyAsync())
+        if (await _subjectCategoryRepository.GetCountAsync() ==0)
         {
             var nonCurrentAccountType = (await _accountTypeRepository.GetPagedListAsync(_testData.AccountTypeNa)).FirstOrDefault();
 

@@ -26,17 +26,29 @@ namespace Accounting.Finance
     /// <summary>
     /// 总账类别
     /// </summary>
-    public class SubjectCategoryAppService : CrudAppService<SubjectCategory, SubjectCategoryDto, SubjectCategoryFilteredResultDto, Guid,
-        SubjectCategoryFilteredRequestDto, SubjectCategoryCreateDto, SubjectCategoryUpdateDto>, ISubjectCategoryAppService
+    public class SubjectCategoryAppService : AccountingAppService, ISubjectCategoryAppService
     {
-        public SubjectCategoryAppService(ISubjectCategoryRepository repository) : base(repository)
+        protected ISubjectCategoryRepository Repository { get; set; }
+        public SubjectCategoryAppService(ISubjectCategoryRepository repository)
         {
-            GetPolicyName = AccountingPermissions.GeneralAccounts.Default;
-            DeletePolicyName = AccountingPermissions.GeneralAccounts.Delete;
-            GetListPolicyName = AccountingPermissions.GeneralAccounts.Default;
+            Repository = repository;
+        } 
+
+        [Authorize(AccountingPermissions.GeneralAccounts.Default)]
+        public async Task<SubjectCategoryDto> GetAsync(Guid id)
+        {
+            var entity = await Repository.GetAsync(id);
+            return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
+
+        [Authorize(AccountingPermissions.GeneralAccounts.Delete)]
+        public async Task DeleteAsync(Guid id)
+        {
+            await Repository.DeleteAsync(id);
+        }
+
         [Authorize(AccountingPermissions.GeneralAccounts.Create)]
-        public override async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
+        public async Task<SubjectCategoryDto> CreateAsync(SubjectCategoryCreateDto input)
         {
             var entity = new SubjectCategory(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.ParentId,
                input.DebitorCreditor, input.AccountTypeId, input.ShowDetail, input.Description, CurrentTenant.Id);
@@ -44,8 +56,9 @@ namespace Accounting.Finance
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
+
         [Authorize(AccountingPermissions.GeneralAccounts.Update)]
-        public override async Task<SubjectCategoryDto> UpdateAsync(Guid id, SubjectCategoryUpdateDto input)
+        public async Task<SubjectCategoryDto> UpdateAsync(Guid id, SubjectCategoryUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);
             entity.SetCode(input.Code)
@@ -64,20 +77,12 @@ namespace Accounting.Finance
 
             return ObjectMapper.Map<SubjectCategory, SubjectCategoryDto>(entity);
         }
-        protected override async Task<IQueryable<SubjectCategory>> CreateFilteredQueryAsync(SubjectCategoryFilteredRequestDto input)
-        {
-            var queryable = await (input.IsIncludeAccountType == true ?
-                    Repository.WithDetailsAsync(item => item.AccountType) : Repository.GetQueryableAsync());
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter) || x.OtherName.Contains(input.Filter));
-            return queryable;
-        }
-       
+
         [Authorize(AccountingPermissions.GeneralAccounts.Default)]
         public async Task<IEnumerable<SubjectCategorySimpleDto>> GetSimpleListAsync()
         {
-            var queryable = await Repository.GetQueryableAsync();
-            return await AsyncExecuter.ToListAsync(queryable
+            var queryable = await Repository.GetPagedListAsync();
+            return queryable
                 .OrderBy(x => x.Code)
                 .Select(x => new SubjectCategorySimpleDto
                 {
@@ -85,7 +90,7 @@ namespace Accounting.Finance
                     Code = x.Code,
                     Name = x.Name,
                     OtherName = x.OtherName
-                }));
+                });
         }
         private async Task SetLevel(SubjectCategory category)
         {
@@ -105,24 +110,30 @@ namespace Accounting.Finance
                 throw new UserFriendlyException(L.GetString("CannotFindParentCategory", category.ParentId));
             }
         }
-        protected override SubjectCategoryFilteredResultDto MapToGetListOutputDto(SubjectCategory entity)
+        protected SubjectCategoryFilteredResultDto MapToGetListOutputDto(SubjectCategory entity)
         {
-            var item = base.MapToGetListOutputDto(entity);
-            if(entity.AccountType != null)
+            var item = ObjectMapper.Map<SubjectCategory, SubjectCategoryFilteredResultDto>(entity);
+            if (entity.AccountType != null)
             {
                 item.AccountType = ObjectMapper.Map<AccountType, AccountTypeSimpleDto>(entity.AccountType);
             }
             return item;
         }
-        public override async Task<PagedResultDto<SubjectCategoryFilteredResultDto>> GetListAsync(SubjectCategoryFilteredRequestDto input)
+        public async Task<PagedResultDto<SubjectCategoryFilteredResultDto>> GetListAsync(SubjectCategoryFilteredRequestDto input)
         {
-            var reuslt = await base.GetListAsync(input);
-            if (input.IsIncludeParent == true && reuslt.Items.Count > 0)
+            var list = await Repository.GetPagedListAsync(input.Filter, isIncludeAccountType: input.IsIncludeAccountType?? false,
+                sorting: input.Sorting, maxResultCount: input.MaxResultCount, skipCount: input.SkipCount);
+            var totalCount = await Repository.GetCountAsync(input.Filter);
+            var items = list.Select(MapToGetListOutputDto).ToList();
+            var result = new PagedResultDto<SubjectCategoryFilteredResultDto>(totalCount, items);
+
+
+            if (input.IsIncludeParent == true && result.Items.Count > 0)
             {
-                var categoryIds = reuslt.Items.Where(x => x.ParentId != null).Select(x => x.ParentId.Value).ToList();
-                var categories = await Repository.GetListAsync(item => categoryIds.Contains(item.Id));
+                var categoryIds = result.Items.Where(x => x.ParentId != null).Select(x => x.ParentId);
+                var categories = await Repository.GetPagedListAsync(ids: categoryIds);
                 var categoriesDic = categories.ToDictionary(x => x.Id, x => x);
-                foreach (var item in reuslt.Items)
+                foreach (var item in result.Items)
                 {
                     if (item.ParentId != null && categoriesDic.TryGetValue(item.ParentId.Value, out SubjectCategory? category))
                     {
@@ -135,20 +146,20 @@ namespace Accounting.Finance
                     }
                 }
             }
-            return reuslt;
+            return result;
         }
-         
+
         [Authorize(AccountingPermissions.GeneralAccounts.Import)]
         public async Task<int> ImportDataAsync(IEnumerable<SubjectCategoryImportDto> inputs)
         {
             var codes = await inputs.CheckImportDataAsync(L, item => item.Code,
-                async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
+                async (codes) => (await Repository.GetPagedListAsync(codes: codes)).Select(item => item.Code));
 
             var accountTypeReposity = LazyServiceProvider.GetRequiredService<IAccountTypeRepository>();
             var inputAccTypes = inputs.Select(item => item.AccountTypeCode).Distinct();
             var accountTypes = (await accountTypeReposity.GetPagedListAsync(codes: inputAccTypes)).ToDictionary(item => item.Code, item => item);
             var inputCategories = inputs.Select(item => item.ParentCode).Distinct();
-            var categories = (await Repository.GetListAsync(item => inputCategories.Contains(item.Code))).ToDictionary(item => item.Code, item => item);
+            var categories = (await Repository.GetPagedListAsync(codes: inputCategories)).ToDictionary(item => item.Code, item => item);
             var inputDics = new Dictionary<string, SubjectCategoryImportDto>(inputs.Count());
 
             var entities = inputs.Where(item => !string.IsNullOrWhiteSpace(item.Code) && !string.IsNullOrWhiteSpace(item.Name))
