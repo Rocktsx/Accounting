@@ -27,8 +27,8 @@ namespace Accounting.Finance
         }
         private async Task<VoucherCreateDto> GetCreateDtoAsync()
         {
-            var bankSubject = await _subjectRepository.GetAsync(item => item.Id == _testData.SubjectBankId);
-            var apSubject = await _subjectRepository.GetAsync(item => item.Id == _testData.SubjectApId);
+            var bankSubject = await _subjectRepository.GetAsync( _testData.SubjectBankId);
+            var apSubject = await _subjectRepository.GetAsync(_testData.SubjectApId);
 
             var dto = new VoucherCreateDto()
             {

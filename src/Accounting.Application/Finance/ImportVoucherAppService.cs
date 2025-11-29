@@ -95,9 +95,9 @@ namespace Accounting.Finance
                     subjectCodes.Add(input.SubjectCode);
                 }
             }
-            var subjects = await SubjectRepository.GetListAsync(x => subjectCodes.Contains(x.Code));
+            var subjects = await SubjectRepository.GetPagedListAsync(new SubjectFilterRequest {  Codes = subjectCodes });
             var companies = await CompanyRepository.GetPagedListAsync(codes: companyCodes);
-            CheckExistsCodes(subjects, subjectCodes, [.. companies], companyCodes);
+            CheckExistsCodes([.. subjects], subjectCodes, [.. companies], companyCodes);
 
             _subjects = subjects.ToDictionary(item => item.Code, item => item);
             _companies = companies.ToDictionary(item => item.Code, item => item);

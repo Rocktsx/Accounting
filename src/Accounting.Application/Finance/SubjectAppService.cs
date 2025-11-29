@@ -10,36 +10,32 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
-    public class SubjectAppService : CrudAppService<Subject, SubjectDto, SubjectFilterResultDto, Guid,
-        SubjectFilterRequestDto, SubjectCreateDto, SubjectUpdateDto>, ISubjectAppService
+    public class SubjectAppService : AccountingAppService, ISubjectAppService
     {
-        public SubjectAppService(ISubjectRepository repository) : base(repository)
+        protected ISubjectRepository Repository { get; set; }
+        public SubjectAppService(ISubjectRepository repository)
         {
-            GetPolicyName = AccountingPermissions.Subjects.Default;
-            DeletePolicyName = AccountingPermissions.Subjects.Delete;
-            GetListPolicyName = AccountingPermissions.Subjects.Default;
+            Repository = repository;
         }
         [Authorize(AccountingPermissions.Subjects.Create)]
-        public override async Task<SubjectDto> CreateAsync(SubjectCreateDto input)
+        public async Task<SubjectDto> CreateAsync(SubjectCreateDto input)
         {
-            var entity = new Subject(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, input.SubjectCategoryId,
-               input.AccountTypeId, input.DebitorCreditor, input.CurrencyCode, input.Description, input.IsSubSujectType, input.IsActive,
-               input.IsPayMethod, input.SeqCode, CurrentTenant.Id);
+            var entity = new Subject(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, 
+                input.SubjectCategoryId, input.AccountTypeId, input.DebitorCreditor, input.CurrencyCode, 
+                input.Description, input.IsSubSujectType, input.IsActive, input.IsPayMethod, input.SeqCode, CurrentTenant.Id);
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<Subject, SubjectDto>(entity);
         }
         [Authorize(AccountingPermissions.Subjects.Update)]
-        public override async Task<SubjectDto> UpdateAsync(Guid id, SubjectUpdateDto input)
+        public async Task<SubjectDto> UpdateAsync(Guid id, SubjectUpdateDto input)
         {
             var entity = await Repository.GetAsync(id);
             entity.SetCode(input.Code)
@@ -60,19 +56,8 @@ namespace Accounting.Finance
 
             return ObjectMapper.Map<Subject, SubjectDto>(entity);
         }
-        protected override async Task<IQueryable<Subject>> CreateFilteredQueryAsync(SubjectFilterRequestDto input)
+        protected async Task HandleFilter(SubjectFilterRequestDto input)
         {
-            var queryable = await (input.IsIncludeAccountType == true ?
-                Repository.WithDetailsAsync(item => item.AccountType)
-                : Repository.GetQueryableAsync());
-
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-                x => x.Code.Contains(input.Filter) || x.Name.Contains(input.Filter)
-                || x.OtherName.Contains(input.Filter));
-
-            queryable = queryable.WhereIf(input.SubjectCategoryId != null,
-                x => x.SubjectCategoryId == input.SubjectCategoryId);
-
             if (input.IsIncludeReceivableSubject == true || input.IsIncludePayableSubject == true)
             {
                 var accountingSettings = LazyServiceProvider.LazyGetRequiredService<IAccountingSettingAppService>();
@@ -87,18 +72,10 @@ namespace Accounting.Finance
                     input.AddSubjectId(payableSubjectCode);
                 }
             }
-
-            queryable = queryable.WhereIf(input.SubjectIds != null,
-                item => input.SubjectIds.Contains(item.Id));
-
-            queryable = queryable.WhereIf(input.IsPaymentMethod != null,
-                item => item.IsPayMethod == input.IsPaymentMethod);
-
-            return queryable;
         }
-        protected override SubjectFilterResultDto MapToGetListOutputDto(Subject entity)
+        protected SubjectFilterResultDto MapToGetListOutputDto(Subject entity)
         {
-            var item = base.MapToGetListOutputDto(entity);
+            var item = ObjectMapper.Map<Subject, SubjectFilterResultDto>(entity);
             if (entity.AccountType != null)
             {
                 item.AccountType = ObjectMapper.Map<AccountType, AccountTypeSimpleDto>(entity.AccountType);
@@ -109,24 +86,23 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.Subjects.Default)]
         public async Task<IEnumerable<SubjectSimpleDto>> GetSimpleListAsync()
         {
-            var queryable = await Repository.GetQueryableAsync();
-            return await AsyncExecuter.ToListAsync(queryable
-                .OrderBy(x => x.Code)
+            var list = await Repository.GetPagedListAsync(sorting: nameof(Subject.Code));
+            return list
                 .Select(x => new SubjectSimpleDto
                 {
                     Id = x.Id,
                     Code = x.Code,
                     Name = x.Name,
                     OtherName = x.OtherName
-                }));
+                });
         }
 
         [Authorize(AccountingPermissions.Subjects.Default)]
         public async Task<IEnumerable<SubjectVoucherSimpleDto>> GetVoucherSimpleListAsync()
         {
-            var queryable = await Repository.WithDetailsAsync(item => item.AccountType);
-            return await AsyncExecuter.ToListAsync(queryable
-                .OrderBy(x => x.Code)
+            var list = await Repository.GetPagedListAsync(new SubjectFilterRequest { IsIncludeAccountType = true },
+                sorting: nameof(Subject.Code));
+            return list
                 .Select(x => new SubjectVoucherSimpleDto
                 {
                     Id = x.Id,
@@ -138,24 +114,55 @@ namespace Accounting.Finance
                     CurrencyCode = x.CurrencyCode,
                     DebitorCreditor = x.DebitorCreditor,
                     AccountTypeCode = x.AccountType != null ? x.AccountType.Code : null,
-                }));
+                });
         }
 
         [Authorize(AccountingPermissions.Subjects.Delete)]
-        public override async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var voucherRepository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
             if (await voucherRepository.AnyAsync(item => item.Details.Any(detailItem => detailItem.SubjectId == id)))
             {
                 throw new BusinessException(AccountingDomainErrorCodes.Subjects.SubjectIsInUse);
             }
-            await base.DeleteAsync(id);
+            await Repository.DeleteAsync(id);
         }
+
+        [Authorize(AccountingPermissions.Subjects.Default)]
+        public async Task<SubjectDto> GetAsync(Guid id)
+        {
+            var entity = await Repository.GetAsync(id);
+            return ObjectMapper.Map<Subject, SubjectDto>(entity);
+        }
+
+        [Authorize(AccountingPermissions.Subjects.Default)]
+        public async Task<PagedResultDto<SubjectFilterResultDto>> GetListAsync(SubjectFilterRequestDto input)
+        {
+            HandleFilter(input);
+            var request = new SubjectFilterRequest
+            {
+                Filter = input.Filter,
+                SubjectCategoryId = input.SubjectCategoryId,
+                SubjectIds = input.SubjectIds,
+                IsIncludeAccountType = input.IsIncludeAccountType,
+                IsPaymentMethod = input.IsPaymentMethod
+            };
+
+            var list = await Repository.GetPagedListAsync(request, input.Sorting,
+                input.MaxResultCount, input.SkipCount);
+            var totalCount = await Repository.GetCountAsync(request);
+
+            return new PagedResultDto<SubjectFilterResultDto>(
+                totalCount,
+                [.. list.Select(MapToGetListOutputDto)]
+            );
+        }
+
         [Authorize(AccountingPermissions.Subjects.Import)]
         public async Task<int> ImportDataAsync(IEnumerable<SubjectImportDto> inputs)
         {
             var codes = await inputs.CheckImportDataAsync(L, item => item.Code,
-                async (codes) => (await Repository.GetListAsync(item => codes.Contains(item.Code))).Select(item => item.Code));
+                async (codes) => (await Repository.GetPagedListAsync(new SubjectFilterRequest { Codes = codes })).Select(item => item.Code));
 
             var accountTypeReposity = LazyServiceProvider.GetRequiredService<IAccountTypeRepository>();
             var inputAccTypes = inputs.Where(item => !string.IsNullOrWhiteSpace(item.AccountTypeCode)).Select(item => item.AccountTypeCode).Distinct();

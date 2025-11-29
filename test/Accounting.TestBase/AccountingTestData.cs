@@ -99,5 +99,7 @@ namespace Accounting
         public string VoucherPvCode { get; } = "PV-0001";
         public string VoucherPvPrefix { get; } = "PV";
         public Guid VoucherPvId { get; } = Guid.NewGuid();
+
+        public int InsertedSubjectCount { get; } = 4;
     }
 }

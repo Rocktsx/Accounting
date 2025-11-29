@@ -93,9 +93,9 @@ namespace Accounting.Finance.Vouchers
         {
             var subjectIds = voucher.Details.Select(item => item.SubjectId).Distinct().ToList();
             var subjectRepository = LazyServiceProvider.LazyGetRequiredService<ISubjectRepository>();
-            var querable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
+            var list = await subjectRepository.GetPagedListAsync(new SubjectFilterRequest { IsIncludeAccountType = true });
 
-            var arapQuerable = querable.Where(item => subjectIds.Contains(item.Id)
+            var subjects = list.Where(item => subjectIds.Contains(item.Id)
                 && item.AccountType != null &&
                 (item.AccountType.Category == AccountTypeTypes.Receivable
                 || item.AccountType.Category == AccountTypeTypes.Payable))
@@ -106,9 +106,8 @@ namespace Accounting.Finance.Vouchers
                     AccountTypeCode = item.AccountType.Code,
                     Category = item.AccountType.Category
                 });
-            var subjects = await AsyncExecuter.ToListAsync(arapQuerable);
 
-            if (subjects.Count == 0)
+            if (subjects.Count() == 0)
             {
                 return;
             }
@@ -238,17 +237,10 @@ namespace Accounting.Finance.Vouchers
             {
                 return prefix;
             }
-            try
+            var datePrefix = voucher.VoucherDate.ToString(dateFormat);
+            if (!string.IsNullOrWhiteSpace(datePrefix))
             {
-                var datePrefix = voucher.VoucherDate.ToString(dateFormat);
-                if (!string.IsNullOrWhiteSpace(datePrefix))
-                {
-                    prefix += "-" + datePrefix;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new BusinessException(AccountingDomainErrorCodes.CannotFormatVoucherDate, innerException: ex).WithData("Format", dateFormat);
+                prefix += "-" + datePrefix;
             }
             return prefix;
         }

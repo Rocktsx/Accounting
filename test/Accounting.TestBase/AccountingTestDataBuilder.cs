@@ -143,7 +143,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
 
     private async Task SeedSubjectAsync(DataSeedContext context)
     {
-        if (await _subjectRepository.AnyAsync())
+        if (await _subjectRepository.GetCountAsync() != 0)
         {
             return;
         }
@@ -170,7 +170,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     {
         var accountType = (await _accountTypeRepository.GetPagedListAsync(accountTypeCode)).FirstOrDefault();
         var subject = new Subject(id, subjectCode, name,
-            otherName, null, accountType?.Id, DebitorCreditor.Debitor,
+            otherName, _testData.SubjectCategoryId, accountType?.Id, DebitorCreditor.Debitor,
             _testData.RmbCurrency, name, isSubSubjectType, true, true, 0, tenantId);
         await _subjectRepository.InsertAsync(subject, true);
     }

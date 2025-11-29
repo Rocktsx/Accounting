@@ -184,9 +184,11 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     protected async Task<Dictionary<Guid, Subject>> GetSubjectsAsync(IEnumerable<Guid> ids)
     {
         var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
-        var subjectQueryable = await subjectRepository.WithDetailsAsync(item => item.AccountType);
-        var subjectQuery = subjectQueryable.Where(item => ids.Contains(item.Id));
-        var subjects = await AsyncExecuter.ToListAsync(subjectQuery);
+        var subjects = await subjectRepository.GetPagedListAsync(new SubjectFilterRequest
+        {
+            SubjectIds = ids, 
+            IsIncludeAccountType = true
+        });
         return subjects.ToDictionary(item => item.Id, item => item);
     }
 }
