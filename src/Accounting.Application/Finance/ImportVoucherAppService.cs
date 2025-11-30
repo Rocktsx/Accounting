@@ -90,12 +90,12 @@ namespace Accounting.Finance
                 {
                     throw new BusinessException(VoucherErrorCodes.InSingleEntrySubjectCodeCannotBeEmpty);
                 }
-                if(!subjectInputDic.ContainsKey(input.SubjectCode))
+                if (!subjectInputDic.ContainsKey(input.SubjectCode))
                 {
                     subjectCodes.Add(input.SubjectCode);
                 }
             }
-            var subjects = await SubjectRepository.GetPagedListAsync(new SubjectFilterRequest {  Codes = subjectCodes });
+            var subjects = await SubjectRepository.GetPagedListAsync(new SubjectFilterRequest { Codes = subjectCodes });
             var companies = await CompanyRepository.GetPagedListAsync(codes: companyCodes);
             CheckExistsCodes([.. subjects], subjectCodes, [.. companies], companyCodes);
 
@@ -113,7 +113,7 @@ namespace Accounting.Finance
             }
             var singleSubject = subjects[input.SubjectCode];
             Currency? singleCurrency = null;
-            if(singleSubject == null)
+            if (singleSubject == null)
             {
                 throw new BusinessException(VoucherErrorCodes.SubjectCodeNotExists).WithData(nameof(input.SubjectCode), input.SubjectCode);
             }
@@ -171,10 +171,10 @@ namespace Accounting.Finance
             if (singleCurrency != null)
             {
                 currencyRate = singleCurrency.ExchangeRate;
-                currency = singleCurrency.TargetCurrency; 
+                currency = singleCurrency.TargetCurrency;
                 foriegnAmount = Math.Abs(totalNativeAmount) / item.CurrencyRate;
             }
-             
+
             if (totalNativeAmount > 0)
             {
                 item.Debit = 0;
@@ -185,7 +185,7 @@ namespace Accounting.Finance
                 item.Credit = 0;
                 item.Debit = foriegnAmount;
             }
-            
+
             GenerateVoucherDetail(voucher, item);
         }
         private void GenerateVoucherDetail(Voucher voucher, VoucherImportItemDto item)
@@ -204,11 +204,8 @@ namespace Accounting.Finance
 
             var detailId = GuidGenerator.Create();
             var detail = voucher.AddDetail(detailId, subjectId, subSubjectId, item.Description, debitorCreditor, item.Currency,
-                item.CurrencyRate, foriegnAmount, nativeAmount, item.DocNo, dueDate, item.ItemQty, true, item.PaymentReference);
-
-            voucher.SetFunctionalFields(detailId, EnableProjectFunction, EnableRegionFunction, EnableDepartmentFunction, EnableCustom1Function,
-                EnableCustom2Function, item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
-             
+                item.CurrencyRate, foriegnAmount, nativeAmount, item.DocNo, dueDate, item.ItemQty, true, item.PaymentReference,
+                item.Project, item.Region, item.Department, item.Custom1, item.Custom2);  
         }
         [Authorize(AccountingPermissions.TransferVouchers.Import)]
         public async Task<int> ImportDataAsync(VoucherImportDto input)
@@ -218,19 +215,22 @@ namespace Accounting.Finance
             {
                 return 0;
             }
-            var (groupedData, singleCurrency) = await CheckImportDataAsync(input); 
+            var (groupedData, singleCurrency) = await CheckImportDataAsync(input);
             Subject? singleSubject = !string.IsNullOrWhiteSpace(input.SubjectCode) ? _subjects[input.SubjectCode] : null;
 
             await InitEnableFunctionAsync();
 
             var entityTasks = groupedData.Select(async item =>
             {
-                var firstItem = item.First(); 
+                var firstItem = item.First();
                 var voucher = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(firstItem.VoucherDate),
                     firstItem.VoucherType ?? VoucherType.JournalVoucher, VoucherStatus.Draft, CurrentTenant.Id);
 
                 var genNo = GetGenNo(firstItem.VoucherCode, firstItem.Prefix);
                 voucher.SetCode(firstItem.VoucherCode, firstItem.Prefix, genNo);
+
+                voucher.SetFunctionEnable(EnableProjectFunction, EnableRegionFunction, EnableDepartmentFunction, EnableCustom1Function,
+                    EnableCustom2Function);
 
                 foreach (var subItem in item)
                 {

@@ -35,7 +35,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     {
         return await service.GetTransferVoucherDateFormatAsync();
     }
-    private async Task<(bool, bool, bool, bool, bool)> GetEnabledFunctionsAsync()
+    private async Task GetEnabledFunctionsAsync(Voucher voucher)
     {
         var enableProjectFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.ProjectFunction);
         var enableRegionFunction = await FeatureChecker.IsEnabledAsync(AccountingFeatures.RegionFunction);
@@ -43,8 +43,8 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         var enableCustom1Function = await FeatureChecker.IsEnabledAsync(AccountingFeatures.Custom1Function);
         var enableCustom2Function = await FeatureChecker.IsEnabledAsync(AccountingFeatures.Custom2Function);
 
-        return (enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
-            enableCustom1Function, enableCustom2Function);
+        voucher.SetFunctionEnable(enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
+           enableCustom1Function, enableCustom2Function);
     }
     public override async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
     {
@@ -52,19 +52,15 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
-        var (enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
-            enableCustom1Function, enableCustom2Function) = await GetEnabledFunctionsAsync();
+       await GetEnabledFunctionsAsync(entity);
 
         foreach (var item in input.Details)
         {
             var id = GuidGenerator.Create();
             entity.AddDetail(id, item.SubjectId, item.SubSubjectCode, item.Description,
                 item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
-                item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? true, item.PaymentReference);
-
-            entity.SetFunctionalFields(id, enableProjectFunction, enableRegionFunction,
-                   enableDepartmentFunction, enableCustom1Function, enableCustom2Function,
-                   item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
+                item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? true, item.PaymentReference,
+                 item.Project, item.Region, item.Department, item.Custom1, item.Custom2); 
         }
 
         await ValidateAsync(entity, manager);
@@ -109,9 +105,8 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         entity.SetVoucherDate(DateOnly.FromDateTime(input.VoucherDate));
         entity.Details.RemoveAll(item => !input.Details.Any(obj => obj.Id == item.Id));
 
-        var (enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
-            enableCustom1Function, enableCustom2Function) = await GetEnabledFunctionsAsync();
-        entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
+        await GetEnabledFunctionsAsync(entity);
+        entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp); 
 
         foreach (var item in input.Details)
         {
@@ -120,20 +115,14 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
                 var detailId = GuidGenerator.Create();
                 entity.AddDetail(detailId, item.SubjectId, item.SubSubjectCode, item.Description,
                     item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
-                    item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
-
-                entity.SetFunctionalFields(detailId, enableProjectFunction, enableRegionFunction,
-                    enableDepartmentFunction, enableCustom1Function, enableCustom2Function,
+                    item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference,
                     item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
             }
             else
             {
                 entity.SetDetail(item.Id, item.SubjectId, item.SubSubjectCode, item.Description,
                     item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
-                    item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
-
-                entity.SetFunctionalFields(item.Id, enableProjectFunction, enableRegionFunction,
-                    enableDepartmentFunction, enableCustom1Function, enableCustom2Function,
+                    item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference,
                     item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
             }
         }
@@ -188,7 +177,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
         var subjects = await subjectRepository.GetPagedListAsync(new SubjectFilterRequest
         {
-            SubjectIds = ids, 
+            SubjectIds = ids,
             IsIncludeAccountType = true
         });
         return subjects.ToDictionary(item => item.Id, item => item);

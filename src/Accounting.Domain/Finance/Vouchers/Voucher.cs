@@ -14,6 +14,12 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     public VoucherType VoucherType { get; private set; }
     public VoucherStatus Status { get; private set; }
 
+    bool _enableProjectFunction = false;
+    bool _enableRegionFunction = false;
+    bool _enableDepartmentFunction = false; 
+    bool _enableCustom1Function = false;
+    bool _enableCustom2Function = false;
+
     public virtual ICollection<VoucherDetail> Details { get; private set; } = [];
 
     private Voucher()
@@ -49,17 +55,21 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
 
     public Voucher AddDetail(Guid id, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
-        decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference)
+        decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference,
+        string project = null, string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
         var item = new VoucherDetail(id, Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
             currencyRate, foreignAmount, nativeAmount, docNo, dueDate, itemQty, isOriginal, paymentReference, TenantId);
         Details.Add(item);
+        SetFunctionalFields(item, project, region, department, custom1, custom2);
+
         return this;
     }
 
     public Voucher SetDetail(Guid id, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
-        decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference)
+        decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference,
+        string project = null,  string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
         var item = Details.FirstOrDefault(obj => obj.Id == id);
         if (item == null)
@@ -77,27 +87,17 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
             .SetItemQty(itemQty)
             .SetIsOriginal(isOriginal)
             .SetPaymentReference(paymentReference);
-
+        SetFunctionalFields(item, project, region, department, custom1, custom2);
         return this;
     }
-    public Voucher SetFunctionalFields(Guid detailId,
-           bool enableProjectFunction, bool enableRegionFunction,
-           bool enableDepartmentFunction, bool enableCustom1Function,
-           bool enableCustom2Function, string project,
+    private void SetFunctionalFields(VoucherDetail item, string project,
            string region, string department, string custom1, string custom2)
-    {
-        var item = Details.FirstOrDefault(obj => obj.Id == detailId);
-        if (item == null)
-        {
-            return this;
-        }
-        item.SetProject(project, enableProjectFunction);
-        item.SetRegion(region, enableRegionFunction);
-        item.SetDepartment(department, enableDepartmentFunction);
-        item.SetCustom1(custom1, enableCustom1Function);
-        item.SetCustom2(custom2, enableCustom2Function);
-
-        return this;
+    { 
+        item.SetProject(project, _enableProjectFunction);
+        item.SetRegion(region, _enableRegionFunction);
+        item.SetDepartment(department, _enableDepartmentFunction);
+        item.SetCustom1(custom1, _enableCustom1Function);
+        item.SetCustom2(custom2, _enableCustom2Function); 
     }
     public void ValidateBalance()
     {
@@ -106,5 +106,17 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         {
             throw new BusinessException(AccountingDomainErrorCodes.VoucherDoesNotBalance);
         }
+    }
+    public Voucher SetFunctionEnable(bool enableProjectFunction, bool enableRegionFunction,
+           bool enableDepartmentFunction, bool enableCustom1Function,
+           bool enableCustom2Function)
+    {
+        _enableCustom1Function = enableCustom1Function;
+        _enableCustom2Function = enableCustom2Function;
+        _enableDepartmentFunction = enableDepartmentFunction;
+        _enableProjectFunction = enableProjectFunction;
+        _enableRegionFunction = enableRegionFunction;
+
+        return this;
     }
 }

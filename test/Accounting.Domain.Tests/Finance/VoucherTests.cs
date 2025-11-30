@@ -52,6 +52,7 @@ namespace Accounting.Finance
             // Arrange
             var voucherDate = DateOnly.FromDateTime(DateTime.Now);
             var voucher = GetVoucher(voucherDate);
+            voucher.SetFunctionEnable(true, true, true, true, true);
             string demoText = "demo";
             Guid subjectId = Guid.NewGuid();
             // Act
@@ -59,8 +60,7 @@ namespace Accounting.Finance
             voucher.SetStatus(VoucherStatus.Approval).SetVoucherDate(newVoucherDate).SetVoucherType(VoucherType.PayableVoucher);
             var detailItem = voucher.Details.First();
             voucher.SetDetail(detailItem.Id, subjectId, Guid.Empty, "Test Description33", DebitorCreditor.Creditor, "RMB", 1.1m, 1000.0m,
-                1100.0m, "DOC00121", newVoucherDate,  1, false, string.Empty);
-            voucher.SetFunctionalFields(detailItem.Id, true, true, true, true, true, demoText, demoText, demoText, demoText, demoText);
+                1100.0m, "DOC00121", newVoucherDate,  1, false, string.Empty, demoText, demoText, demoText, demoText, demoText); 
 
             // Assert 
             var assertDetailItem = voucher.Details.First(item => item.Id == detailItem.Id);
