@@ -161,20 +161,34 @@ namespace Accounting.Finance
         {
             var totalNativeAmount = voucher.Details.Sum(obj => obj.NativeAmount * (int)obj.DebitorCreditor);
 
-            var detail = GenerateVoucherDetail(voucher, item);
-
             if (singleSubject != null)
             {
-                detail.SetSubjectId(singleSubject.Id);
+                item.SubSubjectCode = singleSubject.Code;
             }
-            detail.SetDebitorCreditor(totalNativeAmount < 0 ? DebitorCreditor.Debitor : DebitorCreditor.Creditor);
-            totalNativeAmount = Math.Abs(totalNativeAmount);
+            var currencyRate = item.CurrencyRate;
+            var currency = item.Currency;
+            var foriegnAmount = Math.Abs(totalNativeAmount) / currencyRate;
             if (singleCurrency != null)
             {
-                detail.SetCurrencyAndAmount(singleCurrency.TargetCurrency, singleCurrency.ExchangeRate, totalNativeAmount / singleCurrency.ExchangeRate, totalNativeAmount);
+                currencyRate = singleCurrency.ExchangeRate;
+                currency = singleCurrency.TargetCurrency; 
+                foriegnAmount = Math.Abs(totalNativeAmount) / item.CurrencyRate;
             }
+             
+            if (totalNativeAmount > 0)
+            {
+                item.Debit = 0;
+                item.Credit = foriegnAmount;
+            }
+            else
+            {
+                item.Credit = 0;
+                item.Debit = foriegnAmount;
+            }
+            
+            GenerateVoucherDetail(voucher, item);
         }
-        private VoucherDetail GenerateVoucherDetail(Voucher voucher, VoucherImportItemDto item)
+        private void GenerateVoucherDetail(Voucher voucher, VoucherImportItemDto item)
         {
             var subjectId = _subjects[item.SubjectCode].Id;
             Guid? subSubjectId = !string.IsNullOrWhiteSpace(item.SubjectCode) && _companies.TryGetValue(item.SubjectCode, out Company? value) ? value.Id : null;
@@ -188,13 +202,13 @@ namespace Accounting.Finance
             var nativeAmount = foriegnAmount * item.CurrencyRate;
             DateOnly? dueDate = item.DueDate != null ? DateOnly.FromDateTime(item.DueDate.Value) : null;
 
-            var detail = voucher.AddDetail(GuidGenerator.Create(), subjectId, subSubjectId, item.Description, debitorCreditor, item.Currency,
+            var detailId = GuidGenerator.Create();
+            var detail = voucher.AddDetail(detailId, subjectId, subSubjectId, item.Description, debitorCreditor, item.Currency,
                 item.CurrencyRate, foriegnAmount, nativeAmount, item.DocNo, dueDate, item.ItemQty, true, item.PaymentReference);
 
-            VoucherManager.SetFunctionalFields(detail, EnableProjectFunction, EnableRegionFunction, EnableDepartmentFunction, EnableCustom1Function,
+            voucher.SetFunctionalFields(detailId, EnableProjectFunction, EnableRegionFunction, EnableDepartmentFunction, EnableCustom1Function,
                 EnableCustom2Function, item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
-
-            return detail;
+             
         }
         [Authorize(AccountingPermissions.TransferVouchers.Import)]
         public async Task<int> ImportDataAsync(VoucherImportDto input)

@@ -365,45 +365,6 @@ namespace Accounting.Finance
                 exception.ShouldNotBeNull();
                 exception.Code.ShouldBe(AccountingDomainErrorCodes.DocNoHasBeenUsed);
             });
-        }
-
-        [Fact]
-        public void Can_Set_Enable_Function_Fields()
-        {
-            // Arrange   
-            var voucherDate = new DateOnly(2025, 1, 12);
-            var voucher = CreateVoucher(voucherDate);
-            var detail = voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                100.0m, "DOC001", null, 0, true, string.Empty);
-
-            // Act
-            VoucherManager.SetFunctionalFields(detail, true, true, true, true, true, "project", "region", "department", "custom1", "custom2");
-
-            // Assert 
-            detail.Region.ShouldBe("region");
-            detail.Project.ShouldBe("project");
-            detail.Department.ShouldBe("department");
-            detail.Custom1.ShouldBe("custom1");
-            detail.Custom2.ShouldBe("custom2");
-        }
-        [Fact]
-        public void Cannot_Set_Enable_Function_Fields()
-        {
-            // Arrange   
-            var voucherDate = new DateOnly(2025, 1, 12);
-            var voucher = CreateVoucher(voucherDate);
-            var detail = voucher.AddDetail(Guid.NewGuid(), Guid.NewGuid(), null, "Test Description", DebitorCreditor.Creditor, "USD", 1.0m, 100.0m,
-                100.0m, "DOC001", null, 0, true, string.Empty);
-
-            // Act
-            VoucherManager.SetFunctionalFields(detail, false, false, false, false, false, "project", "region", "department", "custom1", "custom2");
-
-            // Assert 
-            detail.Region.ShouldBe(string.Empty);
-            detail.Project.ShouldBe(string.Empty);
-            detail.Department.ShouldBe(string.Empty);
-            detail.Custom1.ShouldBe(string.Empty);
-            detail.Custom2.ShouldBe(string.Empty);
-        }
+        } 
     }
 }

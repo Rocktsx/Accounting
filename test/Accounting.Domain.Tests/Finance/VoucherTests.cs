@@ -60,7 +60,7 @@ namespace Accounting.Finance
             var detailItem = voucher.Details.First();
             voucher.SetDetail(detailItem.Id, subjectId, Guid.Empty, "Test Description33", DebitorCreditor.Creditor, "RMB", 1.1m, 1000.0m,
                 1100.0m, "DOC00121", newVoucherDate,  1, false, string.Empty);
-            VoucherManager.SetFunctionalFields(detailItem, true, true, true, true, true, demoText, demoText, demoText, demoText, demoText);
+            voucher.SetFunctionalFields(detailItem.Id, true, true, true, true, true, demoText, demoText, demoText, demoText, demoText);
 
             // Assert 
             var assertDetailItem = voucher.Details.First(item => item.Id == detailItem.Id);

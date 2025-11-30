@@ -57,11 +57,12 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
 
         foreach (var item in input.Details)
         {
-            var detail = entity.AddDetail(GuidGenerator.Create(), item.SubjectId, item.SubSubjectCode, item.Description,
+            var id = GuidGenerator.Create();
+            entity.AddDetail(id, item.SubjectId, item.SubSubjectCode, item.Description,
                 item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
                 item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? true, item.PaymentReference);
 
-            VoucherManager.SetFunctionalFields(detail, enableProjectFunction, enableRegionFunction,
+            entity.SetFunctionalFields(id, enableProjectFunction, enableRegionFunction,
                    enableDepartmentFunction, enableCustom1Function, enableCustom2Function,
                    item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
         }
@@ -116,21 +117,22 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         {
             if (Guid.Empty.Equals(item.Id))
             {
-                var detail = entity.AddDetail(GuidGenerator.Create(), item.SubjectId, item.SubSubjectCode, item.Description,
+                var detailId = GuidGenerator.Create();
+                entity.AddDetail(detailId, item.SubjectId, item.SubSubjectCode, item.Description,
                     item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
                     item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
 
-                VoucherManager.SetFunctionalFields(detail, enableProjectFunction, enableRegionFunction,
+                entity.SetFunctionalFields(detailId, enableProjectFunction, enableRegionFunction,
                     enableDepartmentFunction, enableCustom1Function, enableCustom2Function,
                     item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
             }
             else
             {
-                var detail = entity.SetDetail(item.Id, item.SubjectId, item.SubSubjectCode, item.Description,
+                entity.SetDetail(item.Id, item.SubjectId, item.SubSubjectCode, item.Description,
                     item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
                     item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? false, item.PaymentReference);
 
-                VoucherManager.SetFunctionalFields(detail, enableProjectFunction, enableRegionFunction,
+                entity.SetFunctionalFields(item.Id, enableProjectFunction, enableRegionFunction,
                     enableDepartmentFunction, enableCustom1Function, enableCustom2Function,
                     item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
             }

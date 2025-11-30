@@ -36,9 +36,9 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
 
     private VoucherDetail()
     {
-    } 
+    }
     internal VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
-        DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount, decimal nativeAmount, 
+        DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount, decimal nativeAmount,
         string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference, Guid? tenantId = null) : base(id)
     {
         SetVoucherId(voucherId);
@@ -49,11 +49,11 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         SetCurrencyAndAmount(currencyCode, currencyRate, foreignAmount, nativeAmount);
         SetDocNo(docNo);
         SetDueDate(dueDate);
-        SetProject(string.Empty);
-        SetDepartment(string.Empty);
-        SetRegion(string.Empty);
-        SetCustom1(string.Empty);
-        SetCustom2(string.Empty);
+        SetProject(string.Empty, true);
+        SetDepartment(string.Empty, true);
+        SetRegion(string.Empty, true);
+        SetCustom1(string.Empty, true);
+        SetCustom2(string.Empty, true);
         SetItemQty(itemQty);
         SetIsOriginal(isOriginal);
         SetPaymentReference(paymentReference);
@@ -127,33 +127,49 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         return this;
     }
 
-    public VoucherDetail SetProject(string project)
+    public VoucherDetail SetProject(string project, bool enable = false)
     {
-        Project = project ?? string.Empty;
+        if (enable)
+        {
+            Project = project ?? string.Empty;
+        }
         return this;
     }
 
-    public VoucherDetail SetDepartment(string department)
+    public VoucherDetail SetDepartment(string department, bool enable = false)
     {
-        Department = department ?? string.Empty;
+        if (enable)
+        {
+            Department = department ?? string.Empty;
+        }
+
         return this;
     }
 
-    public VoucherDetail SetRegion(string region)
+    public VoucherDetail SetRegion(string region, bool enable = false)
     {
-        Region = region ?? string.Empty;
+        if (enable)
+        { 
+            Region = region ?? string.Empty;
+        }
         return this;
     }
 
-    public VoucherDetail SetCustom1(string custom1)
+    public VoucherDetail SetCustom1(string custom1, bool enable = false)
     {
-        Custom1 = custom1 ?? string.Empty;
+        if (enable)
+        { 
+            Custom1 = custom1 ?? string.Empty;
+        }
         return this;
     }
 
-    public VoucherDetail SetCustom2(string custom2)
+    public VoucherDetail SetCustom2(string custom2, bool enable = false)
     {
-        Custom2 = custom2 ?? string.Empty;
+        if (enable)
+        { 
+            Custom2 = custom2 ?? string.Empty;
+        }
         return this;
     }
 
