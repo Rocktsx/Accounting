@@ -85,7 +85,7 @@ namespace Accounting.EntityFrameworkCore.Domains
             // arrange
             var prefix = _testData.ClientCode;
             // act
-            var result = await _companyRepository.GetLastNumber(prefix);
+            var result = await _companyRepository.GetLastNumberAsync(prefix);
             // assert
             result.ShouldBe(1); 
         }

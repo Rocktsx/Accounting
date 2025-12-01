@@ -51,7 +51,7 @@ namespace Accounting.BasicData
             {
                 TenantId = CurrentTenant.Id,
                 FunctionCode = FunctionCode
-            }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
+            }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumberAsync(prefix));
             var createdCompany = await _companyRepository.InsertAsync(company);
             return ObjectMapper.Map<Company, CompanyDto>(createdCompany);
         }

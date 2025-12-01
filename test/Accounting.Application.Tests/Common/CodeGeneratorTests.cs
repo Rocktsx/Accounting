@@ -42,18 +42,18 @@ namespace Accounting.Common
                   new CodeCacheItem
                   {
                       FunctionCode = FunctionCodes.Client
-                  }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
+                  }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumberAsync(prefix));
                 await _codeGenerator.GenerateCodeAsync(company2,
                  new CodeCacheItem
                  {
                      FunctionCode = FunctionCodes.Client
-                 }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
+                 }, getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumberAsync(prefix));
                 await _codeGenerator.GenerateCodeAsync(company3,
                 new CodeCacheItem
                 {
                     FunctionCode = FunctionCodes.Client
                 }, () => "VC", format: "{0:###000}",
-                getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumber(prefix));
+                getLastNumber: async (prefix) => (int)await _companyRepository.GetLastNumberAsync(prefix));
             });
 
             // Assert

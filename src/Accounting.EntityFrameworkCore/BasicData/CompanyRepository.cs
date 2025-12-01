@@ -33,7 +33,7 @@ namespace Accounting.BasicData
              .WhereIf(ids != null && ids.Length > 0, item => ids.Contains(item.Id))
              .WhereIf(codes != null && codes.Count() > 0, item => codes.Contains(item.Code));
         }
-        public async Task<long> GetLastNumber(string prefix, CancellationToken cancellationToken = default)
+        public async Task<long> GetLastNumberAsync(string prefix, CancellationToken cancellationToken = default)
         {
             return await (await GetDbSetAsync())
                 .Where(item => item.Prefix == prefix)
