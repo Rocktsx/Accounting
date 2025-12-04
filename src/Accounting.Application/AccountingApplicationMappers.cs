@@ -2,6 +2,8 @@
 using Accounting.BasicData.Currencies;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
+using Accounting.Finance.PayableVouchers;
+using Accounting.Finance.ReceivableVouchers;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
@@ -111,5 +113,25 @@ namespace Accounting
         public override partial VoucherDetailDto Map(VoucherDetail source);
 
         public override partial void Map(VoucherDetail source, VoucherDetailDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class VoucherFilterRequestDtoToVoucherFilterRequest: MapperBase<VoucherFilterRequestDto, VoucherFilterRequest>
+    {
+        public override partial VoucherFilterRequest Map(VoucherFilterRequestDto source);
+        public override partial void Map(VoucherFilterRequestDto source, VoucherFilterRequest destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class ReceivablePayableDetailToReceivableDetailDto : MapperBase<ReceivablePayableDetail, ReceivableDetailDto>
+    {
+        public override partial ReceivableDetailDto Map(ReceivablePayableDetail source);
+        public override partial void Map(ReceivablePayableDetail source, ReceivableDetailDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class ReceivablePayableDetailToPayableDetailDto : MapperBase<ReceivablePayableDetail, PayableDetailDto>
+    {
+        public override partial PayableDetailDto Map(ReceivablePayableDetail source);
+        public override partial void Map(ReceivablePayableDetail source, PayableDetailDto destination);
     }
 }
