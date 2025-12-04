@@ -14,15 +14,6 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Studio;
-using Accounting.BasicData;
-using Accounting.Finance;
-using Accounting.Finance.Vouchers;
-using Accounting.Finance.AccountTypes;
-using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.Subjects;
-using Accounting.Finance.SubjectCategories;
-using Accounting.BasicData.Companies;
-using Accounting.BasicData.Currencies;
 
 namespace Accounting.EntityFrameworkCore;
 
@@ -49,19 +40,7 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAbpDbContext<AccountingDbContext>(options =>
-        {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
-            options.AddDefaultRepositories(includeAllEntities: true);
-            options.AddRepository<Currency, CurrencyRepository>();
-            options.AddRepository<Company, CompanyRepository>();
-            options.AddRepository<AccountingPeriod, AccountingPeriodRepository>();
-            options.AddRepository<AccountType, AccountTypeRepository>();
-            options.AddRepository<SubjectCategory, SubjectCategoryRepository>();
-            options.AddRepository<Subject, SubjectRepository>();
-            options.AddRepository<Voucher, VoucherRepository>();
-        });
+        context.Services.AddAbpDbContext<AccountingDbContext>();
 
         if (AbpStudioAnalyzeHelper.IsInAnalyzeMode)
         {
@@ -76,6 +55,6 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
             options.UseSqlServer();
 
         });
-        
+
     }
 }
