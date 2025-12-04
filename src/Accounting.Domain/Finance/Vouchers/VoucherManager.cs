@@ -125,35 +125,11 @@ namespace Accounting.Finance.Vouchers
         {
             var docNos = voucherDetails.Select(item => item.DocNo);
             var repository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
-            var query = await repository.GetQueryableAsync();
-            query = query.Where(new NoVoidVoucherSpecification());
-
+          
             var voucherId = voucherDetails.First().VoucherId;
-            var repeatQuery = query.Where(obj =>
-                    obj.VoucherType == VoucherType.JournalVoucher
-                    && obj.Id != voucherId
-                ).SelectMany(item => item.Details)
-                .Where(item =>
-                    docNos.Contains(item.DocNo)
-                    && (item.Subject.AccountType.Category == AccountTypeTypes.Receivable
-                    || item.Subject.AccountType.Category == AccountTypeTypes.Payable)
-                ).GroupBy(item => new
-                {
-                    item.DocNo,
-                    item.SubSubjectCode,
-                    AccountTypeCode = item.Subject.AccountType.Code,
-                    item.Subject.AccountType.Category
-                })
-               .Select(item => new
-               {
-                   item.Key.DocNo,
-                   item.Key.SubSubjectCode,
-                   item.Key.AccountTypeCode,
-                   item.Key.Category,
-                   Count = item.Count()
-               });
-            var repeatList = await AsyncExecuter.ToListAsync(repeatQuery);
-            if (repeatList.Count == 0)
+            
+            var repeatList = await repository.GetDocNoRepeatsAsync(docNos, voucherId);
+            if (repeatList.Count() == 0)
             {
                 return;
             }

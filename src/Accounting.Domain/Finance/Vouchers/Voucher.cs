@@ -59,7 +59,8 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         string project = null, string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
         var item = new VoucherDetail(id, Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
-            currencyRate, foreignAmount, nativeAmount, docNo, dueDate, itemQty, isOriginal, paymentReference, TenantId);
+            currencyRate, foreignAmount, nativeAmount, docNo, dueDate, itemQty,
+            VoucherType == VoucherType.JournalVoucher || isOriginal, paymentReference, TenantId);
         Details.Add(item);
         SetFunctionalFields(item, project, region, department, custom1, custom2);
 
@@ -85,7 +86,7 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
             .SetDocNo(docNo)
             .SetDueDate(dueDate)
             .SetItemQty(itemQty)
-            .SetIsOriginal(isOriginal)
+            .SetIsOriginal(VoucherType == VoucherType.JournalVoucher || isOriginal)
             .SetPaymentReference(paymentReference);
         SetFunctionalFields(item, project, region, department, custom1, custom2);
         return this;

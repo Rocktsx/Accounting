@@ -11,20 +11,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
-using Volo.Abp.Application.Services;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
-using Volo.Abp.Domain.Entities;
-using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance;
 
 [RemoteService(false)]
-public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
-    VoucherFilterRequestDto, VoucherCreateDto, VoucherUpdateDto>, IVoucherAppService
+public class VoucherAppService : AccountingAppService, IVoucherAppService
 {
+    protected IVoucherRepository Repository { get; set; }
     protected FunctionCodes FunctionCode { get; set; } = FunctionCodes.JournalVoucher;
-    public VoucherAppService(IVoucherRepository repository) : base(repository)
+    protected string DeletePolicyName { get; set; }
+    protected string GetListPolicyName { get; set; }
+    protected string GetPolicyName { get; set; }
+    protected string UpdatePolicyName { get; set; }
+    protected string CreatePolicyName { get; set; }
+    protected string UpdateStatuePolicyName { get; set; }
+
+    public VoucherAppService(IVoucherRepository repository)
     {
+        Repository = repository;
     }
 
     protected async Task ValidateAsync(Voucher voucher, VoucherManager manager)
@@ -46,13 +52,15 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         voucher.SetFunctionEnable(enableProjectFunction, enableRegionFunction, enableDepartmentFunction,
            enableCustom1Function, enableCustom2Function);
     }
-    public override async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
+    public virtual async Task<VoucherDto> CreateAsync(VoucherCreateDto input)
     {
+        await CheckPolicyAsync(CreatePolicyName);
+
         var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, VoucherStatus.Draft, CurrentTenant.Id);
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);
-       await GetEnabledFunctionsAsync(entity);
+        await GetEnabledFunctionsAsync(entity);
 
         foreach (var item in input.Details)
         {
@@ -60,7 +68,7 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
             entity.AddDetail(id, item.SubjectId, item.SubSubjectCode, item.Description,
                 item.DebitorCreditor, item.CurrencyCode, item.CurrencyRate, item.ForeignAmount, item.NativeAmount,
                 item.DocNo, item.DueDate, item.ItemQty ?? 0, item.IsOriginal ?? true, item.PaymentReference,
-                 item.Project, item.Region, item.Department, item.Custom1, item.Custom2); 
+                 item.Project, item.Region, item.Department, item.Custom1, item.Custom2);
         }
 
         await ValidateAsync(entity, manager);
@@ -83,30 +91,20 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         }, () => VoucherManager.GetPrefix(voucher, voucherDateFormat),
         getLastNumber: async (prefix) =>
         {
-            var queryable = await Repository.GetQueryableAsync();
-            return await AsyncExecuter.FirstOrDefaultAsync(
-                 queryable.Where(item => item.Prefix == prefix).
-                 OrderByDescending(item => item.GenNo).Select(
-                     item => item.GenNo));
+            return (int)await Repository.GetLastNumberAsync(prefix);
         });
     }
 
-    protected override async Task<Voucher> GetEntityByIdAsync(Guid id)
+    public virtual async Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
     {
-        var query = (await Repository.WithDetailsAsync(item => item.Details));
-        query = query.Where(item => item.Id == id);
-        var entity = await AsyncExecuter.FirstOrDefaultAsync(query);
-        return entity ?? throw new EntityNotFoundException();
-    }
+        await CheckPolicyAsync(UpdatePolicyName);
 
-    public override async Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
-    {
-        var entity = await GetEntityByIdAsync(id);
+        var entity = await Repository.GetAsync(id);
         entity.SetVoucherDate(DateOnly.FromDateTime(input.VoucherDate));
         entity.Details.RemoveAll(item => !input.Details.Any(obj => obj.Id == item.Id));
 
         await GetEnabledFunctionsAsync(entity);
-        entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp); 
+        entity.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
 
         foreach (var item in input.Details)
         {
@@ -132,26 +130,10 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
         return ObjectMapper.Map<Voucher, VoucherDto>(entity);
     }
 
-    protected override async Task<IQueryable<Voucher>> CreateFilteredQueryAsync(VoucherFilterRequestDto input)
-    {
-        var query = await (string.IsNullOrWhiteSpace(input.DocNo)
-            ? Repository.GetQueryableAsync()
-            : Repository.WithDetailsAsync(item => item.Details));
-        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), item => item.Code.Contains(input.Filter));
-        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Prefix), item => item.Prefix == input.Prefix);
-        query = query.WhereIf(input.StartNo != null, item => item.GenNo >= input.StartNo);
-        query = query.WhereIf(input.EndNo != null, item => item.GenNo <= input.EndNo);
-        query = query.WhereIf(input.StartDate != null, item => item.VoucherDate >= input.StartDate);
-        query = query.WhereIf(input.EndDate != null, item => item.VoucherDate <= input.EndDate);
-        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
-        query = query.WhereIf(input.Status == null, new NoVoidVoucherSpecification());
-        query = query.WhereIf(input.Status != null, item => item.Status == input.Status);
-        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(input.DocNo)));
-        return query;
-    }
-
     public virtual async Task UpdateStatus(Guid id, VoucherStatus status)
     {
+        await CheckPolicyAsync(UpdateStatuePolicyName);
+
         var entity = await Repository.GetAsync(id);
         entity.SetStatus(status);
 
@@ -161,15 +143,41 @@ public class VoucherAppService : CrudAppService<Voucher, VoucherDto, Guid,
     [Authorize(AccountingPermissions.VoucherStates.UpdateStatus)]
     public virtual async Task UpdateManyStatus(VoucherUpdateStatusDto input, VoucherStatus status)
     {
-        var query = await Repository.GetQueryableAsync();
-        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Code), item => item.Code.Contains(input.Code));
-        query = query.WhereIf(input.VoucherType != null, item => item.VoucherType == input.VoucherType);
-        query = query.WhereIf(input.Status != null, item => item.Status == input.Status);
-
-        var list = await AsyncExecuter.ToListAsync(query);
+        var list = (await Repository.GetPagedListAsync(new VoucherFilterRequest
+        {
+            Filter = input.Code,
+            VoucherType = input.VoucherType,
+            Status = input.Status
+        })).ToList();
         list.ForEach(item => item.SetStatus(status));
 
         await Repository.UpdateManyAsync(list);
+    }
+
+    public virtual async Task<VoucherDto> GetAsync(Guid id)
+    {
+        await CheckPolicyAsync(GetPolicyName);
+        var entity = await Repository.GetAsync(id);
+
+        return ObjectMapper.Map<Voucher, VoucherDto>(entity);
+    }
+
+    public async virtual Task<PagedResultDto<VoucherDto>> GetListAsync(VoucherFilterRequestDto input)
+    {
+        await CheckPolicyAsync(GetListPolicyName);
+
+        var filter = ObjectMapper.Map<VoucherFilterRequestDto, VoucherFilterRequest>(input);
+
+        var list = await Repository.GetPagedListAsync(filter, sorting: input.Sorting, maxResultCount: input.MaxResultCount, skipCount: input.SkipCount);
+        var count = await Repository.GetCountAsync(filter);
+
+        return new PagedResultDto<VoucherDto>(count, ObjectMapper.Map<IEnumerable<Voucher>, List<VoucherDto>>(list));
+    }
+
+    public virtual async Task DeleteAsync(Guid id)
+    {
+        await CheckPolicyAsync(DeletePolicyName);
+        await Repository.DeleteAsync(id);
     }
 
     protected async Task<Dictionary<Guid, Subject>> GetSubjectsAsync(IEnumerable<Guid> ids)

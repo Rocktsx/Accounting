@@ -28,8 +28,8 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.Subjects.Create)]
         public async Task<SubjectDto> CreateAsync(SubjectCreateDto input)
         {
-            var entity = new Subject(GuidGenerator.Create(), input.Code, input.Name, input.OtherName, 
-                input.SubjectCategoryId, input.AccountTypeId, input.DebitorCreditor, input.CurrencyCode, 
+            var entity = new Subject(GuidGenerator.Create(), input.Code, input.Name, input.OtherName,
+                input.SubjectCategoryId, input.AccountTypeId, input.DebitorCreditor, input.CurrencyCode,
                 input.Description, input.IsSubSujectType, input.IsActive, input.IsPayMethod, input.SeqCode, CurrentTenant.Id);
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<Subject, SubjectDto>(entity);
@@ -121,7 +121,7 @@ namespace Accounting.Finance
         public async Task DeleteAsync(Guid id)
         {
             var voucherRepository = LazyServiceProvider.LazyGetRequiredService<IVoucherRepository>();
-            if (await voucherRepository.AnyAsync(item => item.Details.Any(detailItem => detailItem.SubjectId == id)))
+            if (await voucherRepository.GetCountAsync(subjectId: id) > 0)
             {
                 throw new BusinessException(AccountingDomainErrorCodes.Subjects.SubjectIsInUse);
             }

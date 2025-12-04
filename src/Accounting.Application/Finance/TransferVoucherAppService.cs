@@ -1,12 +1,9 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
-using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
+using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance
 {
@@ -18,41 +15,25 @@ namespace Accounting.Finance
             DeletePolicyName = AccountingPermissions.TransferVouchers.Delete;
             GetListPolicyName = AccountingPermissions.TransferVouchers.Default;
             GetPolicyName = AccountingPermissions.TransferVouchers.Default;
+            CreatePolicyName = AccountingPermissions.TransferVouchers.Create;
+            UpdatePolicyName = AccountingPermissions.TransferVouchers.Update;
+            UpdateStatuePolicyName = AccountingPermissions.TransferVouchers.UpdateStatus;
 
             FunctionCode = FunctionCodes.JournalVoucher;
         }
 
-        [Authorize(AccountingPermissions.TransferVouchers.Create)]
         public override Task<VoucherDto> CreateAsync(VoucherCreateDto input)
         {
             input.VoucherType = VoucherType.JournalVoucher;
-            foreach (var item in input.Details)
-            {
-                item.IsOriginal = true;
-            }
+          
             return base.CreateAsync(input);
         }
 
-        [Authorize(AccountingPermissions.TransferVouchers.Update)]
-        public override Task<VoucherDto> UpdateAsync(Guid id, VoucherUpdateDto input)
-        {
-            foreach (var item in input.Details)
-            {
-                item.IsOriginal = true;
-            }
-            return base.UpdateAsync(id, input);
-        }
-
-        protected override async Task<IQueryable<Voucher>> CreateFilteredQueryAsync(VoucherFilterRequestDto input)
+        public override Task<PagedResultDto<VoucherDto>> GetListAsync(VoucherFilterRequestDto input)
         {
             input.VoucherType = VoucherType.JournalVoucher;
-            return await base.CreateFilteredQueryAsync(input);
-        }
 
-        [Authorize(AccountingPermissions.TransferVouchers.UpdateStatus)]
-        public override Task UpdateStatus(Guid id, VoucherStatus status)
-        {
-            return base.UpdateStatus(id, status);
+            return base.GetListAsync(input);
         }
     }
 }

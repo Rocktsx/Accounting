@@ -176,7 +176,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     }
     private async Task SeedVoucherDataAsync(DataSeedContext context)
     {
-        if (!await _voucherRepository.AnyAsync())
+        if (await _voucherRepository.GetCountAsync() == 0)
         {
             var year = _testData.AccountingPeriodYear;
             var voucher = new Voucher(_guidGenerator.Create(),

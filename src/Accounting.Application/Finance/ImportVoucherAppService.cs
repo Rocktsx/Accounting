@@ -82,7 +82,7 @@ namespace Accounting.Finance
                 return item;
             });
             var codeList = groupedData.Select(x => x.First().VoucherCode).Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
-            await ImportHelper.CheckExistsCodesAsync(codeList, L, async codes => (await Repository.GetQueryableAsync()).Where(v => codes.Contains(v.Code)).Select(v => v.Code));
+            await ImportHelper.CheckExistsCodesAsync(codeList, L, async codes => (await Repository.GetPagedListAsync(new VoucherFilterRequest { Codes = codes })).Select(item => item.Code));
 
             if (input.ImportType == VoucherImportType.SingleEntry)
             {
