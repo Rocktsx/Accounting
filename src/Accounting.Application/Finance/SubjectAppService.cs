@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Data;
-using Volo.Abp.Domain.Repositories;
 
 namespace Accounting.Finance
 {
@@ -30,7 +29,7 @@ namespace Accounting.Finance
         {
             var entity = new Subject(GuidGenerator.Create(), input.Code, input.Name, input.OtherName,
                 input.SubjectCategoryId, input.AccountTypeId, input.DebitorCreditor, input.CurrencyCode,
-                input.Description, input.IsSubSujectType, input.IsActive, input.IsPayMethod, input.SeqCode, CurrentTenant.Id);
+                input.Description, input.IsSubSubjectType, input.IsActive, input.IsPayMethod, input.SeqCode, CurrentTenant.Id);
             entity = await Repository.InsertAsync(entity);
             return ObjectMapper.Map<Subject, SubjectDto>(entity);
         }

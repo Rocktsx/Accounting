@@ -40,7 +40,7 @@ namespace Accounting.Finance
                 DebitorCreditor = DebitorCreditor.Creditor,
                 CurrencyCode = _testData.UsdCurrency,
                 Description = description,
-                IsSubSujectType = false,
+                IsSubSubjectType = false,
                 IsActive = true,
                 IsPayMethod = false,
                 SeqCode = seqCode
@@ -72,7 +72,7 @@ namespace Accounting.Finance
             dto.DebitorCreditor.ShouldBe(input.DebitorCreditor);
             dto.CurrencyCode.ShouldBe(input.CurrencyCode);
             dto.Description.ShouldBe(input.Description);
-            dto.IsSubSubjectType.ShouldBe(input.IsSubSujectType);
+            dto.IsSubSubjectType.ShouldBe(input.IsSubSubjectType);
             dto.IsActive.ShouldBe(input.IsActive);
             dto.IsPayMethod.ShouldBe(input.IsPayMethod);
         }

@@ -118,7 +118,10 @@ namespace Accounting
     [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
     public partial class VoucherFilterRequestDtoToVoucherFilterRequest: MapperBase<VoucherFilterRequestDto, VoucherFilterRequest>
     {
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Codes))]
         public override partial VoucherFilterRequest Map(VoucherFilterRequestDto source);
+
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Codes))]
         public override partial void Map(VoucherFilterRequestDto source, VoucherFilterRequest destination);
     }
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Accounting.EntityFrameworkCore.Domains
@@ -21,7 +22,7 @@ namespace Accounting.EntityFrameworkCore.Domains
         }
 
         [Fact]
-        public async void Can_Get_Paged_List()
+        public async Task Can_Get_Paged_List()
         {
             // arrange
             var filter = _testData.AccountTypeBank;
@@ -32,7 +33,7 @@ namespace Accounting.EntityFrameworkCore.Domains
             result.Count().ShouldBe(1);
         }
         [Fact]
-        public async void Can_Get_Paged_List_With_Codes()
+        public async Task Can_Get_Paged_List_With_Codes()
         {
             // arrange
             var codes = new List<string> { _testData.AccountTypeBank };
@@ -43,7 +44,7 @@ namespace Accounting.EntityFrameworkCore.Domains
             result.Count().ShouldBe(1);
         }
         [Fact]
-        public async void Can_Get_Count_With_Codes()
+        public async Task Can_Get_Count_With_Codes()
         {
             // arrange
             var codes = new List<string> { _testData.AccountTypeBank };
@@ -53,7 +54,7 @@ namespace Accounting.EntityFrameworkCore.Domains
             count.ShouldBe(1);
         }
         [Fact]
-        public async void Can_Get_Count()
+        public async Task Can_Get_Count()
         {
             // arrange
             var filter = _testData.AccountTypeBank;
