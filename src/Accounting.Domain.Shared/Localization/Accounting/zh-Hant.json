@@ -291,6 +291,7 @@
     "Liabilities": "負債",
     "Capital": "資本",
     "Income": "收入",
-    "Expenses": "支出"
+    "Expenses": "支出",
+    "Accounting:OnlyDraftStatusVoucherCanUpdate": "只有處於草稿狀態的傳票才能更新。"
   }
 }

@@ -56,10 +56,11 @@ namespace Accounting.Finance
             Guid subjectId = Guid.NewGuid();
             // Act
             var newVoucherDate = new DateOnly(2024, voucherDate.Month, voucherDate.Day);
-            voucher.SetStatus(VoucherStatus.Approval).SetVoucherDate(newVoucherDate).SetVoucherType(VoucherType.PayableVoucher);
+            voucher.SetVoucherDate(newVoucherDate).SetVoucherType(VoucherType.PayableVoucher);
             var detailItem = voucher.Details.First();
             voucher.SetDetail(detailItem.Id, subjectId, Guid.Empty, "Test Description33", DebitorCreditor.Creditor, "RMB", 1.1m, 1000.0m,
-                1100.0m, "DOC00121", newVoucherDate,  1, false, string.Empty, demoText, demoText, demoText, demoText, demoText); 
+                1100.0m, "DOC00121", newVoucherDate,  1, false, string.Empty, demoText, demoText, demoText, demoText, demoText);
+            voucher.SetStatus(VoucherStatus.Approval);
 
             // Assert 
             var assertDetailItem = voucher.Details.First(item => item.Id == detailItem.Id);
@@ -202,6 +203,23 @@ namespace Accounting.Finance
             // Assert
             exception.ShouldNotBeNull();
             exception.Code.ShouldBe(AccountingDomainErrorCodes.ForeignExchangeRateMatchNativeAmount);
+        }
+        [Fact]
+        public void Cannot_Update_Voucher_When_Status_Is_Not_Draft()
+        {
+            // Arrange  
+            var voucher = CreateVoucher(DateOnly.FromDateTime(DateTime.Now));
+            voucher.SetStatus(VoucherStatus.Approval);
+
+            // Act
+            var exception = Should.Throw<BusinessException>(() =>
+            {
+                voucher.SetVoucherType(VoucherType.ReceivableVoucher);
+            });
+
+            // Assert
+            exception.ShouldNotBeNull();
+            exception.Code.ShouldBe(AccountingDomainErrorCodes.OnlyDraftStatusVoucherCanUpdate);
         }
     }
 }

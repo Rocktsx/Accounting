@@ -16,6 +16,7 @@ public static class AccountingDomainErrorCodes
     public const string CannotFormatVoucherDate = "Accounting:CannotFormatVoucherDate";
     public const string DocNoIsDuplicated = "Accounting:DocNoIsDuplicated";
     public const string DocNoHasBeenUsed = "Accounting:DocNoHasBeenUsed";
+    public const string OnlyDraftStatusVoucherCanUpdate = "Accounting:OnlyDraftStatusVoucherCanUpdate";
 
     public static class Subjects
     { 

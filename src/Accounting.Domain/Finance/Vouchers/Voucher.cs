@@ -29,20 +29,24 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     public Voucher(Guid id, DateOnly voucherDate, VoucherType voucherType, Guid? tenantId = null)
     {
         Id = id;
+        SetStatus(VoucherStatus.Draft);
         SetVoucherDate(voucherDate);
         SetVoucherType(voucherType);
-        SetStatus(VoucherStatus.Draft);
         TenantId = tenantId;
     }
 
     public Voucher SetVoucherDate(DateOnly voucherDate)
     {
+        CheckStatus();
+
         VoucherDate = voucherDate;
         return this;
     }
 
     public Voucher SetVoucherType(VoucherType voucherType)
     {
+        CheckStatus();
+
         VoucherType = voucherType;
         return this;
     }
@@ -58,6 +62,8 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference,
         string project = null, string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
+        CheckStatus();
+
         var item = new VoucherDetail(id, Id, subjectId, subSubjectCode, description, debitorCreditor, currencyCode,
             currencyRate, foreignAmount, nativeAmount, docNo, dueDate, itemQty,
             VoucherType == VoucherType.JournalVoucher || isOriginal, paymentReference, TenantId);
@@ -72,6 +78,8 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference,
         string project = null,  string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
+        CheckStatus();
+
         var item = Details.FirstOrDefault(obj => obj.Id == id);
         if (item == null)
         {
@@ -119,5 +127,13 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
         _enableRegionFunction = enableRegionFunction;
 
         return this;
+    }
+    private void CheckStatus()
+    {
+        if(Status == VoucherStatus.Draft)
+        {
+            return;
+        }
+        throw new BusinessException(AccountingDomainErrorCodes.OnlyDraftStatusVoucherCanUpdate);
     }
 }
