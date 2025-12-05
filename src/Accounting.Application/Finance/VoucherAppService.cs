@@ -56,7 +56,7 @@ public class VoucherAppService : AccountingAppService, IVoucherAppService
     {
         await CheckPolicyAsync(CreatePolicyName);
 
-        var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, VoucherStatus.Draft, CurrentTenant.Id);
+        var entity = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(input.VoucherDate), input.VoucherType, CurrentTenant.Id);
         var manager = LazyServiceProvider.LazyGetRequiredService<VoucherManager>();
         entity.SetPrefix(input.Prefix);
         entity.SetGenNo(input.GenNo ?? 0);

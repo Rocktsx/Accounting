@@ -70,7 +70,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
 
     private async Task SeedSubjectCategoryDataAsync(DataSeedContext context)
     {
-        if (await _subjectCategoryRepository.GetCountAsync() ==0)
+        if (await _subjectCategoryRepository.GetCountAsync() == 0)
         {
             var nonCurrentAccountType = (await _accountTypeRepository.GetPagedListAsync(_testData.AccountTypeNa)).FirstOrDefault();
 
@@ -180,8 +180,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
         {
             var year = _testData.AccountingPeriodYear;
             var voucher = new Voucher(_guidGenerator.Create(),
-                new DateOnly(year, 1, 1), VoucherType.JournalVoucher,
-                VoucherStatus.Draft, context.TenantId);
+                new DateOnly(year, 1, 1), VoucherType.JournalVoucher, context.TenantId);
             voucher.SetCode(_testData.VoucherCode, _testData.VoucherPrefix, 1);
             voucher.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
                 null, _testData.VoucherDescription, DebitorCreditor.Debitor,
@@ -205,8 +204,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     {
         var year = _testData.AccountingPeriodYear;
         var arVoucher1 = new Voucher(_guidGenerator.Create(),
-                new DateOnly(year, 2, 12), VoucherType.JournalVoucher,
-                VoucherStatus.Draft, tenantId);
+                new DateOnly(year, 2, 12), VoucherType.JournalVoucher, tenantId);
         arVoucher1.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 2);
         arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
             null, _testData.VoucherDescription, DebitorCreditor.Creditor,
@@ -221,8 +219,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             string.Empty);
 
         var arVoucher2 = new Voucher(_guidGenerator.Create(),
-           new DateOnly(year, 2, 13), VoucherType.JournalVoucher,
-           VoucherStatus.Draft, tenantId);
+           new DateOnly(year, 2, 13), VoucherType.JournalVoucher, tenantId);
         arVoucher2.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 3);
         arVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
             null, _testData.VoucherDescription2, DebitorCreditor.Creditor,
@@ -237,8 +234,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             new DateOnly(year, 11, 17), 0, true, string.Empty);
 
         var rvVoucher1 = new Voucher(_testData.VoucherRvId,
-          new DateOnly(year, 2, 23), VoucherType.ReceivableVoucher,
-          VoucherStatus.Draft, tenantId);
+          new DateOnly(year, 2, 23), VoucherType.ReceivableVoucher, tenantId);
         rvVoucher1.SetCode(_testData.VoucherRvCode, _testData.VoucherRvPrefix, 1);
         rvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
             null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
@@ -258,8 +254,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     {
         var year = _testData.AccountingPeriodYear;
         var apVoucher1 = new Voucher(_guidGenerator.Create(),
-                new DateOnly(year, 2, 12), VoucherType.JournalVoucher,
-                VoucherStatus.Draft, tenantId);
+                new DateOnly(year, 2, 12), VoucherType.JournalVoucher, tenantId);
         apVoucher1.SetCode(_testData.VoucherCode4, _testData.VoucherPrefix, 4);
         apVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
             null, _testData.VoucherDescription, DebitorCreditor.Debitor,
@@ -274,8 +269,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             string.Empty);
 
         var apVoucher2 = new Voucher(_guidGenerator.Create(),
-           new DateOnly(year, 2, 13), VoucherType.JournalVoucher,
-           VoucherStatus.Draft, tenantId);
+           new DateOnly(year, 2, 13), VoucherType.JournalVoucher, tenantId);
         apVoucher2.SetCode(_testData.VoucherCode5, _testData.VoucherPrefix, 5);
         apVoucher2.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
             null, _testData.VoucherDescription2, DebitorCreditor.Debitor,
@@ -290,8 +284,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             new DateOnly(year, 11, 17), 0, true, string.Empty);
 
         var pvVoucher1 = new Voucher(_testData.VoucherPvId,
-          new DateOnly(year, 2, 23), VoucherType.PayableVoucher,
-          VoucherStatus.Draft, tenantId);
+          new DateOnly(year, 2, 23), VoucherType.PayableVoucher, tenantId);
         pvVoucher1.SetCode(_testData.VoucherPvCode, _testData.VoucherPvPrefix, 1);
         pvVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
             null, _testData.VoucherDescription2, DebitorCreditor.Creditor,

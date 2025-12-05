@@ -41,8 +41,7 @@ namespace Accounting.Finance
             var voucher = new Voucher(
                 Guid.NewGuid(),
                 voucherDate,
-                VoucherType.JournalVoucher,
-                VoucherStatus.Draft
+                VoucherType.JournalVoucher
             );
             return voucher;
         }

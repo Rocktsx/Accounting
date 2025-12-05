@@ -224,7 +224,7 @@ namespace Accounting.Finance
             {
                 var firstItem = item.First();
                 var voucher = new Voucher(GuidGenerator.Create(), DateOnly.FromDateTime(firstItem.VoucherDate),
-                    firstItem.VoucherType ?? VoucherType.JournalVoucher, VoucherStatus.Draft, CurrentTenant.Id);
+                    firstItem.VoucherType ?? VoucherType.JournalVoucher, CurrentTenant.Id);
 
                 var genNo = GetGenNo(firstItem.VoucherCode, firstItem.Prefix);
                 voucher.SetCode(firstItem.VoucherCode, firstItem.Prefix, genNo);

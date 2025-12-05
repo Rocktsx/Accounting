@@ -26,12 +26,12 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
     {
     }
 
-    public Voucher(Guid id, DateOnly voucherDate, VoucherType voucherType, VoucherStatus status, Guid? tenantId = null)
+    public Voucher(Guid id, DateOnly voucherDate, VoucherType voucherType, Guid? tenantId = null)
     {
         Id = id;
         SetVoucherDate(voucherDate);
         SetVoucherType(voucherType);
-        SetStatus(status);
+        SetStatus(VoucherStatus.Draft);
         TenantId = tenantId;
     }
 
