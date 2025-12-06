@@ -294,6 +294,8 @@
     "Expenses": "支出",
     "Accounting:OnlyDraftStatusVoucherCanUpdate": "只有草稿状态的传票才能更新。",
     "View": "查看",
-    "ViewTransferVoucher": "查看转账传票"
+    "ViewTransferVoucher": "查看转账传票",
+    "ViewReceivableVoucher": "查看收款传票",
+    "ViewPayableVoucher": "查看付款传票"
   }
 }

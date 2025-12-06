@@ -47,6 +47,7 @@ $(function () {
             }
         });
     }
+    const draftStatus = 0;
 
     // 创建一个新的 store 实例 
     const store = new Vuex.Store({
@@ -224,6 +225,7 @@ $(function () {
                 return state.receipts.items.reduce((init, item) =>
                     init + Number(item.nativeCurrentPaid), 0);
             },
+            isDraftStatus: state => !state.editItem.id || state.editItem.id && state.editItem.status === draftStatus
         }
     })
     const tvInputAction = function () {
@@ -369,7 +371,19 @@ $(function () {
                                     action: function (data) {
                                         editHandle(data.record.id);
                                     },
-                                    visible: isGrantedEdit
+                                    visible: function (record) {
+                                        return isGrantedEdit && record.status == draftStatus;
+                                    }
+                                },
+                                {
+                                    text: l('View'),
+                                    iconClass: '',
+                                    action: function (data) {
+                                        editHandle(data.record.id);
+                                    },
+                                    visible: function (record) {
+                                        return isGrantedEdit && record.status !== draftStatus;
+                                    }
                                 },
                                 {
                                     text: l('UpdateStatus'),
@@ -564,7 +578,7 @@ $(function () {
           <div class="modal-footer">
             <slot name="footer"></slot>
             <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" @click="close">{{l('Cancel')}}</button>
-            <button type="submit" class="btn btn-primary" @click="save"><i class="fa fa-check"></i> {{l('Save')}}</button>
+            <button v-if="showSubmit" type="submit" class="btn btn-primary" @click="save"><i class="fa fa-check"></i> {{l('Save')}}</button>
           </div>
         </div>
       </div>
@@ -575,7 +589,11 @@ $(function () {
         props: {
             value: Boolean,
             title: String,
-            modalId: String
+            modalId: String,
+            showSubmit: {
+                type: Boolean,
+                default: true
+            }
         },
         mounted() {
             this.$nextTick(() => {
@@ -695,7 +713,7 @@ $(function () {
                      <col/>
                      <col style="width: 150px;"/>
                      <col/>
-                     <col/>
+                     <col v-if="isDraftStatus"/>
                  </colgroup>
                 <thead>
                 <tr> 
@@ -706,7 +724,7 @@ $(function () {
                     <th>{{ nativeCurrency }}</th>
                     <th>{{ l('PaymentReference') }}</th>
                     <th>+/-</th>
-                    <th>{{l('Actions')}}</th>
+                    <th v-if="isDraftStatus">{{l('Actions')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -738,7 +756,7 @@ $(function () {
                                 <option v-for="crdrItem in debitorCreditors" :key="crdrItem.value" :value="crdrItem.value">{{crdrItem.text}}</option>
                             </select>
                         </td>
-                        <td>
+                        <td v-if="isDraftStatus">
                             <a @click="()=> removePaymentItem({ item })" :title="l('Delete')" class="me-1" href="#"><i class="fa-solid fa-trash"></i></a>
                             <input type="checkbox" v-model="item.isSelected"  name="isSelected" class="form-check-input">
                         </td>
@@ -749,7 +767,7 @@ $(function () {
                     <td colspan="4" class="text-end">{{l('Total')}}</td>
                     <td>{{renderAmount(totalPaymentAmount)}}</td>
                     <td colspan="3" class="text-end">
-                        <button type="button" class="btn btn-primary btn-sm" @click="()=> addPaymentItem()"><i class="fa-solid fa-plus"></i></button>
+                        <button v-if="isDraftStatus" type="button" class="btn btn-primary btn-sm" @click="()=> addPaymentItem()"><i class="fa-solid fa-plus"></i></button>
                     </td>
                     </tr>
                 </tfoot>
@@ -767,7 +785,7 @@ $(function () {
         computed: {
             ...Vuex.mapGetters(['subjects', 'currencies', 'subjectMap',
                 'payments', 'nativeCurrency', 'paymentMethods', 'receipts',
-                'totalPaymentAmount'])
+                'totalPaymentAmount', 'isDraftStatus'])
         },
         mounted() {
             if (this.payments.length === 0) {
@@ -826,7 +844,7 @@ $(function () {
                  <col />
                  <col style="width: 150px;" />
                  <col />
-                 <col/>
+                 <col v-if="isDraftStatus"/>
              </colgroup>
                 <thead>
                 <tr>
@@ -840,7 +858,7 @@ $(function () {
                     <th>{{ l('ArPvDeposit') }}</th>
                     <th>{{ l('PaymentAmount') }}</th>
                     <th>{{nativeCurrency}}</th>
-                    <th>{{l('Actions')}}</th>
+                    <th v-if="isDraftStatus">{{l('Actions')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -857,7 +875,7 @@ $(function () {
                             <input v-model="item.currentPaid" @change="()=> currentPaidChanged(item)" type="text" class="form-control" name="currentPaid">
                         </td>
                         <td>{{ renderAmount(item.nativeCurrentPaid) }}</td>
-                        <td> 
+                        <td v-if="isDraftStatus">
                             <a @click="()=> fullPay(item)" :title="l('FullPay')" class="me-1" href="#"><i class="fa-solid fa-f"></i></a>
                              <a @click="()=> unpaid(item)" :title="l('Unpaid')" href="#"><i class="fa-solid fa-n"></i></a>
                         </td>
@@ -868,7 +886,7 @@ $(function () {
                     <td colspan="5" class="text-end">{{l('Total')}}</td>
                     <td>{{renderAmount(totalNativeAmount)}}</td>
                     <td colspan="3"></td>
-                    <td colspan="2">{{renderAmount(totalReceiptAmount)}}</td>
+                    <td :colspan="isDraftStatus ? 2 : 1">{{renderAmount(totalReceiptAmount)}}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -900,7 +918,7 @@ $(function () {
             }
         },
         computed: {
-            ...Vuex.mapGetters(['receipts', 'nativeCurrency', 'totalReceiptAmount']),
+            ...Vuex.mapGetters(['receipts', 'nativeCurrency', 'totalReceiptAmount', 'isDraftStatus']),
             totalNativeAmount() {
                 return (this.receipts.items || []).reduce((init, item) =>
                     init + Number(item.nativeAmount), 0);
@@ -942,7 +960,7 @@ $(function () {
         }
     };
     const payableDetailTemplate = `<div>
-     <div class="mb-2"> 
+     <div v-if="isDraftStatus" class="mb-2">
         <button type="button" class="btn btn-primary btn-sm" @click="autoBalance">{{l('AutoBalance')}}</button>
         <button type="button" class="btn btn-primary btn-sm" @click="defaultPay">{{l('DefaultPay')}}</button>
         <button type="button" class="btn btn-primary btn-sm" @click="fullPay">{{l('FullPay')}}</button>
@@ -960,7 +978,7 @@ $(function () {
         },
         computed: {
             ...Vuex.mapGetters(['receipts', 'payments', 'totalReceiptAmount',
-                'totalPaymentAmount', 'editItem']),
+                'totalPaymentAmount', 'editItem', 'isDraftStatus']),
         },
         methods: {
             l,
@@ -1405,7 +1423,7 @@ $(function () {
         }
     }
     const voucherDetailsTemplate = `<div>
-        <div>
+        <div v-if="isDraftStatus">
             <button type="button" class="btn btn-primary btn-sm" @click="addDetail">
                 <i class="fa fa-plus"></i> {{l('AddDetail')}}
             </button>
@@ -1413,7 +1431,7 @@ $(function () {
         <div class="items">
             <table class="table table-responsive table-striped" :style="tableStyle">
                 <colgroup>
-                    <col style="width: 120px;" />
+                    <col v-if="isDraftStatus" style="width: 120px;" />
                     <col style="width: 250px;" />
                     <col style="width: 250px;" />
                     <col style="width: 120px;" />
@@ -1426,7 +1444,7 @@ $(function () {
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>{{l('Actions')}}</th>
+                    <th v-if="isDraftStatus">{{l('Actions')}}</th>
                     <th>{{l('Subject')}}</th>
                         <th>{{l('Description')}}</th>
                         <th>{{l('Debitor')}}<div>{{nativeCurrency}}</div></th>
@@ -1440,7 +1458,7 @@ $(function () {
                 </thead>
                 <tbody>
                     <tr v-for="item in editItem.details || []" :key="item.rowid">
-                        <td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <td v-if="isDraftStatus"><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-cog me-1"></i>{{l('Actions')}}
@@ -1454,9 +1472,9 @@ $(function () {
                         </td>
                         <td>{{ item.subjectName }}</td>
                         <td>{{item.description}}</td>
-                        <td>{{item.debitorCreditor === 1 ? renderAmount(item.nativeAmount) : ''}}</td>
-                        <td>{{item.debitorCreditor === -1 ? renderAmount(item.nativeAmount) : ''}}</td>
-                        <td><div>{{item.debitorCreditor === 1 ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
+                        <td>{{item.debitorCreditor === debitCredit.debitor ? renderAmount(item.nativeAmount) : ''}}</td>
+                        <td>{{item.debitorCreditor === debitCredit.credittor ? renderAmount(item.nativeAmount) : ''}}</td>
+                        <td><div>{{item.debitorCreditor === debitCredit.debitor ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
                         <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
                         <td>{{ item.subSubjectName }}</td>
                         <td>{{item.docNo}}</td>
@@ -1465,7 +1483,7 @@ $(function () {
                 </tbody>
                 <tfoot>
                     <tr>
-                    <td colspan="3" class="text-end">{{l('Total')}}</td>
+                    <td :colspan="isDraftStatus? 3: 2" class="text-end">{{l('Total')}}</td>
                     <td>{{renderAmount(totalDebitorAmount)}}</td>
                     <td colspan="11">{{renderAmount(totalCreditorAmount)}}</td>
                     </tr>
@@ -1480,12 +1498,13 @@ $(function () {
                 tableStyle: {
                     ['min-width']: '1460px',
                     ['max-width']: '1630px'
-                }
+                },
+                debitCredit
             }
         },
         computed: {
             ...Vuex.mapGetters(['editItem', 'totalDebitorAmount',
-                'totalCreditorAmount', 'nativeCurrency'])
+                'totalCreditorAmount', 'nativeCurrency', 'isDraftStatus'])
         },
         methods: {
             l,
@@ -1503,7 +1522,8 @@ $(function () {
         }
     }
 
-    const editModalTemplate = `<div><Modal  v-if="isShowModal" :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditPayableVoucher' : 'NewPayableVoucher' )">
+    const editModalTemplate = `<div><Modal  v-if="isShowModal" :value="isShowModal" @input="input" @save="save" 
+    :title="l( (isDraftStatus ? editItem.id ? 'Edit' : 'New': 'View') + 'PayableVoucher' )" :show-submit="isDraftStatus">
 <div id="content">
     <EditHeader v-if="isShowHeader && (editItem.id && editItem.debitorId  || !editItem.id )" :errors="errors" @creditor-change="getDetailsByDebitor" />
     <ul class="nav nav-tabs"  id="detailTab" role="tablist">
@@ -1549,7 +1569,7 @@ $(function () {
             }
         },
         computed: {
-            ...Vuex.mapGetters(['isShowModal', 'editItem'])
+            ...Vuex.mapGetters(['isShowModal', 'editItem', 'isDraftStatus'])
         },
         methods: {
             ...Vuex.mapMutations(['showModal', 'saveDetailItem', 'setReceipts',

@@ -967,7 +967,7 @@ $(function () {
                 </tbody>
                 <tfoot>
                     <tr>
-                    <td colspan="3" class="text-end">{{l('Total')}}</td>
+                    <td :colspan="isDraftStatus? 3: 2" class="text-end">{{l('Total')}}</td>
                     <td>{{renderAmount(totalDebitorAmount)}}</td>
                     <td colspan="11">{{renderAmount(totalCreditorAmount)}}</td>
                     </tr>

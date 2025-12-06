@@ -260,6 +260,8 @@
     "Expenses": "Expenses",
     "Accounting:OnlyDraftStatusVoucherCanUpdate": "Only voucher in draft status can be updated.",
     "View": "View",
-    "ViewTransferVoucher": "View Transfer Voucher"
+    "ViewTransferVoucher": "View Transfer Voucher",
+    "ViewReceivableVoucher": "View Receivable Voucher",
+    "ViewPayableVoucher": "View Payable Voucher"
   }
 }
