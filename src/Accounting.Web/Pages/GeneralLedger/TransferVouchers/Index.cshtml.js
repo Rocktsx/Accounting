@@ -7,8 +7,12 @@ $(function () {
     function formatDate(value) {
         return (new moment(value)).format("yyyy-MM-DD")
     }
-
-    const draftStatus = 0;
+    const voucherStatus = {
+        draft: 0,
+        approval: 1,
+        void: 2
+    }
+    const draftStatus = voucherStatus.draft;
 
     const debitCredit = {
         debitor: 1,
@@ -352,7 +356,8 @@ $(function () {
                     data: "status",
                     orderable: true,
                     render: function (data) {
-                        return data === 1 ? l('Approval') : data === 2 ? l('Void') : l('Draft');
+                        return data === voucherStatus.approval ? l('Approval') :
+                            data === voucherStatus.void ? l('Void') : l('Draft');
                     }
                 },
                 {

@@ -8,6 +8,15 @@
             status: $('#status').val()
         };
     }; 
+    const voucherStatus = {
+        draft: 0,
+        approval: 1,
+        void: 2
+    }
+    const voucherType = {
+        journalVoucher: 0,
+        receivableVoucher: 1
+    }
 
     const tableSelector = '#voucherStates';
     const dataTable = $(tableSelector).DataTable(
@@ -24,7 +33,8 @@
                     data: "voucherType",
                     orderable: true,
                     render: function (data) {
-                        return data === 0 ? l('JournalVoucher') : data === 1 ? l('ReceivableVoucher') : l('PayableVoucher');
+                        return data === voucherType.journalVoucher ? l('JournalVoucher') :
+                            data === voucherType.receivableVoucher ? l('ReceivableVoucher') : l('PayableVoucher');
                     }
                 },
                 {
@@ -37,7 +47,8 @@
                     data: "status",
                     orderable: true,
                     render: function (data) {
-                        return data === 1 ? l('Approval') : data === 2 ? l('Void') : l('Draft');
+                        return data === voucherStatus.approval ? l('Approval') :
+                            data === voucherStatus.void ? l('Void') : l('Draft');
                     }
                 },
                 {
