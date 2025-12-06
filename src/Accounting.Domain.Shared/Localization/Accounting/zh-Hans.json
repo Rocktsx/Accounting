@@ -292,6 +292,8 @@
     "Capital": "资本",
     "Income": "收入",
     "Expenses": "支出",
-    "Accounting:OnlyDraftStatusVoucherCanUpdate": "只有草稿状态的传票才能更新。"
+    "Accounting:OnlyDraftStatusVoucherCanUpdate": "只有草稿状态的传票才能更新。",
+    "View": "查看",
+    "ViewTransferVoucher": "查看转账传票"
   }
 }

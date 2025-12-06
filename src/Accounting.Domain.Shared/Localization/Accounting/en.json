@@ -258,6 +258,8 @@
     "Capital": "Capital",
     "Income": "Income",
     "Expenses": "Expenses",
-    "Accounting:OnlyDraftStatusVoucherCanUpdate": "Only voucher in draft status can be updated."
+    "Accounting:OnlyDraftStatusVoucherCanUpdate": "Only voucher in draft status can be updated.",
+    "View": "View",
+    "ViewTransferVoucher": "View Transfer Voucher"
   }
 }

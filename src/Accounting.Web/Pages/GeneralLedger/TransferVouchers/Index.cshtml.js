@@ -7,6 +7,9 @@ $(function () {
     function formatDate(value) {
         return (new moment(value)).format("yyyy-MM-DD")
     }
+
+    const draftStatus = 0;
+
     const store = new Vuex.Store({
         state() {
             return {
@@ -36,6 +39,8 @@ $(function () {
             },
             showModal(state, payload) {
                 state.isShowModal = payload.isShowModal;
+                state.editItem.id = payload.id || ''
+
             },
             setIsEdit(state, payload) {
                 state.isEdit = payload.isEdit;
@@ -145,9 +150,10 @@ $(function () {
             enableDepartment: state => state.enableDepartment,
             enableCustom1: state => state.enableCustom1,
             enableCustom2: state => state.enableCustom2,
+            isDraftStatus: state => !state.editItem.id || state.editItem.id && state.editItem.status === draftStatus
         }
     })
-    const tvInputAction = function (requestData, dataTableSettings) {
+    const tvInputAction = function () {
         return {
             filter: $('#code').val().trim(),
             prefix: $('#prefix').val().trim(),
@@ -176,7 +182,7 @@ $(function () {
                 .then(result => store.commit('setNativeCurrency', result)));
         }
 
-        store.commit('showModal', { isShowModal: true });
+        store.commit('showModal', { isShowModal: true, id });
         Promise.all(requests).then(results => {
             const item = results[0];
             if (!item.details) {
@@ -278,7 +284,19 @@ $(function () {
                                     action: function (data) {
                                         editHandle(data.record.id);
                                     },
-                                    visible: isGrantedEdit
+                                    visible: function (record) {
+                                        return isGrantedEdit && record.status == draftStatus;
+                                    }
+                                },
+                                {
+                                    text: l('View'),
+                                    iconClass: '',
+                                    action: function (data) {
+                                        editHandle(data.record.id);
+                                    },
+                                    visible: function (record) {
+                                        return isGrantedEdit && record.status !== draftStatus;
+                                    }
                                 },
                                 {
                                     text: l('Copy'),
@@ -425,7 +443,7 @@ $(function () {
           <div class="modal-footer">
             <slot name="footer"></slot>
             <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" @click="close">{{l('Cancel')}}</button>
-            <button type="submit" class="btn btn-primary" @click="save"><i class="fa fa-check"></i> {{l('Save')}}</button>
+            <button v-if="showSubmit" type="submit" class="btn btn-primary" @click="save"><i class="fa fa-check"></i> {{l('Save')}}</button>
           </div>
         </div>
       </div>
@@ -442,7 +460,11 @@ $(function () {
         props: {
             value: Boolean,
             title: String,
-            modalId: String
+            modalId: String,
+            showSubmit: {
+                type: Boolean,
+                default: true
+            },
         },
         mounted() {
             this.$nextTick(() => {
@@ -836,7 +858,8 @@ $(function () {
             }
         }
     }
-    const editModalTemplate = `<div><Modal  v-if="isShowModal" :value="isShowModal" @input="input" @save="save" :title="l(editItem.id ? 'EditTransferVoucher' : 'NewTransferVoucher' )">
+    const editModalTemplate = `<div><Modal  v-if="isShowModal" :value="isShowModal" @input="input" 
+    @save="save" :title="l(( isDraftStatus ? editItem.id ? 'Edit' : 'New' : 'View') + 'TransferVoucher' )" :show-submit="isDraftStatus">
 <div id="content">
     <div class="mb-2 row">
        <div class="col row">
@@ -873,11 +896,11 @@ $(function () {
     </ul>
     <div class="tab-content pt-0 pb-0" id="detailTabContent">
       <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details" tabindex="0">
-        <div><button type="button" class="btn btn-primary btn-sm" @click="addDetail"><i class="fa fa-plus"></i> {{l('AddDetail')}}</button></div>
+        <div v-if="isDraftStatus"><button type="button" class="btn btn-primary btn-sm" @click="addDetail"><i class="fa fa-plus"></i> {{l('AddDetail')}}</button></div>
         <div class="items"> 
             <table class="table table-striped" :style="tableStyle">
                 <colgroup>
-                    <col style="width: 120px;" />
+                    <col v-if="isDraftStatus" style="width: 120px;" />
                     <col style="width: 250px;" />
                     <col style="width: 250px;" />
                     <col style="width: 120px;" />
@@ -895,7 +918,7 @@ $(function () {
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>{{l('Actions')}}</th>
+                    <th v-if="isDraftStatus">{{l('Actions')}}</th>
                     <th>{{l('Subject')}}</th>
                         <th>{{l('Description')}}</th>
                         <th>{{l('Debitor')}}<div>{{nativeCurrency}}</div></th>
@@ -914,7 +937,7 @@ $(function () {
                 </thead>
                 <tbody>
                     <tr v-for="item in editItem.details || []">
-                        <td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <td v-if="isDraftStatus"><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-cog me-1"></i>{{l('Actions')}}
@@ -998,7 +1021,7 @@ $(function () {
             }
         },
         computed: {
-            ...Vuex.mapGetters(['isShowModal', 'editItem', 'totalDebitorAmount',
+            ...Vuex.mapGetters(['isShowModal', 'editItem', 'totalDebitorAmount', 'isDraftStatus',
                 'totalCreditorAmount', 'subjectMap', 'companyMap', 'nativeCurrency',
                 'enableProject', 'enableRegion', 'enableDepartment', 'enableCustom1', 'enableCustom2']),
             showSubSubject() {
