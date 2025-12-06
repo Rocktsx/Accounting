@@ -10,6 +10,10 @@ $(function () {
 
     const draftStatus = 0;
 
+    const debitCredit = {
+        debitor: 1,
+        creditor: -1
+    }
     const store = new Vuex.Store({
         state() {
             return {
@@ -128,12 +132,12 @@ $(function () {
             editItem: state => state.editItem,
             totalDebitorAmount: state => {
                 return (state.editItem.details || []).reduce((init, item) =>
-                    init + (item.debitorCreditor === 1 ?
+                    init + (item.debitorCreditor === debitCredit.debitor ?
                         Number(item.nativeAmount) : 0), 0)
             },
             totalCreditorAmount: state => {
                 return (state.editItem.details || []).reduce((init, item) =>
-                    init + (item.debitorCreditor === -1 ?
+                    init + (item.debitorCreditor === debitCredit.creditor ?
                         Number(item.nativeAmount) : 0), 0)
             },
             subjects: state => state.subjects,
@@ -609,7 +613,9 @@ $(function () {
         props: ['item', 'value'],
         data() {
             return {
-                debitorCreditors: [{ value: 1, text: getLocal('Debitor') }, { value: -1, text: getLocal('Creditor') }],
+                debitorCreditors: [
+                    { value: debitCredit.debitor, text: getLocal('Debitor') },
+                    { value: debitCredit.creditor, text: getLocal('Creditor') }],
                 errors: {},
                 isShow: false,
                 accountTypes
@@ -951,9 +957,9 @@ $(function () {
                         </td>
                         <td>{{ item.subjectName }}</td>
                         <td>{{item.description}}</td>
-                        <td>{{item.debitorCreditor === 1 ? renderAmount(item.nativeAmount) : ''}}</td>
-                        <td>{{item.debitorCreditor === -1 ? renderAmount(item.nativeAmount) : ''}}</td>
-                        <td><div>{{item.debitorCreditor === 1 ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
+                        <td>{{item.debitorCreditor === debitCredit.debitor ? renderAmount(item.nativeAmount) : ''}}</td>
+                        <td>{{item.debitorCreditor === debitCredit.creditor ? renderAmount(item.nativeAmount) : ''}}</td>
+                        <td><div>{{item.debitorCreditor === debitCredit.debitor ? l('Debitor'): l('Creditor')}}</div><div>{{item.currencyCode}}</div></td>
                         <td class="text-end"><div>{{renderAmount(item.foreignAmount)}}</div><div>{{renderAmount(item.currencyRate, 7)}}</div></td>
                         <td v-if="showSubSubject">{{ item.subSubjectName }}</td>
                         <td v-if="showSubSubject">{{item.docNo}}</td>
@@ -983,7 +989,7 @@ $(function () {
             subjectId: '-',
             subSubjectCode: null,
             description: '',
-            debitorCreditor: 1,
+            debitorCreditor: debitCredit.debitor,
             currencyCode: '',
             currencyRate: 1,
             foreignAmount: 0,
@@ -1012,7 +1018,8 @@ $(function () {
                 isShowDetail: false,
                 item: {},
                 errors: {},
-                showDetailModal: false
+                showDetailModal: false,
+                debitCredit
             }
         },
         watch: {
@@ -1139,13 +1146,13 @@ $(function () {
                 }
                 let balanceAmount = this.totalDebitorAmount - this.totalCreditorAmount
                 if (item.nativeAmount) {
-                    if (item.debitorCreditor === 1) {
+                    if (item.debitorCreditor === this.debitCredit.debitor) {
                         balanceAmount -= Number(item.nativeAmount);
                     } else {
                         balanceAmount += Number(item.nativeAmount);
                     }
                 }
-                const debitorCreditor = balanceAmount > 0 ? -1 : 1;
+                const debitorCreditor = balanceAmount > 0 ? this.debitCredit.creditor : this.debitCredit.debitor;
                 item.nativeAmount = Math.abs(balanceAmount);
                 item.foreignAmount = Number((item.nativeAmount / currencyRate).toFixed(2))
                 item.debitorCreditor = debitorCreditor;
