@@ -6,10 +6,6 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Modularity;
 using Xunit;
 using Accounting.Dtos;
-using Volo.Abp.FeatureManagement;
-using Volo.Abp.Features;
-using Volo.Abp.MultiTenancy;
-using Accounting.Features;
 
 namespace Accounting.Finance
 {

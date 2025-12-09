@@ -18,5 +18,32 @@ namespace Accounting
         public const int AmountRoundScale = 2;
 
         public const string StandardDateFormat = "yyyy-MM-dd";
+
+        /// <summary>
+        /// 截至上年结转余额排序
+        /// </summary>
+        public const int LastYearBfOrder = 1;
+
+        /// <summary>
+        /// 当年结转余额排序
+        /// </summary>
+        public const int CurrentYearBfOrder = 2;
+
+        /// <summary>
+        /// 当前期限排序
+        /// </summary>
+        public const int CurrentPeriodOrder = 3;
+
+        public const string SystemCodeText = "SYSTEM";
+
+        /// <summary>
+        /// 截至上年结转余额文本
+        /// </summary>
+        public const string LastYearBfText = "LAST YEAR B/F";
+
+        /// <summary>
+        /// 当年结转余额文本
+        /// </summary>
+        public const string CurrentYearBfText = "CURRENT YEAR B/F";
     }
 }

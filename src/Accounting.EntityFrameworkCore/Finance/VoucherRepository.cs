@@ -14,10 +14,12 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Accounting.Common;
+using Accounting.Finance.Reports;
 
 namespace Accounting.Finance
 {
-    public class VoucherRepository : EfCoreRepository<AccountingDbContext, Voucher, Guid>, IVoucherRepository
+    public class VoucherRepository : EfCoreRepository<AccountingDbContext, Voucher, Guid>, IVoucherRepository,
+        IGeneralLedgerReportRepository
     {
         public VoucherRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
@@ -25,14 +27,14 @@ namespace Accounting.Finance
 
         public async Task<long> GetCountAsync(VoucherFilterRequest request = null, Guid? subjectId = null, CancellationToken cancellationToken = default)
         {
-            return await (await GetQueryable(request))
+            return await (await GetQueryableAsync(request))
                 .WhereIf(!subjectId.IsEmptyOrNull(), item => item.Details.Any(obj => obj.SubjectId == subjectId))
                 .LongCountAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Voucher>> GetPagedListAsync(VoucherFilterRequest request = null, string sorting = null, int maxResultCount = int.MaxValue, int skipCount = 0, CancellationToken cancellationToken = default)
         {
-            return await (await GetQueryable(request))
+            return await (await GetQueryableAsync(request))
              .OrderBy(string.IsNullOrWhiteSpace(sorting) ? nameof(Voucher.Id) : sorting)
              .Skip(skipCount).Take(maxResultCount)
              .ToListAsync(cancellationToken);
@@ -55,7 +57,7 @@ namespace Accounting.Finance
                .Select(item => item.GenNo)
                .FirstOrDefaultAsync(cancellationToken);
         }
-        private async Task<IQueryable<Voucher>> GetQueryable(VoucherFilterRequest request)
+        private async Task<IQueryable<Voucher>> GetQueryableAsync(VoucherFilterRequest request)
         {
             var queryable = (await GetDbSetAsync()).AsQueryable();
             if (request == null)
@@ -66,7 +68,7 @@ namespace Accounting.Finance
             return queryable
                 .WhereIf(!string.IsNullOrWhiteSpace(request.Filter), item => item.Code.Contains(request.Filter))
                 .WhereIf(!string.IsNullOrWhiteSpace(request.Prefix), item => item.Prefix == request.Prefix)
-                .WhereIf(request.Codes != null && request.Codes.Count() > 0 , item => request.Codes.Contains(item.Code))
+                .WhereIf(request.Codes != null && request.Codes.Count() > 0, item => request.Codes.Contains(item.Code))
                 .WhereIf(request.StartNo != null, item => item.GenNo >= request.StartNo)
                 .WhereIf(request.EndNo != null, item => item.GenNo <= request.EndNo)
                 .WhereIf(request.StartDate != null, item => item.VoucherDate >= request.StartDate)
@@ -76,7 +78,7 @@ namespace Accounting.Finance
                 .WhereIf(request.Status != null, item => item.Status == request.Status)
                 .WhereIf(!string.IsNullOrWhiteSpace(request.DocNo), item => item.Details.Any(obj => obj.DocNo.Contains(request.DocNo)));
         }
-        private async Task<IQueryable<VoucherDetail>> GetReceivablePayableQueryable(Guid? subSubjectCodeId)
+        private async Task<IQueryable<VoucherDetail>> GetReceivablePayableQueryableAsync(Guid? subSubjectCodeId)
         {
             var queryable = (await GetDbSetAsync()).AsQueryable();
             queryable = queryable.Where(new NoVoidVoucherSpecification());
@@ -86,8 +88,8 @@ namespace Accounting.Finance
 
         public async Task<IEnumerable<ReceivablePayableDetail>> GetReceivableDetailsAsync(Guid? creditorId, int maxResultCount = int.MaxValue, int skipCount = 0, CancellationToken cancellationToken = default)
         {
-            var queryable = await GetReceivablePayableQueryable(creditorId);
-           
+            var queryable = await GetReceivablePayableQueryableAsync(creditorId);
+
             var notReceivedQueryable = queryable
                .GroupBy(item => new { item.DocNo })
                .Where(grp => grp.Sum(item =>
@@ -183,7 +185,7 @@ namespace Accounting.Finance
             var creditorId = voucher.Details.FirstOrDefault(item =>
                 item.SubSubjectCode != null)?.SubSubjectCode;
 
-            var queryable = await GetReceivablePayableQueryable(creditorId);
+            var queryable = await GetReceivablePayableQueryableAsync(creditorId);
 
             var receivedDic = voucher.Details.ToDictionary(item => item.DocNo,
                 item => item.NativeAmount);
@@ -195,7 +197,7 @@ namespace Accounting.Finance
         }
         public async Task<long> GetReceivableDetailsCountAsync(Guid? creditorId = null, CancellationToken cancellationToken = default)
         {
-            var queryable = await GetReceivablePayableQueryable(creditorId);
+            var queryable = await GetReceivablePayableQueryableAsync(creditorId);
 
             var notReceivedQueryable = queryable
                .GroupBy(item => new { item.DocNo })
@@ -206,7 +208,7 @@ namespace Accounting.Finance
 
         public async Task<IEnumerable<ReceivablePayableDetail>> GetPayableDetailsAsync(Guid? debitorId, int maxResultCount = int.MaxValue, int skipCount = 0, CancellationToken cancellationToken = default)
         {
-            var detailQueryable = await GetReceivablePayableQueryable(debitorId);
+            var detailQueryable = await GetReceivablePayableQueryableAsync(debitorId);
 
             var notReceivedQueryable = detailQueryable
                 .GroupBy(item => new { item.DocNo })
@@ -243,7 +245,7 @@ namespace Accounting.Finance
             var debitorId = voucher.Details.FirstOrDefault(item =>
                 item.SubSubjectCode != null)?.SubSubjectCode;
 
-            var queryable = await GetReceivablePayableQueryable(debitorId);
+            var queryable = await GetReceivablePayableQueryableAsync(debitorId);
 
             var receivedDic = voucher.Details.GroupBy(item => new { item.DocNo })
                  .Select(grp => new
@@ -271,7 +273,7 @@ namespace Accounting.Finance
         }
         public async Task<long> GetPayableDetailsCountAsync(Guid? debitorId = null, CancellationToken cancellationToken = default)
         {
-            var detailQueryable = await GetReceivablePayableQueryable(debitorId);
+            var detailQueryable = await GetReceivablePayableQueryableAsync(debitorId);
 
             var notReceivedQueryable = detailQueryable
                 .GroupBy(item => new { item.DocNo })
@@ -366,6 +368,18 @@ namespace Accounting.Finance
                    Count = item.Count()
                });
             return await repeatQuery.ToListAsync(cancellationToken);
+        }
+
+        private async Task<IQueryable<Voucher>> GetQueryableWithDetailsAsync()
+        {
+            var queryable = await WithDetailsAsync(item => item.Details);
+            return queryable.Where(new NoVoidVoucherSpecification().ToExpression());
+        }
+
+        public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetGLSingleCurrencyListAsync(DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate, Guid? subjectId = null, CancellationToken cancellationToken = default)
+        {
+            var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
+            return await reposity.GetGLSingleCurrencyListAsync(startDate,endDate,periodStartDate,periodEndDate,subjectId,cancellationToken);
         }
     }
 }

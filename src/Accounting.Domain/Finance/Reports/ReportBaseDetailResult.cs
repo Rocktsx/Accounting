@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Accounting.Finance
+namespace Accounting.Finance.Reports
 {
-    public class ReportBaseDetailResultDto : ReportBaseResultDto
+    public class ReportBaseDetailResult : ReportBaseResult
     {
         public DateOnly VoucherDate { get; set; }
         public string VoucherCode { get; set; }
 
         public string Description { get; set; }
 
-        public ReportBaseDetailResultDto()
+        public ReportBaseDetailResult()
         {
             VoucherCode = string.Empty;
             Description = string.Empty;

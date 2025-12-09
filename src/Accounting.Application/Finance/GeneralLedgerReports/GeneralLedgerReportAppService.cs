@@ -1,6 +1,6 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.Vouchers;
+using Accounting.Finance.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,32 +11,32 @@ using Volo.Abp;
 
 namespace Accounting.Finance.GeneralLedgerReports
 {
+    /// <summary>
+    /// 总账报表应用服务
+    /// </summary>
     public class GeneralLedgerReportAppService : AccountingAppService, IGeneralLedgerReportAppService
 
     {
-        private readonly IVoucherRepository _voucherRepository;
+        private readonly IGeneralLedgerReportRepository _glRepository;
         private readonly IAccountingPeriodRepository _periodRepository;
-        public GeneralLedgerReportAppService(IVoucherRepository voucherRepository,
+        public GeneralLedgerReportAppService(IGeneralLedgerReportRepository repository,
             IAccountingPeriodRepository accountingPeriodRepository)
         {
-            _voucherRepository = voucherRepository;
+            _glRepository = repository;
             _periodRepository = accountingPeriodRepository;
         }
-        public async Task<GeneralLedgerSingleCurrencyReportResultDto> GetSingleCurrencyList(
+        public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResultDto>> GetSingleCurrencyListAsync(
             GeneralLedgerSingleCurrencyReportRequestDto input)
         {
             Check.NotDefaultOrNull(input.PeriodId, nameof(input.PeriodId));
 
             var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException("AccountingPeriodNotFound", "The specified accounting period was not found.");
+            var startDate = input.StartDate ?? period.StartDate;
+            var endDate = input.EndDate ?? period.EndDate;
 
-            var query =await _voucherRepository.WithDetailsAsync(item => item.Details);
-            query = query.Where(new NoVoidVoucherSpecification().ToExpression());
-            query = query.WhereIf(!input.SubjectId.IsEmptyOrNull(),
-                item => item.Details.Any(d => d.SubjectId == input.SubjectId));
+            var result =await _glRepository.GetGLSingleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
 
-            var beforePeriodQuery = query.Where(item => item.VoucherDate < period.StartDate);
-
-            throw new NotImplementedException();
+            return ObjectMapper.Map<IEnumerable<GeneralLedgerSingleCurrencyReportResult>, List<GeneralLedgerSingleCurrencyReportResultDto>>([.. result]);
         }
     }
 }

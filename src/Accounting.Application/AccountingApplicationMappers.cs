@@ -2,8 +2,10 @@
 using Accounting.BasicData.Currencies;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
+using Accounting.Finance.GeneralLedgerReports;
 using Accounting.Finance.PayableVouchers;
 using Accounting.Finance.ReceivableVouchers;
+using Accounting.Finance.Reports;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
@@ -136,5 +138,11 @@ namespace Accounting
     {
         public override partial PayableDetailDto Map(ReceivablePayableDetail source);
         public override partial void Map(ReceivablePayableDetail source, PayableDetailDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class GeneralLedgerSingleCurrencyReportResultToGeneralLedgerSingleCurrencyReportResultDto : MapperBase<GeneralLedgerSingleCurrencyReportResult, GeneralLedgerSingleCurrencyReportResultDto>
+    {
+        public override partial GeneralLedgerSingleCurrencyReportResultDto Map(GeneralLedgerSingleCurrencyReportResult source);
+        public override partial void Map(GeneralLedgerSingleCurrencyReportResult source, GeneralLedgerSingleCurrencyReportResultDto destination);
     }
 }
