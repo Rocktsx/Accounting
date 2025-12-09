@@ -262,6 +262,9 @@
     "View": "View",
     "ViewTransferVoucher": "View Transfer Voucher",
     "ViewReceivableVoucher": "View Receivable Voucher",
-    "ViewPayableVoucher": "View Payable Voucher"
+    "ViewPayableVoucher": "View Payable Voucher",
+    "Permission:GeneralLedgerReport": "General Ledger Report",
+    "Permission:GeneralLedgerReport.SingleCurrencyReport": "General Ledger(Single Currency)",
+    "Accounting:AccountingPeriodNotFound": "The specified accounting period was not found."
   }
 }

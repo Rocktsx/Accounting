@@ -1,6 +1,9 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.Reports;
+using Accounting.Finance.Vouchers;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +28,14 @@ namespace Accounting.Finance.GeneralLedgerReports
             _glRepository = repository;
             _periodRepository = accountingPeriodRepository;
         }
+
+        [Authorize(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)]
         public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResultDto>> GetSingleCurrencyListAsync(
             GeneralLedgerSingleCurrencyReportRequestDto input)
         {
             Check.NotDefaultOrNull(input.PeriodId, nameof(input.PeriodId));
 
-            var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException("AccountingPeriodNotFound", "The specified accounting period was not found.");
+            var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException(VoucherErrorCodes.AccountingPeriodNotFound);
             var startDate = input.StartDate ?? period.StartDate;
             var endDate = input.EndDate ?? period.EndDate;
 

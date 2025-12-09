@@ -296,6 +296,9 @@
     "View": "查看",
     "ViewTransferVoucher": "查看转账传票",
     "ViewReceivableVoucher": "查看收款传票",
-    "ViewPayableVoucher": "查看付款传票"
+    "ViewPayableVoucher": "查看付款传票",
+    "Permission:GeneralLedgerReport": "总账报表",
+    "Permission:GeneralLedgerReport.SingleCurrencyReport": "总账(单货币)",
+    "Accounting:AccountingPeriodNotFound": "该会计年度不存在。"
   }
 }

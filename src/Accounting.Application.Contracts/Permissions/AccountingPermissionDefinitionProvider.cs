@@ -1,5 +1,4 @@
 using Accounting.Localization;
-using System.Linq;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 using static Accounting.Permissions.AccountingPermissions;
@@ -52,6 +51,9 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group = AddPermissionGroup(context, PayableVouchers.Default, PayableVouchers.Name,
          PayableVouchers.Create, PayableVouchers.Delete, PayableVouchers.Update);
         group.Permissions[0].AddChild(PayableVouchers.UpdateStatus, L(UpdateStatusDisplayName));
+
+        group = context.AddGroup(GeneralLedgerReports.Default, L(PermissionPrefix + GeneralLedgerReports.Name));
+        group.AddPermission(GeneralLedgerReports.SingleCurrencyReport, L(GeneralLedgerReports.SingleCurrencyReportDisplayName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

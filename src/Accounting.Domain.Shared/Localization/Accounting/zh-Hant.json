@@ -296,6 +296,9 @@
     "View": "查看 ",
     "ViewTransferVoucher": "查看轉賬傳票",
     "ViewReceivableVoucher": "查看收款傳票",
-    "ViewPayableVoucher": "查看付款傳票"
+    "ViewPayableVoucher": "查看付款傳票",
+    "Permission:GeneralLedgerReport": "總賬報表",
+    "Permission:GeneralLedgerReport.SingleCurrencyReport": "總賬(單貨幣)",
+    "Accounting:AccountingPeriodNotFound": "該會計年度不存在。"
   }
 }

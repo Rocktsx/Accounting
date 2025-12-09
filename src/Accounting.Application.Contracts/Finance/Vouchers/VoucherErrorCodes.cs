@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Accounting.Finance.Vouchers
 {
     public class VoucherErrorCodes
@@ -18,5 +13,6 @@ namespace Accounting.Finance.Vouchers
         public const string PaymentReferenceCannotBeEmpty = "Accounting:PaymentReferenceCannotBeEmpty";
         public const string PleaseEnterArSubjectInSetting = "Accounting:PleaseEnterArSubjectInSetting";
         public const string PleaseEnterApSubjectInSetting = "Accounting:PleaseEnterApSubjectInSetting";
+        public const string AccountingPeriodNotFound = "Accounting:AccountingPeriodNotFound";
     }
 }

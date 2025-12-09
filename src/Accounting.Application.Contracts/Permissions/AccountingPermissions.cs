@@ -133,6 +133,15 @@ public static class AccountingPermissions
         public const string UpdateStatus = Default + UpdateStatusDot;
     }
 
+    public class GeneralLedgerReports
+    {
+        public const string Name = "GeneralLedgerReport";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+        public const string SingleCurrencyReportText = "SingleCurrencyReport";
+        public const string SingleCurrencyReport = Default + Dot + SingleCurrencyReportText;
+        public const string SingleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencyReportText;
+    }
+
     /// <summary>
     /// 应收账组
     /// </summary>
@@ -167,5 +176,5 @@ public static class AccountingPermissions
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
-    }
+    } 
 }
