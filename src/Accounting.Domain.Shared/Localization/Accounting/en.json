@@ -265,6 +265,17 @@
     "ViewPayableVoucher": "View Payable Voucher",
     "Permission:GeneralLedgerReport": "General Ledger Report",
     "Permission:GeneralLedgerReport.SingleCurrencyReport": "General Ledger(Single Currency)",
-    "Accounting:AccountingPeriodNotFound": "The specified accounting period was not found."
+    "Accounting:AccountingPeriodNotFound": "The specified accounting period was not found.",
+    "Menu:GeneralLedgerReport": "General Ledger Report",
+    "Menu:GeneralLedgerReport.SingleCurrencyReport": "General Ledger(Single Currency)",
+    "AccountingPeriod": "Accounting Period",
+    "GeneralLedger": "General Ledger",
+    "NoDataAvailable": "No data available",
+    "Balance": "Balance",
+    "VoucherCode": "Voucher Code",
+    "SubjectCode": "Subject Code",
+    "SubjectName": "Subject Name",
+    "CurrentVouchers": "Current Vouchers",
+    "PeriodMovement": "Period Movement"
   }
 }

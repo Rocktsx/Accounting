@@ -58,3 +58,6 @@ form label.error {
     border: none !important;
     outline: none !important;
 }
+.table thead th {
+    font-size: var(--bs-body-font-size);
+}

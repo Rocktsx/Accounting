@@ -203,6 +203,21 @@ namespace Accounting.Web.Pages
                         );
                     });
             });
+
+            context.Services.Configure<AbpPageToolbarOptions>(options =>
+            {
+                options.Configure<GeneralLedger.GeneralLedgerReports.IndexModel>(
+                    toolbar =>
+                    {
+                        toolbar.AddButton(
+                            L("Search"),
+                            icon: "magnifying-glass",
+                            id: "searchBtn",
+                            requiredPolicyName: AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport
+                        ); 
+                    });
+            });
+
         }
         private static LocalizableString L(string name)
         {

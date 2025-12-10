@@ -299,6 +299,17 @@
     "ViewPayableVoucher": "查看付款传票",
     "Permission:GeneralLedgerReport": "总账报表",
     "Permission:GeneralLedgerReport.SingleCurrencyReport": "总账(单货币)",
-    "Accounting:AccountingPeriodNotFound": "该会计年度不存在。"
+    "Accounting:AccountingPeriodNotFound": "该会计年度不存在。",
+    "Menu:GeneralLedgerReport": "总账报表",
+    "Menu:GeneralLedgerReport.SingleCurrencyReport": "总账(单货币)",
+    "AccountingPeriod": "会计年度",
+    "GeneralLedger": "总账",
+    "NoDataAvailable": "没有数据",
+    "Balance": "余额",
+    "VoucherCode": "传票编号",
+    "SubjectCode": "科目编号",
+    "SubjectName": "科目名称",
+    "CurrentVouchers": "本期交易数",
+    "PeriodMovement": "本期结余"
   }
 }

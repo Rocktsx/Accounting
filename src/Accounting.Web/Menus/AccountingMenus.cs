@@ -21,6 +21,8 @@ public class AccountingMenus
     private const string SubjectText = "Subject";
     private const string TransferVoucherText = "TransferVoucher";
     private const string VoucherStateText = "VoucherState";
+    private const string GeneralLedgerReportText = "GeneralLedgerReport";
+    private const string SingleCurrencyReportText = "SingleCurrencyReport";
 
     private const string ReceivableText = "Receivable";
     private const string ReceivableVoucherText = "ReceivableVoucher";
@@ -40,6 +42,9 @@ public class AccountingMenus
     public const string Subject = GeneralLedger + Dot + SubjectText;
     public const string TransferVoucher = GeneralLedger + Dot + TransferVoucherText;
     public const string VoucherState = GeneralLedger + Dot + VoucherStateText;
+
+    public const string GeneralLedgerReport = GeneralLedger + Dot + GeneralLedgerReportText;
+    public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
 
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
@@ -61,6 +66,9 @@ public class AccountingMenus
         public const string Subject = DisplayNamePrefix + SubjectText;
         public const string TransferVoucher = DisplayNamePrefix + TransferVoucherText;
         public const string VoucherState = DisplayNamePrefix + VoucherStateText;
+
+        public const string GeneralLedgerReport = DisplayNamePrefix + GeneralLedgerReportText;
+        public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;
         public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;

@@ -154,6 +154,25 @@ public class AccountingMenuContributor : IMenuContributor
                    url: "/GeneralLedger/VoucherStates"
                ).RequirePermissions(AccountingPermissions.VoucherStates.Default)
          );
+
+        var generalLedgerReports = new ApplicationMenuItem(
+           AccountingMenus.GeneralLedgerReport,
+           l[AccountingMenus.DisplayNames.GeneralLedgerReport],
+           icon: "fas fa-calculator"
+        );
+        generalLedgerReports.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.GeneralLedgerSingleCurrencyReport,
+                  l[AccountingMenus.DisplayNames.GeneralLedgerSingleCurrencyReport],
+                  icon: "fas fa-layer-group",
+                  url: "/GeneralLedger/GeneralLedgerReports"
+              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)
+        );
+        if (generalLedgerReports.Items.Count > 0)
+        {
+            generalLedgerMenu.AddItem(generalLedgerReports);
+        }
+
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);
