@@ -22,10 +22,9 @@ namespace Accounting.Web.Pages
                             id: "newCurrency",
                             requiredPolicyName: AccountingPermissions.Currencies.Create
                         );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<BasicData.Clients.IndexModel>(
                     toolbar =>
                     {
@@ -41,10 +40,9 @@ namespace Accounting.Web.Pages
                              id: "importCompanyBtn",
                              requiredPolicyName: AccountingPermissions.Clients.Import
                         );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<BasicData.Vendors.IndexModel>(
                     toolbar =>
                     {
@@ -60,10 +58,9 @@ namespace Accounting.Web.Pages
                              id: "importCompanyBtn",
                              requiredPolicyName: AccountingPermissions.Vendors.Import
                          );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<GeneralLedger.AccountingPeriods.IndexModel>(
                     toolbar =>
                     {
@@ -73,10 +70,9 @@ namespace Accounting.Web.Pages
                             id: "newAccountingPeriodBtn",
                             requiredPolicyName: AccountingPermissions.AccountingPeriods.Create
                         );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<GeneralLedger.ChartOfAccounts.IndexModel>(
                     toolbar =>
                     {
@@ -92,10 +88,9 @@ namespace Accounting.Web.Pages
                           id: "importSubjectBtn",
                           requiredPolicyName: AccountingPermissions.Subjects.Import
                       );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<GeneralLedger.GeneralAccounts.IndexModel>(
                     toolbar =>
                     {
@@ -111,10 +106,9 @@ namespace Accounting.Web.Pages
                           id: "importGeneralAccountBtn",
                           requiredPolicyName: AccountingPermissions.GeneralAccounts.Import
                       );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<GeneralLedger.SubjectCategories.IndexModel>(
                     toolbar =>
                     {
@@ -124,10 +118,9 @@ namespace Accounting.Web.Pages
                             id: "newSubjectCategoryBtn",
                             requiredPolicyName: AccountingPermissions.SubjectCategories.Create
                         );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
                 options.Configure<GeneralLedger.TransferVouchers.IndexModel>(
                     toolbar =>
                     {
@@ -149,10 +142,10 @@ namespace Accounting.Web.Pages
                              id: "importTVBtn",
                              requiredPolicyName: AccountingPermissions.TransferVouchers.Import
                          );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
+
                 options.Configure<GeneralLedger.VoucherStates.IndexModel>(
                     toolbar =>
                     {
@@ -162,10 +155,10 @@ namespace Accounting.Web.Pages
                             id: "updateStatusBtn",
                             requiredPolicyName: AccountingPermissions.VoucherStates.UpdateStatus
                         );
-                    });
-            });
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
+                    }
+                );
+
+
                 options.Configure<Receivable.ReceivableVouchers.IndexModel>(
                     toolbar =>
                     {
@@ -181,11 +174,9 @@ namespace Accounting.Web.Pages
                           id: "newVoucherBtn",
                           requiredPolicyName: AccountingPermissions.ReceivableVouchers.Create
                         );
-                    });
-            });
+                    }
+                );
 
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
                 options.Configure<Payable.PayableVouchers.IndexModel>(
                     toolbar =>
                     {
@@ -201,11 +192,9 @@ namespace Accounting.Web.Pages
                           id: "newVoucherBtn",
                           requiredPolicyName: AccountingPermissions.PayableVouchers.Create
                         );
-                    });
-            });
+                    }
+                );
 
-            context.Services.Configure<AbpPageToolbarOptions>(options =>
-            {
                 options.Configure<GeneralLedger.GeneralLedgerReports.IndexModel>(
                     toolbar =>
                     {
@@ -214,10 +203,10 @@ namespace Accounting.Web.Pages
                             icon: "magnifying-glass",
                             id: "searchBtn",
                             requiredPolicyName: AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport
-                        ); 
-                    });
+                        );
+                    }
+                );
             });
-
         }
         private static LocalizableString L(string name)
         {
