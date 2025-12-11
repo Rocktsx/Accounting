@@ -173,7 +173,6 @@ namespace Accounting.Finance
                                 .Concat(currentYearBfQuery)
                                 .Concat(currentQuery)
                                 .OrderBy(item => item.SubjectCode)
-                                .OrderBy(item => item.CurrencyCode)
                                 .ThenBy(item => item.SortOrder)
                                 .ThenBy(item => item.VoucherDate)
                                 .ThenBy(item => item.VoucherCode);

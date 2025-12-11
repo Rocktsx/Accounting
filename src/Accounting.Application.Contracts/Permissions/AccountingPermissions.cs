@@ -137,12 +137,14 @@ public static class AccountingPermissions
     {
         public const string Name = "GeneralLedgerReport";
         public const string Default = GeneralLedgerGroup + Dot + Name;
-        public const string SingleCurrencyReportText = "SingleCurrencyReport";
+
+        private const string SingleCurrencyReportText = "SingleCurrencyReport";
+        internal const string SingleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencyReportText;
         public const string SingleCurrencyReport = Default + Dot + SingleCurrencyReportText;
-        public const string SingleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencyReportText;
-        public const string MultipleCurrencyReportText = "MultipleCurrencyReport";
+
+        private const string MultipleCurrencyReportText = "MultipleCurrencyReport";
+        internal const string MultipleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyReportText;
         public const string MultipleCurrencyReport = Default + Dot + MultipleCurrencyReportText;
-        public const string MultipleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyReportText;
     }
 
     /// <summary>
@@ -179,5 +181,5 @@ public static class AccountingPermissions
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
-    } 
+    }
 }
