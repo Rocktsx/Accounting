@@ -381,5 +381,10 @@ namespace Accounting.Finance
             var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
             return await reposity.GetGLSingleCurrencyListAsync(startDate,endDate,periodStartDate,periodEndDate,subjectId,cancellationToken);
         }
+        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate, Guid? subjectId = null, CancellationToken cancellationToken = default)
+        {
+            var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
+            return await reposity.GetGLMultipleCurrencyListAsync(startDate, endDate, periodStartDate, periodEndDate, subjectId, cancellationToken);
+        }
     }
 }

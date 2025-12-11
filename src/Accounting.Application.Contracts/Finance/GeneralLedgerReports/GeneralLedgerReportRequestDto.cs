@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Accounting.Finance.GeneralLedgerReports
 {
-    public class GeneralLedgerSingleCurrencyReportRequestDto
+    public class GeneralLedgerReportRequestDto
     {
         public Guid? SubjectId { get; set; }
 

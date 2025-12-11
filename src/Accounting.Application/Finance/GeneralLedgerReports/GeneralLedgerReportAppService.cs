@@ -1,14 +1,10 @@
-﻿using Accounting.Common;
-using Accounting.Finance.AccountingPeriods;
+﻿using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.Reports;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp;
 
@@ -31,17 +27,34 @@ namespace Accounting.Finance.GeneralLedgerReports
 
         [Authorize(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)]
         public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResultDto>> GetSingleCurrencyListAsync(
-            GeneralLedgerSingleCurrencyReportRequestDto input)
+            GeneralLedgerReportRequestDto input)
+        {
+            (AccountingPeriod period, DateOnly startDate, DateOnly endDate) = await HandleRequestDto(input);
+
+            var result = await _glRepository.GetGLSingleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
+
+            return ObjectMapper.Map<IEnumerable<GeneralLedgerSingleCurrencyReportResult>, List<GeneralLedgerSingleCurrencyReportResultDto>>([.. result]);
+        }
+
+        [Authorize(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport)]
+        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResultDto>>
+            GetMultipleCurrencyListAsync(GeneralLedgerReportRequestDto input)
+        {
+            (AccountingPeriod period, DateOnly startDate, DateOnly endDate) = await HandleRequestDto(input);
+
+            var result = await _glRepository.GetGLMultipleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
+
+            return ObjectMapper.Map<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>, List<GeneralLedgerMultipleCurrencyReportResultDto>>([.. result]);
+        }
+
+        private async Task<(AccountingPeriod period, DateOnly startDate, DateOnly endDate)> HandleRequestDto(GeneralLedgerReportRequestDto input)
         {
             Check.NotDefaultOrNull(input.PeriodId, nameof(input.PeriodId));
 
             var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException(VoucherErrorCodes.AccountingPeriodNotFound);
             var startDate = input.StartDate ?? period.StartDate;
             var endDate = input.EndDate ?? period.EndDate;
-
-            var result =await _glRepository.GetGLSingleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
-
-            return ObjectMapper.Map<IEnumerable<GeneralLedgerSingleCurrencyReportResult>, List<GeneralLedgerSingleCurrencyReportResultDto>>([.. result]);
+            return (period, startDate, endDate);
         }
     }
 }

@@ -140,6 +140,9 @@ public static class AccountingPermissions
         public const string SingleCurrencyReportText = "SingleCurrencyReport";
         public const string SingleCurrencyReport = Default + Dot + SingleCurrencyReportText;
         public const string SingleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencyReportText;
+        public const string MultipleCurrencyReportText = "MultipleCurrencyReport";
+        public const string MultipleCurrencyReport = Default + Dot + MultipleCurrencyReportText;
+        public const string MultipleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyReportText;
     }
 
     /// <summary>

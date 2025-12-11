@@ -8,6 +8,10 @@ namespace Accounting.Finance.GeneralLedgerReports
     /// </summary>
     public interface IGeneralLedgerReportAppService
     {
-       Task<IEnumerable<GeneralLedgerSingleCurrencyReportResultDto>> GetSingleCurrencyListAsync(GeneralLedgerSingleCurrencyReportRequestDto input);
+        Task<IEnumerable<GeneralLedgerSingleCurrencyReportResultDto>>
+            GetSingleCurrencyListAsync(GeneralLedgerReportRequestDto input);
+
+        Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResultDto>>
+            GetMultipleCurrencyListAsync(GeneralLedgerReportRequestDto input);
     }
 }

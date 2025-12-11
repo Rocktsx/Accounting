@@ -26,9 +26,11 @@ namespace Accounting
         public string ClientAddressFax { get; } = "28453454";
         public string ClientAddressCountry { get; } = "China";
         public string ClientAddressRegion{ get; } = "SZ";
+        public Guid AccountingPeriodYearId { get; } = Guid.NewGuid();
         public int AccountingPeriodYear { get; } = 2025;
         public DateOnly AccountingPeriodStartDate { get; } = new DateOnly(2025, 1, 1);
         public DateOnly AccountingPeriodEndDate { get; } = new DateOnly(2025, 12, 31);
+        public Guid AccountingPeriod2024YearId { get; } = Guid.NewGuid();
         public int AccountingPeriod2024Year { get; } = 2024;
         public string AccountingPeriod2024Code { get; } = "2024-Updated";
         public int InsertedVouchers { get; } = 7;

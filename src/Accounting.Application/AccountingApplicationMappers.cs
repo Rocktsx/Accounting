@@ -140,9 +140,16 @@ namespace Accounting
         public override partial void Map(ReceivablePayableDetail source, PayableDetailDto destination);
     }
     [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-    public partial class GeneralLedgerSingleCurrencyReportResultToGeneralLedgerSingleCurrencyReportResultDto : MapperBase<GeneralLedgerSingleCurrencyReportResult, GeneralLedgerSingleCurrencyReportResultDto>
+    public partial class GLSingleCurrencyReportResultToGLSingleCurrencyReportResultDto : MapperBase<GeneralLedgerSingleCurrencyReportResult, GeneralLedgerSingleCurrencyReportResultDto>
     {
         public override partial GeneralLedgerSingleCurrencyReportResultDto Map(GeneralLedgerSingleCurrencyReportResult source);
         public override partial void Map(GeneralLedgerSingleCurrencyReportResult source, GeneralLedgerSingleCurrencyReportResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class GLMultipleCurrencyReportResultToGLMultipleCurrencyReportResultDto : MapperBase<GeneralLedgerMultipleCurrencyReportResult, GeneralLedgerMultipleCurrencyReportResultDto>
+    {
+        public override partial GeneralLedgerMultipleCurrencyReportResultDto Map(GeneralLedgerMultipleCurrencyReportResult source);
+        public override partial void Map(GeneralLedgerMultipleCurrencyReportResult source, GeneralLedgerMultipleCurrencyReportResultDto destination);
     }
 }
