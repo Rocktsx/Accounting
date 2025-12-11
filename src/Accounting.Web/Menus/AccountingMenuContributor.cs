@@ -158,13 +158,13 @@ public class AccountingMenuContributor : IMenuContributor
         var generalLedgerReports = new ApplicationMenuItem(
            AccountingMenus.GeneralLedgerReport,
            l[AccountingMenus.DisplayNames.GeneralLedgerReport],
-           icon: "fas fa-calculator"
+           icon: "fas fa-chart-bar"
         );
         generalLedgerReports.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.GeneralLedgerSingleCurrencyReport,
                   l[AccountingMenus.DisplayNames.GeneralLedgerSingleCurrencyReport],
-                  icon: "fas fa-layer-group",
+                  icon: "fas fa-chart-simple",
                   url: "/GeneralLedger/GeneralLedgerReports"
               ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)
         );
