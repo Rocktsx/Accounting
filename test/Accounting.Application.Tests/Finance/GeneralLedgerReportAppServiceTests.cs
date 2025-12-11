@@ -61,5 +61,25 @@ namespace Accounting.Finance
             result.Count(item => item.SortOrder == AccountingCommonConsts.CurrentYearBfOrder).ShouldBe(2); ;
             result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.CurrentPeriodOrder);
         }
+        [Fact]
+        public async Task Can_Get_Multiple_Currency_Group_List()
+        {
+            // arrange    
+            var input = new GeneralLedgerReportRequestDto
+            {
+                StartDate = new DateOnly(_testData.AccountingPeriodYear, 3, 10),
+                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31),
+                PeriodId = _testData.AccountingPeriodYearId,
+                SubjectId = _testData.SubjectArId
+            };
+            // act
+            var result = await _glAppService.GetMultipleCurrencyGroupListAsync(input);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.LastYearBfOrder);
+            result.Count(item => item.SortOrder == AccountingCommonConsts.CurrentYearBfOrder).ShouldBe(2); ;
+            result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.CurrentPeriodOrder);
+        }
     }
 }

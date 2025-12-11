@@ -133,6 +133,9 @@ public static class AccountingPermissions
         public const string UpdateStatus = Default + UpdateStatusDot;
     }
 
+    /// <summary>
+    /// 总账报表
+    /// </summary>
     public class GeneralLedgerReports
     {
         public const string Name = "GeneralLedgerReport";
@@ -145,6 +148,10 @@ public static class AccountingPermissions
         private const string MultipleCurrencyReportText = "MultipleCurrencyReport";
         internal const string MultipleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyReportText;
         public const string MultipleCurrencyReport = Default + Dot + MultipleCurrencyReportText;
+
+        private const string MultipleCurrencyGroupReportText = "MultipleCurrencyGroupReport";
+        internal const string MultipleCurrencyGroupReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyGroupReportText;
+        public const string MultipleCurrencyGroupReport = Default + Dot + MultipleCurrencyGroupReportText;
     }
 
     /// <summary>

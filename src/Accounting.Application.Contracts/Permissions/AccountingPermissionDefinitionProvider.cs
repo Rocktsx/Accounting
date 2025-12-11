@@ -55,6 +55,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group = context.AddGroup(GeneralLedgerReports.Default, L(PermissionPrefix + GeneralLedgerReports.Name));
         group.AddPermission(GeneralLedgerReports.SingleCurrencyReport, L(GeneralLedgerReports.SingleCurrencyReportDisplayName));
         group.AddPermission(GeneralLedgerReports.MultipleCurrencyReport, L(GeneralLedgerReports.MultipleCurrencyReportDisplayName));
+        group.AddPermission(GeneralLedgerReports.MultipleCurrencyGroupReport, L(GeneralLedgerReports.MultipleCurrencyGroupReportDisplayName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

@@ -13,6 +13,6 @@ namespace Accounting.Finance.Reports
 
         Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(
            DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
-           Guid? subjectId = null, CancellationToken cancellationToken = default);
+           Guid? subjectId = null, bool isGroup = false, CancellationToken cancellationToken = default);
     }
 }

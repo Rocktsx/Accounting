@@ -102,7 +102,7 @@ namespace Accounting.Finance
         }
         public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(
             DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
-            Guid? subjectId = null, CancellationToken cancellationToken = default)
+            Guid? subjectId = null, bool isGroup = false, CancellationToken cancellationToken = default)
         {
             var lastYearBfQuery = _voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
                                             .SelectMany(item => item.Details)
@@ -134,7 +134,7 @@ namespace Accounting.Finance
 
             var currentYearBfQuery = _voucherQueryable.Where(item => item.VoucherDate >= periodStartDate && item.VoucherDate < startDate)
                                             .SelectMany(item => item.Details)
-                                            .WhereIf(subjectId != null, item => item.SubjectId == subjectId)  
+                                            .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .GroupBy(item => new
                                             {
                                                 item.SubjectId,
@@ -178,8 +178,13 @@ namespace Accounting.Finance
             var finalQuery = lastYearBfQuery
                                 .Concat(currentYearBfQuery)
                                 .Concat(currentQuery)
-                                .OrderBy(item => item.SubjectCode)
-                                .ThenBy(item => item.SortOrder)
+                                .OrderBy(item => item.SubjectCode);
+            if (isGroup)
+            {
+                finalQuery = finalQuery.ThenBy(item => item.CurrencyCode);
+            }
+
+            finalQuery = finalQuery.ThenBy(item => item.SortOrder)
                                 .ThenBy(item => item.VoucherDate)
                                 .ThenBy(item => item.VoucherCode);
 

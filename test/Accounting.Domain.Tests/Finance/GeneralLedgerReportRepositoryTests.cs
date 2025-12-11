@@ -50,7 +50,7 @@ namespace Accounting.Finance
 
             // act
             var result = await _repository.GetGLMultipleCurrencyListAsync(
-                startDate, endDate, periodStartDate, periodEndDate);
+                startDate, endDate, periodStartDate, periodEndDate, isGroup: true);
 
             // assert
             result.ShouldNotBeNull();

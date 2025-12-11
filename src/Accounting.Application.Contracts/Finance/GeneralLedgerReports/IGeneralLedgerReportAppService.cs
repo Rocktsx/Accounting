@@ -13,5 +13,8 @@ namespace Accounting.Finance.GeneralLedgerReports
 
         Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResultDto>>
             GetMultipleCurrencyListAsync(GeneralLedgerReportRequestDto input);
+
+        Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResultDto>>
+           GetMultipleCurrencyGroupListAsync(GeneralLedgerReportRequestDto input);
     }
 }

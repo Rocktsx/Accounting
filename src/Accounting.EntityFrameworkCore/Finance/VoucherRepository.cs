@@ -376,15 +376,21 @@ namespace Accounting.Finance
             return queryable.Where(new NoVoidVoucherSpecification().ToExpression());
         }
 
-        public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetGLSingleCurrencyListAsync(DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate, Guid? subjectId = null, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetGLSingleCurrencyListAsync(
+            DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate, 
+            Guid? subjectId = null, CancellationToken cancellationToken = default)
         {
             var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
-            return await reposity.GetGLSingleCurrencyListAsync(startDate,endDate,periodStartDate,periodEndDate,subjectId,cancellationToken);
+            return await reposity.GetGLSingleCurrencyListAsync(startDate, endDate, 
+                periodStartDate, periodEndDate, subjectId, cancellationToken);
         }
-        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate, Guid? subjectId = null, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(
+            DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
+            Guid? subjectId = null, bool isGroup = false, CancellationToken cancellationToken = default)
         {
             var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
-            return await reposity.GetGLMultipleCurrencyListAsync(startDate, endDate, periodStartDate, periodEndDate, subjectId, cancellationToken);
+            return await reposity.GetGLMultipleCurrencyListAsync(startDate, endDate, 
+                periodStartDate, periodEndDate, subjectId, isGroup, cancellationToken);
         }
     }
 }

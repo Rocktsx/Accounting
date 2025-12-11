@@ -56,5 +56,16 @@ namespace Accounting.Finance.GeneralLedgerReports
             var endDate = input.EndDate ?? period.EndDate;
             return (period, startDate, endDate);
         }
+
+        [Authorize(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport)]
+        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResultDto>>
+            GetMultipleCurrencyGroupListAsync(GeneralLedgerReportRequestDto input)
+        {
+            (AccountingPeriod period, DateOnly startDate, DateOnly endDate) = await HandleRequestDto(input);
+
+            var result = await _glRepository.GetGLMultipleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId, true);
+
+            return ObjectMapper.Map<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>, List<GeneralLedgerMultipleCurrencyReportResultDto>>([.. result]);
+        }
     }
 }
