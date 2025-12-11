@@ -195,7 +195,7 @@ namespace Accounting.Web.Pages
                     }
                 );
 
-                options.Configure<GeneralLedger.GeneralLedgerReports.IndexModel>(
+                options.Configure<GeneralLedger.GeneralLedgers.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(
@@ -206,7 +206,7 @@ namespace Accounting.Web.Pages
                         );
                     }
                 );
-                options.Configure<GeneralLedger.GeneralLedgerReports.MultipleCurrencyReportModel>(
+                options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyReportModel>(
                     toolbar =>
                     {
                         toolbar.AddButton(

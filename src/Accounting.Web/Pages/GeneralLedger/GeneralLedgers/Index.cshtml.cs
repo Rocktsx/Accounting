@@ -6,7 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgerReports
+namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgers
 {
     public class IndexModel : PageModel
     {
