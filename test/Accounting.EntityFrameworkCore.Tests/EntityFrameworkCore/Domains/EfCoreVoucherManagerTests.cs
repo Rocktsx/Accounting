@@ -1,9 +1,4 @@
-﻿using Accounting.Finance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Accounting.Finance; 
 using Xunit;
 
 namespace Accounting.EntityFrameworkCore.Domains
