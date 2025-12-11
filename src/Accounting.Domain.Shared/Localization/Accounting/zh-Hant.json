@@ -313,6 +313,7 @@
     "PeriodMovement": "本期結餘",
     "Permission:GeneralLedgerReport.MultipleCurrencyReport": "總賬(多貨幣)",
     "Menu:GeneralLedgerReport.MultipleCurrencyReport": "總賬(多貨幣)",
-    "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "總賬(多貨幣分組)"
+    "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "總賬(多貨幣分組)",
+    "Menu:GeneralLedgerReport.MultipleCurrencyGroupReport": "總賬(多貨幣分組)"
   }
 }

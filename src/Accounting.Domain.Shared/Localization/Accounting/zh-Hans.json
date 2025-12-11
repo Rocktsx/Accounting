@@ -313,6 +313,7 @@
     "PeriodMovement": "本期结余",
     "Permission:GeneralLedgerReport.MultipleCurrencyReport": "总账(多货币)",
     "Menu:GeneralLedgerReport.MultipleCurrencyReport": "总账(多货币)",
-    "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "总账(多货币分组)"
+    "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "总账(多货币分组)",
+    "Menu:GeneralLedgerReport.MultipleCurrencyGroupReport": "总账(多货币分组)"
   }
 }

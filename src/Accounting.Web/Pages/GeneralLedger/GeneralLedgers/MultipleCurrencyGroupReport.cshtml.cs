@@ -1,20 +1,20 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgers
 {
-    public class IndexModel : PageModel
+    public class MultipleCurrencyGroupReportModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;
         public CurrentAccountingPeriodDto CurrentPeriod;
         public IEnumerable<AccountingPeriodDto> Periods { get; set; }
         public Guid? PeriodId { get; set; }
-        public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
+        public MultipleCurrencyGroupReportModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
         }

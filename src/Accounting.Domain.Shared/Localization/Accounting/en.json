@@ -279,6 +279,7 @@
     "PeriodMovement": "Period Movement",
     "Permission:GeneralLedgerReport.MultipleCurrencyReport": "General Ledger(Multiple Currency)",
     "Menu:GeneralLedgerReport.MultipleCurrencyReport": "General Ledger(Multiple Currency)",
-    "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "General Ledger(Multiple Currency Group)"
+    "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "General Ledger(Multiple Currency Group)",
+    "Menu:GeneralLedgerReport.MultipleCurrencyGroupReport": "General Ledger(Multiple Currency Group)"
   }
 }

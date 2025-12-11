@@ -177,6 +177,15 @@ public class AccountingMenuContributor : IMenuContributor
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport)
        );
 
+        generalLedgerReports.AddItem(
+             new ApplicationMenuItem(
+                 AccountingMenus.GeneralLedgerMultipleCurrencyGroupReport,
+                 l[AccountingMenus.DisplayNames.GeneralLedgerMultipleCurrencyGroupReport],
+                 icon: "fas fa-chart-simple",
+                 url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyGroupReport"
+             ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport)
+       );
+
         if (generalLedgerReports.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(generalLedgerReports);

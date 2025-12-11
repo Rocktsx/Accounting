@@ -24,6 +24,7 @@ public class AccountingMenus
     private const string GeneralLedgerReportText = "GeneralLedgerReport";
     private const string SingleCurrencyReportText = "SingleCurrencyReport";
     private const string MultipleCurrencyReportText = "MultipleCurrencyReport";
+    private const string MultipleCurrencyGroupReportText = "MultipleCurrencyGroupReport";
 
     private const string ReceivableText = "Receivable";
     private const string ReceivableVoucherText = "ReceivableVoucher";
@@ -47,6 +48,7 @@ public class AccountingMenus
     public const string GeneralLedgerReport = GeneralLedger + Dot + GeneralLedgerReportText;
     public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
     public const string GeneralLedgerMultipleCurrencyReport = GeneralLedgerReport + Dot + MultipleCurrencyReportText;
+    public const string GeneralLedgerMultipleCurrencyGroupReport = GeneralLedgerReport + Dot + MultipleCurrencyGroupReportText;
 
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
@@ -72,6 +74,7 @@ public class AccountingMenus
         public const string GeneralLedgerReport = DisplayNamePrefix + GeneralLedgerReportText;
         public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
         public const string GeneralLedgerMultipleCurrencyReport = GeneralLedgerReport + Dot + MultipleCurrencyReportText;
+        public const string GeneralLedgerMultipleCurrencyGroupReport = GeneralLedgerReport + Dot + MultipleCurrencyGroupReportText;
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;
         public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;
