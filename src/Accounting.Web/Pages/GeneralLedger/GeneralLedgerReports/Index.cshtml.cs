@@ -5,8 +5,6 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Accounting.Web;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgerReports
 {
@@ -14,7 +12,7 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgerReports
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;
         public CurrentAccountingPeriodDto CurrentPeriod;
-        public IEnumerable<SelectListItem> Periods { get; set; }
+        public IEnumerable<AccountingPeriodDto> Periods { get; set; }
         public Guid? PeriodId { get; set; }
         public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
@@ -25,10 +23,7 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgerReports
             CurrentPeriod = await _accountingPeriodAppService.GetCurrentPeriodAsync();
             var dtos = await _accountingPeriodAppService.GetListAsync(new Dtos.FilteredPagedAndSortedResultRequestDto { });
             var items = dtos.Items.OrderByDescending(item => item.StartDate);
-          
-            Periods = items.ToSelectListItems(
-                 item => item.Id.ToString(),
-                 item => item.Code, false);
+            Periods = items;
 
             if (items.Count() > 0)
             {

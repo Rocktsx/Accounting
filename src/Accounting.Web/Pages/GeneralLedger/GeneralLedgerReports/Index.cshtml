@@ -39,7 +39,12 @@
                 <abp-column class="row">
                     <label for="periodId" class="form-label col-sm-4 text-end">@L["AccountingPeriod"].Value</label>
                     <div class="col-sm-8">
-                        <select asp-items="@Model.Periods" value="@Model.PeriodId" type="text" class="form-control" id="periodId" name="periodId" ></select>
+                        <select value="@Model.PeriodId" type="text" class="form-control" id="periodId" name="periodId">
+                            @foreach (var item in Model.Periods)
+                            {
+                                <option value="@item.Id" data-start-date="@item.StartDate" data-end-date="@item.EndDate">@item.Code</option>
+                            }
+                        </select>
                     </div>
                 </abp-column>
                 <abp-column class="row">
@@ -57,7 +62,7 @@
         </form>
     </abp-card-header>
     <abp-card-body>
-       <div id="app">
+        <div id="app">
         </div>
     </abp-card-body>
 </abp-card>

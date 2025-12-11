@@ -44,6 +44,7 @@
             periodId: $('#periodId').val(),
         }
     }
+    const currentPeriodSortOrder = 3;
     function handleData(items) {
         const groups = [];
         items.reduce((prev, current) => {
@@ -58,6 +59,7 @@
                     debitor: 0,
                     creditor: 0,
                     currentPeriodBalance: 0,
+                    currentPeriodVouchers: 0,
                 }
                 prev[code] = group;
                 groups.push(group);
@@ -70,8 +72,9 @@
                 group.creditor += Math.abs(current.nativeAmount);
             }
 
-            if (current.sortOrder == 3) {
+            if (current.sortOrder == currentPeriodSortOrder) {
                 group.currentPeriodBalance += current.nativeAmount;
+                group.currentPeriodVouchers += 1;
             }
 
             group.balance += current.nativeAmount;
@@ -114,6 +117,8 @@
 
     $(document).on('click', '#searchBtn', function () {
         const params = getFormParams();
+        store.commit('setParams', params);
+        store.commit('setItems', { items: [] });
         const busyEle = '.body';
         abp.ui.setBusy(busyEle);
         accounting.finance.generalLedgerReports.generalLedgerReport.getSingleCurrencyList(params).then(function (result) {
@@ -123,6 +128,15 @@
             abp.ui.clearBusy(busyEle);
         });
     });
+    $(document).on('change', '#periodId', function (e) { 
+        const $this = $(this); 
+        const $option = $this.find('option:selected');
+        const startDate = $option.attr('data-start-date');
+        const endDate = $option.attr('data-end-date');
+        $('#startDate').val(startDate);
+        $('#endDate').val(endDate);
+    });
+
     function formatDate(value) {
         let format = abp.localization.currentCulture.dateTimeFormat.shortDatePattern;
         format = format.replaceAll('d', 'D');
@@ -186,16 +200,16 @@
                         <td class="text-end">{{ subItem.nativeAmount > 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                         <td class="text-end">{{ subItem.nativeAmount < 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                         <td class="text-end">{{ Math.abs(subItem.balance) }}</td>
-                        <td>{{ subItem.balance > 0 ? 'DR': 'CR' }}</td>
+                        <td>{{ subItem.balance >= 0 ? 'DR': 'CR' }}</td>
                     </tr>
                     <tr :key="item.code + 'total'" class="border-top fw-bold">
                         <td class="text-end">{{ l('CurrentVouchers') }}</td>
-                        <td>{{ item.items.filter(obj =>obj.sortOrder == 3).length  }}</td>
+                        <td>{{ item.currentPeriodVouchers  }}</td>
                         <td class="text-end">{{ '合計' }}</td>
                         <td class="text-end">{{ renderAmount(item.debitor) }}</td>
                         <td class="text-end">{{ renderAmount(item.creditor) }}</td>
                         <td class="text-end">{{ renderAmount(Math.abs(item.balance)) }}</td>
-                        <td>{{ item.balance > 0 ? 'DR': 'CR' }}</td>
+                        <td>{{ item.balance >= 0 ? 'DR': 'CR' }}</td>
                     </tr>
                     <tr :key="item.code + 'balance'" class="fw-bold">
                         <td colspan="3" class="text-end">{{ l('PeriodMovement') }}</td>
