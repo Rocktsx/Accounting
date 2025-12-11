@@ -276,6 +276,7 @@
     "SubjectCode": "Subject Code",
     "SubjectName": "Subject Name",
     "CurrentVouchers": "Current Vouchers",
-    "PeriodMovement": "Period Movement"
+    "PeriodMovement": "Period Movement",
+    "Permission:GeneralLedgerReport.MultipleCurrencyReport": "General Ledger(Multiple Currency)"
   }
 }
