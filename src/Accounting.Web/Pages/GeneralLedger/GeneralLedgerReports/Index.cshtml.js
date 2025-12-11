@@ -199,13 +199,13 @@
                         <td>{{ subItem.description }}<div v-if="subItem.docNo">{{ subItem.docNo }}</div></td>
                         <td class="text-end">{{ subItem.nativeAmount > 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                         <td class="text-end">{{ subItem.nativeAmount < 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
-                        <td class="text-end">{{ Math.abs(subItem.balance) }}</td>
+                        <td class="text-end">{{ renderAmount(Math.abs(subItem.balance)) }}</td>
                         <td>{{ subItem.balance >= 0 ? 'DR': 'CR' }}</td>
                     </tr>
                     <tr :key="item.code + 'total'" class="border-top fw-bold">
                         <td class="text-end">{{ l('CurrentVouchers') }}</td>
                         <td>{{ item.currentPeriodVouchers  }}</td>
-                        <td class="text-end">{{ '合計' }}</td>
+                        <td class="text-end">{{ l('Total') }}</td>
                         <td class="text-end">{{ renderAmount(item.debitor) }}</td>
                         <td class="text-end">{{ renderAmount(item.creditor) }}</td>
                         <td class="text-end">{{ renderAmount(Math.abs(item.balance)) }}</td>
