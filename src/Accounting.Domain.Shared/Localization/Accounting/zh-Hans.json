@@ -311,6 +311,7 @@
     "SubjectName": "科目名称",
     "CurrentVouchers": "本期交易数",
     "PeriodMovement": "本期结余",
-    "Permission:GeneralLedgerReport.MultipleCurrencyReport": "总账(多货币)"
+    "Permission:GeneralLedgerReport.MultipleCurrencyReport": "总账(多货币)",
+    "Menu:GeneralLedgerReport.MultipleCurrencyReport": "总账(多货币)"
   }
 }

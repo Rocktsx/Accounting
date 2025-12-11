@@ -206,6 +206,17 @@ namespace Accounting.Web.Pages
                         );
                     }
                 );
+                options.Configure<GeneralLedger.GeneralLedgerReports.MultipleCurrencyReportModel>(
+                    toolbar =>
+                    {
+                        toolbar.AddButton(
+                            L("Search"),
+                            icon: "magnifying-glass",
+                            id: "searchBtn",
+                            requiredPolicyName: AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport
+                        );
+                    }
+                );
             });
         }
         private static LocalizableString L(string name)
