@@ -31,8 +31,7 @@ namespace Accounting.Finance
 
             // act
             var result = await _repository.GetGLSingleCurrencyListAsync(
-                startDate, endDate,
-                periodStartDate, periodEndDate);
+                startDate, endDate, periodStartDate, periodEndDate);
 
             // assert
             result.ShouldNotBeNull();
@@ -51,8 +50,7 @@ namespace Accounting.Finance
 
             // act
             var result = await _repository.GetGLMultipleCurrencyListAsync(
-                startDate, endDate,
-                periodStartDate, periodEndDate);
+                startDate, endDate, periodStartDate, periodEndDate);
 
             // assert
             result.ShouldNotBeNull();
