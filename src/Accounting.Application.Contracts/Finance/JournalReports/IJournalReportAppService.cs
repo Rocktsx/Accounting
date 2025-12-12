@@ -9,9 +9,13 @@ namespace Accounting.Finance.JournalReports
     /// </summary>
     public interface IJournalReportAppService
     {
-        Task<IEnumerable<VoucherDto>> GetSingleCurrencySortByCodeListAsync(JournalReportRequestDto input);
-        Task<IEnumerable<VoucherDto>> GetSingleCurrencySortByDateListAsync(JournalReportRequestDto input);
-        Task<IEnumerable<VoucherDto>> GetMultipleCurrencySortByCodeListAsync(JournalReportRequestDto input);
-        Task<IEnumerable<VoucherDto>> GetMultipleCurrencySortByDateListAsync(JournalReportRequestDto input);
+        Task<IEnumerable<JournalSingleCurrencyReportResultDto>> GetSingleCurrencySortByCodeListAsync(
+            JournalReportRequestDto input);
+        Task<IEnumerable<JournalSingleCurrencyReportResultDto>> GetSingleCurrencySortByDateListAsync(
+            JournalReportRequestDto input);
+        Task<IEnumerable<JournalMultipleCurrencyReportResultDto>> GetMultipleCurrencySortByCodeListAsync(
+            JournalReportRequestDto input);
+        Task<IEnumerable<JournalMultipleCurrencyReportResultDto>> GetMultipleCurrencySortByDateListAsync(
+            JournalReportRequestDto input);
     }
 }

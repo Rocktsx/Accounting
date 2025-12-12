@@ -19,13 +19,13 @@ using Accounting.Finance.Reports;
 namespace Accounting.Finance
 {
     public class VoucherRepository : EfCoreRepository<AccountingDbContext, Voucher, Guid>, IVoucherRepository,
-        IGeneralLedgerReportRepository
+        IGeneralLedgerReportRepository, IJournalReportRepository
     {
         public VoucherRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
 
-        public async Task<long> GetCountAsync(VoucherFilterRequest request = null, Guid? subjectId = null, 
+        public async Task<long> GetCountAsync(VoucherFilterRequest request = null, Guid? subjectId = null,
             CancellationToken cancellationToken = default)
         {
             return await (await GetQueryableAsync(request))
@@ -33,7 +33,7 @@ namespace Accounting.Finance
                 .LongCountAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Voucher>> GetPagedListAsync(VoucherFilterRequest request = null, string sorting = null, 
+        public async Task<IEnumerable<Voucher>> GetPagedListAsync(VoucherFilterRequest request = null, string sorting = null,
             int maxResultCount = int.MaxValue, int skipCount = 0, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
             return await (await GetQueryableAsync(request, includeDetails))
@@ -41,7 +41,7 @@ namespace Accounting.Finance
              .Skip(skipCount).Take(maxResultCount)
              .ToListAsync(cancellationToken);
         }
-        public override async Task<Voucher> GetAsync(Guid id, bool includeDetails = true, 
+        public override async Task<Voucher> GetAsync(Guid id, bool includeDetails = true,
             CancellationToken cancellationToken = default)
         {
             var queryable = (await GetDbSetAsync()).AsQueryable();
@@ -384,11 +384,11 @@ namespace Accounting.Finance
         }
 
         public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetGLSingleCurrencyListAsync(
-            DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate, 
+            DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
             Guid? subjectId = null, CancellationToken cancellationToken = default)
         {
             var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
-            return await reposity.GetGLSingleCurrencyListAsync(startDate, endDate, 
+            return await reposity.GetGLSingleCurrencyListAsync(startDate, endDate,
                 periodStartDate, periodEndDate, subjectId, cancellationToken);
         }
         public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(
@@ -396,8 +396,22 @@ namespace Accounting.Finance
             Guid? subjectId = null, bool isGroup = false, CancellationToken cancellationToken = default)
         {
             var reposity = new GeneralLedgerReportRepository(await GetQueryableWithDetailsAsync());
-            return await reposity.GetGLMultipleCurrencyListAsync(startDate, endDate, 
+            return await reposity.GetGLMultipleCurrencyListAsync(startDate, endDate,
                 periodStartDate, periodEndDate, subjectId, isGroup, cancellationToken);
+        }
+
+        public async Task<IEnumerable<JournalReportSingleCurrencyResult>> GetJLSingleCurrencyListAsync(JournalReportRequest request, string? sorting = null, CancellationToken cancellationToken = default)
+        {
+            var reposity = new JournalReportRepository(await GetQueryableWithDetailsAsync());
+
+            return await reposity.GetJLSingleCurrencyListAsync(request, sorting, cancellationToken);
+        }
+
+        public async Task<IEnumerable<JournalReportMultipleCurrencyResult>> GetJLMultipleCurrencyListAsync(JournalReportRequest request, string? sorting = null, CancellationToken cancellationToken = default)
+        {
+            var reposity = new JournalReportRepository(await GetQueryableWithDetailsAsync());
+
+            return await reposity.GetJLMultipleCurrencyListAsync(request, sorting, cancellationToken);
         }
     }
 }

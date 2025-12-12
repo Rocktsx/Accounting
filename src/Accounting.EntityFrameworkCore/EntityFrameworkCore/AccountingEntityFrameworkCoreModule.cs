@@ -44,6 +44,7 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
         context.Services.AddAbpDbContext<AccountingDbContext>(options =>
         {
             options.Services.AddScoped<IGeneralLedgerReportRepository, VoucherRepository>();
+            options.Services.AddScoped<IJournalReportRepository, VoucherRepository>();
         });
 
         if (AbpStudioAnalyzeHelper.IsInAnalyzeMode)

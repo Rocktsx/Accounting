@@ -4,8 +4,8 @@ using Xunit;
 namespace Accounting.EntityFrameworkCore.Domains
 {
     [Collection(AccountingTestConsts.CollectionDefinitionName)]
-    public class EfCoreAccountingPeriodRepositoryTests : 
-        AccountingPeriodRepositoryTests<AccountingEntityFrameworkCoreTestModule>
+    public class EfCoreJournalReportRepositoryTests :
+        JournalReportRepositoryTests<AccountingEntityFrameworkCoreTestModule>
     {
     }
 }

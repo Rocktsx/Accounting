@@ -155,18 +155,26 @@ namespace Accounting
     }
 
     [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-    public partial class JournalReportRequestDtoToVoucherFilterRequest : MapperBase<JournalReportRequestDto, VoucherFilterRequest>
+    public partial class JournalReportRequestDtoToJournalReportRequest : MapperBase<JournalReportRequestDto, JournalReportRequest>
     {
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Codes))]
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Filter))]
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.DocNo))]
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Status))]
-        public override partial VoucherFilterRequest Map(JournalReportRequestDto source);
+        public override partial JournalReportRequest Map(JournalReportRequestDto source);
+         
+        public override partial void Map(JournalReportRequestDto source, JournalReportRequest destination);
+    }
 
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Codes))]
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Filter))]
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.DocNo))]
-        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Status))]
-        public override partial void Map(JournalReportRequestDto source, VoucherFilterRequest destination);
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class JournalReportSingleCurrencyResultToJournalSingleCurrencyReportResultDto : MapperBase<JournalReportSingleCurrencyResult, JournalSingleCurrencyReportResultDto>
+    {
+        public override partial JournalSingleCurrencyReportResultDto Map(JournalReportSingleCurrencyResult source);
+
+        public override partial void Map(JournalReportSingleCurrencyResult source, JournalSingleCurrencyReportResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class JournalReportMultipleCurrencyResultToJournalMultipleCurrencyReportResultDto : MapperBase<JournalReportMultipleCurrencyResult, JournalMultipleCurrencyReportResultDto>
+    {
+        public override partial JournalMultipleCurrencyReportResultDto Map(JournalReportMultipleCurrencyResult source);
+
+        public override partial void Map(JournalReportMultipleCurrencyResult source, JournalMultipleCurrencyReportResultDto destination);
     }
 }

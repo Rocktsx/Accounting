@@ -1,5 +1,6 @@
 ﻿using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.JournalReports;
+using Accounting.Finance.Reports;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
@@ -15,47 +16,53 @@ namespace Accounting.Finance.GeneralLedgerReports
     /// </summary>
     public class JournalReportAppService : AccountingAppService, IJournalReportAppService
     {
-        private readonly IVoucherRepository _repository;
+        private readonly IJournalReportRepository _repository;
 
-        public JournalReportAppService(IVoucherRepository repository)
+        public JournalReportAppService(IJournalReportRepository repository)
         {
             _repository = repository;
         }
 
         [Authorize(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport)]
-        public async Task<IEnumerable<VoucherDto>> GetMultipleCurrencySortByDateListAsync(JournalReportRequestDto input)
+        public async Task<IEnumerable<JournalMultipleCurrencyReportResultDto>> GetMultipleCurrencySortByDateListAsync(JournalReportRequestDto input)
         {
-            return await GetListAsync(input, nameof(Voucher.VoucherDate));
+            return await GetMultipleCurrencyListAsync(input, nameof(Voucher.VoucherDate));
         }
 
         [Authorize(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport)]
-        public async Task<IEnumerable<VoucherDto>> GetMultipleCurrencySortByCodeListAsync(JournalReportRequestDto input)
+        public async Task<IEnumerable<JournalMultipleCurrencyReportResultDto>> GetMultipleCurrencySortByCodeListAsync(JournalReportRequestDto input)
         {
-            return await GetListAsync(input, nameof(Voucher.Code));
+            return await GetMultipleCurrencyListAsync(input, nameof(Voucher.Code));
         }
 
         [Authorize(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport)]
-        public async Task<IEnumerable<VoucherDto>> GetSingleCurrencySortByDateListAsync(JournalReportRequestDto input)
+        public async Task<IEnumerable<JournalSingleCurrencyReportResultDto>> GetSingleCurrencySortByDateListAsync(JournalReportRequestDto input)
         {
-            return await GetListAsync(input, nameof(Voucher.VoucherDate));
+            return await GetSingleCurrencyListAsync(input, nameof(Voucher.VoucherDate));
         }
 
         [Authorize(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)]
-        public async Task<IEnumerable<VoucherDto>> GetSingleCurrencySortByCodeListAsync(JournalReportRequestDto input)
+        public async Task<IEnumerable<JournalSingleCurrencyReportResultDto>> GetSingleCurrencySortByCodeListAsync(JournalReportRequestDto input)
         {
-            return await GetListAsync(input, nameof(Voucher.Code));
+            return await GetSingleCurrencyListAsync(input, nameof(Voucher.Code));
         }
-        
-        private async Task<IEnumerable<VoucherDto>> GetListAsync(JournalReportRequestDto input, string sorting)
+        private async Task<IEnumerable<JournalMultipleCurrencyReportResultDto>> GetMultipleCurrencyListAsync(JournalReportRequestDto input, string sorting)
         {
             var filter = await HandleRequestDto(input);
-            var list = await _repository.GetPagedListAsync(filter, sorting: sorting, includeDetails: true);
+            var list = await _repository.GetJLMultipleCurrencyListAsync(filter, sorting: sorting);
 
-            return ObjectMapper.Map<IEnumerable<Voucher>, List<VoucherDto>>(list);
+            return ObjectMapper.Map<IEnumerable<JournalReportMultipleCurrencyResult>, IEnumerable<JournalMultipleCurrencyReportResultDto>>(list);
         }
-        private async Task<VoucherFilterRequest> HandleRequestDto(JournalReportRequestDto input)
+        private async Task<IEnumerable<JournalSingleCurrencyReportResultDto>> GetSingleCurrencyListAsync(JournalReportRequestDto input, string sorting)
         {
-            var filter = ObjectMapper.Map<JournalReportRequestDto, VoucherFilterRequest>(input);
+            var filter = await HandleRequestDto(input);
+            var list = await _repository.GetJLSingleCurrencyListAsync(filter, sorting: sorting);
+
+            return ObjectMapper.Map<IEnumerable<JournalReportSingleCurrencyResult>, IEnumerable<JournalSingleCurrencyReportResultDto>>(list);
+        }
+        private async Task<JournalReportRequest> HandleRequestDto(JournalReportRequestDto input)
+        {
+            var filter = ObjectMapper.Map<JournalReportRequestDto, JournalReportRequest>(input);
 
             if (input.StartDate == null || input.EndDate == null)
             {
