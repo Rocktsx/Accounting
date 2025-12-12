@@ -25,21 +25,24 @@ namespace Accounting.Finance
         {
         }
 
-        public async Task<long> GetCountAsync(VoucherFilterRequest request = null, Guid? subjectId = null, CancellationToken cancellationToken = default)
+        public async Task<long> GetCountAsync(VoucherFilterRequest request = null, Guid? subjectId = null, 
+            CancellationToken cancellationToken = default)
         {
             return await (await GetQueryableAsync(request))
                 .WhereIf(!subjectId.IsEmptyOrNull(), item => item.Details.Any(obj => obj.SubjectId == subjectId))
                 .LongCountAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Voucher>> GetPagedListAsync(VoucherFilterRequest request = null, string sorting = null, int maxResultCount = int.MaxValue, int skipCount = 0, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Voucher>> GetPagedListAsync(VoucherFilterRequest request = null, string sorting = null, 
+            int maxResultCount = int.MaxValue, int skipCount = 0, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
-            return await (await GetQueryableAsync(request))
+            return await (await GetQueryableAsync(request, includeDetails))
              .OrderBy(string.IsNullOrWhiteSpace(sorting) ? nameof(Voucher.Id) : sorting)
              .Skip(skipCount).Take(maxResultCount)
              .ToListAsync(cancellationToken);
         }
-        public override async Task<Voucher> GetAsync(Guid id, bool includeDetails = true, CancellationToken cancellationToken = default)
+        public override async Task<Voucher> GetAsync(Guid id, bool includeDetails = true, 
+            CancellationToken cancellationToken = default)
         {
             var queryable = (await GetDbSetAsync()).AsQueryable();
             if (includeDetails == true)
@@ -57,9 +60,13 @@ namespace Accounting.Finance
                .Select(item => item.GenNo)
                .FirstOrDefaultAsync(cancellationToken);
         }
-        private async Task<IQueryable<Voucher>> GetQueryableAsync(VoucherFilterRequest request)
+        private async Task<IQueryable<Voucher>> GetQueryableAsync(VoucherFilterRequest request, bool includeDetails = false)
         {
             var queryable = (await GetDbSetAsync()).AsQueryable();
+            if (includeDetails == true)
+            {
+                queryable = queryable.Include(item => item.Details);
+            }
             if (request == null)
             {
                 return queryable;

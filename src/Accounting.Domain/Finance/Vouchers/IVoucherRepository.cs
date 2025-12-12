@@ -13,6 +13,7 @@ namespace Accounting.Finance.Vouchers
           string sorting = null,
           int maxResultCount = int.MaxValue,
           int skipCount = 0,
+          bool includeDetails = false,
           CancellationToken cancellationToken = default);
         Task<long> GetCountAsync(
             VoucherFilterRequest request = null,

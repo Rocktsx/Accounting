@@ -38,10 +38,11 @@ namespace Accounting.Finance
             };
 
             // act
-            var result = await _voucherPepository.GetPagedListAsync(request);
+            var result = await _voucherPepository.GetPagedListAsync(request, includeDetails: true);
 
             result.ShouldNotBeNull();
             result.Count().ShouldBe(1);
+            result.First().Details.Count().ShouldBe(2);
         }
         [Fact]
         public async Task Can_Get_Count()

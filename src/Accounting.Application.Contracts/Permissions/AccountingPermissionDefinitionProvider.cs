@@ -56,6 +56,12 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group.AddPermission(GeneralLedgerReports.SingleCurrencyReport, L(GeneralLedgerReports.SingleCurrencyReportDisplayName));
         group.AddPermission(GeneralLedgerReports.MultipleCurrencyReport, L(GeneralLedgerReports.MultipleCurrencyReportDisplayName));
         group.AddPermission(GeneralLedgerReports.MultipleCurrencyGroupReport, L(GeneralLedgerReports.MultipleCurrencyGroupReportDisplayName));
+
+        group = context.AddGroup(JournalReports.Default, L(PermissionPrefix + JournalReports.Name));
+        group.AddPermission(JournalReports.SingleCurrencySortByCodeReport, L(JournalReports.SingleCurrencySortByCodeReport));
+        group.AddPermission(JournalReports.SingleCurrencySortByDateReport, L(JournalReports.SingleCurrencySortByDateReportDisplayName));
+        group.AddPermission(JournalReports.MultipleCurrencySortByCodeReport, L(JournalReports.MultipleCurrencySortByCodeReportDisplayName));
+        group.AddPermission(JournalReports.MultipleCurrencySortByDateReport, L(JournalReports.MultipleCurrencySortByDateReportDisplayName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

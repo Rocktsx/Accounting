@@ -72,7 +72,7 @@ public static class AccountingPermissions
     }
 
     /// <summary>
-    /// 总账类别
+    /// 总帐类别
     /// </summary>
     public class GeneralAccounts
     {
@@ -110,7 +110,7 @@ public static class AccountingPermissions
     public const string AccountingSetting = GroupName + ".AccountingSetting";
 
     /// <summary>
-    /// 转账传票
+    /// 转帐传票
     /// </summary>
     public class TransferVouchers
     {
@@ -134,7 +134,7 @@ public static class AccountingPermissions
     }
 
     /// <summary>
-    /// 总账报表
+    /// 总帐报表
     /// </summary>
     public class GeneralLedgerReports
     {
@@ -154,8 +154,35 @@ public static class AccountingPermissions
         public const string MultipleCurrencyGroupReport = Default + Dot + MultipleCurrencyGroupReportText;
     }
 
+
     /// <summary>
-    /// 应收账组
+    /// 日志帐报表
+    /// </summary>
+    public class JournalReports
+    {
+        public const string Name = "JournalReport";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+
+        private const string SingleCurrencySortByCodeReportText = "SingleCurrencySortByCodeReport";
+        internal const string SingleCurrencySortByCodeReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencySortByCodeReportText;
+        public const string SingleCurrencySortByCodeReport = Default + Dot + SingleCurrencySortByCodeReportText;
+
+        private const string SingleCurrencySortByDateReportText = "SingleCurrencySortByDateReport";
+        internal const string SingleCurrencySortByDateReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencySortByDateReportText;
+        public const string SingleCurrencySortByDateReport = Default + Dot + SingleCurrencySortByDateReportText;
+
+        private const string MultipleCurrencySortByCodeReportText = "MultipleCurrencySortByCodeReport";
+        internal const string MultipleCurrencySortByCodeReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencySortByCodeReportText;
+        public const string MultipleCurrencySortByCodeReport = Default + Dot + MultipleCurrencySortByCodeReportText;
+
+        private const string MultipleCurrencySortByDateReportText = "MultipleCurrencySortByDateReport";
+        internal const string MultipleCurrencySortByDateReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencySortByDateReportText;
+        public const string MultipleCurrencySortByDateReport = Default + Dot + MultipleCurrencySortByDateReportText;
+         
+    }
+
+    /// <summary>
+    /// 应收帐组
     /// </summary>
     public const string ReceivableGroup = GroupName + Dot + "Receivable";
 
@@ -173,7 +200,7 @@ public static class AccountingPermissions
     }
 
     /// <summary>
-    /// 应付账组
+    /// 应付帐组
     /// </summary>
     public const string PayableGroup = GroupName + Dot + "Payable";
 

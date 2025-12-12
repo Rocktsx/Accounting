@@ -3,6 +3,7 @@ using Accounting.BasicData.Currencies;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
 using Accounting.Finance.GeneralLedgerReports;
+using Accounting.Finance.JournalReports;
 using Accounting.Finance.PayableVouchers;
 using Accounting.Finance.ReceivableVouchers;
 using Accounting.Finance.Reports;
@@ -151,5 +152,21 @@ namespace Accounting
     {
         public override partial GeneralLedgerMultipleCurrencyReportResultDto Map(GeneralLedgerMultipleCurrencyReportResult source);
         public override partial void Map(GeneralLedgerMultipleCurrencyReportResult source, GeneralLedgerMultipleCurrencyReportResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class JournalReportRequestDtoToVoucherFilterRequest : MapperBase<JournalReportRequestDto, VoucherFilterRequest>
+    {
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Codes))]
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Filter))]
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.DocNo))]
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Status))]
+        public override partial VoucherFilterRequest Map(JournalReportRequestDto source);
+
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Codes))]
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Filter))]
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.DocNo))]
+        [MapperIgnoreTarget(nameof(VoucherFilterRequest.Status))]
+        public override partial void Map(JournalReportRequestDto source, VoucherFilterRequest destination);
     }
 }

@@ -280,6 +280,11 @@
     "Permission:GeneralLedgerReport.MultipleCurrencyReport": "General Ledger(Multiple Currency)",
     "Menu:GeneralLedgerReport.MultipleCurrencyReport": "General Ledger(Multiple Currency)",
     "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "General Ledger(Multiple Currency Group)",
-    "Menu:GeneralLedgerReport.MultipleCurrencyGroupReport": "General Ledger(Multiple Currency Group)"
+    "Permission:JournalReport": "Journal",
+    "Permission:JournalReport.SingleCurrencySortByCodeReport": "Journal(Single Currency, Sort by Voucher Code)",
+    "Permission:JournalReport.SingleCurrencySortByDateReport": "Journal(Single Currency, Sort by Voucher Date)",
+    "Permission:JournalReport.MultipleCurrencySortByCodeReport": "Journal(Multiple Currency, Sort by Voucher Code)",
+    "Permission:JournalReport.MultipleCurrencySortByDateReport": "Journal(Multiple Currency, Sort by Voucher Date)",
+    "JournalReport": "Journal"
   }
 }
