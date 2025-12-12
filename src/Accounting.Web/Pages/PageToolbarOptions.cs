@@ -170,7 +170,7 @@ namespace Accounting.Web.Pages
                 options.Configure<Payable.PayableVouchers.IndexModel>(
                     toolbar =>
                     {
-                        toolbar.AddSearchButton(AccountingPermissions.PayableVouchers.Default); 
+                        toolbar.AddSearchButton(AccountingPermissions.PayableVouchers.Default);
                         toolbar.AddButton(
                           L("NewPayableVoucher"),
                           icon: "plus",
@@ -208,11 +208,25 @@ namespace Accounting.Web.Pages
                );
 
                 options.Configure<GeneralLedger.Journals.SingleCurrencySortByDateReport>(
-                 toolbar =>
-                 {
-                     toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport);
-                 }
-             );
+                     toolbar =>
+                     {
+                         toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport);
+                     }
+                );
+
+                options.Configure<GeneralLedger.Journals.MultipleCurrencySortByCodeReportModel>(
+                    toolbar =>
+                    {
+                        toolbar.AddSearchButton(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport);
+                    }
+                );
+
+                options.Configure<GeneralLedger.Journals.MultipleCurrencySortByDateReportModel>(
+                   toolbar =>
+                   {
+                       toolbar.AddSearchButton(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport);
+                   }
+               );
 
             });
         }

@@ -175,7 +175,7 @@ public class AccountingMenuContributor : IMenuContributor
                  icon: "fas fa-chart-column",
                  url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyReport"
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport)
-       );
+        );
 
         generalLedgerReports.AddItem(
              new ApplicationMenuItem(
@@ -184,7 +184,7 @@ public class AccountingMenuContributor : IMenuContributor
                  icon: "fas fa-chart-diagram",
                  url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyGroupReport"
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport)
-       );
+        );
 
         if (generalLedgerReports.Items.Count > 0)
         {
@@ -195,7 +195,7 @@ public class AccountingMenuContributor : IMenuContributor
           AccountingMenus.JournalReport,
           l[AccountingMenus.DisplayNames.JournalReport],
           icon: "fas fa-chart-gantt"
-       );
+        );
         journalReportMenu.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.JournalSingleCurrencySortByCodeReport,
@@ -208,10 +208,28 @@ public class AccountingMenuContributor : IMenuContributor
              new ApplicationMenuItem(
                  AccountingMenus.JournalSingleCurrencySortByDateReport,
                  l[AccountingMenus.DisplayNames.JournalSingleCurrencySortByDateReport],
-                 icon: "fas fa-chart-line",
+                 icon: "fas fa-align-right",
                  url: "/GeneralLedger/Journals/SingleCurrencySortByDateReport"
              ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport)
-       );
+        );
+
+        journalReportMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.JournalMultipleCurrencySortByCodeReport,
+                l[AccountingMenus.DisplayNames.JournalMultipleCurrencySortByCodeReport],
+                icon: "fas fa-align-center",
+                url: "/GeneralLedger/Journals/MultipleCurrencySortByCodeReport"
+            ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport)
+        );
+
+        journalReportMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.JournalMultipleCurrencySortByDateReport,
+                l[AccountingMenus.DisplayNames.JournalMultipleCurrencySortByDateReport],
+                icon: "fas fa-bars", 
+                url: "/GeneralLedger/Journals/MultipleCurrencySortByDateReport"
+            ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport)
+        );
 
         if (journalReportMenu.Items.Count > 0)
         {
