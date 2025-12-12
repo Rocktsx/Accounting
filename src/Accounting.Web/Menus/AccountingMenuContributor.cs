@@ -203,7 +203,15 @@ public class AccountingMenuContributor : IMenuContributor
                   icon: "fas fa-chart-line",
                   url: "/GeneralLedger/Journals"
               ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)
-        ); 
+        );
+        journalReportMenu.AddItem(
+             new ApplicationMenuItem(
+                 AccountingMenus.JournalSingleCurrencySortByDateReport,
+                 l[AccountingMenus.DisplayNames.JournalSingleCurrencySortByDateReport],
+                 icon: "fas fa-chart-line",
+                 url: "/GeneralLedger/Journals/SingleCurrencySortByDateReport"
+             ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport)
+       );
 
         if (journalReportMenu.Items.Count > 0)
         {

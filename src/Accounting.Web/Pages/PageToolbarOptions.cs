@@ -207,6 +207,13 @@ namespace Accounting.Web.Pages
                    }
                );
 
+                options.Configure<GeneralLedger.Journals.SingleCurrencySortByDateReport>(
+                 toolbar =>
+                 {
+                     toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport);
+                 }
+             );
+
             });
         }
 
