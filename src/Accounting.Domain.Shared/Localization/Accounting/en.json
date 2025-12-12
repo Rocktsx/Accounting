@@ -285,6 +285,12 @@
     "Permission:JournalReport.SingleCurrencySortByDateReport": "Journal(Single Currency, Sort by Voucher Date)",
     "Permission:JournalReport.MultipleCurrencySortByCodeReport": "Journal(Multiple Currency, Sort by Voucher Code)",
     "Permission:JournalReport.MultipleCurrencySortByDateReport": "Journal(Multiple Currency, Sort by Voucher Date)",
-    "JournalReport": "Journal"
+    "JournalReport": "Journal",
+    "Menu:JournalReport": "Journal",
+    "Menu:JournalReport.SingleCurrencySortByCodeReport": "Journal(Single Currency, Sort by Voucher Code)",
+    "Menu:JournalReport.SingleCurrencySortByDateReport": "Journal(Single Currency, Sort by Voucher Date)",
+    "Menu:JournalReport.MultipleCurrencySortByCodeReport": "Journal(Multiple Currency, Sort by Voucher Code)",
+    "Menu:JournalReport.MultipleCurrencySortByDateReport": "Journal(Multiple Currency, Sort by Voucher Date)",
+    "SubTotal": "Sub Total"
   }
 }

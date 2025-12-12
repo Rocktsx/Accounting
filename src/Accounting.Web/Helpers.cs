@@ -17,6 +17,7 @@ namespace Accounting.Web
             { "zh-Hans", "zh-CN" },
             { "zh-Hant", "zh-TW" }
         };
+        public static string EmptyText = "--";
         public static string GetSelect2LanguageName()
         {
             var lang = CultureInfo.CurrentCulture.Name;
@@ -32,16 +33,16 @@ namespace Accounting.Web
             {
                 Value = getValue(item),
                 Text = getText(item),
-            }).ToList(); 
-             
+            }).ToList();
+
             if (insertEmpty)
             {
-                list.Insert(0, new SelectListItem { Value = null, Text = "--" });
+                list.Insert(0, new SelectListItem { Value = string.Empty, Text = EmptyText });
             }
             return list;
         }
 
-        public static List<SelectListItem> GetEnumSelectList(Type type, IStringLocalizer localizer)
+        public static List<SelectListItem> GetEnumSelectList(Type type, IStringLocalizer localizer, bool insertEmpty = false)
         {
 
             var items = Enum.GetValues(type);
@@ -54,6 +55,12 @@ namespace Accounting.Web
                     Text = localizer[Enum.GetName(type, item)].Value
                 });
             }
+
+            if (insertEmpty)
+            {
+                list.Insert(0, new SelectListItem { Value = string.Empty, Text = EmptyText });
+            }
+
             return list;
         }
 

@@ -320,6 +320,12 @@
     "Permission:JournalReport.SingleCurrencySortByDateReport": "日記帳(單貨幣，傳票日期排序)",
     "Permission:JournalReport.MultipleCurrencySortByCodeReport": "日記帳(多貨幣，傳票編號排序)",
     "Permission:JournalReport.MultipleCurrencySortByDateReport": "日記帳(多貨幣，傳票日期排序)",
-    "JournalReport": "日記帳"
+    "JournalReport": "日記帳",
+    "Menu:JournalReport": "日記帳",
+    "Menu:JournalReport.SingleCurrencySortByCodeReport": "日記帳(單貨幣，傳票編號排序)",
+    "Menu:JournalReport.SingleCurrencySortByDateReport": "日記帳(單貨幣，傳票日期排序)",
+    "Menu:JournalReport.MultipleCurrencySortByCodeReport": "日記帳(多貨幣，傳票編號排序)",
+    "Menu:JournalReport.MultipleCurrencySortByDateReport": "日記帳(多貨幣，傳票日期排序)",
+    "SubTotal": "小計"
   }
 }

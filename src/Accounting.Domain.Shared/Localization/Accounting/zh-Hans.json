@@ -315,11 +315,17 @@
     "Menu:GeneralLedgerReport.MultipleCurrencyReport": "总帐(多货币)",
     "Permission:GeneralLedgerReport.MultipleCurrencyGroupReport": "总帐(多货币分组)",
     "Menu:GeneralLedgerReport.MultipleCurrencyGroupReport": "总帐(多货币分组)",
-    "Permission:JournalReport": "日志帐",
-    "Permission:JournalReport.SingleCurrencySortByCodeReport": "日志帐(单货币，传票编号排序)",
-    "Permission:JournalReport.SingleCurrencySortByDateReport": "日志帐(单货币，传票日期排序)",
-    "Permission:JournalReport.MultipleCurrencySortByCodeReport": "日志帐(多货币，传票编号排序)",
-    "Permission:JournalReport.MultipleCurrencySortByDateReport": "日志帐(多货币，传票日期排序)",
-    "JournalReport": "日志帐"
+    "Permission:JournalReport": "日记帐",
+    "Permission:JournalReport.SingleCurrencySortByCodeReport": "日记帐(单货币，传票编号排序)",
+    "Permission:JournalReport.SingleCurrencySortByDateReport": "日记帐(单货币，传票日期排序)",
+    "Permission:JournalReport.MultipleCurrencySortByCodeReport": "日记帐(多货币，传票编号排序)",
+    "Permission:JournalReport.MultipleCurrencySortByDateReport": "日记帐(多货币，传票日期排序)",
+    "JournalReport": "日记帐",
+    "Menu:JournalReport": "日记帐",
+    "Menu:JournalReport.SingleCurrencySortByCodeReport": "日记帐(单货币，传票编号排序)",
+    "Menu:JournalReport.SingleCurrencySortByDateReport": "日记帐(单货币，传票日期排序)",
+    "Menu:JournalReport.MultipleCurrencySortByCodeReport": "日记帐(多货币，传票编号排序)",
+    "Menu:JournalReport.MultipleCurrencySortByDateReport": "日记帐(多货币，传票日期排序)",
+    "SubTotal": "小计"
   }
 }

@@ -26,6 +26,12 @@ public class AccountingMenus
     private const string MultipleCurrencyReportText = "MultipleCurrencyReport";
     private const string MultipleCurrencyGroupReportText = "MultipleCurrencyGroupReport";
 
+    private const string JournalReportText = "JournalReport";
+    private const string JournalSingleCurrencySortByCodeReportText = "SingleCurrencySortByCodeReport";
+    private const string JournalSingleCurrencySortByDateReportText = "SingleCurrencySortByDateReport";
+    private const string JournalMultipleCurrencySortByCodeReportText = "MultipleCurrencySortByCodeReport";
+    private const string JournalMultipleCurrencySortByDateReportText = "MultipleCurrencySortByDateReport";
+
     private const string ReceivableText = "Receivable";
     private const string ReceivableVoucherText = "ReceivableVoucher";
 
@@ -49,6 +55,12 @@ public class AccountingMenus
     public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
     public const string GeneralLedgerMultipleCurrencyReport = GeneralLedgerReport + Dot + MultipleCurrencyReportText;
     public const string GeneralLedgerMultipleCurrencyGroupReport = GeneralLedgerReport + Dot + MultipleCurrencyGroupReportText;
+
+    public const string JournalReport = GeneralLedger + Dot + JournalReportText;
+    public const string JournalSingleCurrencySortByCodeReport = GeneralLedger + Dot + JournalSingleCurrencySortByCodeReportText;
+    public const string JournalSingleCurrencySortByDateReport = GeneralLedger + Dot + JournalSingleCurrencySortByDateReportText;
+    public const string JournalMultipleCurrencySortByCodeReport = GeneralLedger + Dot + JournalMultipleCurrencySortByCodeReportText;
+    public const string JournalMultipleCurrencySortByDateReport = GeneralLedger + Dot + JournalMultipleCurrencySortByDateReportText;
 
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
@@ -75,6 +87,12 @@ public class AccountingMenus
         public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
         public const string GeneralLedgerMultipleCurrencyReport = GeneralLedgerReport + Dot + MultipleCurrencyReportText;
         public const string GeneralLedgerMultipleCurrencyGroupReport = GeneralLedgerReport + Dot + MultipleCurrencyGroupReportText;
+
+        public const string JournalReport = DisplayNamePrefix + JournalReportText;
+        public const string JournalSingleCurrencySortByCodeReport = JournalReport + Dot + JournalSingleCurrencySortByCodeReportText;
+        public const string JournalSingleCurrencySortByDateReport = JournalReport + Dot + JournalSingleCurrencySortByDateReportText;
+        public const string JournalMultipleCurrencySortByCodeReport = JournalReport + Dot + JournalMultipleCurrencySortByCodeReportText;
+        public const string JournalMultipleCurrencySortByDateReport = JournalReport + Dot + JournalMultipleCurrencySortByDateReportText;
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;
         public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;

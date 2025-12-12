@@ -191,6 +191,25 @@ public class AccountingMenuContributor : IMenuContributor
             generalLedgerMenu.AddItem(generalLedgerReports);
         }
 
+        var journalReportMenu = new ApplicationMenuItem(
+          AccountingMenus.JournalReport,
+          l[AccountingMenus.DisplayNames.JournalReport],
+          icon: "fas fa-chart-gantt"
+       );
+        journalReportMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.JournalSingleCurrencySortByCodeReport,
+                  l[AccountingMenus.DisplayNames.JournalSingleCurrencySortByCodeReport],
+                  icon: "fas fa-chart-line",
+                  url: "/GeneralLedger/Journals"
+              ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)
+        ); 
+
+        if (journalReportMenu.Items.Count > 0)
+        {
+            generalLedgerMenu.AddItem(journalReportMenu);
+        } 
+
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);

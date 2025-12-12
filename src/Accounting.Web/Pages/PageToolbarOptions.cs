@@ -124,12 +124,7 @@ namespace Accounting.Web.Pages
                 options.Configure<GeneralLedger.TransferVouchers.IndexModel>(
                     toolbar =>
                     {
-                        toolbar.AddButton(
-                            L("Search"),
-                            icon: "magnifying-glass",
-                            id: "searchBtn",
-                            requiredPolicyName: AccountingPermissions.TransferVouchers.Default
-                        );
+                        toolbar.AddSearchButton(AccountingPermissions.TransferVouchers.Default);
                         toolbar.AddButton(
                           L("NewTransferVoucher"),
                           icon: "plus",
@@ -162,12 +157,7 @@ namespace Accounting.Web.Pages
                 options.Configure<Receivable.ReceivableVouchers.IndexModel>(
                     toolbar =>
                     {
-                        toolbar.AddButton(
-                            L("Search"),
-                            icon: "magnifying-glass",
-                            id: "searchBtn",
-                            requiredPolicyName: AccountingPermissions.ReceivableVouchers.Default
-                        );
+                        toolbar.AddSearchButton(AccountingPermissions.ReceivableVouchers.Default);
                         toolbar.AddButton(
                           L("NewReceivableVoucher"),
                           icon: "plus",
@@ -180,12 +170,7 @@ namespace Accounting.Web.Pages
                 options.Configure<Payable.PayableVouchers.IndexModel>(
                     toolbar =>
                     {
-                        toolbar.AddButton(
-                            L("Search"),
-                            icon: "magnifying-glass",
-                            id: "searchBtn",
-                            requiredPolicyName: AccountingPermissions.PayableVouchers.Default
-                        );
+                        toolbar.AddSearchButton(AccountingPermissions.PayableVouchers.Default); 
                         toolbar.AddButton(
                           L("NewPayableVoucher"),
                           icon: "plus",
@@ -198,39 +183,41 @@ namespace Accounting.Web.Pages
                 options.Configure<GeneralLedger.GeneralLedgers.IndexModel>(
                     toolbar =>
                     {
-                        toolbar.AddButton(
-                            L("Search"),
-                            icon: "magnifying-glass",
-                            id: "searchBtn",
-                            requiredPolicyName: AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport
-                        );
+                        toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport);
                     }
                 );
                 options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyReportModel>(
                     toolbar =>
                     {
-                        toolbar.AddButton(
-                            L("Search"),
-                            icon: "magnifying-glass",
-                            id: "searchBtn",
-                            requiredPolicyName: AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport
-                        );
+                        toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport);
                     }
                 );
 
                 options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyGroupReportModel>(
                    toolbar =>
                    {
-                       toolbar.AddButton(
-                           L("Search"),
-                           icon: "magnifying-glass",
-                           id: "searchBtn",
-                           requiredPolicyName: AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport
-                       );
+                       toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport);
                    }
                );
-                 
+
+                options.Configure<GeneralLedger.Journals.IndexModel>(
+                   toolbar =>
+                   {
+                       toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport);
+                   }
+               );
+
             });
+        }
+
+        private static void AddSearchButton(this PageToolbar toolbar, string permission)
+        {
+            toolbar.AddButton(
+                L("Search"),
+                icon: "magnifying-glass",
+                id: "searchBtn",
+                requiredPolicyName: permission
+            );
         }
         private static LocalizableString L(string name)
         {
