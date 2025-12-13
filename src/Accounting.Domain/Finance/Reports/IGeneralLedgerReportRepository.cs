@@ -7,11 +7,11 @@ namespace Accounting.Finance.Reports
 {
     public interface IGeneralLedgerReportRepository
     {
-        Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetGLSingleCurrencyListAsync(
+        Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetSingleCurrencyListAsync(
             DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
             Guid? subjectId = null, CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(
+        Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetMultipleCurrencyListAsync(
            DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
            Guid? subjectId = null, bool isGroup = false, CancellationToken cancellationToken = default);
     }

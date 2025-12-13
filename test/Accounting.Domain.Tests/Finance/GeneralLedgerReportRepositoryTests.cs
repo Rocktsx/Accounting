@@ -30,7 +30,7 @@ namespace Accounting.Finance
             var periodEndDate = _testData.AccountingPeriodEndDate;
 
             // act
-            var result = await _repository.GetGLSingleCurrencyListAsync(
+            var result = await _repository.GetSingleCurrencyListAsync(
                 startDate, endDate, periodStartDate, periodEndDate);
 
             // assert
@@ -49,7 +49,7 @@ namespace Accounting.Finance
             var periodEndDate = _testData.AccountingPeriodEndDate;
 
             // act
-            var result = await _repository.GetGLMultipleCurrencyListAsync(
+            var result = await _repository.GetMultipleCurrencyListAsync(
                 startDate, endDate, periodStartDate, periodEndDate, isGroup: true);
 
             // assert

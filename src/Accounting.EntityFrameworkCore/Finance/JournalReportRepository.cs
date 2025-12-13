@@ -1,4 +1,5 @@
-﻿using Accounting.Finance.Reports;
+﻿using Accounting.EntityFrameworkCore;
+using Accounting.Finance.Reports;
 using Accounting.Finance.Vouchers;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,20 +8,19 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
+using Volo.Abp.EntityFrameworkCore;
 
 namespace Accounting.Finance
 {
-    public class JournalReportRepository : IJournalReportRepository
+    public class JournalReportRepository : VoucherRepository, IJournalReportRepository
     {
-        private readonly IQueryable<Voucher> _voucherQueryable;
-        public JournalReportRepository(IQueryable<Voucher> voucherQueryable)
+        public JournalReportRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
-            _voucherQueryable = voucherQueryable;
         }
         public async Task<IEnumerable<JournalReportMultipleCurrencyResult>> GetJLMultipleCurrencyListAsync(
              JournalReportRequest request, string? sorting = null, CancellationToken cancellationToken = default)
         {
-            var queryable = GetQueryable(request, sorting);
+            var queryable = await GetQueryableAsync(request, sorting);
             return await queryable.SelectMany(item => item.Details).Select(item => new JournalReportMultipleCurrencyResult
             {
                 VoucherCode = item.Voucher.Code,
@@ -40,7 +40,7 @@ namespace Accounting.Finance
         public async Task<IEnumerable<JournalReportSingleCurrencyResult>> GetJLSingleCurrencyListAsync(
             JournalReportRequest request, string? sorting = null, CancellationToken cancellationToken = default)
         {
-            var queryable = GetQueryable(request, sorting);
+            var queryable = await GetQueryableAsync(request, sorting);
             return await queryable.SelectMany(item => item.Details).Select(item => new JournalReportSingleCurrencyResult
             {
                 VoucherCode = item.Voucher.Code,
@@ -54,9 +54,10 @@ namespace Accounting.Finance
             }).ToListAsync(cancellationToken);
         }
 
-        private IQueryable<Voucher> GetQueryable(JournalReportRequest request, string? sorting = null)
+        private async Task<IQueryable<Voucher>> GetQueryableAsync(JournalReportRequest request, string? sorting = null)
         {
-            var queryable = _voucherQueryable.WhereIf(request.StartDate != null,
+            var voucherQueryable = await GetQueryableWithDetailsAsync();
+            var queryable = voucherQueryable.WhereIf(request.StartDate != null,
                 item => item.VoucherDate >= request.StartDate)
                 .WhereIf(request.EndDate != null, item => item.VoucherDate <= request.EndDate)
                 .WhereIf(!string.IsNullOrWhiteSpace(request.Prefix), item => item.Prefix.Contains(request.Prefix))

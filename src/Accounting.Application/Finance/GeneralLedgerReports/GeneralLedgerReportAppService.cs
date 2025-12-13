@@ -31,7 +31,7 @@ namespace Accounting.Finance.GeneralLedgerReports
         {
             (AccountingPeriod period, DateOnly startDate, DateOnly endDate) = await HandleRequestDto(input);
 
-            var result = await _glRepository.GetGLSingleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
+            var result = await _glRepository.GetSingleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
 
             return ObjectMapper.Map<IEnumerable<GeneralLedgerSingleCurrencyReportResult>, List<GeneralLedgerSingleCurrencyReportResultDto>>([.. result]);
         }
@@ -42,7 +42,7 @@ namespace Accounting.Finance.GeneralLedgerReports
         {
             (AccountingPeriod period, DateOnly startDate, DateOnly endDate) = await HandleRequestDto(input);
 
-            var result = await _glRepository.GetGLMultipleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
+            var result = await _glRepository.GetMultipleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId);
 
             return ObjectMapper.Map<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>, List<GeneralLedgerMultipleCurrencyReportResultDto>>([.. result]);
         }
@@ -63,7 +63,7 @@ namespace Accounting.Finance.GeneralLedgerReports
         {
             (AccountingPeriod period, DateOnly startDate, DateOnly endDate) = await HandleRequestDto(input);
 
-            var result = await _glRepository.GetGLMultipleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId, true);
+            var result = await _glRepository.GetMultipleCurrencyListAsync(startDate, endDate, period.StartDate, period.EndDate, input.SubjectId, true);
 
             return ObjectMapper.Map<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>, List<GeneralLedgerMultipleCurrencyReportResultDto>>([.. result]);
         }

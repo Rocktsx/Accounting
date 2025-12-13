@@ -1,33 +1,32 @@
-﻿using Accounting.Finance.Reports;
-using Accounting.Finance.Vouchers;
+﻿using Accounting.EntityFrameworkCore;
+using Accounting.Finance.Reports;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Volo.Abp.EntityFrameworkCore;
 
 namespace Accounting.Finance
 {
-    public class GeneralLedgerReportRepository : IGeneralLedgerReportRepository
-    {
-        private readonly IQueryable<Voucher> _voucherQueryable;
-
+    public class GeneralLedgerReportRepository : VoucherRepository, IGeneralLedgerReportRepository
+    { 
         /// <summary>
         /// Assets, Liabilities, Capital group
         /// </summary>
         private readonly AccountTypeGroup[] _alcGroups = [AccountTypeGroup.Assets,
             AccountTypeGroup.Liabilities, AccountTypeGroup.Capital];
-        public GeneralLedgerReportRepository(IQueryable<Voucher> voucherQueryable)
-        {
-            _voucherQueryable = voucherQueryable;
+        public GeneralLedgerReportRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
+        { 
         }
 
-        public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetGLSingleCurrencyListAsync(
+        public async Task<IEnumerable<GeneralLedgerSingleCurrencyReportResult>> GetSingleCurrencyListAsync(
             DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
             Guid? subjectId = null, CancellationToken cancellationToken = default)
         {
-            var lastYearBfQuery = _voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
+            var voucherQueryable = await GetQueryableWithDetailsAsync();
+            var lastYearBfQuery = voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .Where(item => _alcGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
@@ -52,7 +51,7 @@ namespace Accounting.Finance
                                                 VoucherDate = periodStartDate
                                             });
 
-            var currentYearBfQuery = _voucherQueryable.Where(item => item.VoucherDate >= periodStartDate && item.VoucherDate < startDate)
+            var currentYearBfQuery = voucherQueryable.Where(item => item.VoucherDate >= periodStartDate && item.VoucherDate < startDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .GroupBy(item => new
@@ -75,7 +74,7 @@ namespace Accounting.Finance
                                                 VoucherDate = startDate
                                             });
 
-            var currentQuery = _voucherQueryable.Where(item => item.VoucherDate >= startDate && item.VoucherDate <= endDate)
+            var currentQuery = voucherQueryable.Where(item => item.VoucherDate >= startDate && item.VoucherDate <= endDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .Select(item => new GeneralLedgerSingleCurrencyReportResult
@@ -100,11 +99,12 @@ namespace Accounting.Finance
 
             return await finalQuery.ToListAsync(cancellationToken);
         }
-        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetGLMultipleCurrencyListAsync(
+        public async Task<IEnumerable<GeneralLedgerMultipleCurrencyReportResult>> GetMultipleCurrencyListAsync(
             DateOnly startDate, DateOnly endDate, DateOnly periodStartDate, DateOnly periodEndDate,
             Guid? subjectId = null, bool isGroup = false, CancellationToken cancellationToken = default)
         {
-            var lastYearBfQuery = _voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
+            var voucherQueryable = await GetQueryableWithDetailsAsync();
+            var lastYearBfQuery = voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .Where(item => _alcGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
@@ -132,7 +132,7 @@ namespace Accounting.Finance
                                                 ForeignAmount = grp.Sum(item => item.ForeignAmount * (int)item.DebitorCreditor),
                                             });
 
-            var currentYearBfQuery = _voucherQueryable.Where(item => item.VoucherDate >= periodStartDate && item.VoucherDate < startDate)
+            var currentYearBfQuery = voucherQueryable.Where(item => item.VoucherDate >= periodStartDate && item.VoucherDate < startDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .GroupBy(item => new
@@ -158,7 +158,7 @@ namespace Accounting.Finance
                                                 ForeignAmount = grp.Sum(item => item.ForeignAmount * (int)item.DebitorCreditor),
                                             });
 
-            var currentQuery = _voucherQueryable.Where(item => item.VoucherDate >= startDate && item.VoucherDate <= endDate)
+            var currentQuery = voucherQueryable.Where(item => item.VoucherDate >= startDate && item.VoucherDate <= endDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                                             .Select(item => new GeneralLedgerMultipleCurrencyReportResult

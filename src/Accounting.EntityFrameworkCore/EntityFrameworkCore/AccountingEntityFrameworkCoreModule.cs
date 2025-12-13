@@ -43,8 +43,8 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<AccountingDbContext>(options =>
         {
-            options.Services.AddScoped<IGeneralLedgerReportRepository, VoucherRepository>();
-            options.Services.AddScoped<IJournalReportRepository, VoucherRepository>(); 
+            options.Services.AddScoped<IGeneralLedgerReportRepository, GeneralLedgerReportRepository>();
+            options.Services.AddScoped<IJournalReportRepository, JournalReportRepository>(); 
             options.Services.AddScoped<ITrialBalanceReportRepository, TrialBalanceReportRepository>(); 
         });
 
