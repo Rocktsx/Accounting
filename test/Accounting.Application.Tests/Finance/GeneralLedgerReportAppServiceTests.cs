@@ -28,7 +28,7 @@ namespace Accounting.Finance
             var input = new GeneralLedgerReportRequestDto
             {
                 StartDate = new DateOnly(_testData.AccountingPeriodYear, 3, 1),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31),
+                EndDate = _testData.AccountingPeriodEndDate,
                 PeriodId = _testData.AccountingPeriodYearId,
                 SubjectId = _testData.SubjectApId
             };
@@ -48,7 +48,7 @@ namespace Accounting.Finance
             var input = new GeneralLedgerReportRequestDto
             {
                 StartDate = new DateOnly(_testData.AccountingPeriodYear, 3, 10),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31),
+                EndDate = _testData.AccountingPeriodEndDate,
                 PeriodId = _testData.AccountingPeriodYearId,
                 SubjectId = _testData.SubjectArId
             };
@@ -68,7 +68,7 @@ namespace Accounting.Finance
             var input = new GeneralLedgerReportRequestDto
             {
                 StartDate = new DateOnly(_testData.AccountingPeriodYear, 3, 10),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31),
+                EndDate = _testData.AccountingPeriodEndDate,
                 PeriodId = _testData.AccountingPeriodYearId,
                 SubjectId = _testData.SubjectArId
             };

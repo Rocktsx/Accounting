@@ -377,7 +377,7 @@ namespace Accounting.Finance
             return await repeatQuery.ToListAsync(cancellationToken);
         }
 
-        private async Task<IQueryable<Voucher>> GetQueryableWithDetailsAsync()
+        protected async Task<IQueryable<Voucher>> GetQueryableWithDetailsAsync()
         {
             var queryable = await WithDetailsAsync(item => item.Details);
             return queryable.Where(new NoVoidVoucherSpecification().ToExpression());

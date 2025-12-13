@@ -45,5 +45,10 @@ namespace Accounting
         /// 当年结转余额文本
         /// </summary>
         public const string CurrentYearBfText = "CURRENT YEAR B/F";
+
+        public const int SystemGenGroupSort = 998;
+        public const string SystemGenCodeText = "SYS. GEN.";
+        public const string SubjectName = "Cumulative Profit (Loss)";
+        public const string SubjectOtherName = "累积损益";
     }
 }
