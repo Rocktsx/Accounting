@@ -52,8 +52,8 @@ namespace Accounting.Finance.GeneralLedgerReports
             Check.NotDefaultOrNull(input.PeriodId, nameof(input.PeriodId));
 
             var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException(VoucherErrorCodes.AccountingPeriodNotFound);
-            var startDate = input.StartDate ?? period.StartDate;
-            var endDate = input.EndDate ?? period.EndDate;
+            var startDate = period.GetStartDate(input.StartDate);
+            var endDate = period.GetEndDate(input.EndDate);
             return (period, startDate, endDate);
         }
 

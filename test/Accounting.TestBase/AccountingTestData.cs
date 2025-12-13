@@ -52,6 +52,8 @@ namespace Accounting
         public string SubjectBankName { get; } = "銀行 (往來戶口）";
         public string SubjectBankOtherName { get; } = "Bank (C/A)"; 
         public string AccountTypeAex { get; } = "AEX";
+        public string AccountTypeA { get; } = "A";
+        public string AccountTypeCA { get; } = "CA";
         public Guid SubjectRentId { get; } = Guid.NewGuid();
         public string SubjectRentCode { get; } = "8021";
         public string SubjectRentName { get; } = "租金及差餉";

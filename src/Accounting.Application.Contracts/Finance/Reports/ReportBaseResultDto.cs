@@ -4,7 +4,7 @@ namespace Accounting.Finance.Reports
 {
     public class ReportBaseResultDto
     {
-        public Guid SubjectId { get; set; }
+        public Guid? SubjectId { get; set; }
         public string SubjectCode { get; set; }
         public string SubjectName { get; set; }
         public string SubjectOtherName { get; set; }

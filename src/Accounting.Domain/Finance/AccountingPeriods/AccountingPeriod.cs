@@ -49,5 +49,21 @@ namespace Accounting.Finance.AccountingPeriods
             IsCurrentPeriod = isCurrentPeriod;
             return this;
         }
+        public DateOnly GetEndDate(DateOnly? date)
+        {
+            if (date == null || date > EndDate)
+            {
+                return EndDate;
+            }
+            return date.Value; 
+        }
+        public DateOnly GetStartDate(DateOnly? date)
+        {
+            if (date == null || date < StartDate)
+            {
+                return StartDate;
+            }
+            return date.Value;
+        }
     }
 }
