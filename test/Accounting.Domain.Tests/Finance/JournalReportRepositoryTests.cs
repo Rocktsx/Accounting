@@ -27,8 +27,8 @@ namespace Accounting.Finance
             // arrange
             var request = new JournalReportRequest
             {
-                StartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31),
+                StartDate = _testData.AccountingPeriodStartDate,
+                EndDate = _testData.AccountingPeriodEndDate,
                 Prefix = _testData.VoucherPrefix,
                 StartNo = 0,
                 EndNo = 1000
@@ -47,8 +47,8 @@ namespace Accounting.Finance
             // arrange
             var request = new JournalReportRequest
             {
-                StartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31),
+                StartDate = _testData.AccountingPeriodStartDate,
+                EndDate = _testData.AccountingPeriodEndDate,
                 Prefix = _testData.VoucherPrefix,
                 StartNo = 0,
                 EndNo = 100

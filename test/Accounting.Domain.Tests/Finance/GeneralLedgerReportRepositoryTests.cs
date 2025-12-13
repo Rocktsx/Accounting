@@ -25,9 +25,9 @@ namespace Accounting.Finance
         {
             // arrange
             var startDate = new DateOnly(_testData.AccountingPeriodYear, 3, 1);
-            var endDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31);
-            var periodStartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1);
-            var periodEndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31);
+            var endDate = _testData.AccountingPeriodEndDate;
+            var periodStartDate = _testData.AccountingPeriodStartDate;
+            var periodEndDate = _testData.AccountingPeriodEndDate;
 
             // act
             var result = await _repository.GetGLSingleCurrencyListAsync(
@@ -44,9 +44,9 @@ namespace Accounting.Finance
         {
             // arrange
             var startDate = new DateOnly(_testData.AccountingPeriodYear, 3, 1);
-            var endDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31);
-            var periodStartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1);
-            var periodEndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31);
+            var endDate = _testData.AccountingPeriodEndDate;
+            var periodStartDate = _testData.AccountingPeriodStartDate;
+            var periodEndDate = _testData.AccountingPeriodEndDate;
 
             // act
             var result = await _repository.GetGLMultipleCurrencyListAsync(

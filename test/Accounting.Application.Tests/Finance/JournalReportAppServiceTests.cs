@@ -26,8 +26,8 @@ namespace Accounting.Finance
             // Arrange
             var request = new JournalReportRequestDto
             {
-                StartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31)
+                StartDate = _testData.AccountingPeriodStartDate,
+                EndDate = _testData.AccountingPeriodEndDate
             };
             // Act
             var result = await _journalReportAppService.GetSingleCurrencySortByDateListAsync(request);
@@ -42,8 +42,8 @@ namespace Accounting.Finance
             // Arrange
             var request = new JournalReportRequestDto
             {
-                StartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1),
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31)
+                StartDate = _testData.AccountingPeriodStartDate,
+                EndDate = _testData.AccountingPeriodEndDate
             };
             // Act
             var result = await _journalReportAppService.GetSingleCurrencySortByCodeListAsync(request);
@@ -59,7 +59,7 @@ namespace Accounting.Finance
             var request = new JournalReportRequestDto
             {
                 StartDate = null,
-                EndDate = new DateOnly(_testData.AccountingPeriodYear, 12, 31)
+                EndDate = _testData.AccountingPeriodEndDate
             };
             // Act
             var result = await _journalReportAppService.GetMultipleCurrencySortByDateListAsync(request);
@@ -74,7 +74,7 @@ namespace Accounting.Finance
             // Arrange
             var request = new JournalReportRequestDto
             {
-                StartDate = new DateOnly(_testData.AccountingPeriodYear, 1, 1),
+                StartDate = _testData.AccountingPeriodStartDate,
                 EndDate = null
             };
             // Act
