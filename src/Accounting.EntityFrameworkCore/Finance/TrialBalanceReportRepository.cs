@@ -78,7 +78,7 @@ namespace Accounting.Finance
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
                    SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
                    SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
-                   item.Subject.SubjectCategory.AccountTypeId,
+                   item.Subject.AccountTypeId,
                    SortOrder = item.Subject.SubjectCategory.AccountType.TrialBalanceSort,
                    Group = item.Subject.SubjectCategory.AccountType.TrialBalanceGroup
                })
@@ -155,7 +155,7 @@ namespace Accounting.Finance
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
                    SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
                    SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
-                   item.Subject.SubjectCategory.AccountTypeId,
+                   item.Subject.AccountTypeId,
                    SortOrder = item.Subject.SubjectCategory.AccountType.TrialBalanceSort,
                    Group = item.Subject.SubjectCategory.AccountType.TrialBalanceGroup
                })

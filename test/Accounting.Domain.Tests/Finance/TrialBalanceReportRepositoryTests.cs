@@ -1,4 +1,5 @@
 ﻿using Accounting.Finance.Reports;
+using Accounting.Finance.Subjects;
 using Shouldly;
 using System;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace Accounting.Finance
     {
         private readonly ITrialBalanceReportRepository _tbReportRepository;
         private readonly AccountingTestData _testData;
+        private readonly ISubjectRepository _subjectRepository;
 
         public TrialBalanceReportRepositoryTests()
         {
             _tbReportRepository = GetRequiredService<ITrialBalanceReportRepository>();
             _testData = GetRequiredService<AccountingTestData>();
+            _subjectRepository = GetRequiredService<ISubjectRepository>();
         }
 
         [Fact]
@@ -25,15 +28,20 @@ namespace Accounting.Finance
         {
             // arrange
             var endDate = _testData.AccountingPeriodEndDate;
-            var periodStartDate= _testData.AccountingPeriodStartDate;
+            var periodStartDate = _testData.AccountingPeriodStartDate;
 
             // act
             var result = await _tbReportRepository.GetYearToDateListAsync(endDate, periodStartDate);
 
             // assert
+            var bankSubject = await _subjectRepository.GetPagedListAsync(new SubjectFilterRequest
+            { Codes = [_testData.SubjectBankCode] });
+
             result.ShouldNotBeNull();
             result.Count().ShouldBe(4);
             result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.SystemGenGroupSort);
+            result.ShouldContain(item => item.SubjectCode == _testData.SubjectBankCode
+                && item.AccountTypeId == bankSubject.First().AccountTypeId);
         }
 
         [Fact]
@@ -48,9 +56,13 @@ namespace Accounting.Finance
             var result = await _tbReportRepository.GetMonthToDateAndYearToDateListAsync(startDate, endDate, periodStartDate);
 
             // assert
+            var bankSubject = await _subjectRepository.GetPagedListAsync(new SubjectFilterRequest
+            { Codes = [_testData.SubjectBankCode] });
             result.ShouldNotBeNull();
             result.Count().ShouldBe(4);
             result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.SystemGenGroupSort);
+            result.ShouldContain(item => item.SubjectCode == _testData.SubjectBankCode
+               && item.AccountTypeId == bankSubject.First().AccountTypeId); 
         }
     }
 }
