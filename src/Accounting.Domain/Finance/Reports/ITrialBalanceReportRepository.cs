@@ -12,5 +12,8 @@ namespace Accounting.Finance.Reports
     {
         Task<IEnumerable<TrialBalanceYearToDateResult>> GetYearToDateListAsync(
             DateOnly endDate, DateOnly periodStartDate, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<TrialBalanceMonthToDateYearToDateResult>> GetMonthToDateAndYearToDateListAsync(DateOnly startDate,
+            DateOnly endDate, DateOnly periodStartDate, CancellationToken cancellationToken = default);
     }
 }
