@@ -326,6 +326,10 @@
     "Menu:JournalReport.SingleCurrencySortByDateReport": "日记帐(单货币，传票日期排序)",
     "Menu:JournalReport.MultipleCurrencySortByCodeReport": "日记帐(多货币，传票编号排序)",
     "Menu:JournalReport.MultipleCurrencySortByDateReport": "日记帐(多货币，传票日期排序)",
-    "SubTotal": "小计"
+    "SubTotal": "小计",
+    "Permission:TrialBalanceReport": "试算表",
+    "Permission:TrialBalanceReport.YearToDateReport": "试算表(YTD)",
+    "Permission:TrialBalanceReport.MonthToDateYearToDateReport": "试算表(MTD YTD)",
+    "TrialBalanc": "试算表"
   }
 }

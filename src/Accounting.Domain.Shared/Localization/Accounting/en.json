@@ -291,6 +291,10 @@
     "Menu:JournalReport.SingleCurrencySortByDateReport": "Journal(Single Currency, Sort by Voucher Date)",
     "Menu:JournalReport.MultipleCurrencySortByCodeReport": "Journal(Multiple Currency, Sort by Voucher Code)",
     "Menu:JournalReport.MultipleCurrencySortByDateReport": "Journal(Multiple Currency, Sort by Voucher Date)",
-    "SubTotal": "Sub Total"
+    "SubTotal": "Sub Total",
+    "Permission:TrialBalanceReport": "Trial Balance",
+    "Permission:TrialBalanceReport.YearToDateReport": "Trial Balance(YTD)",
+    "Permission:TrialBalanceReport.MonthToDateYearToDateReport": "Trial Balance(MTD YTD)",
+    "TrialBalanc": "Trial Balance"
   }
 }

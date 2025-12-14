@@ -53,15 +53,19 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group.Permissions[0].AddChild(PayableVouchers.UpdateStatus, L(UpdateStatusDisplayName));
 
         group = context.AddGroup(GeneralLedgerReports.Default, L(PermissionPrefix + GeneralLedgerReports.Name));
-        group.AddPermission(GeneralLedgerReports.SingleCurrencyReport, L(GeneralLedgerReports.SingleCurrencyReportDisplayName));
-        group.AddPermission(GeneralLedgerReports.MultipleCurrencyReport, L(GeneralLedgerReports.MultipleCurrencyReportDisplayName));
-        group.AddPermission(GeneralLedgerReports.MultipleCurrencyGroupReport, L(GeneralLedgerReports.MultipleCurrencyGroupReportDisplayName));
+        group.AddPermission(GeneralLedgerReports.SingleCurrencyReport, L(GeneralLedgerReports.SingleCurrencyReportName));
+        group.AddPermission(GeneralLedgerReports.MultipleCurrencyReport, L(GeneralLedgerReports.MultipleCurrencyReportName));
+        group.AddPermission(GeneralLedgerReports.MultipleCurrencyGroupReport, L(GeneralLedgerReports.MultipleCurrencyGroupReportName));
 
         group = context.AddGroup(JournalReports.Default, L(PermissionPrefix + JournalReports.Name));
         group.AddPermission(JournalReports.SingleCurrencySortByCodeReport, L(JournalReports.SingleCurrencySortByCodeReport));
-        group.AddPermission(JournalReports.SingleCurrencySortByDateReport, L(JournalReports.SingleCurrencySortByDateReportDisplayName));
-        group.AddPermission(JournalReports.MultipleCurrencySortByCodeReport, L(JournalReports.MultipleCurrencySortByCodeReportDisplayName));
-        group.AddPermission(JournalReports.MultipleCurrencySortByDateReport, L(JournalReports.MultipleCurrencySortByDateReportDisplayName));
+        group.AddPermission(JournalReports.SingleCurrencySortByDateReport, L(JournalReports.SingleCurrencySortByDateReportName));
+        group.AddPermission(JournalReports.MultipleCurrencySortByCodeReport, L(JournalReports.MultipleCurrencySortByCodeReportName));
+        group.AddPermission(JournalReports.MultipleCurrencySortByDateReport, L(JournalReports.MultipleCurrencySortByDateReportName));
+
+        group = context.AddGroup(TrialBalanceReports.Default, L(PermissionPrefix + TrialBalanceReports.Name));
+        group.AddPermission(TrialBalanceReports.MonthToDateYearToDateReport, L(TrialBalanceReports.MonthToDateYearToDateReportName));
+        group.AddPermission(TrialBalanceReports.YearToDateReport, L(TrialBalanceReports.YearToDateReportName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

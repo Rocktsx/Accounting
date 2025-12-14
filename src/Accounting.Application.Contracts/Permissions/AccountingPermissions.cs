@@ -142,18 +142,17 @@ public static class AccountingPermissions
         public const string Default = GeneralLedgerGroup + Dot + Name;
 
         private const string SingleCurrencyReportText = "SingleCurrencyReport";
-        internal const string SingleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencyReportText;
+        internal const string SingleCurrencyReportName = PermissionPrefix + Name + Dot + SingleCurrencyReportText;
         public const string SingleCurrencyReport = Default + Dot + SingleCurrencyReportText;
 
         private const string MultipleCurrencyReportText = "MultipleCurrencyReport";
-        internal const string MultipleCurrencyReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyReportText;
+        internal const string MultipleCurrencyReportName = PermissionPrefix + Name + Dot + MultipleCurrencyReportText;
         public const string MultipleCurrencyReport = Default + Dot + MultipleCurrencyReportText;
 
         private const string MultipleCurrencyGroupReportText = "MultipleCurrencyGroupReport";
-        internal const string MultipleCurrencyGroupReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencyGroupReportText;
+        internal const string MultipleCurrencyGroupReportName = PermissionPrefix + Name + Dot + MultipleCurrencyGroupReportText;
         public const string MultipleCurrencyGroupReport = Default + Dot + MultipleCurrencyGroupReportText;
     }
-
 
     /// <summary>
     /// 日志帐报表
@@ -164,21 +163,37 @@ public static class AccountingPermissions
         public const string Default = GeneralLedgerGroup + Dot + Name;
 
         private const string SingleCurrencySortByCodeReportText = "SingleCurrencySortByCodeReport";
-        internal const string SingleCurrencySortByCodeReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencySortByCodeReportText;
+        internal const string SingleCurrencySortByCodeReportName = PermissionPrefix + Name + Dot + SingleCurrencySortByCodeReportText;
         public const string SingleCurrencySortByCodeReport = Default + Dot + SingleCurrencySortByCodeReportText;
 
         private const string SingleCurrencySortByDateReportText = "SingleCurrencySortByDateReport";
-        internal const string SingleCurrencySortByDateReportDisplayName = PermissionPrefix + Name + Dot + SingleCurrencySortByDateReportText;
+        internal const string SingleCurrencySortByDateReportName = PermissionPrefix + Name + Dot + SingleCurrencySortByDateReportText;
         public const string SingleCurrencySortByDateReport = Default + Dot + SingleCurrencySortByDateReportText;
 
         private const string MultipleCurrencySortByCodeReportText = "MultipleCurrencySortByCodeReport";
-        internal const string MultipleCurrencySortByCodeReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencySortByCodeReportText;
+        internal const string MultipleCurrencySortByCodeReportName = PermissionPrefix + Name + Dot + MultipleCurrencySortByCodeReportText;
         public const string MultipleCurrencySortByCodeReport = Default + Dot + MultipleCurrencySortByCodeReportText;
 
         private const string MultipleCurrencySortByDateReportText = "MultipleCurrencySortByDateReport";
-        internal const string MultipleCurrencySortByDateReportDisplayName = PermissionPrefix + Name + Dot + MultipleCurrencySortByDateReportText;
+        internal const string MultipleCurrencySortByDateReportName = PermissionPrefix + Name + Dot + MultipleCurrencySortByDateReportText;
         public const string MultipleCurrencySortByDateReport = Default + Dot + MultipleCurrencySortByDateReportText;
-         
+    }
+
+    /// <summary>
+    /// 试算表报表
+    /// </summary>
+    public class TrialBalanceReports
+    {
+        public const string Name = "TrialBalanceReport";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+
+        private const string YearToDateReportText = "YearToDateReport";
+        internal const string YearToDateReportName = PermissionPrefix + Name + Dot + YearToDateReportText;
+        public const string YearToDateReport = Default + Dot + YearToDateReportText;
+
+        private const string MonthToDateYearToDateReportText = "MonthToDateYearToDateReport";
+        internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
+        public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
     }
 
     /// <summary>

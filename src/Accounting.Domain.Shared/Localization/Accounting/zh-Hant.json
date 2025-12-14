@@ -326,6 +326,10 @@
     "Menu:JournalReport.SingleCurrencySortByDateReport": "日記帳(單貨幣，傳票日期排序)",
     "Menu:JournalReport.MultipleCurrencySortByCodeReport": "日記帳(多貨幣，傳票編號排序)",
     "Menu:JournalReport.MultipleCurrencySortByDateReport": "日記帳(多貨幣，傳票日期排序)",
-    "SubTotal": "小計"
+    "SubTotal": "小計",
+    "Permission:TrialBalanceReport": "試算表",
+    "Permission:TrialBalanceReport.YearToDateReport": "試算表(YTD)",
+    "Permission:TrialBalanceReport.MonthToDateYearToDateReport": "試算表(MTD YTD)",
+    "TrialBalanc": "試算表"
   }
 }

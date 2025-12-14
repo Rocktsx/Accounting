@@ -3,6 +3,8 @@ using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.Reports;
 using Accounting.Finance.TrialBalanceReports;
 using Accounting.Finance.Vouchers;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,8 @@ namespace Accounting.Finance.GeneralLedgerReports
             _tbRepository = tbRepository;
             _periodRepository = periodRepository;
         }
+
+        [Authorize(AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport)]
         public async Task<IEnumerable<TrialBalanceMonthToDateYearToDateResultDto>> GetMtdYtdListAsync(TrialBalanceMtdYtdRequestDto input)
         {
             var (period, endDate) = await HandleRequestDto(input);
@@ -56,6 +60,7 @@ namespace Accounting.Finance.GeneralLedgerReports
             return result;
         }
 
+        [Authorize(AccountingPermissions.TrialBalanceReports.YearToDateReport)]
         public async Task<IEnumerable<TrialBalanceYearToDateResultDto>> GetYtdListAsync(TrialBalanceYtdRequestDto input)
         {
             var (period, endDate) = await HandleRequestDto(input);
