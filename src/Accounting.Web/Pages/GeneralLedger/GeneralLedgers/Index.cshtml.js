@@ -197,7 +197,7 @@
                         <td>{{ formatDate(subItem.voucherDate) }}</td>
                         <td>{{ subItem.voucherCode }}</td>
                         <td>{{ subItem.description }}<div v-if="subItem.docNo">{{ subItem.docNo }}</div></td>
-                        <td class="text-end">{{ subItem.nativeAmount > 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
+                        <td class="text-end">{{ subItem.nativeAmount >= 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                         <td class="text-end">{{ subItem.nativeAmount < 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                         <td class="text-end">{{ renderAmount(Math.abs(subItem.balance)) }}</td>
                         <td>{{ subItem.balance >= 0 ? 'DR': 'CR' }}</td>
