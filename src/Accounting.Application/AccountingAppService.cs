@@ -38,20 +38,13 @@ public abstract class AccountingAppService : ApplicationService
         {
             var rootGroup = item;
             var secondaryGroup = item;
-            while (rootGroup.ParentId != null)
+            while (rootGroup.ParentId != null && dics.ContainsKey(rootGroup.ParentId.Value))
             {
-                if (dics.ContainsKey(rootGroup.ParentId.Value))
-                {
-                    rootGroup = dics[rootGroup.ParentId.Value];
+                rootGroup = dics[rootGroup.ParentId.Value];
 
-                    if (rootGroup.ParentId != null)
-                    {
-                        secondaryGroup = rootGroup;
-                    }
-                }
-                else
+                if (rootGroup.ParentId != null)
                 {
-                    break;
+                    secondaryGroup = rootGroup;
                 }
             }
 
