@@ -9,6 +9,7 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
 using Volo.Abp.Features;
 using Accounting.Features;
+using Microsoft.Extensions.Localization;
 
 namespace Accounting.Web.Menus;
 
@@ -59,11 +60,23 @@ public class AccountingMenuContributor : IMenuContributor
         //Administration->Settings
         administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 7);
 
+        AddBasicDataMenus(context, l);
+
+        AddGeneralLedgerMenus(context, l);
+
+        AddReceivableMenus(context, l);
+
+        AddPayableMenus(context, l);
+
+        return Task.CompletedTask;
+    }
+    private static void AddBasicDataMenus(MenuConfigurationContext context, IStringLocalizer l)
+    {
         var basicDataMenu = new ApplicationMenuItem(
-             AccountingMenus.BasicData,
-             l[AccountingMenus.DisplayNames.BasicData],
-             icon: "fas fa-gears"
-         );
+                     AccountingMenus.BasicData,
+                     l[AccountingMenus.DisplayNames.BasicData],
+                     icon: "fas fa-gears"
+                 );
         basicDataMenu.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.Currency,
@@ -95,11 +108,14 @@ public class AccountingMenuContributor : IMenuContributor
         {
             context.Menu.AddItem(basicDataMenu);
         }
+    }
+    private static void AddGeneralLedgerMenus(MenuConfigurationContext context, IStringLocalizer l)
+    {
         var generalLedgerMenu = new ApplicationMenuItem(
-           AccountingMenus.GeneralLedger,
-           l[AccountingMenus.DisplayNames.GeneralLedger],
-           icon: "fas fa-calculator"
-        );
+                   AccountingMenus.GeneralLedger,
+                   l[AccountingMenus.DisplayNames.GeneralLedger],
+                   icon: "fas fa-calculator"
+                );
 
         generalLedgerMenu.AddItem(
             new ApplicationMenuItem(
@@ -154,12 +170,67 @@ public class AccountingMenuContributor : IMenuContributor
                    url: "/GeneralLedger/VoucherStates"
                ).RequirePermissions(AccountingPermissions.VoucherStates.Default)
          );
+        AddGeneralLedgerReportMenus(l, generalLedgerMenu);
 
+        AddJournalReportMenus(l, generalLedgerMenu);
+
+        AddTrialBalanceReportMenus(l, generalLedgerMenu);
+
+        if (generalLedgerMenu.Items.Count > 0)
+        {
+            context.Menu.AddItem(generalLedgerMenu);
+        }
+    }
+
+    private static void AddReceivableMenus(MenuConfigurationContext context, IStringLocalizer l)
+    {
+        var receivableMenus = new ApplicationMenuItem(
+                  AccountingMenus.Receivable,
+                  l[AccountingMenus.DisplayNames.Receivable],
+                  icon: "fas fa-book"
+                );
+        receivableMenus.AddItem(
+               new ApplicationMenuItem(
+                   AccountingMenus.ReceivableVoucher,
+                   l[AccountingMenus.DisplayNames.ReceivableVoucher],
+                   icon: "fas fa-folder",
+                   url: "/Receivable/ReceivableVouchers"
+               ).RequirePermissions(AccountingPermissions.ReceivableVouchers.Default)
+         );
+        if (receivableMenus.Items.Count > 0)
+        {
+            context.Menu.AddItem(receivableMenus);
+        }
+    }
+
+    private static void AddPayableMenus(MenuConfigurationContext context, IStringLocalizer l)
+    {
+        var payableMenus = new ApplicationMenuItem(
+                  AccountingMenus.Payable,
+                  l[AccountingMenus.DisplayNames.Payable],
+                  icon: "fas fa-book-open"
+                );
+        payableMenus.AddItem(
+               new ApplicationMenuItem(
+                   AccountingMenus.PayableVoucher,
+                   l[AccountingMenus.DisplayNames.PayableVoucher],
+                   icon: "fas fa-folder-open",
+                   url: "/Payable/PayableVouchers"
+               ).RequirePermissions(AccountingPermissions.PayableVouchers.Default)
+         );
+        if (payableMenus.Items.Count > 0)
+        {
+            context.Menu.AddItem(payableMenus);
+        }
+    }
+
+    private static void AddGeneralLedgerReportMenus(IStringLocalizer l, ApplicationMenuItem generalLedgerMenu)
+    {
         var generalLedgerReports = new ApplicationMenuItem(
-           AccountingMenus.GeneralLedgers.Name,
-           l[AccountingMenus.DisplayNames.GeneralLedgers.Name],
-           icon: "fas fa-chart-bar"
-        );
+                   AccountingMenus.GeneralLedgers.Name,
+                   l[AccountingMenus.DisplayNames.GeneralLedgers.Name],
+                   icon: "fas fa-chart-bar"
+                );
         generalLedgerReports.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.GeneralLedgers.SingleCurrencyReport,
@@ -187,23 +258,26 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(generalLedgerReports);
         }
+    }
 
+    private static void AddJournalReportMenus(IStringLocalizer l, ApplicationMenuItem generalLedgerMenu)
+    {
         var journalReportMenu = new ApplicationMenuItem(
-          AccountingMenus.Journals.Name,
-          l[AccountingMenus.DisplayNames.Journals.Name],
-          icon: "fas fa-chart-simple"
-        );
+                  AccountingMenus.Journals.Name,
+                  l[AccountingMenus.DisplayNames.Journals.Name],
+                  icon: "fas fa-chart-simple"
+                );
         journalReportMenu.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.Journals.SingleCurrencySortByCodeReport,
-                  l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByCodeReport], 
+                  l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByCodeReport],
                   url: "/GeneralLedger/Journals"
               ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)
         );
         journalReportMenu.AddItem(
              new ApplicationMenuItem(
                  AccountingMenus.Journals.SingleCurrencySortByDateReport,
-                 l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByDateReport], 
+                 l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByDateReport],
                  url: "/GeneralLedger/Journals/SingleCurrencySortByDateReport"
              ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport)
         );
@@ -211,7 +285,7 @@ public class AccountingMenuContributor : IMenuContributor
         journalReportMenu.AddItem(
             new ApplicationMenuItem(
                 AccountingMenus.Journals.MultipleCurrencySortByCodeReport,
-                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByCodeReport], 
+                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByCodeReport],
                 url: "/GeneralLedger/Journals/MultipleCurrencySortByCodeReport"
             ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport)
         );
@@ -219,7 +293,7 @@ public class AccountingMenuContributor : IMenuContributor
         journalReportMenu.AddItem(
             new ApplicationMenuItem(
                 AccountingMenus.Journals.MultipleCurrencySortByDateReport,
-                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByDateReport], 
+                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByDateReport],
                 url: "/GeneralLedger/Journals/MultipleCurrencySortByDateReport"
             ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport)
         );
@@ -228,11 +302,14 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(journalReportMenu);
         }
+    }
 
+    private static void AddTrialBalanceReportMenus(IStringLocalizer l, ApplicationMenuItem generalLedgerMenu)
+    {
         var trialBalanceMenu = new ApplicationMenuItem(
-            AccountingMenus.TrialBalances.Name,
-            l[AccountingMenus.DisplayNames.TrialBalances.Name],
-            icon: "fas fa-chart-column");
+                    AccountingMenus.TrialBalances.Name,
+                    l[AccountingMenus.DisplayNames.TrialBalances.Name],
+                    icon: "fas fa-chart-column");
 
         trialBalanceMenu.AddItem(
               new ApplicationMenuItem(
@@ -253,48 +330,5 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(trialBalanceMenu);
         }
-
-        if (generalLedgerMenu.Items.Count > 0)
-        {
-            context.Menu.AddItem(generalLedgerMenu);
-        }
-
-        var receivableMenus = new ApplicationMenuItem(
-          AccountingMenus.Receivable,
-          l[AccountingMenus.DisplayNames.Receivable],
-          icon: "fas fa-book"
-        );
-        receivableMenus.AddItem(
-               new ApplicationMenuItem(
-                   AccountingMenus.ReceivableVoucher,
-                   l[AccountingMenus.DisplayNames.ReceivableVoucher],
-                   icon: "fas fa-folder",
-                   url: "/Receivable/ReceivableVouchers"
-               ).RequirePermissions(AccountingPermissions.ReceivableVouchers.Default)
-         );
-        if (receivableMenus.Items.Count > 0)
-        {
-            context.Menu.AddItem(receivableMenus);
-        }
-
-        var payableMenus = new ApplicationMenuItem(
-          AccountingMenus.Payable,
-          l[AccountingMenus.DisplayNames.Payable],
-          icon: "fas fa-book-open"
-        );
-        payableMenus.AddItem(
-               new ApplicationMenuItem(
-                   AccountingMenus.PayableVoucher,
-                   l[AccountingMenus.DisplayNames.PayableVoucher],
-                   icon: "fas fa-folder-open",
-                   url: "/Payable/PayableVouchers"
-               ).RequirePermissions(AccountingPermissions.PayableVouchers.Default)
-         );
-        if (payableMenus.Items.Count > 0)
-        {
-            context.Menu.AddItem(payableMenus);
-        }
-
-        return Task.CompletedTask;
-    }
+    } 
 }
