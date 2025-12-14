@@ -336,6 +336,10 @@
     "Menu:TrialBalanceReport.MonthToDateYearToDateReport": "試算表(MTD YTD)",
     "AsAt": "截止",
     "Items": "項目合計",
-    "Before": "前"
+    "Before": "前",
+    "Permission:ProfitAndLossReport": "損益表",
+    "Permission:ProfitAndLossReport.YearToDateReport": "損益表(YTD)",
+    "Permission:ProfitAndLossReport.MonthToDateYearToDateReport": "損益表(MTD YTD)",
+    "ProfitAndLoss": "損益表"
   }
 }

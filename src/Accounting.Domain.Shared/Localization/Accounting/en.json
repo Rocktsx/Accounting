@@ -301,6 +301,10 @@
     "Menu:TrialBalanceReport.MonthToDateYearToDateReport": "Trial Balance(MTD YTD)",
     "AsAt": "As at",
     "Items": "Items",
-    "Before": "Before"
+    "Before": "Before",
+    "Permission:ProfitAndLossReport": "Income Statement",
+    "Permission:ProfitAndLossReport.YearToDateReport": "Income Statement(YTD)",
+    "Permission:ProfitAndLossReport.MonthToDateYearToDateReport": "Income Statement(MTD YTD)",
+    "ProfitAndLoss": "Income Statement"
   }
 }

@@ -47,9 +47,8 @@ namespace Accounting.Finance
         public async Task Can_Get_Ytd_List()
         {
             // arrange
-            var input = new TrialBalanceMtdYtdRequestDto
-            {
-                StartDate = _testData.AccountingPeriodStartDate,
+            var input = new TrialBalanceYtdRequestDto
+            { 
                 EndDate = _testData.AccountingPeriodEndDate,
                 PeriodId = _testData.AccountingPeriodYearId,
             };

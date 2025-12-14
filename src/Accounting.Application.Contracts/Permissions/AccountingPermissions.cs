@@ -29,6 +29,9 @@ public static class AccountingPermissions
     public const string ExportDisplayName = PermissionPrefix + ExportText;
     public const string UpdateStatusDisplayName = PermissionPrefix + UpdateStatusText;
 
+    private const string YearToDateReportText = "YearToDateReport";
+    private const string MonthToDateYearToDateReportText = "MonthToDateYearToDateReport";
+
     public const string BasicDataGroup = GroupName + ".BasicData";
 
     public class Currencies
@@ -178,7 +181,7 @@ public static class AccountingPermissions
         internal const string MultipleCurrencySortByDateReportName = PermissionPrefix + Name + Dot + MultipleCurrencySortByDateReportText;
         public const string MultipleCurrencySortByDateReport = Default + Dot + MultipleCurrencySortByDateReportText;
     }
-
+     
     /// <summary>
     /// 试算表报表
     /// </summary>
@@ -187,11 +190,24 @@ public static class AccountingPermissions
         public const string Name = "TrialBalanceReport";
         public const string Default = GeneralLedgerGroup + Dot + Name;
 
-        private const string YearToDateReportText = "YearToDateReport";
         internal const string YearToDateReportName = PermissionPrefix + Name + Dot + YearToDateReportText;
         public const string YearToDateReport = Default + Dot + YearToDateReportText;
 
-        private const string MonthToDateYearToDateReportText = "MonthToDateYearToDateReport";
+        internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
+        public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
+    }
+
+    /// <summary>
+    /// 试算表报表
+    /// </summary>
+    public class ProfitAndLossReports
+    {
+        public const string Name = "ProfitAndLossReport";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+
+        internal const string YearToDateReportName = PermissionPrefix + Name + Dot + YearToDateReportText;
+        public const string YearToDateReport = Default + Dot + YearToDateReportText;
+
         internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
         public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
     }

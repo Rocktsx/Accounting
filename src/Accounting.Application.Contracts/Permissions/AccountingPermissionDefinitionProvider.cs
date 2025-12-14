@@ -66,6 +66,10 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group = context.AddGroup(TrialBalanceReports.Default, L(PermissionPrefix + TrialBalanceReports.Name));
         group.AddPermission(TrialBalanceReports.MonthToDateYearToDateReport, L(TrialBalanceReports.MonthToDateYearToDateReportName));
         group.AddPermission(TrialBalanceReports.YearToDateReport, L(TrialBalanceReports.YearToDateReportName));
+
+        group = context.AddGroup(ProfitAndLossReports.Default, L(PermissionPrefix + ProfitAndLossReports.Name));
+        group.AddPermission(ProfitAndLossReports.MonthToDateYearToDateReport, L(ProfitAndLossReports.MonthToDateYearToDateReportName));
+        group.AddPermission(ProfitAndLossReports.YearToDateReport, L(ProfitAndLossReports.YearToDateReportName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,
