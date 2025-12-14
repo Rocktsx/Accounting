@@ -45,7 +45,8 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
         {
             options.Services.AddScoped<IGeneralLedgerReportRepository, GeneralLedgerReportRepository>();
             options.Services.AddScoped<IJournalReportRepository, JournalReportRepository>(); 
-            options.Services.AddScoped<ITrialBalanceReportRepository, TrialBalanceReportRepository>(); 
+            options.Services.AddScoped<ITrialBalanceReportRepository, TrialBalanceReportRepository>();
+            options.Services.AddScoped<IProfitAndLossReportRepository, ProfitAndLossReportRepository>(); 
         });
 
         if (AbpStudioAnalyzeHelper.IsInAnalyzeMode)
