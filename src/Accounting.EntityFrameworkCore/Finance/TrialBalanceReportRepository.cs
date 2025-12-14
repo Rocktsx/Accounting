@@ -79,8 +79,8 @@ namespace Accounting.Finance
                    SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
                    SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
                    item.Subject.AccountTypeId,
-                   SortOrder = item.Subject.SubjectCategory.AccountType.TrialBalanceSort,
-                   Group = item.Subject.SubjectCategory.AccountType.TrialBalanceGroup
+                   SortOrder = item.Subject.AccountType.TrialBalanceSort,
+                   Group = item.Subject.AccountType.TrialBalanceGroup
                })
               .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
               .Select(grp => new TrialBalanceYearToDateResult
@@ -156,8 +156,8 @@ namespace Accounting.Finance
                    SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
                    SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
                    item.Subject.AccountTypeId,
-                   SortOrder = item.Subject.SubjectCategory.AccountType.TrialBalanceSort,
-                   Group = item.Subject.SubjectCategory.AccountType.TrialBalanceGroup
+                   SortOrder = item.Subject.AccountType.TrialBalanceSort,
+                   Group = item.Subject.AccountType.TrialBalanceGroup
                })
                .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0
                             || grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < endDate ? 0 : (int)item.DebitorCreditor)) != 0)
