@@ -61,3 +61,6 @@ form label.error {
 .table thead th {
     font-size: var(--bs-body-font-size);
 }
+.report .table td, .report .table th {
+    padding: 3px;
+}
