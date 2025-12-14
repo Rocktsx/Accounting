@@ -34,8 +34,10 @@ public class AccountingMenus
     private const string JournalMultipleCurrencySortByDateReportText = "MultipleCurrencySortByDateReport";
 
     private const string TrialBalanceText = "TrialBalanceReport";
-    private const string TrialBalanceYearToDateReportText = "YearToDateReport";
-    private const string TrialBalanceMonthToDateYearToDateReportText = "MonthToDateYearToDateReport";
+    private const string YearToDateReportText = "YearToDateReport";
+    private const string MonthToDateYearToDateReportText = "MonthToDateYearToDateReport";
+
+    private const string ProfitAndLossReportText = "ProfitAndLossReport";
 
     private const string ReceivableText = "Receivable";
     private const string ReceivableVoucherText = "ReceivableVoucher";
@@ -84,8 +86,18 @@ public class AccountingMenus
     public class TrialBalances
     {
         public const string Name = GeneralLedger + Dot + TrialBalanceText;
-        public const string MonthToDateYearToDateReport = GeneralLedger + Dot + TrialBalanceMonthToDateYearToDateReportText;
-        public const string YearToDateReport = GeneralLedger + Dot + TrialBalanceYearToDateReportText;
+        public const string MonthToDateYearToDateReport = GeneralLedger + Dot + MonthToDateYearToDateReportText;
+        public const string YearToDateReport = GeneralLedger + Dot + YearToDateReportText;
+    }
+
+    /// <summary>
+    /// Profit And Loss Report
+    /// </summary>
+    public class ProfitAndLosses
+    {
+        public const string Name = GeneralLedger + Dot + ProfitAndLossReportText;
+        public const string MonthToDateYearToDateReport = GeneralLedger + Dot + MonthToDateYearToDateReportText;
+        public const string YearToDateReport = GeneralLedger + Dot + YearToDateReportText;
     }
 
     public const string Receivable = Prefix + Dot + ReceivableText;
@@ -138,8 +150,18 @@ public class AccountingMenus
         public class TrialBalances
         {
             public const string Name = DisplayNamePrefix + TrialBalanceText;
-            public const string MonthToDateYearToDateReport = Name + Dot + TrialBalanceMonthToDateYearToDateReportText;
-            public const string YearToDateReport = Name + Dot + TrialBalanceYearToDateReportText;
+            public const string MonthToDateYearToDateReport = Name + Dot + MonthToDateYearToDateReportText;
+            public const string YearToDateReport = Name + Dot + YearToDateReportText;
+        }
+
+        /// <summary>
+        /// Profit And Loss Report
+        /// </summary>
+        public class ProfitAndLosses
+        {
+            public const string Name = DisplayNamePrefix + ProfitAndLossReportText;
+            public const string MonthToDateYearToDateReport = Name + Dot + MonthToDateYearToDateReportText;
+            public const string YearToDateReport = Name + Dot + YearToDateReportText;
         }
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;

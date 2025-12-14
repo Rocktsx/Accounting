@@ -33,7 +33,7 @@ namespace Accounting.Finance
                {
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
                    SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
-                   SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? 
+                   SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ?
                         item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
                    item.Subject.AccountTypeId,
                    SortOrder = item.Subject.AccountType.ProfitAndLossSort,
@@ -44,19 +44,22 @@ namespace Accounting.Finance
                     || grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < startDate ? 0 : (int)item.DebitorCreditor)) != 0)
               .Select(grp => new ProfitAndLossMonthToDateYearToDateResult
               {
-                  SortOrder = grp.Key.SortOrder,
                   Group = grp.Key.Group,
-                  Category = grp.Key.Category,
-                  AccountTypeId = grp.Key.AccountTypeId,
+                  SortOrder = grp.Key.SortOrder,
                   SubjectCode = grp.Key.SubjectCode,
                   SubjectName = grp.Key.SubjectName,
                   SubjectOtherName = grp.Key.SubjectOtherName,
+                  Category = grp.Key.Category,
+                  AccountTypeId = grp.Key.AccountTypeId,
                   NativeAmount = -grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor), //Income creditor, Expenses debitor
-                  MonthToDateNativeAmount = - grp.Sum(item => item.NativeAmount * 
+                  MonthToDateNativeAmount = -grp.Sum(item => item.NativeAmount *
                         (item.Voucher.VoucherDate < startDate ? 0 : (int)item.DebitorCreditor)),
-                  LastPeriodNativeAmount = - grp.Sum(item => item.NativeAmount * 
+                  LastPeriodNativeAmount = -grp.Sum(item => item.NativeAmount *
                         (item.Voucher.VoucherDate >= startDate ? 0 : (int)item.DebitorCreditor)),
-              });
+              })
+              .OrderBy(item => item.Group)
+              .ThenBy(item => item.SortOrder)
+              .ThenBy(item => item.SubjectCode);
 
             return await plQueryable.ToListAsync(cancellationToken);
         }
@@ -82,16 +85,19 @@ namespace Accounting.Finance
               .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
               .Select(grp => new ProfitAndLossYearToDateResult
               {
-                  SortOrder = grp.Key.SortOrder,
                   Group = grp.Key.Group,
-                  Category = grp.Key.Category,
-                  AccountTypeId = grp.Key.AccountTypeId,
+                  SortOrder = grp.Key.SortOrder,
                   SubjectCode = grp.Key.SubjectCode,
                   SubjectName = grp.Key.SubjectName,
                   SubjectOtherName = grp.Key.SubjectOtherName,
-                  NativeAmount = - grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) //Income creditor, Expenses debitor
-              });
-                
+                  Category = grp.Key.Category,
+                  AccountTypeId = grp.Key.AccountTypeId,
+                  NativeAmount = -grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) //Income creditor, Expenses debitor
+              })
+              .OrderBy(item => item.Group)
+              .ThenBy(item => item.SortOrder)
+              .ThenBy(item => item.SubjectCode);
+
             return await plQueryable.ToListAsync(cancellationToken);
         }
     }

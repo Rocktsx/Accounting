@@ -176,6 +176,8 @@ public class AccountingMenuContributor : IMenuContributor
 
         AddTrialBalanceReportMenus(l, generalLedgerMenu);
 
+        AddProfitAndLossReportMenus(l, generalLedgerMenu);
+
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);
@@ -330,5 +332,31 @@ public class AccountingMenuContributor : IMenuContributor
         {
             generalLedgerMenu.AddItem(trialBalanceMenu);
         }
-    } 
+    }
+    private static void AddProfitAndLossReportMenus(IStringLocalizer l, ApplicationMenuItem generalLedgerMenu)
+    {
+        var profitAndLossMenu = new ApplicationMenuItem(
+            AccountingMenus.ProfitAndLosses.Name,
+            l[AccountingMenus.DisplayNames.ProfitAndLosses.Name],
+            icon: "fas fa-chart-line");
+
+        profitAndLossMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.ProfitAndLosses.YearToDateReport,
+                  l[AccountingMenus.DisplayNames.ProfitAndLosses.YearToDateReport],
+                  url: "/GeneralLedger/IncomeStatements"
+              ).RequirePermissions(AccountingPermissions.ProfitAndLossReports.YearToDateReport));
+
+        profitAndLossMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.ProfitAndLosses.MonthToDateYearToDateReport,
+                l[AccountingMenus.DisplayNames.ProfitAndLosses.MonthToDateYearToDateReport],
+                url: "/GeneralLedger/IncomeStatements/MtdYtdReport"
+            ).RequirePermissions(AccountingPermissions.ProfitAndLossReports.MonthToDateYearToDateReport));
+
+        if (profitAndLossMenu.Items.Count > 0)
+        {
+            generalLedgerMenu.AddItem(profitAndLossMenu);
+        }
+    }
 }

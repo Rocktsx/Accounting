@@ -340,6 +340,11 @@
     "Permission:ProfitAndLossReport": "损益表",
     "Permission:ProfitAndLossReport.YearToDateReport": "损益表(YTD)",
     "Permission:ProfitAndLossReport.MonthToDateYearToDateReport": "损益表(MTD YTD)",
-    "ProfitAndLoss": "损益表"
+    "ProfitAndLoss": "损益表",
+    "Menu:ProfitAndLossReport": "损益表",
+    "Menu:ProfitAndLossReport.YearToDateReport": "损益表(YTD)",
+    "Menu:ProfitAndLossReport.MonthToDateYearToDateReport": "损益表(MTD YTD)",
+    "NetProfit": "纯利",
+    "GrossProfit": "毛利"
   }
 }
