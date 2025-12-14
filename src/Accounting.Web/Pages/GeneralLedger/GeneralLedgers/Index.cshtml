@@ -11,10 +11,10 @@
 @model Accounting.Web.Pages.GeneralLedger.GeneralLedgers.IndexModel
 @inject IPageLayout PageLayout
 @{
-    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.GeneralLedgerSingleCurrencyReport].Value;
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.GeneralLedgers.SingleCurrencyReport].Value;
     PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
-    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedgerReport]);
-    PageLayout.Content.MenuItemName = AccountingMenus.GeneralLedgerSingleCurrencyReport;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedgers.Name]);
+    PageLayout.Content.MenuItemName = AccountingMenus.GeneralLedgers.SingleCurrencyReport;
 }
 @section content_toolbar {
     @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })

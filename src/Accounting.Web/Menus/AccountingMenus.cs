@@ -51,17 +51,28 @@ public class AccountingMenus
     public const string TransferVoucher = GeneralLedger + Dot + TransferVoucherText;
     public const string VoucherState = GeneralLedger + Dot + VoucherStateText;
 
-    public const string GeneralLedgerReport = GeneralLedger + Dot + GeneralLedgerReportText;
-    public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
-    public const string GeneralLedgerMultipleCurrencyReport = GeneralLedgerReport + Dot + MultipleCurrencyReportText;
-    public const string GeneralLedgerMultipleCurrencyGroupReport = GeneralLedgerReport + Dot + MultipleCurrencyGroupReportText;
+    /// <summary>
+    /// General Ledger Report
+    /// </summary>
+    public class GeneralLedgers
+    { 
+        public const string Name = GeneralLedger + Dot + GeneralLedgerReportText;
+        public const string SingleCurrencyReport = Name + Dot + SingleCurrencyReportText;
+        public const string MultipleCurrencyReport = Name + Dot + MultipleCurrencyReportText;
+        public const string MultipleCurrencyGroupReport = Name + Dot + MultipleCurrencyGroupReportText;
+    }
 
-    public const string JournalReport = GeneralLedger + Dot + JournalReportText;
-    public const string JournalSingleCurrencySortByCodeReport = GeneralLedger + Dot + JournalSingleCurrencySortByCodeReportText;
-    public const string JournalSingleCurrencySortByDateReport = GeneralLedger + Dot + JournalSingleCurrencySortByDateReportText;
-    public const string JournalMultipleCurrencySortByCodeReport = GeneralLedger + Dot + JournalMultipleCurrencySortByCodeReportText;
-    public const string JournalMultipleCurrencySortByDateReport = GeneralLedger + Dot + JournalMultipleCurrencySortByDateReportText;
-
+    /// <summary>
+    /// Journal Report
+    /// </summary>
+    public class Journals
+    {
+        public const string Name = GeneralLedger + Dot + JournalReportText;
+        public const string SingleCurrencySortByCodeReport = GeneralLedger + Dot + JournalSingleCurrencySortByCodeReportText;
+        public const string SingleCurrencySortByDateReport = GeneralLedger + Dot + JournalSingleCurrencySortByDateReportText;
+        public const string MultipleCurrencySortByCodeReport = GeneralLedger + Dot + JournalMultipleCurrencySortByCodeReportText;
+        public const string MultipleCurrencySortByDateReport = GeneralLedger + Dot + JournalMultipleCurrencySortByDateReportText;
+    }
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
 
@@ -83,16 +94,28 @@ public class AccountingMenus
         public const string TransferVoucher = DisplayNamePrefix + TransferVoucherText;
         public const string VoucherState = DisplayNamePrefix + VoucherStateText;
 
-        public const string GeneralLedgerReport = DisplayNamePrefix + GeneralLedgerReportText;
-        public const string GeneralLedgerSingleCurrencyReport = GeneralLedgerReport + Dot + SingleCurrencyReportText;
-        public const string GeneralLedgerMultipleCurrencyReport = GeneralLedgerReport + Dot + MultipleCurrencyReportText;
-        public const string GeneralLedgerMultipleCurrencyGroupReport = GeneralLedgerReport + Dot + MultipleCurrencyGroupReportText;
+        /// <summary>
+        /// General Ledger Report
+        /// </summary>
+        public class GeneralLedgers
+        {
+            public const string Name = DisplayNamePrefix + GeneralLedgerReportText;
+            public const string SingleCurrencyReport = Name + Dot + SingleCurrencyReportText;
+            public const string MultipleCurrencyReport = Name + Dot + MultipleCurrencyReportText;
+            public const string MultipleCurrencyGroupReport = Name + Dot + MultipleCurrencyGroupReportText;
+        }
 
-        public const string JournalReport = DisplayNamePrefix + JournalReportText;
-        public const string JournalSingleCurrencySortByCodeReport = JournalReport + Dot + JournalSingleCurrencySortByCodeReportText;
-        public const string JournalSingleCurrencySortByDateReport = JournalReport + Dot + JournalSingleCurrencySortByDateReportText;
-        public const string JournalMultipleCurrencySortByCodeReport = JournalReport + Dot + JournalMultipleCurrencySortByCodeReportText;
-        public const string JournalMultipleCurrencySortByDateReport = JournalReport + Dot + JournalMultipleCurrencySortByDateReportText;
+        /// <summary>
+        /// Journal Report
+        /// </summary>
+        public class Journals
+        {
+            public const string Name = DisplayNamePrefix + JournalReportText;
+            public const string SingleCurrencySortByCodeReport = Name + Dot + JournalSingleCurrencySortByCodeReportText;
+            public const string SingleCurrencySortByDateReport = Name + Dot + JournalSingleCurrencySortByDateReportText;
+            public const string MultipleCurrencySortByCodeReport = Name + Dot + JournalMultipleCurrencySortByCodeReportText;
+            public const string MultipleCurrencySortByDateReport = Name + Dot + JournalMultipleCurrencySortByDateReportText;
+        }
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;
         public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;
@@ -100,5 +123,4 @@ public class AccountingMenus
         public const string Payable = DisplayNamePrefix + PayableText;
         public const string PayableVoucher = DisplayNamePrefix + PayableVoucherText;
     }
-
 }

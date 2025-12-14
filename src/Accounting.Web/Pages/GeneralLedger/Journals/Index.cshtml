@@ -13,10 +13,10 @@
 @model Accounting.Web.Pages.GeneralLedger.Journals.IndexModel
 @inject IPageLayout PageLayout
 @{
-    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.JournalSingleCurrencySortByCodeReport].Value;
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByCodeReport].Value;
     PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
-    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.JournalReport]);
-    PageLayout.Content.MenuItemName = AccountingMenus.JournalSingleCurrencySortByCodeReport;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.Journals.Name]);
+    PageLayout.Content.MenuItemName = AccountingMenus.Journals.SingleCurrencySortByCodeReport;
 }
 @section scripts
 {

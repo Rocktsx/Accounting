@@ -156,22 +156,22 @@ public class AccountingMenuContributor : IMenuContributor
          );
 
         var generalLedgerReports = new ApplicationMenuItem(
-           AccountingMenus.GeneralLedgerReport,
-           l[AccountingMenus.DisplayNames.GeneralLedgerReport],
+           AccountingMenus.GeneralLedgers.Name,
+           l[AccountingMenus.DisplayNames.GeneralLedgers.Name],
            icon: "fas fa-chart-bar"
         );
         generalLedgerReports.AddItem(
               new ApplicationMenuItem(
-                  AccountingMenus.GeneralLedgerSingleCurrencyReport,
-                  l[AccountingMenus.DisplayNames.GeneralLedgerSingleCurrencyReport],
+                  AccountingMenus.GeneralLedgers.SingleCurrencyReport,
+                  l[AccountingMenus.DisplayNames.GeneralLedgers.SingleCurrencyReport],
                   icon: "fas fa-chart-simple",
                   url: "/GeneralLedger/GeneralLedgers"
               ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)
         );
         generalLedgerReports.AddItem(
              new ApplicationMenuItem(
-                 AccountingMenus.GeneralLedgerMultipleCurrencyReport,
-                 l[AccountingMenus.DisplayNames.GeneralLedgerMultipleCurrencyReport],
+                 AccountingMenus.GeneralLedgers.MultipleCurrencyReport,
+                 l[AccountingMenus.DisplayNames.GeneralLedgers.MultipleCurrencyReport],
                  icon: "fas fa-chart-column",
                  url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyReport"
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport)
@@ -179,8 +179,8 @@ public class AccountingMenuContributor : IMenuContributor
 
         generalLedgerReports.AddItem(
              new ApplicationMenuItem(
-                 AccountingMenus.GeneralLedgerMultipleCurrencyGroupReport,
-                 l[AccountingMenus.DisplayNames.GeneralLedgerMultipleCurrencyGroupReport],
+                 AccountingMenus.GeneralLedgers.MultipleCurrencyGroupReport,
+                 l[AccountingMenus.DisplayNames.GeneralLedgers.MultipleCurrencyGroupReport],
                  icon: "fas fa-chart-diagram",
                  url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyGroupReport"
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport)
@@ -192,22 +192,22 @@ public class AccountingMenuContributor : IMenuContributor
         }
 
         var journalReportMenu = new ApplicationMenuItem(
-          AccountingMenus.JournalReport,
-          l[AccountingMenus.DisplayNames.JournalReport],
+          AccountingMenus.Journals.Name,
+          l[AccountingMenus.DisplayNames.Journals.Name],
           icon: "fas fa-chart-gantt"
         );
         journalReportMenu.AddItem(
               new ApplicationMenuItem(
-                  AccountingMenus.JournalSingleCurrencySortByCodeReport,
-                  l[AccountingMenus.DisplayNames.JournalSingleCurrencySortByCodeReport],
+                  AccountingMenus.Journals.SingleCurrencySortByCodeReport,
+                  l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByCodeReport],
                   icon: "fas fa-chart-line",
                   url: "/GeneralLedger/Journals"
               ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)
         );
         journalReportMenu.AddItem(
              new ApplicationMenuItem(
-                 AccountingMenus.JournalSingleCurrencySortByDateReport,
-                 l[AccountingMenus.DisplayNames.JournalSingleCurrencySortByDateReport],
+                 AccountingMenus.Journals.SingleCurrencySortByDateReport,
+                 l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByDateReport],
                  icon: "fas fa-align-right",
                  url: "/GeneralLedger/Journals/SingleCurrencySortByDateReport"
              ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport)
@@ -215,8 +215,8 @@ public class AccountingMenuContributor : IMenuContributor
 
         journalReportMenu.AddItem(
             new ApplicationMenuItem(
-                AccountingMenus.JournalMultipleCurrencySortByCodeReport,
-                l[AccountingMenus.DisplayNames.JournalMultipleCurrencySortByCodeReport],
+                AccountingMenus.Journals.MultipleCurrencySortByCodeReport,
+                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByCodeReport],
                 icon: "fas fa-align-center",
                 url: "/GeneralLedger/Journals/MultipleCurrencySortByCodeReport"
             ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport)
@@ -224,8 +224,8 @@ public class AccountingMenuContributor : IMenuContributor
 
         journalReportMenu.AddItem(
             new ApplicationMenuItem(
-                AccountingMenus.JournalMultipleCurrencySortByDateReport,
-                l[AccountingMenus.DisplayNames.JournalMultipleCurrencySortByDateReport],
+                AccountingMenus.Journals.MultipleCurrencySortByDateReport,
+                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByDateReport],
                 icon: "fas fa-bars", 
                 url: "/GeneralLedger/Journals/MultipleCurrencySortByDateReport"
             ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport)
