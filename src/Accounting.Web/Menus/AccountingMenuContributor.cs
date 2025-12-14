@@ -164,7 +164,6 @@ public class AccountingMenuContributor : IMenuContributor
               new ApplicationMenuItem(
                   AccountingMenus.GeneralLedgers.SingleCurrencyReport,
                   l[AccountingMenus.DisplayNames.GeneralLedgers.SingleCurrencyReport],
-                  icon: "fas fa-chart-simple",
                   url: "/GeneralLedger/GeneralLedgers"
               ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)
         );
@@ -172,7 +171,6 @@ public class AccountingMenuContributor : IMenuContributor
              new ApplicationMenuItem(
                  AccountingMenus.GeneralLedgers.MultipleCurrencyReport,
                  l[AccountingMenus.DisplayNames.GeneralLedgers.MultipleCurrencyReport],
-                 icon: "fas fa-chart-column",
                  url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyReport"
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport)
         );
@@ -181,7 +179,6 @@ public class AccountingMenuContributor : IMenuContributor
              new ApplicationMenuItem(
                  AccountingMenus.GeneralLedgers.MultipleCurrencyGroupReport,
                  l[AccountingMenus.DisplayNames.GeneralLedgers.MultipleCurrencyGroupReport],
-                 icon: "fas fa-chart-diagram",
                  url: "/GeneralLedger/GeneralLedgers/MultipleCurrencyGroupReport"
              ).RequirePermissions(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport)
         );
@@ -194,21 +191,19 @@ public class AccountingMenuContributor : IMenuContributor
         var journalReportMenu = new ApplicationMenuItem(
           AccountingMenus.Journals.Name,
           l[AccountingMenus.DisplayNames.Journals.Name],
-          icon: "fas fa-chart-gantt"
+          icon: "fas fa-chart-simple"
         );
         journalReportMenu.AddItem(
               new ApplicationMenuItem(
                   AccountingMenus.Journals.SingleCurrencySortByCodeReport,
-                  l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByCodeReport],
-                  icon: "fas fa-chart-line",
+                  l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByCodeReport], 
                   url: "/GeneralLedger/Journals"
               ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)
         );
         journalReportMenu.AddItem(
              new ApplicationMenuItem(
                  AccountingMenus.Journals.SingleCurrencySortByDateReport,
-                 l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByDateReport],
-                 icon: "fas fa-align-right",
+                 l[AccountingMenus.DisplayNames.Journals.SingleCurrencySortByDateReport], 
                  url: "/GeneralLedger/Journals/SingleCurrencySortByDateReport"
              ).RequirePermissions(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport)
         );
@@ -216,8 +211,7 @@ public class AccountingMenuContributor : IMenuContributor
         journalReportMenu.AddItem(
             new ApplicationMenuItem(
                 AccountingMenus.Journals.MultipleCurrencySortByCodeReport,
-                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByCodeReport],
-                icon: "fas fa-align-center",
+                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByCodeReport], 
                 url: "/GeneralLedger/Journals/MultipleCurrencySortByCodeReport"
             ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport)
         );
@@ -225,8 +219,7 @@ public class AccountingMenuContributor : IMenuContributor
         journalReportMenu.AddItem(
             new ApplicationMenuItem(
                 AccountingMenus.Journals.MultipleCurrencySortByDateReport,
-                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByDateReport],
-                icon: "fas fa-bars", 
+                l[AccountingMenus.DisplayNames.Journals.MultipleCurrencySortByDateReport], 
                 url: "/GeneralLedger/Journals/MultipleCurrencySortByDateReport"
             ).RequirePermissions(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport)
         );
