@@ -206,6 +206,12 @@ namespace Accounting.Web.Pages
                        toolbar.AddSearchButton(AccountingPermissions.TrialBalanceReports.YearToDateReport);
                    });
 
+                options.Configure<GeneralLedger.TrialBalances.MtdYtdReportModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport);
+                  });
+
             });
         }
 

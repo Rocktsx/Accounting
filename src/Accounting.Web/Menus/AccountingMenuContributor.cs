@@ -241,6 +241,14 @@ public class AccountingMenuContributor : IMenuContributor
                   url: "/GeneralLedger/TrialBalances"
               ).RequirePermissions(AccountingPermissions.TrialBalanceReports.YearToDateReport));
 
+        trialBalanceMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.TrialBalances.MonthToDateYearToDateReport,
+                l[AccountingMenus.DisplayNames.TrialBalances.MonthToDateYearToDateReport],
+                url: "/GeneralLedger/TrialBalances/MtdYtdReport"
+            ).RequirePermissions(AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport));
+
+
         if (trialBalanceMenu.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(trialBalanceMenu);

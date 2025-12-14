@@ -3,6 +3,7 @@
 
     function getFormParams() {
         return {
+            startDate: $('#startDate').val(),
             endDate: $('#endDate').val(),
             periodId: $('#periodId').val(),
         }
@@ -13,7 +14,11 @@
         const total = {
             debitor: 0,
             creditor: 0,
-            count: items.length
+            mtdDebitor: 0,
+            mtdCreditor: 0,
+            lastPeriodDebitor: 0,
+            lastPeriodCreditor: 0,
+            count: items.length,
         }
         const secondaryGroups = {}
         items.reduce((prev, current) => {
@@ -42,6 +47,16 @@
             group.items.push(secondaryGroup);
             secondaryGroup.items.push(current);
 
+            if (current.lastPeriodNativeAmount > 0) {
+                total.lastPeriodDebitor += current.lastPeriodNativeAmount;
+            } else {
+                total.lastPeriodCreditor += Math.abs(current.lastPeriodNativeAmount);
+            }
+            if (current.monthToDateNativeAmount > 0) {
+                total.mtdDebitor += current.monthToDateNativeAmount;
+            } else {
+                total.mtdCreditor += Math.abs(current.monthToDateNativeAmount);
+            }
             if (current.nativeAmount > 0) {
                 total.debitor += current.nativeAmount;
             } else {
@@ -51,7 +66,7 @@
 
             return prev;
         }, {});
-         
+
         return {
             items: groups, total
         };
@@ -100,7 +115,7 @@
         store.commit('setItems', { items: [] });
         const busyEle = '.body';
         abp.ui.setBusy(busyEle);
-        accounting.finance.generalLedgerReports.trialBalanceReport.getYtdList(params).then(function (result) {
+        accounting.finance.generalLedgerReports.trialBalanceReport.getMtdYtdList(params).then(function (result) {
             store.commit('setItems', { items: result || [] });
             abp.ui.clearBusy(busyEle);
         }).catch(function () {
@@ -141,15 +156,29 @@
     <div class="body"> 
         <table class="table table-borderless">
             <thead>
+            <tr class="border-bottom">
+                    <th colspan="2"></th>
+                    <th colspan="2" class="text-end">{{ formatDate(params.startDate) }}&nbsp;{{ l('Before') }}</th>
+                    <th colspan="2" class="text-end">{{ formatDate(params.startDate) }} - {{ formatDate(params.endDate) }}</th>
+                    <th colspan="2" class="text-end">{{ l('AsAt') }}&nbsp;{{ formatDate(params.endDate) }}</th>
+                </tr>
                 <tr class="border-bottom">
                     <th class="fw-bold">{{ l('SubjectCode') }}</th>
                     <th class="fw-bold">{{ l('SubjectName') }}</th>
+                    <th class="fw-bold text-end">{{ l('Debitor') }}</th>
+                    <th class="fw-bold text-end">{{ l('Creditor') }}</th>
+                    <th class="fw-bold text-end">{{ l('Debitor') }}</th>
+                    <th class="fw-bold text-end">{{ l('Creditor') }}</th>
                     <th class="fw-bold text-end">{{ l('Debitor') }}</th>
                     <th class="fw-bold text-end">{{ l('Creditor') }}</th>
                 </tr>
                 <tr>
                     <th></th>
                     <th></th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
                     <th class="text-end">{{ nativeCurrency }}</th>
                     <th class="text-end">{{ nativeCurrency }}</th>
                 </tr>
@@ -166,7 +195,11 @@
                         <tr v-for="subItem in secondaryItem.items" :key="secondaryItem.code">
                             <td>{{ subItem.subjectCode }}</td>
                             <td>{{ subItem.subjectName }}</td>
-                            <td class="text-end">{{ subItem.nativeAmount >= 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
+                             <td class="text-end">{{ subItem.lastPeriodNativeAmount >= 0 ? renderAmount(Math.abs(subItem.lastPeriodNativeAmount)): '' }}</td>
+                            <td class="text-end">{{ subItem.lastPeriodNativeAmount < 0 ? renderAmount(Math.abs(subItem.lastPeriodNativeAmount)): '' }}</td>
+                            <td class="text-end">{{ subItem.monthToDateNativeAmount >= 0 ? renderAmount(Math.abs(subItem.monthToDateNativeAmount)): '' }}</td>
+                            <td class="text-end">{{ subItem.monthToDateNativeAmount < 0 ? renderAmount(Math.abs(subItem.monthToDateNativeAmount)): '' }}</td>
+                             <td class="text-end">{{ subItem.nativeAmount >= 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                             <td class="text-end">{{ subItem.nativeAmount < 0 ? renderAmount(Math.abs(subItem.nativeAmount)): '' }}</td>
                         </tr>
                     </template>
@@ -184,6 +217,10 @@
                                 <div class="col text-end">{{ l('Total') }}</div>
                             </div>
                         </td>
+                        <td class="text-end">{{ renderAmount(total.lastPeriodDebitor) }}</td>
+                        <td class="text-end">{{ renderAmount(total.lastPeriodCreditor) }}</td>
+                        <td class="text-end">{{ renderAmount(total.mtdDebitor) }}</td>
+                        <td class="text-end">{{ renderAmount(total.mtdCreditor) }}</td>
                         <td class="text-end">{{ renderAmount(total.debitor) }}</td>
                         <td class="text-end">{{ renderAmount(total.creditor) }}</td>
                   </tr >
@@ -195,7 +232,7 @@
     const Body = {
         template: bodyTemplate,
         computed: {
-            ...Vuex.mapGetters(['items', 'nativeCurrency', 'total'])
+            ...Vuex.mapGetters(['items', 'nativeCurrency', 'total', 'params'])
         },
         methods: {
             formatDate,

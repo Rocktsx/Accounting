@@ -335,6 +335,7 @@
     "Menu:TrialBalanceReport.YearToDateReport": "试算表(YTD)",
     "Menu:TrialBalanceReport.MonthToDateYearToDateReport": "试算表(MTD YTD)",
     "AsAt": "截止",
-    "Items": "项目合计"
+    "Items": "项目合计",
+    "Before": "前"
   }
 }

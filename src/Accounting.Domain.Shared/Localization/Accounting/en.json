@@ -300,6 +300,7 @@
     "Menu:TrialBalanceReport.YearToDateReport": "Trial Balance(YTD)",
     "Menu:TrialBalanceReport.MonthToDateYearToDateReport": "Trial Balance(MTD YTD)",
     "AsAt": "As at",
-    "Items": "Items"
+    "Items": "Items",
+    "Before": "Before"
   }
 }

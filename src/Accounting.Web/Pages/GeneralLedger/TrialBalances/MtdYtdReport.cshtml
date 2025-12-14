@@ -8,23 +8,23 @@
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
 @inject IStringLocalizer<AccountingResource> L
-@model Accounting.Web.Pages.GeneralLedger.TrialBalances.IndexModel
+@model Accounting.Web.Pages.GeneralLedger.TrialBalances.MtdYtdReportModel
 @inject IPageLayout PageLayout
 @{
-    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.TrialBalances.YearToDateReport].Value;
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.TrialBalances.MonthToDateYearToDateReport].Value;
     PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
     PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.TrialBalances.Name]);
-    PageLayout.Content.MenuItemName = AccountingMenus.TrialBalances.YearToDateReport;
+    PageLayout.Content.MenuItemName = AccountingMenus.TrialBalances.MonthToDateYearToDateReport;
 }
 @section content_toolbar {
-    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(MtdYtdReportModel).FullName })
 }
 @section scripts
 {
     <abp-script src="/libs/vue/vue.min.js"></abp-script>
     <abp-script src="/libs/vuex/vuex.min.js"></abp-script>
     <abp-script src="/libs/select2/js/i18n/@(Helpers.GetSelect2LanguageName()).js"></abp-script>
-    <abp-script src="/Pages/GeneralLedger/TrialBalances/Index.cshtml.js"></abp-script>
+    <abp-script src="/Pages/GeneralLedger/TrialBalances/MtdYtdReport.cshtml.js"></abp-script>
 }
 <abp-card>
     <abp-card-header>
@@ -42,9 +42,14 @@
                     </div>
                 </abp-column>
                 <abp-column class="row">
-                    <label for="endDate" class="form-label col-sm-4 text-end">@L["AsAt"].Value</label>
-                    <div class="col-sm-8">
-                        <input type="date" class="form-control form-control-sm" id="endDate" name="endDate" value="@Model.CurrentPeriod.EndDate.ToString(AccountingCommonConsts.StandardDateFormat)">
+                    <label for="startDate" class="form-label col-sm-4 text-end">@L["VoucherDate"].Value</label>
+                    <div class="col-sm-8 row pe-0">
+                        <div class="col pe-1">
+                            <input type="date" class="form-control form-control-sm" id="startDate" name="startDate" value="@Model.CurrentPeriod.StartDate.ToString(AccountingCommonConsts.StandardDateFormat)">
+                        </div>
+                        <div class="col ps-1 pe-0">
+                            <input type="date" class="form-control form-control-sm" id="endDate" name="endDate" value="@Model.CurrentPeriod.EndDate.ToString(AccountingCommonConsts.StandardDateFormat)">
+                        </div>
                     </div>
                 </abp-column>
                 <abp-column></abp-column> 
