@@ -21,6 +21,7 @@ public class AccountingMenus
     private const string SubjectText = "Subject";
     private const string TransferVoucherText = "TransferVoucher";
     private const string VoucherStateText = "VoucherState";
+
     private const string GeneralLedgerReportText = "GeneralLedgerReport";
     private const string SingleCurrencyReportText = "SingleCurrencyReport";
     private const string MultipleCurrencyReportText = "MultipleCurrencyReport";
@@ -31,6 +32,10 @@ public class AccountingMenus
     private const string JournalSingleCurrencySortByDateReportText = "SingleCurrencySortByDateReport";
     private const string JournalMultipleCurrencySortByCodeReportText = "MultipleCurrencySortByCodeReport";
     private const string JournalMultipleCurrencySortByDateReportText = "MultipleCurrencySortByDateReport";
+
+    private const string TrialBalanceText = "TrialBalanceReport";
+    private const string TrialBalanceYearToDateReportText = "YearToDateReport";
+    private const string TrialBalanceMonthToDateYearToDateReportText = "MonthToDateYearToDateReport";
 
     private const string ReceivableText = "Receivable";
     private const string ReceivableVoucherText = "ReceivableVoucher";
@@ -55,7 +60,7 @@ public class AccountingMenus
     /// General Ledger Report
     /// </summary>
     public class GeneralLedgers
-    { 
+    {
         public const string Name = GeneralLedger + Dot + GeneralLedgerReportText;
         public const string SingleCurrencyReport = Name + Dot + SingleCurrencyReportText;
         public const string MultipleCurrencyReport = Name + Dot + MultipleCurrencyReportText;
@@ -73,6 +78,16 @@ public class AccountingMenus
         public const string MultipleCurrencySortByCodeReport = GeneralLedger + Dot + JournalMultipleCurrencySortByCodeReportText;
         public const string MultipleCurrencySortByDateReport = GeneralLedger + Dot + JournalMultipleCurrencySortByDateReportText;
     }
+    /// <summary>
+    /// Trial Balance Report
+    /// </summary>
+    public class TrialBalances
+    {
+        public const string Name = GeneralLedger + Dot + TrialBalanceText;
+        public const string MonthToDateYearToDateReport = GeneralLedger + Dot + TrialBalanceMonthToDateYearToDateReportText;
+        public const string YearToDateReport = GeneralLedger + Dot + TrialBalanceYearToDateReportText;
+    }
+
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
 
@@ -115,6 +130,16 @@ public class AccountingMenus
             public const string SingleCurrencySortByDateReport = Name + Dot + JournalSingleCurrencySortByDateReportText;
             public const string MultipleCurrencySortByCodeReport = Name + Dot + JournalMultipleCurrencySortByCodeReportText;
             public const string MultipleCurrencySortByDateReport = Name + Dot + JournalMultipleCurrencySortByDateReportText;
+        }
+
+        /// <summary>
+        /// Trial Balance Report
+        /// </summary>
+        public class TrialBalances
+        {
+            public const string Name = DisplayNamePrefix + TrialBalanceText;
+            public const string MonthToDateYearToDateReport = Name + Dot + TrialBalanceMonthToDateYearToDateReportText;
+            public const string YearToDateReport = Name + Dot + TrialBalanceYearToDateReportText;
         }
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;

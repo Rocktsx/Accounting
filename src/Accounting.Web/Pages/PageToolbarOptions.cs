@@ -20,10 +20,8 @@ namespace Accounting.Web.Pages
                             L("NewCurrency"),
                             icon: "plus",
                             id: "newCurrency",
-                            requiredPolicyName: AccountingPermissions.Currencies.Create
-                        );
-                    }
-                );
+                            requiredPolicyName: AccountingPermissions.Currencies.Create);
+                    });
 
                 options.Configure<BasicData.Clients.IndexModel>(
                     toolbar =>
@@ -32,16 +30,14 @@ namespace Accounting.Web.Pages
                             L("NewClient"),
                             icon: "plus",
                             id: "newCompanyBtn",
-                            requiredPolicyName: AccountingPermissions.Clients.Create
-                        );
+                            requiredPolicyName: AccountingPermissions.Clients.Create);
+
                         toolbar.AddButton(
                              L("ImportClient"),
                              icon: "file-import",
                              id: "importCompanyBtn",
-                             requiredPolicyName: AccountingPermissions.Clients.Import
-                        );
-                    }
-                );
+                             requiredPolicyName: AccountingPermissions.Clients.Import);
+                    });
 
                 options.Configure<BasicData.Vendors.IndexModel>(
                     toolbar =>
@@ -56,10 +52,8 @@ namespace Accounting.Web.Pages
                              L("ImportVendor"),
                              icon: "file-import",
                              id: "importCompanyBtn",
-                             requiredPolicyName: AccountingPermissions.Vendors.Import
-                         );
-                    }
-                );
+                             requiredPolicyName: AccountingPermissions.Vendors.Import);
+                    });
 
                 options.Configure<GeneralLedger.AccountingPeriods.IndexModel>(
                     toolbar =>
@@ -68,10 +62,8 @@ namespace Accounting.Web.Pages
                             L("NewAccountingPeriod"),
                             icon: "plus",
                             id: "newAccountingPeriodBtn",
-                            requiredPolicyName: AccountingPermissions.AccountingPeriods.Create
-                        );
-                    }
-                );
+                            requiredPolicyName: AccountingPermissions.AccountingPeriods.Create);
+                    });
 
                 options.Configure<GeneralLedger.ChartOfAccounts.IndexModel>(
                     toolbar =>
@@ -80,16 +72,14 @@ namespace Accounting.Web.Pages
                             L("NewSubject"),
                             icon: "plus",
                             id: "newSubjectBtn",
-                            requiredPolicyName: AccountingPermissions.Subjects.Create
-                        );
+                            requiredPolicyName: AccountingPermissions.Subjects.Create);
+
                         toolbar.AddButton(
                           L("ImportSubject"),
                           icon: "file-import",
                           id: "importSubjectBtn",
-                          requiredPolicyName: AccountingPermissions.Subjects.Import
-                      );
-                    }
-                );
+                          requiredPolicyName: AccountingPermissions.Subjects.Import);
+                    });
 
                 options.Configure<GeneralLedger.GeneralAccounts.IndexModel>(
                     toolbar =>
@@ -104,10 +94,8 @@ namespace Accounting.Web.Pages
                           L("ImportGeneralAccount"),
                           icon: "file-import",
                           id: "importGeneralAccountBtn",
-                          requiredPolicyName: AccountingPermissions.GeneralAccounts.Import
-                      );
-                    }
-                );
+                          requiredPolicyName: AccountingPermissions.GeneralAccounts.Import);
+                    });
 
                 options.Configure<GeneralLedger.SubjectCategories.IndexModel>(
                     toolbar =>
@@ -116,10 +104,8 @@ namespace Accounting.Web.Pages
                             L("NewSubjectCategory"),
                             icon: "plus",
                             id: "newSubjectCategoryBtn",
-                            requiredPolicyName: AccountingPermissions.SubjectCategories.Create
-                        );
-                    }
-                );
+                            requiredPolicyName: AccountingPermissions.SubjectCategories.Create);
+                    });
 
                 options.Configure<GeneralLedger.TransferVouchers.IndexModel>(
                     toolbar =>
@@ -129,16 +115,14 @@ namespace Accounting.Web.Pages
                           L("NewTransferVoucher"),
                           icon: "plus",
                           id: "newVoucherBtn",
-                          requiredPolicyName: AccountingPermissions.TransferVouchers.Create
-                        );
+                          requiredPolicyName: AccountingPermissions.TransferVouchers.Create);
+
                         toolbar.AddButton(
                              L("ImportTransferVoucher"),
                              icon: "file-import",
                              id: "importTVBtn",
-                             requiredPolicyName: AccountingPermissions.TransferVouchers.Import
-                         );
-                    }
-                );
+                             requiredPolicyName: AccountingPermissions.TransferVouchers.Import);
+                    });
 
 
                 options.Configure<GeneralLedger.VoucherStates.IndexModel>(
@@ -148,10 +132,8 @@ namespace Accounting.Web.Pages
                             L("UpdateStatus"),
                             icon: "pencil",
                             id: "updateStatusBtn",
-                            requiredPolicyName: AccountingPermissions.VoucherStates.UpdateStatus
-                        );
-                    }
-                );
+                            requiredPolicyName: AccountingPermissions.VoucherStates.UpdateStatus);
+                    });
 
 
                 options.Configure<Receivable.ReceivableVouchers.IndexModel>(
@@ -162,10 +144,8 @@ namespace Accounting.Web.Pages
                           L("NewReceivableVoucher"),
                           icon: "plus",
                           id: "newVoucherBtn",
-                          requiredPolicyName: AccountingPermissions.ReceivableVouchers.Create
-                        );
-                    }
-                );
+                          requiredPolicyName: AccountingPermissions.ReceivableVouchers.Create);
+                    });
 
                 options.Configure<Payable.PayableVouchers.IndexModel>(
                     toolbar =>
@@ -175,58 +155,56 @@ namespace Accounting.Web.Pages
                           L("NewPayableVoucher"),
                           icon: "plus",
                           id: "newVoucherBtn",
-                          requiredPolicyName: AccountingPermissions.PayableVouchers.Create
-                        );
-                    }
-                );
+                          requiredPolicyName: AccountingPermissions.PayableVouchers.Create);
+                    });
 
                 options.Configure<GeneralLedger.GeneralLedgers.IndexModel>(
                     toolbar =>
                     {
                         toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport);
-                    }
-                );
+                    });
+
                 options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyReportModel>(
                     toolbar =>
                     {
                         toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport);
-                    }
-                );
+                    });
 
                 options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyGroupReportModel>(
                    toolbar =>
                    {
                        toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport);
-                   }
-               );
+                   });
 
                 options.Configure<GeneralLedger.Journals.IndexModel>(
                    toolbar =>
                    {
                        toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport);
-                   }
-               );
+                   });
 
                 options.Configure<GeneralLedger.Journals.SingleCurrencySortByDateReport>(
                      toolbar =>
                      {
                          toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport);
-                     }
-                );
+                     });
 
                 options.Configure<GeneralLedger.Journals.MultipleCurrencySortByCodeReportModel>(
                     toolbar =>
                     {
                         toolbar.AddSearchButton(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport);
-                    }
-                );
+                    });
 
                 options.Configure<GeneralLedger.Journals.MultipleCurrencySortByDateReportModel>(
                    toolbar =>
                    {
                        toolbar.AddSearchButton(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport);
-                   }
-               );
+                   });
+
+                options.Configure<GeneralLedger.TrialBalances.IndexModel>(
+                   toolbar =>
+                   {
+                       toolbar.AddSearchButton(AccountingPermissions.TrialBalanceReports.YearToDateReport);
+                   });
 
             });
         }

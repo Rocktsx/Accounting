@@ -330,6 +330,11 @@
     "Permission:TrialBalanceReport": "试算表",
     "Permission:TrialBalanceReport.YearToDateReport": "试算表(YTD)",
     "Permission:TrialBalanceReport.MonthToDateYearToDateReport": "试算表(MTD YTD)",
-    "TrialBalanc": "试算表"
+    "TrialBalance": "试算表",
+    "Menu:TrialBalanceReport": "试算表",
+    "Menu:TrialBalanceReport.YearToDateReport": "试算表(YTD)",
+    "Menu:TrialBalanceReport.MonthToDateYearToDateReport": "试算表(MTD YTD)",
+    "AsAt": "截止",
+    "Items": "项目合计"
   }
 }

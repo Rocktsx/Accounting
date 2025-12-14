@@ -227,7 +227,24 @@ public class AccountingMenuContributor : IMenuContributor
         if (journalReportMenu.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(journalReportMenu);
-        } 
+        }
+
+        var trialBalanceMenu = new ApplicationMenuItem(
+            AccountingMenus.TrialBalances.Name,
+            l[AccountingMenus.DisplayNames.TrialBalances.Name],
+            icon: "fas fa-chart-column");
+
+        trialBalanceMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.TrialBalances.YearToDateReport,
+                  l[AccountingMenus.DisplayNames.TrialBalances.YearToDateReport],
+                  url: "/GeneralLedger/TrialBalances"
+              ).RequirePermissions(AccountingPermissions.TrialBalanceReports.YearToDateReport));
+
+        if (trialBalanceMenu.Items.Count > 0)
+        {
+            generalLedgerMenu.AddItem(trialBalanceMenu);
+        }
 
         if (generalLedgerMenu.Items.Count > 0)
         {
