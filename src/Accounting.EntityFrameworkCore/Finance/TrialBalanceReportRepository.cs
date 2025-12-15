@@ -94,16 +94,7 @@ namespace Accounting.Finance
                   NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor)
               });
         }
-        private async Task<Guid?> GetCapitalAccountTypeIdAsync(CancellationToken cancellationToken = default)
-        {
-            var item = await (await GetDbContextAsync())
-                .Set<AccountType>()
-                .Where(item => item.TrialBalanceGroup == AccountTypeGroup.Capital
-                          && item.ParentId == null).FirstOrDefaultAsync(cancellationToken);
-
-            return item?.Id;
-        }
-
+        
         public async Task<IEnumerable<TrialBalanceMonthToDateYearToDateResult>> GetMonthToDateAndYearToDateListAsync(DateOnly startDate,
             DateOnly endDate, DateOnly periodStartDate, CancellationToken cancellationToken = default)
         {

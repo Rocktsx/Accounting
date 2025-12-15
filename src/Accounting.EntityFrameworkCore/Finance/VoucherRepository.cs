@@ -1,4 +1,7 @@
-﻿using Accounting.EntityFrameworkCore;
+﻿using Accounting.Common;
+using Accounting.EntityFrameworkCore;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.Reports;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +16,6 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
-using Accounting.Common;
-using Accounting.Finance.Reports;
 
 namespace Accounting.Finance
 {
@@ -380,6 +381,15 @@ namespace Accounting.Finance
         {
             var queryable = await WithDetailsAsync(item => item.Details);
             return queryable.Where(new NoVoidVoucherSpecification().ToExpression());
+        }
+        protected async Task<Guid?> GetCapitalAccountTypeIdAsync(CancellationToken cancellationToken = default)
+        {
+            var item = await (await GetDbContextAsync())
+                .Set<AccountType>()
+                .Where(item => item.TrialBalanceGroup == AccountTypeGroup.Capital
+                          && item.ParentId == null).FirstOrDefaultAsync(cancellationToken);
+
+            return item?.Id;
         }
     }
 }
