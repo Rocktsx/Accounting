@@ -90,6 +90,7 @@ public class AccountingMenus
         public const string YearToDateReport = GeneralLedger + Dot + YearToDateReportText;
     }
 
+    private const string TwelveMonthsReportText = "TwelveMonthsReport";
     /// <summary>
     /// Profit And Loss Report
     /// </summary>
@@ -98,6 +99,7 @@ public class AccountingMenus
         public const string Name = GeneralLedger + Dot + ProfitAndLossReportText;
         public const string MonthToDateYearToDateReport = GeneralLedger + Dot + MonthToDateYearToDateReportText;
         public const string YearToDateReport = GeneralLedger + Dot + YearToDateReportText;
+        public const string TwelveMonthsReport = GeneralLedger + Dot + TwelveMonthsReportText;
     }
 
     public const string Receivable = Prefix + Dot + ReceivableText;
@@ -162,6 +164,7 @@ public class AccountingMenus
             public const string Name = DisplayNamePrefix + ProfitAndLossReportText;
             public const string MonthToDateYearToDateReport = Name + Dot + MonthToDateYearToDateReportText;
             public const string YearToDateReport = Name + Dot + YearToDateReportText;
+            public const string TwelveMonthsReport = Name + Dot + TwelveMonthsReportText;
         }
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;

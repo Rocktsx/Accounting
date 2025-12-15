@@ -354,6 +354,13 @@ public class AccountingMenuContributor : IMenuContributor
                 url: "/GeneralLedger/IncomeStatements/MtdYtdReport"
             ).RequirePermissions(AccountingPermissions.ProfitAndLossReports.MonthToDateYearToDateReport));
 
+        profitAndLossMenu.AddItem(
+           new ApplicationMenuItem(
+               AccountingMenus.ProfitAndLosses.TwelveMonthsReport,
+               l[AccountingMenus.DisplayNames.ProfitAndLosses.TwelveMonthsReport],
+               url: "/GeneralLedger/IncomeStatements/TwelveMonthsReport"
+           ).RequirePermissions(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport));
+
         if (profitAndLossMenu.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(profitAndLossMenu);

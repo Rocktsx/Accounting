@@ -222,7 +222,13 @@ namespace Accounting.Web.Pages
                   toolbar =>
                   {
                       toolbar.AddSearchButton(AccountingPermissions.ProfitAndLossReports.MonthToDateYearToDateReport);
-                  }); 
+                  });
+
+                options.Configure<GeneralLedger.IncomeStatements.TwelveMonthsReportModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport);
+                  });
             });
         }
 

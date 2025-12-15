@@ -310,7 +310,20 @@
     "Menu:ProfitAndLossReport": "Income Statement",
     "Menu:ProfitAndLossReport.YearToDateReport": "Income Statement(YTD)",
     "Menu:ProfitAndLossReport.MonthToDateYearToDateReport": "Income Statement(MTD YTD)",
+    "Menu:ProfitAndLossReport.TwelveMonthsReport": "Income Statement(12 Months)",
     "NetProfit": "Net Profit",
-    "GrossProfit": "Gross Profit"
+    "GrossProfit": "Gross Profit",
+    "January": "Jan.",
+    "February": "Feb.",
+    "March": "Mar.",
+    "April": "Apr.",
+    "May": "May",
+    "June": "Jun.",
+    "July": "Jul.",
+    "August": "Aug.",
+    "September": "Sep.",
+    "October": "Oct.",
+    "November": "Nov.",
+    "December": "Dec."
   }
 }

@@ -345,7 +345,20 @@
     "Menu:ProfitAndLossReport": "損益表",
     "Menu:ProfitAndLossReport.YearToDateReport": "損益表(YTD)",
     "Menu:ProfitAndLossReport.MonthToDateYearToDateReport": "損益表(MTD YTD)",
+    "Menu:ProfitAndLossReport.TwelveMonthsReport": "損益表(12个月)",
     "NetProfit": "純利",
-    "GrossProfit": "毛利"
+    "GrossProfit": "毛利",
+    "January": "一月",
+    "February": "二月",
+    "March": "三月",
+    "April": "四月",
+    "May": "五月",
+    "June": "六月",
+    "July": "七月",
+    "August": "八月",
+    "September": "九月",
+    "October": "十月",
+    "November": "十一月",
+    "December": "十二月"
   }
 }
