@@ -48,7 +48,7 @@ namespace Accounting
 
         public const int SystemGenGroupSort = 998;
         public const string SystemGenCodeText = "SYS. GEN.";
-        public const string SubjectName = "Cumulative Profit (Loss)";
-        public const string SubjectOtherName = "累积损益";
+        public const string SubjectName = "累计损益";
+        public const string SubjectOtherName = "Cumulative Profit (Loss)";
     }
 }
