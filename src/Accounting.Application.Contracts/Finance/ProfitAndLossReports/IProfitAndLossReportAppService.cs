@@ -28,7 +28,7 @@ namespace Accounting.Finance.ProfitAndLossReports
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<IEnumerable<ProfitAndLoss12MonthsResultDto>> GetTwelveMonthsAsync(
+        Task<IEnumerable<ProfitAndLoss12MonthsResultDto>> GetTwelveMonthsListAsync(
             ProfitAndLossMtdYtdRequestDto input); 
     }
 }

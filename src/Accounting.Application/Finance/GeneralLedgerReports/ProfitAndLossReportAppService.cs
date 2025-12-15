@@ -78,7 +78,7 @@ namespace Accounting.Finance.GeneralLedgerReports
         }
 
         [Authorize(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport)]
-        public async Task<IEnumerable<ProfitAndLoss12MonthsResultDto>> GetTwelveMonthsAsync(
+        public async Task<IEnumerable<ProfitAndLoss12MonthsResultDto>> GetTwelveMonthsListAsync(
             ProfitAndLossMtdYtdRequestDto input)
         {
             var (period, endDate) = await HandleRequestDto(input);

@@ -73,7 +73,7 @@ namespace Accounting.Finance
             };
 
             // act
-            var result = await _plAppService.GetTwelveMonthsAsync(input);
+            var result = await _plAppService.GetTwelveMonthsListAsync(input);
 
             // assert
             result.ShouldNotBeNull();
