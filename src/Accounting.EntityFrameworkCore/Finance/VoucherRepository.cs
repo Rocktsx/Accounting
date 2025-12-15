@@ -21,6 +21,18 @@ namespace Accounting.Finance
 {
     public class VoucherRepository : EfCoreRepository<AccountingDbContext, Voucher, Guid>, IVoucherRepository
     {
+        /// <summary>
+        /// Assets, Liabilities, Capital group
+        /// </summary>
+        protected static readonly AccountTypeGroup[] ALCGroups = [AccountTypeGroup.Assets,
+            AccountTypeGroup.Liabilities, AccountTypeGroup.Capital];
+
+        /// <summary>
+        /// Income, Expenses group
+        /// </summary>
+        protected static readonly AccountTypeGroup[] IEGroups = [AccountTypeGroup.Income,
+            AccountTypeGroup.Expenses];
+
         public VoucherRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }

@@ -12,13 +12,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Accounting.Finance
 {
     public class ProfitAndLossReportRepository : VoucherRepository, IProfitAndLossReportRepository
-    {
-        /// <summary>
-        /// Income, Expenses group
-        /// </summary>
-        private readonly AccountTypeGroup[] _ieGroups = [AccountTypeGroup.Income,
-            AccountTypeGroup.Expenses];
-
+    { 
         public ProfitAndLossReportRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
@@ -29,7 +23,7 @@ namespace Accounting.Finance
             var plQueryable = queryable.Where(item =>
                 item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate)
                 .SelectMany(item => item.Details)
-               .Where(item => _ieGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+               .Where(item => IEGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                .GroupBy(item => new
                {
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
@@ -72,7 +66,7 @@ namespace Accounting.Finance
             var plQueryable = queryable.Where(item =>
                 item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate)
                 .SelectMany(item => item.Details)
-               .Where(item => _ieGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+               .Where(item => IEGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                .GroupBy(item => new
                {
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
@@ -117,7 +111,7 @@ namespace Accounting.Finance
             var plQueryable = queryable.Where(item =>
                 item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate)
                 .SelectMany(item => item.Details)
-               .Where(item => _ieGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+               .Where(item => IEGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                .GroupBy(item => new
                {
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,

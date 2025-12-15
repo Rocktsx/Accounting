@@ -11,12 +11,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Accounting.Finance
 {
     public class GeneralLedgerReportRepository : VoucherRepository, IGeneralLedgerReportRepository
-    { 
-        /// <summary>
-        /// Assets, Liabilities, Capital group
-        /// </summary>
-        private readonly AccountTypeGroup[] _alcGroups = [AccountTypeGroup.Assets,
-            AccountTypeGroup.Liabilities, AccountTypeGroup.Capital];
+    {  
         public GeneralLedgerReportRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         { 
         }
@@ -29,7 +24,7 @@ namespace Accounting.Finance
             var lastYearBfQuery = voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
-                                            .Where(item => _alcGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+                                            .Where(item => ALCGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                                             .GroupBy(item => new
                                             {
                                                 item.SubjectId,
@@ -107,7 +102,7 @@ namespace Accounting.Finance
             var lastYearBfQuery = voucherQueryable.Where(item => item.VoucherDate < periodStartDate)
                                             .SelectMany(item => item.Details)
                                             .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
-                                            .Where(item => _alcGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+                                            .Where(item => ALCGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                                             .GroupBy(item => new
                                             {
                                                 item.SubjectId,

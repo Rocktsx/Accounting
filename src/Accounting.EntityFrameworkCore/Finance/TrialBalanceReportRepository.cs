@@ -16,18 +16,6 @@ namespace Accounting.Finance
 {
     public class TrialBalanceReportRepository : VoucherRepository, ITrialBalanceReportRepository
     {
-        /// <summary>
-        /// Assets, Liabilities, Capital group
-        /// </summary>
-        private readonly AccountTypeGroup[] _alcGroups = [AccountTypeGroup.Assets,
-            AccountTypeGroup.Liabilities, AccountTypeGroup.Capital];
-
-        /// <summary>
-        /// Income, Expenses group
-        /// </summary>
-        private readonly AccountTypeGroup[] _ieGroups = [AccountTypeGroup.Income,
-            AccountTypeGroup.Expenses];
-
         public TrialBalanceReportRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
@@ -39,14 +27,14 @@ namespace Accounting.Finance
 
             var capitalAccountTypeId = await GetCapitalAccountTypeIdAsync(cancellationToken);
 
-            var ytdQueryable = GetYearToDateGroupQueryable(queryable.Where(item => item.VoucherDate <= endDate), _alcGroups);
+            var ytdQueryable = GetYearToDateGroupQueryable(queryable.Where(item => item.VoucherDate <= endDate), ALCGroups);
 
             var mtdIEQueryable = GetYearToDateGroupQueryable(queryable.Where(item => 
-                item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate), _ieGroups);
+                item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate), IEGroups);
 
             var lastPeriodIEQueryable = queryable.Where(item => item.VoucherDate < periodStartDate)
                .SelectMany(item => item.Details)
-               .Where(item => _ieGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+               .Where(item => IEGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                .GroupBy(item => 1)
               .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
               .Select(grp => new TrialBalanceYearToDateResult
@@ -103,15 +91,15 @@ namespace Accounting.Finance
             var capitalAccountTypeId = await GetCapitalAccountTypeIdAsync(cancellationToken);
 
             var ytdQueryable = GetMonthToDateAndYearToDateGroupQueryable(queryable.Where(item => 
-                item.VoucherDate <= endDate), _alcGroups, startDate, periodStartDate); 
+                item.VoucherDate <= endDate), ALCGroups, startDate, periodStartDate); 
 
             var mtdIEQueryable = GetMonthToDateAndYearToDateGroupQueryable(queryable.Where(item =>
-                item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate), _ieGroups, startDate, startDate);
+                item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate), IEGroups, startDate, startDate);
             
 
             var lastPeriodIEQueryable = queryable.Where(item => item.VoucherDate < periodStartDate)
                .SelectMany(item => item.Details)
-               .Where(item => _ieGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
+               .Where(item => IEGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
                .GroupBy(item => 1)
               .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
               .Select(grp => new TrialBalanceMonthToDateYearToDateResult
