@@ -38,9 +38,7 @@ namespace Accounting.Finance.GeneralLedgerReports
             var accountTppeGroups = await GetAccountTypeGroupsAsync();
 
             var result = list.Select(item =>
-            {
-                accountTppeGroups.TryGetValue(item.AccountTypeId.Value, out AccountTypeRootGroup rootItem);
-
+            {  
                 var dto = new TrialBalanceMonthToDateYearToDateResultDto
                 {
                     SortOrder = item.SortOrder,
@@ -52,7 +50,7 @@ namespace Accounting.Finance.GeneralLedgerReports
                     MonthToDateNativeAmount = item.MonthToDateNativeAmount,
                     LastPeriodNativeAmount = item.LastPeriodNativeAmount
                 };
-                SetReportGroupDto(dto, rootItem);
+                SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
 
                 return dto;
             }).ToList();
@@ -70,9 +68,7 @@ namespace Accounting.Finance.GeneralLedgerReports
             var accountTppeGroups = await GetAccountTypeGroupsAsync();
 
             var result = list.Select(item =>
-            {
-                accountTppeGroups.TryGetValue(item.AccountTypeId.Value, out AccountTypeRootGroup rootItem);
-
+            {  
                 var dto = new TrialBalanceYearToDateResultDto
                 {
                     SortOrder = item.SortOrder,
@@ -82,7 +78,7 @@ namespace Accounting.Finance.GeneralLedgerReports
                     SubjectOtherName = item.SubjectOtherName,
                     NativeAmount = item.NativeAmount
                 };
-                SetReportGroupDto(dto, rootItem);
+                SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
 
                 return dto;
             }).ToList();

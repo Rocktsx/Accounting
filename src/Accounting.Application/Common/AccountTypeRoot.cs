@@ -2,7 +2,7 @@
 
 namespace Accounting.Common
 {
-    public class AccountTypeRootGroup
+    public class AccountTypeRoot
     {
         public AccountType Item { get; set; }
         public AccountType RootItem { get; set; }

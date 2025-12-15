@@ -27,12 +27,12 @@ public abstract class AccountingAppService : ApplicationService
         }
         return true;
     }
-    protected async Task<Dictionary<Guid, AccountTypeRootGroup>> GetAccountTypeGroupsAsync()
+    protected async Task<Dictionary<Guid, AccountTypeRoot>> GetAccountTypeGroupsAsync()
     {
         var accountTypeRepository = LazyServiceProvider.LazyGetRequiredService<IAccountTypeRepository>();
         var accountTypes = await accountTypeRepository.GetListAsync();
 
-        var result = new Dictionary<Guid, AccountTypeRootGroup>();
+        var result = new Dictionary<Guid, AccountTypeRoot>();
         var dics = accountTypes.ToDictionary(item => item.Id, item => item);
         foreach (var item in accountTypes)
         {
@@ -48,7 +48,7 @@ public abstract class AccountingAppService : ApplicationService
                 }
             }
 
-            result[item.Id] = new AccountTypeRootGroup
+            result[item.Id] = new AccountTypeRoot
             {
                 Item = item,
                 RootItem = rootGroup,
@@ -57,13 +57,16 @@ public abstract class AccountingAppService : ApplicationService
         }
         return result;
     }
-    protected void SetReportGroupDto(ReportGroupBaseResultDto dto, AccountTypeRootGroup group)
+    protected static void SetGroupProperty(ReportGroupBaseResultDto dto, Guid? accountTypeId, Dictionary<Guid, AccountTypeRoot> rootGroups)
     {
-        dto.GroupCode = group?.RootItem?.Code ?? string.Empty;
-        dto.GroupName = group?.RootItem?.Name ?? string.Empty;
-        dto.GroupOtherName = group?.RootItem?.OtherName ?? string.Empty;
-        dto.SecondaryGroupCode = group?.SecondaryRootItem?.Code ?? string.Empty;
-        dto.SecondaryGroupName = group?.SecondaryRootItem?.Name ?? string.Empty;
-        dto.SecondaryGroupOtherName = group?.SecondaryRootItem?.OtherName ?? string.Empty;
+        if (accountTypeId != null && rootGroups.TryGetValue(accountTypeId.Value, out var group))
+        {
+            dto.GroupCode = group.RootItem?.Code ?? string.Empty;
+            dto.GroupName = group.RootItem?.Name ?? string.Empty;
+            dto.GroupOtherName = group.RootItem?.OtherName ?? string.Empty;
+            dto.SecondaryGroupCode = group.SecondaryRootItem?.Code ?? string.Empty;
+            dto.SecondaryGroupName = group.SecondaryRootItem?.Name ?? string.Empty;
+            dto.SecondaryGroupOtherName = group.SecondaryRootItem?.OtherName ?? string.Empty;
+        }
     }
 }

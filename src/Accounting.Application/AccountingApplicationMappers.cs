@@ -5,6 +5,7 @@ using Accounting.Finance.AccountTypes;
 using Accounting.Finance.GeneralLedgerReports;
 using Accounting.Finance.JournalReports;
 using Accounting.Finance.PayableVouchers;
+using Accounting.Finance.ProfitAndLossReports;
 using Accounting.Finance.ReceivableVouchers;
 using Accounting.Finance.Reports;
 using Accounting.Finance.SubjectCategories;
@@ -176,5 +177,34 @@ namespace Accounting
         public override partial JournalMultipleCurrencyReportResultDto Map(JournalReportMultipleCurrencyResult source);
 
         public override partial void Map(JournalReportMultipleCurrencyResult source, JournalMultipleCurrencyReportResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class ProfitAndLoss12MonthsResultToProfitAndLoss12MonthsResultDto : MapperBase<ProfitAndLoss12MonthsResult, ProfitAndLoss12MonthsResultDto>
+    {
+        [MapperIgnoreSource(nameof(ProfitAndLoss12MonthsResult.AccountTypeId))]
+        public override partial ProfitAndLoss12MonthsResultDto Map(ProfitAndLoss12MonthsResult source);
+
+        [MapperIgnoreSource(nameof(ProfitAndLoss12MonthsResult.AccountTypeId))]
+        public override partial void Map(ProfitAndLoss12MonthsResult source, ProfitAndLoss12MonthsResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class PLMonthToDateYearToDateResultToPLMonthToDateYearToDateResultDto : MapperBase<ProfitAndLossMonthToDateYearToDateResult, ProfitAndLossMonthToDateYearToDateResultDto>
+    {
+        [MapperIgnoreSource(nameof(ProfitAndLossMonthToDateYearToDateResult.AccountTypeId))]
+        public override partial ProfitAndLossMonthToDateYearToDateResultDto Map(ProfitAndLossMonthToDateYearToDateResult source);
+
+        [MapperIgnoreSource(nameof(ProfitAndLossMonthToDateYearToDateResult.AccountTypeId))]
+        public override partial void Map(ProfitAndLossMonthToDateYearToDateResult source, ProfitAndLossMonthToDateYearToDateResultDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class ProfitAndLossYearToDateResultToProfitAndLossYearToDateResultDto : MapperBase<ProfitAndLossYearToDateResult, ProfitAndLossYearToDateResultDto>
+    {
+        [MapperIgnoreSource(nameof(ProfitAndLossYearToDateResult.AccountTypeId))]
+        public override partial ProfitAndLossYearToDateResultDto Map(ProfitAndLossYearToDateResult source);
+
+        [MapperIgnoreSource(nameof(ProfitAndLossYearToDateResult.AccountTypeId))]
+        public override partial void Map(ProfitAndLossYearToDateResult source, ProfitAndLossYearToDateResultDto destination);
     }
 }

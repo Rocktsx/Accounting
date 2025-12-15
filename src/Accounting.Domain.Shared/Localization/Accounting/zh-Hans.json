@@ -340,6 +340,7 @@
     "Permission:ProfitAndLossReport": "损益表",
     "Permission:ProfitAndLossReport.YearToDateReport": "损益表(YTD)",
     "Permission:ProfitAndLossReport.MonthToDateYearToDateReport": "损益表(MTD YTD)",
+    "Permission:ProfitAndLossReport.TwelveMonthsReport": "损益表(12个月)",
     "ProfitAndLoss": "损益表",
     "Menu:ProfitAndLossReport": "损益表",
     "Menu:ProfitAndLossReport.YearToDateReport": "损益表(YTD)",

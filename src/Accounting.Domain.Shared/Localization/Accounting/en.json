@@ -305,6 +305,7 @@
     "Permission:ProfitAndLossReport": "Income Statement",
     "Permission:ProfitAndLossReport.YearToDateReport": "Income Statement(YTD)",
     "Permission:ProfitAndLossReport.MonthToDateYearToDateReport": "Income Statement(MTD YTD)",
+    "Permission:ProfitAndLossReport.TwelveMonthsReport": "Income Statement(12 Months)",
     "ProfitAndLoss": "Income Statement",
     "Menu:ProfitAndLossReport": "Income Statement",
     "Menu:ProfitAndLossReport.YearToDateReport": "Income Statement(YTD)",

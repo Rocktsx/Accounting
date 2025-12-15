@@ -52,6 +52,22 @@ namespace Accounting.Finance
             // assert 
             result.ShouldNotBeNull();
             result.Count().ShouldBe(1);
-        } 
+        }
+        [Fact]
+        public async Task Can_Get_12_Months_List()
+        {
+            // arrange
+            var startDate = _testData.AccountingPeriodStartDate;
+            var endDate = _testData.AccountingPeriodEndDate;
+            var periodStartDate = _testData.AccountingPeriodStartDate;
+
+            // act
+            var result = await _plRepository.Get12MonthsListAsync(startDate, endDate, periodStartDate);
+
+            // assert 
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(1);
+            result.First().JanuaryNativeAmount.ShouldBe(-_testData.DocNo1NativeAmount);
+        }
     }
 }

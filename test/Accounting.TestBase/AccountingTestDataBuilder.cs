@@ -183,12 +183,12 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
                 new DateOnly(year, 1, 1), VoucherType.JournalVoucher, context.TenantId);
             voucher.SetCode(_testData.VoucherCode, _testData.VoucherPrefix, 1);
             voucher.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
-                null, _testData.VoucherDescription, DebitorCreditor.Debitor,
+                null, _testData.VoucherDescription, DebitorCreditor.Creditor,
                 _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
                 _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
                 string.Empty);
             voucher.AddDetail(_guidGenerator.Create(), _testData.SubjectRentId,
-                null, _testData.VoucherDescription, DebitorCreditor.Creditor,
+                null, _testData.VoucherDescription, DebitorCreditor.Debitor,
                 _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
                 _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
                 string.Empty);

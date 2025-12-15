@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
+using Volo.Abp.ObjectMapping;
 
 namespace Accounting.Finance.GeneralLedgerReports
 {
@@ -35,22 +36,10 @@ namespace Accounting.Finance.GeneralLedgerReports
             var accountTppeGroups = await GetAccountTypeGroupsAsync();
 
             var result = list.Select(item =>
-            {
-                accountTppeGroups.TryGetValue(item.AccountTypeId.Value, out AccountTypeRootGroup rootItem);
+            {   
+                var dto = ObjectMapper.Map<ProfitAndLossMonthToDateYearToDateResult, ProfitAndLossMonthToDateYearToDateResultDto>(item);
 
-                var dto = new ProfitAndLossMonthToDateYearToDateResultDto
-                {
-                    SortOrder = item.SortOrder,
-                    Group = item.Group,
-                    Category = item.Category,
-                    SubjectCode = item.SubjectCode,
-                    SubjectName = item.SubjectName,
-                    SubjectOtherName = item.SubjectOtherName,
-                    NativeAmount = item.NativeAmount,
-                    MonthToDateNativeAmount = item.MonthToDateNativeAmount,
-                    LastPeriodNativeAmount = item.LastPeriodNativeAmount
-                };
-                SetReportGroupDto(dto, rootItem);
+                SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
 
                 return dto;
             }).ToList();
@@ -68,20 +57,10 @@ namespace Accounting.Finance.GeneralLedgerReports
             var accountTppeGroups = await GetAccountTypeGroupsAsync();
 
             var result = list.Select(item =>
-            {
-                accountTppeGroups.TryGetValue(item.AccountTypeId.Value, out AccountTypeRootGroup rootItem);
+            {  
+                var dto = ObjectMapper.Map<ProfitAndLossYearToDateResult, ProfitAndLossYearToDateResultDto>(item);
 
-                var dto = new ProfitAndLossYearToDateResultDto
-                {
-                    SortOrder = item.SortOrder,
-                    Group = item.Group,
-                    Category = item.Category,
-                    SubjectCode = item.SubjectCode,
-                    SubjectName = item.SubjectName,
-                    SubjectOtherName = item.SubjectOtherName,
-                    NativeAmount = item.NativeAmount
-                };
-                SetReportGroupDto(dto, rootItem);
+                SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
 
                 return dto;
             }).ToList();
@@ -96,6 +75,29 @@ namespace Accounting.Finance.GeneralLedgerReports
 
             var endDate = period.GetEndDate(input.EndDate);
             return (period, endDate);
+        }
+
+        [Authorize(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport)]
+        public async Task<IEnumerable<ProfitAndLoss12MonthsResultDto>> GetTwelveMonthsAsync(
+            ProfitAndLossMtdYtdRequestDto input)
+        {
+            var (period, endDate) = await HandleRequestDto(input);
+            var startDate = period.GetStartDate(input.StartDate);
+
+            var list = await _plRepository.Get12MonthsListAsync(startDate, endDate, period.StartDate);
+
+            var accountTppeGroups = await GetAccountTypeGroupsAsync();
+
+            var result = list.Select(item =>
+            {  
+                var dto = ObjectMapper.Map< ProfitAndLoss12MonthsResult, ProfitAndLoss12MonthsResultDto>(item);
+
+                SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
+
+                return dto;
+            }).ToList();
+
+            return result;
         }
     }
 }

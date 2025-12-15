@@ -15,5 +15,8 @@ namespace Accounting.Finance.Reports
 
         Task<IEnumerable<ProfitAndLossMonthToDateYearToDateResult>> GetMonthToDateAndYearToDateListAsync(DateOnly startDate,
             DateOnly endDate, DateOnly periodStartDate, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<ProfitAndLoss12MonthsResult>> Get12MonthsListAsync(DateOnly startDate,
+            DateOnly endDate, DateOnly periodStartDate, CancellationToken cancellationToken = default);
     }
 }

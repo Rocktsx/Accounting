@@ -196,7 +196,8 @@ public static class AccountingPermissions
         internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
         public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
     }
-
+     
+    private const string TwelveMonthsReportText = "TwelveMonthsReport";
     /// <summary>
     /// 试算表报表
     /// </summary>
@@ -210,6 +211,9 @@ public static class AccountingPermissions
 
         internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
         public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
+
+        internal const string TwelveMonthsReportName = PermissionPrefix + Name + Dot + TwelveMonthsReportText;
+        public const string TwelveMonthsReport = Default + Dot + TwelveMonthsReportText;
     }
 
     /// <summary>

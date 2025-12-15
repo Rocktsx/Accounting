@@ -1,7 +1,6 @@
 ﻿using Accounting.Finance.ProfitAndLossReports;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Modularity;
@@ -47,7 +46,7 @@ namespace Accounting.Finance
         {
             // arrange
             var input = new ProfitAndLossYearToDateRequestDto
-            { 
+            {
                 EndDate = _testData.AccountingPeriodEndDate,
                 PeriodId = _testData.AccountingPeriodYearId,
             };
@@ -61,6 +60,28 @@ namespace Accounting.Finance
             result.ShouldContain(item => item.SubjectCode == _testData.SubjectRentCode
                 && item.GroupCode == _testData.AccountTypeE
                 && item.SecondaryGroupCode == _testData.AccountTypeAEX);
+        }
+        [Fact]
+        public async Task Can_Get_12_Months_List()
+        {
+            // arrange
+            var input = new ProfitAndLossMtdYtdRequestDto
+            {
+                StartDate = _testData.AccountingPeriodStartDate,
+                EndDate = _testData.AccountingPeriodEndDate,
+                PeriodId = _testData.AccountingPeriodYearId,
+            };
+
+            // act
+            var result = await _plAppService.GetTwelveMonthsAsync(input);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(1);
+            result.ShouldContain(item => item.SubjectCode == _testData.SubjectRentCode
+                && item.GroupCode == _testData.AccountTypeE
+                && item.SecondaryGroupCode == _testData.AccountTypeAEX);
+            result.First().JanuaryNativeAmount.ShouldBe(-_testData.DocNo1NativeAmount);
         }
     }
 }
