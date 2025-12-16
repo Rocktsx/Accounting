@@ -14,7 +14,7 @@ namespace Accounting.Finance
 {
     public class BalanceSheetReportRepository : VoucherRepository, IBalanceSheetReportRepository
     {
-         
+
         public BalanceSheetReportRepository(IDbContextProvider<AccountingDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
@@ -34,9 +34,9 @@ namespace Accounting.Finance
                    SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
                    SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
                    SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
-                   item.Subject.AccountTypeId,
-                   SortOrder = item.Subject.AccountType.BalanceSheetSort,
-                   Group = item.Subject.AccountType.BalanceSheetGroup
+                   AccountTypeId = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountTypeId : item.Subject.SubjectCategory.AccountTypeId,
+                   SortOrder = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetSort : item.Subject.SubjectCategory.AccountType.BalanceSheetSort,
+                   Group = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetGroup : item.Subject.SubjectCategory.AccountType.BalanceSheetGroup,
                })
               .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
               .Select(grp => new BalanceSheetYearToDateResult
@@ -81,7 +81,7 @@ namespace Accounting.Finance
                    SubjectOtherName = AccountingCommonConsts.SubjectOtherName,
                    NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor)
                });
-        } 
+        }
 
         public async Task<IEnumerable<BalanceSheetMonthToDateYearToDateResult>> GetMonthToDateAndYearToDateListAsync(DateOnly startDate,
             DateOnly endDate, DateOnly periodStartDate, CancellationToken cancellationToken = default)
@@ -98,9 +98,9 @@ namespace Accounting.Finance
                     SubjectCode = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Code : item.Subject.SubjectCategory.Code,
                     SubjectName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.Name : item.Subject.SubjectCategory.Name,
                     SubjectOtherName = item.Subject.SubjectCategory.ShowDetail ? item.Subject.OtherName : item.Subject.SubjectCategory.OtherName,
-                    item.Subject.AccountTypeId,
-                    SortOrder = item.Subject.AccountType.BalanceSheetSort,
-                    Group = item.Subject.AccountType.BalanceSheetGroup
+                    AccountTypeId = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountTypeId : item.Subject.SubjectCategory.AccountTypeId,
+                    SortOrder = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetSort : item.Subject.SubjectCategory.AccountType.BalanceSheetSort,
+                    Group = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetGroup : item.Subject.SubjectCategory.AccountType.BalanceSheetGroup,
                 })
                 .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0
                             || grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < periodStartDate ? 0 : (int)item.DebitorCreditor)) != 0)
@@ -133,7 +133,7 @@ namespace Accounting.Finance
                      MonthToDateNativeAmount = grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < startDate ? 0 : (int)item.DebitorCreditor)),
                      LastPeriodNativeAmount = grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate >= startDate ? 0 : (int)item.DebitorCreditor)),
                  });
-             
+
             var lastPeriodIEQueryable = queryable.Where(item => item.VoucherDate < periodStartDate)
                .SelectMany(item => item.Details)
                .Where(item => IEGroups.Contains(item.Subject.AccountType.TrialBalanceGroup))
