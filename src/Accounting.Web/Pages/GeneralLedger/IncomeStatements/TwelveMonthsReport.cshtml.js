@@ -52,19 +52,6 @@
         }
         const secondaryGroups = {}
         items.reduce((prev, current) => {
-            const secondaryCode = current.group + '__' + current.secondaryGroupCode;
-            let secondaryGroup = secondaryGroups[secondaryCode];
-            if (!secondaryGroup) {
-                secondaryGroup = {
-                    code: current.secondaryGroupCode,
-                    item: current,
-                    items: [],
-                    ...getTotalObject(),
-                    incomeExpenses: current.category == category.income ? 1 : -1
-                }
-                secondaryGroups[secondaryCode] = secondaryGroup;
-            }
-
             const code = current.group;
             let group = prev[code];
             if (!group) {
@@ -77,7 +64,21 @@
                 prev[code] = group;
                 groups.push(group);
             }
-            group.items.push(secondaryGroup);
+
+            const secondaryCode = current.group + '__' + current.secondaryGroupCode;
+            let secondaryGroup = secondaryGroups[secondaryCode];
+            if (!secondaryGroup) {
+                secondaryGroup = {
+                    code: current.secondaryGroupCode,
+                    item: current,
+                    items: [],
+                    ...getTotalObject(),
+                    incomeExpenses: current.category == category.income ? 1 : -1
+                }
+                secondaryGroups[secondaryCode] = secondaryGroup;
+                group.items.push(secondaryGroup);
+            }
+             
             secondaryGroup.items.push(current);
 
             setTotal(group, current);

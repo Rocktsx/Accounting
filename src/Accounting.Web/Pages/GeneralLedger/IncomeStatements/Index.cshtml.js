@@ -19,19 +19,6 @@
         }
         const secondaryGroups = {}
         items.reduce((prev, current) => {
-            const secondaryCode = current.group + '__' + current.secondaryGroupCode;
-            let secondaryGroup = secondaryGroups[secondaryCode];
-            if (!secondaryGroup) {
-                secondaryGroup = {
-                    code: current.secondaryGroupCode,
-                    item: current,
-                    total: 0,
-                    items: [],
-                    incomeExpenses: current.category == category.income ? 1 : -1
-                }
-                secondaryGroups[secondaryCode] = secondaryGroup;
-            }
-
             const code = current.group;
             let group = prev[code];
             if (!group) {
@@ -44,7 +31,21 @@
                 prev[code] = group;
                 groups.push(group);
             }
-            group.items.push(secondaryGroup);
+
+            const secondaryCode = current.group + '__' + current.secondaryGroupCode;
+            let secondaryGroup = secondaryGroups[secondaryCode];
+            if (!secondaryGroup) {
+                secondaryGroup = {
+                    code: current.secondaryGroupCode,
+                    item: current,
+                    total: 0,
+                    items: [],
+                    incomeExpenses: current.category == category.income ? 1 : -1
+                }
+                secondaryGroups[secondaryCode] = secondaryGroup;
+                group.items.push(secondaryGroup);
+            }
+             
             group.total += current.nativeAmount; 
 
             secondaryGroup.items.push(current);
