@@ -4,5 +4,6 @@ namespace Accounting.Finance.BalanceSheetReports
 {
     public class BalanceSheetMonthToDateYearToDateResultDto : ReportGroupBaseMtdYtdResultDto
     {
+        public AccountTypeGroup AccountTypeGroup { get; set; }
     }
 }

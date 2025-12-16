@@ -37,6 +37,7 @@ namespace Accounting.Finance
                    AccountTypeId = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountTypeId : item.Subject.SubjectCategory.AccountTypeId,
                    SortOrder = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetSort : item.Subject.SubjectCategory.AccountType.BalanceSheetSort,
                    Group = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetGroup : item.Subject.SubjectCategory.AccountType.BalanceSheetGroup,
+                   AccountTypeGroup = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.TrialBalanceGroup : item.Subject.SubjectCategory.AccountType.TrialBalanceGroup,
                })
               .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
               .Select(grp => new BalanceSheetYearToDateResult
@@ -47,7 +48,8 @@ namespace Accounting.Finance
                   SubjectCode = grp.Key.SubjectCode,
                   SubjectName = grp.Key.SubjectName,
                   SubjectOtherName = grp.Key.SubjectOtherName,
-                  NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor)
+                  NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
+                  AccountTypeGroup = grp.Key.AccountTypeGroup
               });
 
             var mtdIEQueryable = GetYearToDateGroupQueryable(queryable.Where(item => item.VoucherDate <= endDate && item.VoucherDate >= periodStartDate),
@@ -76,6 +78,7 @@ namespace Accounting.Finance
                    SortOrder = sortOrder,
                    Group = sortOrder,
                    AccountTypeId = capitalAccountTypeId,
+                   AccountTypeGroup = AccountTypeGroup.Capital,
                    SubjectCode = AccountingCommonConsts.SystemGenCodeText,
                    SubjectName = AccountingCommonConsts.SubjectName,
                    SubjectOtherName = AccountingCommonConsts.SubjectOtherName,
@@ -101,6 +104,7 @@ namespace Accounting.Finance
                     AccountTypeId = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountTypeId : item.Subject.SubjectCategory.AccountTypeId,
                     SortOrder = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetSort : item.Subject.SubjectCategory.AccountType.BalanceSheetSort,
                     Group = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.BalanceSheetGroup : item.Subject.SubjectCategory.AccountType.BalanceSheetGroup,
+                    AccountTypeGroup = item.Subject.SubjectCategory.ShowDetail ? item.Subject.AccountType.TrialBalanceGroup : item.Subject.SubjectCategory.AccountType.TrialBalanceGroup,
                 })
                 .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0
                             || grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < periodStartDate ? 0 : (int)item.DebitorCreditor)) != 0)
@@ -112,6 +116,7 @@ namespace Accounting.Finance
                    SubjectCode = grp.Key.SubjectCode,
                    SubjectName = grp.Key.SubjectName,
                    SubjectOtherName = grp.Key.SubjectOtherName,
+                   AccountTypeGroup = grp.Key.AccountTypeGroup,
                    NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
                    MonthToDateNativeAmount = grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < startDate ? 0 : (int)item.DebitorCreditor)),
                    LastPeriodNativeAmount = grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate >= periodStartDate ? 0 : (int)item.DebitorCreditor)),
@@ -129,6 +134,7 @@ namespace Accounting.Finance
                      SubjectCode = AccountingCommonConsts.SystemGenCodeText,
                      SubjectName = AccountingCommonConsts.SubjectName,
                      SubjectOtherName = AccountingCommonConsts.SubjectOtherName,
+                     AccountTypeGroup = AccountTypeGroup.Capital,
                      NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
                      MonthToDateNativeAmount = grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate < startDate ? 0 : (int)item.DebitorCreditor)),
                      LastPeriodNativeAmount = grp.Sum(item => item.NativeAmount * (item.Voucher.VoucherDate >= startDate ? 0 : (int)item.DebitorCreditor)),
@@ -147,6 +153,7 @@ namespace Accounting.Finance
                   SubjectCode = AccountingCommonConsts.SystemGenCodeText,
                   SubjectName = AccountingCommonConsts.SubjectName,
                   SubjectOtherName = AccountingCommonConsts.SubjectOtherName,
+                  AccountTypeGroup = AccountTypeGroup.Capital,
                   NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
                   MonthToDateNativeAmount = 0,
                   LastPeriodNativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),

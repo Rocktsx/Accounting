@@ -7,5 +7,7 @@ namespace Accounting.Finance.Reports
         public int SortOrder { get; set; }
         public int Group { get; set; }
         public Guid? AccountTypeId { get; set; }
+
+        public AccountTypeGroup AccountTypeGroup { get; set; }
     }
 }
