@@ -114,12 +114,6 @@
         $('#endDate').val(endDate);
     });
 
-    function formatDate(value) {
-        let format = abp.localization.currentCulture.dateTimeFormat.shortDatePattern;
-        format = format.replaceAll('d', 'D');
-        return (new moment(new Date(value))).format(format)
-    }
-
     const headerTemplate = `
     <div class="header">
         <h3 class="text-center">{{l('TrialBalance')}}</h3>
@@ -200,10 +194,7 @@
         methods: {
             formatDate,
             l,
-            renderAmount(amount) {
-                const num = Number(amount);
-                return !Number.isNaN(num) ? num.toFixed(2) : '0.00';
-            },
+            renderAmount,
         }
     }
 

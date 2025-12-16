@@ -88,12 +88,6 @@
         });
     });
 
-    function formatDate(value) {
-        let format = abp.localization.currentCulture.dateTimeFormat.shortDatePattern;
-        format = format.replaceAll('d', 'D');
-        return (new moment(new Date(value))).format(format)
-    }
-
     const headerTemplate = `
     <div class="header">
         <h3 class="text-center">{{l('JournalReport')}}</h3>
@@ -171,10 +165,7 @@
         methods: {
             formatDate,
             l,
-            renderAmount(amount, scale) {
-                const num = Number(amount);
-                return !Number.isNaN(num) ? num.toFixed(scale ? scale : 2) : '0.00';
-            },
+            renderAmount,
         }
     }
 
