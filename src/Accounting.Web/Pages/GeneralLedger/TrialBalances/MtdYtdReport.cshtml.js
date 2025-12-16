@@ -150,9 +150,8 @@
     <div class="body"> 
         <table class="table table-borderless">
             <thead>
-            <tr class="border-bottom">
-                    <th colspan="2"></th>
-                    <th colspan="2" class="text-end">{{ formatDate(params.startDate) }}&nbsp;{{ l('Before') }}</th>
+                 <tr> 
+                    <th colspan="4" class="text-end">{{ formatDate(params.startDate) }}&nbsp;{{ l('Before') }}</th>
                     <th colspan="2" class="text-end">{{ formatDate(params.startDate) }} - {{ formatDate(params.endDate) }}</th>
                     <th colspan="2" class="text-end">{{ l('AsAt') }}&nbsp;{{ formatDate(params.endDate) }}</th>
                 </tr>

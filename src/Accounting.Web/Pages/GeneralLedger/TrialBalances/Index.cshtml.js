@@ -135,6 +135,9 @@
     <div class="body"> 
         <table class="table table-borderless">
             <thead>
+                <tr>
+                    <th  colspan="4" class="text-end">{{ l('AsAt') }}&nbsp;{{ formatDate(params.endDate) }}</th>
+                </tr>
                 <tr class="border-bottom">
                     <th class="fw-bold">{{ l('SubjectCode') }}</th>
                     <th class="fw-bold">{{ l('SubjectName') }}</th>
@@ -189,7 +192,7 @@
     const Body = {
         template: bodyTemplate,
         computed: {
-            ...Vuex.mapGetters(['items', 'nativeCurrency', 'total'])
+            ...Vuex.mapGetters(['items', 'nativeCurrency', 'total', 'params'])
         },
         methods: {
             formatDate,
