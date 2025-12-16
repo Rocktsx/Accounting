@@ -10,6 +10,7 @@ using Accounting.Finance.ReceivableVouchers;
 using Accounting.Finance.Reports;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
+using Accounting.Finance.TrialBalanceReports;
 using Accounting.Finance.Vouchers;
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
@@ -206,5 +207,23 @@ namespace Accounting
 
         [MapperIgnoreSource(nameof(ProfitAndLossYearToDateResult.AccountTypeId))]
         public override partial void Map(ProfitAndLossYearToDateResult source, ProfitAndLossYearToDateResultDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class TrialBalanceYearToDateResultToTrialBalanceYearToDateResultDto : MapperBase<TrialBalanceYearToDateResult, TrialBalanceYearToDateResultDto>
+    {
+        [MapperIgnoreSource(nameof(TrialBalanceYearToDateResult.AccountTypeId))]
+        public override partial TrialBalanceYearToDateResultDto Map(TrialBalanceYearToDateResult source);
+
+        [MapperIgnoreSource(nameof(TrialBalanceYearToDateResult.AccountTypeId))]
+        public override partial void Map(TrialBalanceYearToDateResult source, TrialBalanceYearToDateResultDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class TrialBalanceMonthToDateYearToDateResultToTrialBalanceMonthToDateYearToDateResultDto : MapperBase<TrialBalanceMonthToDateYearToDateResult, TrialBalanceMonthToDateYearToDateResultDto>
+    {
+        [MapperIgnoreSource(nameof(TrialBalanceMonthToDateYearToDateResult.AccountTypeId))]
+        public override partial TrialBalanceMonthToDateYearToDateResultDto Map(TrialBalanceMonthToDateYearToDateResult source);
+
+        [MapperIgnoreSource(nameof(TrialBalanceMonthToDateYearToDateResult.AccountTypeId))]
+        public override partial void Map(TrialBalanceMonthToDateYearToDateResult source, TrialBalanceMonthToDateYearToDateResultDto destination);
     }
 }

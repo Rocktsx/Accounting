@@ -1,5 +1,4 @@
-﻿using Accounting.Common;
-using Accounting.Finance.AccountingPeriods;
+﻿using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.Reports;
 using Accounting.Finance.TrialBalanceReports;
 using Accounting.Finance.Vouchers;
@@ -8,8 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Volo.Abp;
 
@@ -38,18 +35,9 @@ namespace Accounting.Finance.GeneralLedgerReports
             var accountTppeGroups = await GetAccountTypeGroupsAsync();
 
             var result = list.Select(item =>
-            {  
-                var dto = new TrialBalanceMonthToDateYearToDateResultDto
-                {
-                    SortOrder = item.SortOrder,
-                    Group = item.Group,
-                    SubjectCode = item.SubjectCode,
-                    SubjectName = item.SubjectName,
-                    SubjectOtherName = item.SubjectOtherName,
-                    NativeAmount = item.NativeAmount,
-                    MonthToDateNativeAmount = item.MonthToDateNativeAmount,
-                    LastPeriodNativeAmount = item.LastPeriodNativeAmount
-                };
+            {
+                var dto = ObjectMapper.Map<TrialBalanceMonthToDateYearToDateResult, TrialBalanceMonthToDateYearToDateResultDto>(item);
+
                 SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
 
                 return dto;
@@ -68,16 +56,9 @@ namespace Accounting.Finance.GeneralLedgerReports
             var accountTppeGroups = await GetAccountTypeGroupsAsync();
 
             var result = list.Select(item =>
-            {  
-                var dto = new TrialBalanceYearToDateResultDto
-                {
-                    SortOrder = item.SortOrder,
-                    Group = item.Group,
-                    SubjectCode = item.SubjectCode,
-                    SubjectName = item.SubjectName,
-                    SubjectOtherName = item.SubjectOtherName,
-                    NativeAmount = item.NativeAmount
-                };
+            {
+                var dto = ObjectMapper.Map<TrialBalanceYearToDateResult, TrialBalanceYearToDateResultDto>(item);
+
                 SetGroupProperty(dto, item.AccountTypeId, accountTppeGroups);
 
                 return dto;
