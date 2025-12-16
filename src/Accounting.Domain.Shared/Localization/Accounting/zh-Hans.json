@@ -363,6 +363,11 @@
     "BalanceSheet": "资产负债表",
     "Permission:BalanceSheetReport": "资产负债表",
     "Permission:BalanceSheetReport.YearToDateReport": "资产负债表(YTD)",
-    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "资产负债表(MTD YTD)"
+    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "资产负债表(MTD YTD)",
+    "Menu:BalanceSheetReport": "资产负债表",
+    "Menu:BalanceSheetReport.YearToDateReport": "资产负债表(YTD)",
+    "Menu:BalanceSheetReport.MonthToDateYearToDateReport": "资产负债表(MTD YTD)",
+    "NetAssets": "净资产",
+    "TotalText": "总"
   }
 }

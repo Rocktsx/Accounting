@@ -178,6 +178,8 @@ public class AccountingMenuContributor : IMenuContributor
 
         AddProfitAndLossReportMenus(l, generalLedgerMenu);
 
+        AddBalanceSheetReportMenus(l, generalLedgerMenu);
+
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);
@@ -327,7 +329,6 @@ public class AccountingMenuContributor : IMenuContributor
                 url: "/GeneralLedger/TrialBalances/MtdYtdReport"
             ).RequirePermissions(AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport));
 
-
         if (trialBalanceMenu.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(trialBalanceMenu);
@@ -364,6 +365,33 @@ public class AccountingMenuContributor : IMenuContributor
         if (profitAndLossMenu.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(profitAndLossMenu);
+        }
+    }
+
+    private static void AddBalanceSheetReportMenus(IStringLocalizer l, ApplicationMenuItem generalLedgerMenu)
+    {
+        var  balanceSheeteMenu = new ApplicationMenuItem(
+                    AccountingMenus.BalanceSheets.Name,
+                    l[AccountingMenus.DisplayNames.BalanceSheets.Name],
+                    icon: "fas fa-chart-gantt");
+
+        balanceSheeteMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.BalanceSheets.YearToDateReport,
+                  l[AccountingMenus.DisplayNames.BalanceSheets.YearToDateReport],
+                  url: "/GeneralLedger/BalanceSheets"
+              ).RequirePermissions(AccountingPermissions.BalanceSheetReports.YearToDateReport));
+
+        balanceSheeteMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.BalanceSheets.MonthToDateYearToDateReport,
+                l[AccountingMenus.DisplayNames.BalanceSheets.MonthToDateYearToDateReport],
+                url: "/GeneralLedger/BalanceSheets/MtdYtdReport"
+            ).RequirePermissions(AccountingPermissions.BalanceSheetReports.MonthToDateYearToDateReport));
+         
+        if (balanceSheeteMenu.Items.Count > 0)
+        {
+            generalLedgerMenu.AddItem(balanceSheeteMenu);
         }
     }
 }

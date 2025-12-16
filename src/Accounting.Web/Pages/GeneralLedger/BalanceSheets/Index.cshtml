@@ -1,0 +1,58 @@
+﻿@page
+@using Accounting
+@using Accounting.Web
+@using Accounting.Web.Menus
+@using Accounting.Localization
+@using Accounting.Web.Pages.GeneralLedger.BalanceSheets
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@inject IStringLocalizer<AccountingResource> L
+@model Accounting.Web.Pages.GeneralLedger.BalanceSheets.IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.BalanceSheets.YearToDateReport].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.BalanceSheets.Name]);
+    PageLayout.Content.MenuItemName = AccountingMenus.BalanceSheets.YearToDateReport;
+}
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+@section scripts
+{
+    <abp-script src="/libs/vue/vue.min.js"></abp-script>
+    <abp-script src="/libs/vuex/vuex.min.js"></abp-script>
+    <abp-script src="/libs/select2/js/i18n/@(Helpers.GetSelect2LanguageName()).js"></abp-script>
+    <abp-script src="/Pages/GeneralLedger/BalanceSheets/Index.cshtml.js"></abp-script>
+}
+<abp-card>
+    <abp-card-header>
+        <form id="searchForm">
+            <abp-row class="mb-1"> 
+                <abp-column class="row">
+                    <label for="periodId" class="form-label col-sm-5 text-end">@L["AccountingPeriod"].Value</label>
+                    <div class="col-sm-7">
+                        <select value="@Model.PeriodId" type="text" class="form-control form-control-sm" id="periodId" name="periodId">
+                            @foreach (var item in Model.Periods)
+                            {
+                                <option value="@item.Id" data-start-date="@item.StartDate" data-end-date="@item.EndDate">@item.Code</option>
+                            }
+                        </select>
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="endDate" class="form-label col-sm-4 text-end">@L["AsAt"].Value</label>
+                    <div class="col-sm-8">
+                        <input type="date" class="form-control form-control-sm" id="endDate" name="endDate" value="@Model.CurrentPeriod.EndDate.ToString(AccountingCommonConsts.StandardDateFormat)">
+                    </div>
+                </abp-column>
+                <abp-column></abp-column> 
+            </abp-row>
+        </form>
+    </abp-card-header>
+    <abp-card-body>
+        <div id="app">
+        </div>
+    </abp-card-body>
+</abp-card>

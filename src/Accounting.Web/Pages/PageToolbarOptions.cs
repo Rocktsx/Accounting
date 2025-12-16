@@ -229,6 +229,18 @@ namespace Accounting.Web.Pages
                   {
                       toolbar.AddSearchButton(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport);
                   });
+
+                options.Configure<GeneralLedger.BalanceSheets.IndexModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.BalanceSheetReports.YearToDateReport);
+                  });
+
+                options.Configure<GeneralLedger.BalanceSheets.MtdYtdReportModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.BalanceSheetReports.MonthToDateYearToDateReport);
+                  });
             });
         }
 

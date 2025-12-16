@@ -328,6 +328,11 @@
     "BalanceSheet": "Balance Sheet",
     "Permission:BalanceSheetReport": "Balance Sheet",
     "Permission:BalanceSheetReport.YearToDateReport": "Balance Sheet(YTD)",
-    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "Balance Sheet(MTD YTD)"
+    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "Balance Sheet(MTD YTD)",
+    "Menu:BalanceSheetReport": "Balance Sheet",
+    "Menu:BalanceSheetReport.YearToDateReport": "Balance Sheet(YTD)",
+    "Menu:BalanceSheetReport.MonthToDateYearToDateReport": "Balance Sheet(MTD YTD)",
+    "NetAssets": "Net Assets",
+    "TotalText": "Total"
   }
 }
