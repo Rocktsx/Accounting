@@ -47,6 +47,7 @@ namespace Accounting
         public const string CurrentYearBfText = "CURRENT YEAR B/F";
 
         public const int SystemGenGroupSort = 998;
+        public const int SystemGenGroupSort2 = 999;
         public const string SystemGenCodeText = "SYS. GEN.";
         public const string SubjectName = "累计损益";
         public const string SubjectOtherName = "Cumulative Profit (Loss)";

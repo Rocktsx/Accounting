@@ -359,6 +359,10 @@
     "September": "九月",
     "October": "十月",
     "November": "十一月",
-    "December": "十二月"
+    "December": "十二月",
+    "BalanceSheet": "资产负债表",
+    "Permission:BalanceSheetReport": "资产负债表",
+    "Permission:BalanceSheetReport.YearToDateReport": "资产负债表(YTD)",
+    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "资产负债表(MTD YTD)"
   }
 }

@@ -199,7 +199,7 @@ public static class AccountingPermissions
      
     private const string TwelveMonthsReportText = "TwelveMonthsReport";
     /// <summary>
-    /// 试算表报表
+    /// 损益表报表
     /// </summary>
     public class ProfitAndLossReports
     {
@@ -215,6 +215,22 @@ public static class AccountingPermissions
         internal const string TwelveMonthsReportName = PermissionPrefix + Name + Dot + TwelveMonthsReportText;
         public const string TwelveMonthsReport = Default + Dot + TwelveMonthsReportText;
     }
+
+    /// <summary>
+    /// 资产负债表报表
+    /// </summary>
+    public class BalanceSheetReports
+    {
+        public const string Name = "BalanceSheetReport";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+
+        internal const string YearToDateReportName = PermissionPrefix + Name + Dot + YearToDateReportText;
+        public const string YearToDateReport = Default + Dot + YearToDateReportText;
+
+        internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
+        public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
+    }
+
 
     /// <summary>
     /// 应收帐组

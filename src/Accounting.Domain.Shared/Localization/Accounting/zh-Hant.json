@@ -359,6 +359,10 @@
     "September": "九月",
     "October": "十月",
     "November": "十一月",
-    "December": "十二月"
+    "December": "十二月",
+    "BalanceSheet": "資產負債表",
+    "Permission:BalanceSheetReport": "資產負債表",
+    "Permission:BalanceSheetReport.YearToDateReport": "資產負債表(YTD)",
+    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "資產負債表(MTD YTD)"
   }
 }

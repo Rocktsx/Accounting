@@ -324,6 +324,10 @@
     "September": "Sep.",
     "October": "Oct.",
     "November": "Nov.",
-    "December": "Dec."
+    "December": "Dec.",
+    "BalanceSheet": "Balance Sheet",
+    "Permission:BalanceSheetReport": "Balance Sheet",
+    "Permission:BalanceSheetReport.YearToDateReport": "Balance Sheet(YTD)",
+    "Permission:BalanceSheetReport.MonthToDateYearToDateReport": "Balance Sheet(MTD YTD)"
   }
 }

@@ -2,6 +2,7 @@
 using Accounting.BasicData.Currencies;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
+using Accounting.Finance.BalanceSheetReports;
 using Accounting.Finance.GeneralLedgerReports;
 using Accounting.Finance.JournalReports;
 using Accounting.Finance.PayableVouchers;
@@ -225,5 +226,24 @@ namespace Accounting
 
         [MapperIgnoreSource(nameof(TrialBalanceMonthToDateYearToDateResult.AccountTypeId))]
         public override partial void Map(TrialBalanceMonthToDateYearToDateResult source, TrialBalanceMonthToDateYearToDateResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class BalanceSheetYearToDateResultToBalanceSheetYearToDateResultDto : MapperBase<BalanceSheetYearToDateResult, BalanceSheetYearToDateResultDto>
+    {
+        [MapperIgnoreSource(nameof(BalanceSheetYearToDateResult.AccountTypeId))]
+        public override partial BalanceSheetYearToDateResultDto Map(BalanceSheetYearToDateResult source);
+
+        [MapperIgnoreSource(nameof(BalanceSheetYearToDateResult.AccountTypeId))]
+        public override partial void Map(BalanceSheetYearToDateResult source, BalanceSheetYearToDateResultDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
+    public partial class BalanceSheetMonthToDateYearToDateResultToBalanceSheetMonthToDateYearToDateResultDto : MapperBase<BalanceSheetMonthToDateYearToDateResult, BalanceSheetMonthToDateYearToDateResultDto>
+    {
+        [MapperIgnoreSource(nameof(BalanceSheetMonthToDateYearToDateResult.AccountTypeId))]
+        public override partial BalanceSheetMonthToDateYearToDateResultDto Map(BalanceSheetMonthToDateYearToDateResult source);
+
+        [MapperIgnoreSource(nameof(BalanceSheetMonthToDateYearToDateResult.AccountTypeId))]
+        public override partial void Map(BalanceSheetMonthToDateYearToDateResult source, BalanceSheetMonthToDateYearToDateResultDto destination);
     }
 }
