@@ -34,14 +34,13 @@ namespace Accounting.Finance
             var result = await _tbReportRepository.GetYearToDateListAsync(endDate, periodStartDate);
 
             // assert
-            var bankSubject = await _subjectRepository.GetPagedListAsync(new SubjectFilterRequest
-            { Codes = [_testData.SubjectBankCode] });
+            var bankSubject = await _subjectRepository.GetAsync(_testData.SubjectBankId);
 
             result.ShouldNotBeNull();
             result.Count().ShouldBe(4);
             result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.SystemGenGroupSort);
             result.ShouldContain(item => item.SubjectCode == _testData.SubjectBankCode
-                && item.AccountTypeId == bankSubject.First().AccountTypeId);
+                && item.AccountTypeId == bankSubject.AccountTypeId);
         }
 
         [Fact]
@@ -56,13 +55,12 @@ namespace Accounting.Finance
             var result = await _tbReportRepository.GetMonthToDateAndYearToDateListAsync(startDate, endDate, periodStartDate);
 
             // assert
-            var bankSubject = await _subjectRepository.GetPagedListAsync(new SubjectFilterRequest
-            { Codes = [_testData.SubjectBankCode] });
+            var bankSubject = await _subjectRepository.GetAsync(_testData.SubjectBankId);
             result.ShouldNotBeNull();
             result.Count().ShouldBe(4);
             result.ShouldNotContain(item => item.SortOrder == AccountingCommonConsts.SystemGenGroupSort);
             result.ShouldContain(item => item.SubjectCode == _testData.SubjectBankCode
-               && item.AccountTypeId == bankSubject.First().AccountTypeId); 
+               && item.AccountTypeId == bankSubject.AccountTypeId); 
         }
     }
 }
