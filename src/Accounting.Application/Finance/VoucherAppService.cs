@@ -179,15 +179,4 @@ public class VoucherAppService : AccountingAppService, IVoucherAppService
         await CheckPolicyAsync(DeletePolicyName);
         await Repository.DeleteAsync(id);
     }
-
-    protected async Task<Dictionary<Guid, Subject>> GetSubjectsAsync(IEnumerable<Guid> ids)
-    {
-        var subjectRepository = LazyServiceProvider.GetRequiredService<ISubjectRepository>();
-        var subjects = await subjectRepository.GetPagedListAsync(new SubjectFilterRequest
-        {
-            SubjectIds = ids,
-            IsIncludeAccountType = true
-        });
-        return subjects.ToDictionary(item => item.Id, item => item);
-    }
 }
