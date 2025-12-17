@@ -1,7 +1,6 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.ProfitAndLossReports;
-using Accounting.Finance.Reports;
+using Accounting.Finance.ProfitAndLossReports; 
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
@@ -9,10 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Volo.Abp;
-using Volo.Abp.ObjectMapping;
+using Volo.Abp; 
 
-namespace Accounting.Finance.GeneralLedgerReports
+namespace Accounting.Finance.Reports
 {
     public class ProfitAndLossReportAppService : AccountingAppService, IProfitAndLossReportAppService
     {

@@ -1,5 +1,4 @@
 ﻿using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.Reports;
 using Accounting.Finance.TrialBalanceReports;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 
-namespace Accounting.Finance.GeneralLedgerReports
+namespace Accounting.Finance.Reports
 {
     public class TrialBalanceReportAppService : AccountingAppService, ITrialBalanceReportAppService
     {

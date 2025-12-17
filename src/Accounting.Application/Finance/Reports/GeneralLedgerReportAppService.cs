@@ -1,5 +1,5 @@
 ﻿using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.Reports;
+using Accounting.Finance.GeneralLedgerReports;
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp;
 
-namespace Accounting.Finance.GeneralLedgerReports
+namespace Accounting.Finance.Reports
 {
     /// <summary>
     /// 总账报表应用服务

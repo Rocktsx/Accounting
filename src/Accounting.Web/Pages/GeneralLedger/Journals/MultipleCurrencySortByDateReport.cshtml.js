@@ -80,7 +80,7 @@
         store.commit('setItems', { items: [] });
         const busyEle = '.body';
         abp.ui.setBusy(busyEle);
-        accounting.finance.generalLedgerReports.journalReport.getMultipleCurrencySortByDateList(params).then(function (result) {
+        accounting.finance.reports.journalReport.getMultipleCurrencySortByDateList(params).then(function (result) {
             store.commit('setItems', { items: result || [] });
             abp.ui.clearBusy(busyEle);
         }).catch(function () {

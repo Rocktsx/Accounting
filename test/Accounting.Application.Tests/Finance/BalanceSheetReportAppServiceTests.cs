@@ -1,11 +1,7 @@
-﻿using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.BalanceSheetReports;
-using Accounting.Finance.TrialBalanceReports;
+﻿using Accounting.Finance.BalanceSheetReports;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System; 
+using System.Linq; 
 using System.Threading.Tasks;
 using Volo.Abp.Modularity;
 using Xunit;

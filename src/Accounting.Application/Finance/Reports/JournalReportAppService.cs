@@ -1,6 +1,5 @@
 ﻿using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.JournalReports;
-using Accounting.Finance.Reports;
+using Accounting.Finance.JournalReports; 
 using Accounting.Finance.Vouchers;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Accounting.Finance.GeneralLedgerReports
+namespace Accounting.Finance.Reports
 {
     /// <summary>
     /// 日志帐报表应用服务

@@ -1,6 +1,5 @@
 ﻿using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.BalanceSheetReports;
-using Accounting.Finance.Reports;
+using Accounting.Finance.BalanceSheetReports; 
 using Accounting.Finance.Vouchers;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 
-namespace Accounting.Finance.GeneralLedgerReports
+namespace Accounting.Finance.Reports
 {
     public class BalanceSheetReportAppService : AccountingAppService, IBalanceSheetReportAppService
     {
