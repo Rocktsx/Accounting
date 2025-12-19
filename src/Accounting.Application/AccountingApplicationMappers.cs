@@ -246,4 +246,18 @@ namespace Accounting
         [MapperIgnoreSource(nameof(BalanceSheetMonthToDateYearToDateResult.AccountTypeId))]
         public override partial void Map(BalanceSheetMonthToDateYearToDateResult source, BalanceSheetMonthToDateYearToDateResultDto destination);
     }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class AgingSummarySingleCurrencyResultToAgingSummarySingleCurrencyResultDto : MapperBase<AgingSummarySingleCurrencyResult, AgingSummarySingleCurrencyResultDto>
+    { 
+        public override partial AgingSummarySingleCurrencyResultDto Map(AgingSummarySingleCurrencyResult source);
+         
+        public override partial void Map(AgingSummarySingleCurrencyResult source, AgingSummarySingleCurrencyResultDto destination);
+    }
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class AgingSummaryMultipleCurrencyResultToAgingSummaryMultipleCurrencyResultDto : MapperBase<AgingSummaryMultipleCurrencyResult, AgingSummaryMultipleCurrencyResultDto>
+    {
+        public override partial AgingSummaryMultipleCurrencyResultDto Map(AgingSummaryMultipleCurrencyResult source);
+
+        public override partial void Map(AgingSummaryMultipleCurrencyResult source, AgingSummaryMultipleCurrencyResultDto destination);
+    }
 }

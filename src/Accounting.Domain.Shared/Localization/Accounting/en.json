@@ -333,6 +333,10 @@
     "Menu:BalanceSheetReport.YearToDateReport": "Balance Sheet(YTD)",
     "Menu:BalanceSheetReport.MonthToDateYearToDateReport": "Balance Sheet(MTD YTD)",
     "NetAssets": "Net Assets",
-    "TotalText": "Total"
+    "TotalText": "Total",
+    "ReceivableAgingReport": "Receivable Aging Report",
+    "Permission:ReceivableAgingReport": "Debtor Aging Report",
+    "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": "Debtor Aging Summary Report(Single Currency)",
+    "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": "Debtor Aging Summary Report(Multiple Currency)"
   }
 }

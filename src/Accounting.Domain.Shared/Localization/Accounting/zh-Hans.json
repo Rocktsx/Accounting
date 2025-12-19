@@ -368,6 +368,10 @@
     "Menu:BalanceSheetReport.YearToDateReport": "资产负债表(YTD)",
     "Menu:BalanceSheetReport.MonthToDateYearToDateReport": "资产负债表(MTD YTD)",
     "NetAssets": "净资产",
-    "TotalText": "总"
+    "TotalText": "总",
+    "ReceivableAgingReport": "借方账龄分析表",
+    "Permission:ReceivableAgingReport": "借方账龄分析表",
+    "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": " 借方账龄分析汇总表(单货币)",
+    "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方账龄分析汇总表(多货币)"
   }
 }

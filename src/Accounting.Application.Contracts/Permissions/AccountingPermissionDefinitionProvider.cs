@@ -75,6 +75,10 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group = context.AddGroup(BalanceSheetReports.Default, L(PermissionPrefix + BalanceSheetReports.Name));
         group.AddPermission(BalanceSheetReports.MonthToDateYearToDateReport, L(BalanceSheetReports.MonthToDateYearToDateReportName));
         group.AddPermission(BalanceSheetReports.YearToDateReport, L(BalanceSheetReports.YearToDateReportName));
+
+        group = context.AddGroup(ReceivableAgingReports.Default, L(PermissionPrefix + ReceivableAgingReports.Name));
+        group.AddPermission(ReceivableAgingReports.AgingSummarySingleCurrency, L(ReceivableAgingReports.AgingSummarySingleCurrencyName));
+        group.AddPermission(ReceivableAgingReports.AgingSummaryMultipleCurrency, L(ReceivableAgingReports.AgingSummaryMultipleCurrencyName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

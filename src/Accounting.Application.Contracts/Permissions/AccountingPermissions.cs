@@ -231,6 +231,8 @@ public static class AccountingPermissions
         public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
     }
 
+    private const string AgingSummarySingleCurrencyText = "AgingSummarySingleCurrency";
+    private const string AgingSummaryMultipleCurrencyText = "AgingSummaryMultipleCurrency";
 
     /// <summary>
     /// 应收帐组
@@ -248,6 +250,19 @@ public static class AccountingPermissions
         public const string Delete = Default + Deletion;
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
+    }
+    /// <summary>
+    /// 收款传票帐龄分析报表
+    /// </summary>
+    public class ReceivableAgingReports
+    {
+        public const string Name = "ReceivableAgingReport";
+        public const string Default = ReceivableGroup + Dot + Name;
+        internal const string AgingSummarySingleCurrencyName = PermissionPrefix + Name + Dot + AgingSummarySingleCurrencyText;
+        public const string AgingSummarySingleCurrency = Default + AgingSummarySingleCurrencyText;
+
+        public const string AgingSummaryMultipleCurrency = Default + AgingSummaryMultipleCurrencyText;
+        internal const string AgingSummaryMultipleCurrencyName = PermissionPrefix + Name + Dot + AgingSummaryMultipleCurrencyText;
     }
 
     /// <summary>
