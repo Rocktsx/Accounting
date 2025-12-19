@@ -215,7 +215,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             _testData.ClientId, _testData.VoucherDescription2,
             DebitorCreditor.Debitor, _testData.RmbCurrency, 1,
             _testData.DocNo1NativeAmount, _testData.DocNo1NativeAmount,
-            _testData.DocNo1, new DateOnly(year, 11, 12), 0, true,
+            _testData.DocNo1, new DateTime(year, 11, 12), 0, true,
             string.Empty);
 
         var arVoucher2 = new Voucher(_guidGenerator.Create(),
@@ -231,7 +231,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             DebitorCreditor.Debitor, _testData.UsdCurrency,
             _testData.UsdCurrencyRate, _testData.DocNo2Amount,
             _testData.DocNo2NativeAmount, _testData.DocNo2,
-            new DateOnly(year, 11, 17), 0, true, string.Empty);
+            new DateTime(year, 11, 17), 0, true, string.Empty);
 
         var rvVoucher1 = new Voucher(_testData.VoucherRvId,
           new DateOnly(year, 2, 23), VoucherType.ReceivableVoucher, tenantId);
@@ -265,7 +265,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             _testData.VendorId, _testData.VoucherDescription2,
             DebitorCreditor.Creditor, _testData.RmbCurrency, 1,
             _testData.DocNo1NativeAmount, _testData.DocNo1NativeAmount,
-            _testData.DocNo3, new DateOnly(year, 11, 12), 0, true,
+            _testData.DocNo3, new DateTime(year, 11, 12), 0, true,
             string.Empty);
 
         var apVoucher2 = new Voucher(_guidGenerator.Create(),
@@ -281,7 +281,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             DebitorCreditor.Creditor, _testData.UsdCurrency,
             _testData.UsdCurrencyRate, _testData.DocNo2Amount,
             _testData.DocNo2NativeAmount, _testData.DocNo4,
-            new DateOnly(year, 11, 17), 0, true, string.Empty);
+            new DateTime(year, 11, 17), 0, true, string.Empty);
 
         var pvVoucher1 = new Voucher(_testData.VoucherPvId,
           new DateOnly(year, 3, 23), VoucherType.PayableVoucher, tenantId);

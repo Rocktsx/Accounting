@@ -20,7 +20,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
     public decimal ForeignAmount { get; private set; }
     public decimal NativeAmount { get; private set; }
     public string DocNo { get; private set; }
-    public DateOnly? DueDate { get; private set; }
+    public DateTime? DueDate { get; private set; }
     public string Project { get; private set; }
     public string Department { get; private set; }
     public string Region { get; private set; }
@@ -39,7 +39,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
     }
     internal VoucherDetail(Guid id, Guid voucherId, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount, decimal nativeAmount,
-        string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference, Guid? tenantId = null) : base(id)
+        string docNo, DateTime? dueDate, int itemQty, bool isOriginal, string paymentReference, Guid? tenantId = null) : base(id)
     {
         SetVoucherId(voucherId);
         SetSubjectId(subjectId);
@@ -121,7 +121,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
         return this;
     }
 
-    public VoucherDetail SetDueDate(DateOnly? dueDate)
+    public VoucherDetail SetDueDate(DateTime? dueDate)
     {
         DueDate = dueDate;
         return this;

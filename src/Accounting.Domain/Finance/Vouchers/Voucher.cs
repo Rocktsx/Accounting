@@ -59,7 +59,7 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
 
     public Voucher AddDetail(Guid id, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
-        decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference,
+        decimal nativeAmount, string docNo, DateTime? dueDate, int itemQty, bool isOriginal, string paymentReference,
         string project = null, string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
         CheckStatus();
@@ -75,7 +75,7 @@ public class Voucher : AuditedAggregateRootWithCode<Guid>, IMultiTenant
 
     public Voucher SetDetail(Guid id, Guid subjectId, Guid? subSubjectCode, string description,
         DebitorCreditor debitorCreditor, string currencyCode, decimal currencyRate, decimal foreignAmount,
-        decimal nativeAmount, string docNo, DateOnly? dueDate, int itemQty, bool isOriginal, string paymentReference,
+        decimal nativeAmount, string docNo, DateTime? dueDate, int itemQty, bool isOriginal, string paymentReference,
         string project = null,  string region = null, string department = null, string custom1 = null, string custom2 = null)
     {
         CheckStatus();

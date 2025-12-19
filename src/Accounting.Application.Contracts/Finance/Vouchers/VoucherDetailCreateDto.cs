@@ -24,7 +24,7 @@ public class VoucherDetailCreateDto
     [MaxLength(AccountingCommonConsts.MaxCommonTextFieldLength)]
     public string? DocNo { get; set; }
 
-    public DateOnly? DueDate { get; set; }
+    public DateTime? DueDate { get; set; }
 
     [MaxLength(AccountingCommonConsts.MaxCommonTextFieldLength)]
     public string? Project { get; set; }

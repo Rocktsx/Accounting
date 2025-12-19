@@ -270,8 +270,7 @@ public class AccountingDbContext :
             b.Property(x => x.Department).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Region).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Custom1).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
-            b.Property(x => x.Custom2).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
-            b.Property(x => x.DueDate).HasColumnType("date");
+            b.Property(x => x.Custom2).HasMaxLength(AccountingCommonConsts.MaxCodeLength); 
             b.HasOne(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.SubSubjectCode).OnDelete(DeleteBehavior.Restrict);
         });

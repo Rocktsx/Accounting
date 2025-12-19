@@ -15,6 +15,7 @@ namespace Accounting;
  */
 public abstract class AccountingAppService : ApplicationService
 {
+    public const int DefaultAgingDays = 7;
     protected AccountingAppService()
     {
         LocalizationResource = typeof(AccountingResource);

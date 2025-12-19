@@ -200,7 +200,7 @@ namespace Accounting.Finance
                 foriegnAmount = item.Credit;
             }
             var nativeAmount = foriegnAmount * item.CurrencyRate;
-            DateOnly? dueDate = item.DueDate != null ? DateOnly.FromDateTime(item.DueDate.Value) : null;
+            DateTime? dueDate = item.DueDate != null ? item.DueDate.Value : null;
 
             var detailId = GuidGenerator.Create();
             var detail = voucher.AddDetail(detailId, subjectId, subSubjectId, item.Description, debitorCreditor, item.Currency,

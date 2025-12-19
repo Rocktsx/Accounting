@@ -15,7 +15,7 @@ public class VoucherDetailDto: EntityDto<Guid>
     public decimal ForeignAmount { get; set; }
     public decimal NativeAmount { get; set; } 
     public string DocNo { get; set; }
-    public DateOnly? DueDate { get; set; }
+    public DateTime? DueDate { get; set; }
     public string Project { get; set; }
     public string Department { get; set; }
     public string Region { get; set; }

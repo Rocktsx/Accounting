@@ -107,5 +107,6 @@ namespace Accounting
         public Guid VoucherPvId { get; } = Guid.NewGuid();
 
         public int InsertedSubjectCount { get; } = 4;
+        public int AgingDays { get; } = 7;
     }
 }

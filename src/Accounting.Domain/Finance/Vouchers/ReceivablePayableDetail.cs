@@ -38,7 +38,7 @@ namespace Accounting.Finance.Vouchers
 
         public decimal OsAmount { get; set; }
 
-        public DateOnly? DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public AccountTypeTypes AccTypeCategory { get; set; }
     }
 }

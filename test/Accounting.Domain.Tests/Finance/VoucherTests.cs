@@ -59,7 +59,7 @@ namespace Accounting.Finance
             voucher.SetVoucherDate(newVoucherDate).SetVoucherType(VoucherType.PayableVoucher);
             var detailItem = voucher.Details.First();
             voucher.SetDetail(detailItem.Id, subjectId, Guid.Empty, "Test Description33", DebitorCreditor.Creditor, "RMB", 1.1m, 1000.0m,
-                1100.0m, "DOC00121", newVoucherDate,  1, false, string.Empty, demoText, demoText, demoText, demoText, demoText);
+                1100.0m, "DOC00121", newVoucherDate.ToDateTime(TimeOnly.MinValue),  1, false, string.Empty, demoText, demoText, demoText, demoText, demoText);
             voucher.SetStatus(VoucherStatus.Approval);
 
             // Assert 
@@ -77,7 +77,7 @@ namespace Accounting.Finance
             assertDetailItem.ForeignAmount.ShouldBe(1000.0m);
             assertDetailItem.NativeAmount.ShouldBe(1100.0m);
             assertDetailItem.DocNo.ShouldBe("DOC00121");
-            assertDetailItem.DueDate.ShouldBe(newVoucherDate);
+            assertDetailItem.DueDate.ShouldBe(newVoucherDate.ToDateTime(TimeOnly.MinValue));
             assertDetailItem.Project.ShouldBe(demoText);
             assertDetailItem.Department.ShouldBe(demoText);
             assertDetailItem.Region.ShouldBe(demoText);
