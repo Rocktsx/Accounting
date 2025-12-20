@@ -129,6 +129,7 @@
 
     accounting.finance.accountingSetting.getNativeCurrency()
         .then(result => store.commit('setNativeCurrency', result))
+        .catch(() => { });
 
     $(document).on('click', '#searchBtn', function () {
         const params = getFormParams();
