@@ -225,6 +225,9 @@ public class AccountingMenuContributor : IMenuContributor
                    url: "/Payable/PayableVouchers"
                ).RequirePermissions(AccountingPermissions.PayableVouchers.Default)
          );
+
+        AddPayableAgingReportMenus(l, payableMenus);
+
         if (payableMenus.Items.Count > 0)
         {
             context.Menu.AddItem(payableMenus);
@@ -403,7 +406,7 @@ public class AccountingMenuContributor : IMenuContributor
         var agingReportMenu = new ApplicationMenuItem(
                     AccountingMenus.ReceivableAgingReports.Name,
                     l[AccountingMenus.DisplayNames.ReceivableAgingReports.Name],
-                    icon: "fas fa-chart-gantt");
+                    icon: "fas fa-square-poll-horizontal");
 
         agingReportMenu.AddItem(
               new ApplicationMenuItem(
@@ -429,6 +432,39 @@ public class AccountingMenuContributor : IMenuContributor
         if (agingReportMenu.Items.Count > 0)
         {
             receivableMenus.AddItem(agingReportMenu);
+        }
+    }
+    private static void AddPayableAgingReportMenus(IStringLocalizer l, ApplicationMenuItem payableMenus)
+    {
+        var agingReportMenu = new ApplicationMenuItem(
+                    AccountingMenus.PayableAgingReports.Name,
+                    l[AccountingMenus.DisplayNames.PayableAgingReports.Name],
+                    icon: "fas fa-square-poll-vertical");
+
+        agingReportMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.PayableAgingReports.AgingSummarySingleCurrency,
+                  l[AccountingMenus.DisplayNames.PayableAgingReports.AgingSummarySingleCurrency],
+                  url: "/Payable/CreditorAgingReports"
+              ).RequirePermissions(AccountingPermissions.PayableAgingReports.AgingSummarySingleCurrency));
+
+        agingReportMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.PayableAgingReports.AgingSummaryMultipleCurrency,
+                l[AccountingMenus.DisplayNames.PayableAgingReports.AgingSummaryMultipleCurrency],
+                url: "/Payable/CreditorAgingReports/SummaryMultipleCurrencyReport"
+            ).RequirePermissions(AccountingPermissions.PayableAgingReports.AgingSummaryMultipleCurrency));
+
+        agingReportMenu.AddItem(
+           new ApplicationMenuItem(
+               AccountingMenus.PayableAgingReports.AgingDetail,
+               l[AccountingMenus.DisplayNames.PayableAgingReports.AgingDetail],
+               url: "/Payable/CreditorAgingReports/DetailReport"
+           ).RequirePermissions(AccountingPermissions.PayableAgingReports.AgingDetail));
+
+        if (agingReportMenu.Items.Count > 0)
+        {
+            payableMenus.AddItem(agingReportMenu);
         }
     }
 }

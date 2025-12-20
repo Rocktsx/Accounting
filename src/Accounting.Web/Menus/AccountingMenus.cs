@@ -131,6 +131,15 @@ public class AccountingMenus
     public const string Payable = Prefix + Dot + PayableText;
     public const string PayableVoucher = Payable + Dot + PayableVoucherText;
 
+    private const string PayableAgingReportText = "PayableAgingReport";
+    public class PayableAgingReports
+    {
+        public const string Name = Payable + Dot + PayableAgingReportText;
+        public const string AgingSummarySingleCurrency = Name + Dot + AgingSummarySingleCurrencyText;
+        public const string AgingSummaryMultipleCurrency = Name + Dot + AgingSummaryMultipleCurrencyText;
+        public const string AgingDetail = Name + Dot + AgingDetailText;
+    }
+
     public class DisplayNames
     {
         public const string BasicData = DisplayNamePrefix + BasicDataText;
@@ -213,5 +222,13 @@ public class AccountingMenus
 
         public const string Payable = DisplayNamePrefix + PayableText;
         public const string PayableVoucher = DisplayNamePrefix + PayableVoucherText;
+
+        public class PayableAgingReports
+        {
+            public const string Name = DisplayNamePrefix + PayableAgingReportText;
+            public const string AgingSummarySingleCurrency = Name + Dot + AgingSummarySingleCurrencyText;
+            public const string AgingSummaryMultipleCurrency = Name + Dot + AgingSummaryMultipleCurrencyText;
+            public const string AgingDetail = Name + Dot + AgingDetailText;
+        }
     }
 }

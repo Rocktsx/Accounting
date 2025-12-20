@@ -355,6 +355,13 @@
     "PayableAgingReport": "Creditor Aging Report",
     "Permission:PayableAgingReport.AgingSummarySingleCurrency": "Creditor Aging Summary Report(Single Currency)",
     "Permission:PayableAgingReport.AgingSummaryMultipleCurrency": "Creditor Aging Summary Report(Multiple Currency)",
-    "Permission:PayableAgingReport.AgingDetail": "Creditor Aging Detail Report"
+    "Permission:PayableAgingReport.AgingDetail": "Creditor Aging Detail Report",
+    "Menu": "Creditor Aging Report",
+    "Menu:PayableAgingReport.AgingSummarySingleCurrency": "Creditor Aging Summary Report(Single Currency)",
+    "Menu:PayableAgingReport.AgingSummaryMultipleCurrency": "Creditor Aging Summary Report(Multiple Currency)",
+    "Menu:PayableAgingReport.AgingDetail": "Creditor Aging Detail Report",
+    "Vendor": "Vendor",
+    "VendorCode": "Vendor Code",
+    "VendorName": "Vendor Name"
   }
 }

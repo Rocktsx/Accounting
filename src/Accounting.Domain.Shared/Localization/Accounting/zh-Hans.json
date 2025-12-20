@@ -391,6 +391,13 @@
     "Permission:PayableAgingReport": "贷方账龄分析表",
     "Permission:PayableAgingReport.AgingSummarySingleCurrency": "贷方账龄分析汇总表(单货币)",
     "Permission:PayableAgingReport.AgingSummaryMultipleCurrency": "贷方账龄分析汇总表(多货币)",
-    "Permission:PayableAgingReport.AgingDetail": "贷方账龄分析明细表"
+    "Permission:PayableAgingReport.AgingDetail": "贷方账龄分析明细表",
+    "Menu:PayableAgingReport": "贷方账龄分析表",
+    "Menu:PayableAgingReport.AgingSummarySingleCurrency": "贷方账龄分析汇总表(单货币)",
+    "Menu:PayableAgingReport.AgingSummaryMultipleCurrency": "贷方账龄分析汇总表(多货币)",
+    "Menu:PayableAgingReport.AgingDetail": "贷方账龄分析明细表",
+    "Vendor": "供应商",
+    "VendorCode": "供应商编号",
+    "VendorName": "供应商名称"
   }
 }

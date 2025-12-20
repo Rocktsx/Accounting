@@ -1,0 +1,236 @@
+﻿$(function () {
+    const l = abp.localization.getResource('Accounting');
+    
+    function initCompanySelect() {
+        const $target = $('#vendorId');
+        const url = '/api/app/vendor';
+        const language = getSelect2Language(); 
+        $target.attr('data-language', language);
+        $target.select2({
+            ajax: {
+                url: url,
+                delay: 250,
+                dataType: "json",
+                data: function (params) {
+                    return { filter: params.term || '', maxResultCount: 10 };
+                },
+                processResults: function (data) {
+                    const items = data.items;
+                    const results = items.map(function (item) {
+                        const { name, id, code } = item;
+                        const text = code + ' - ' + name;
+                        return {
+                            id,
+                            text: text,
+                            displayName: text
+                        }
+                    }); 
+                    return { results: results };
+                }
+            },
+            width: '100%',
+            dropdownParent: null,
+            placeholder: '',
+            allowClear: true,
+            language: language
+        });
+    }
+    function getFormParams() {
+        return {
+            subSubjectCode: $('#vendorId').val(), 
+            endDate: $('#endDate').val(),
+            agingDays: Number($('#agingDays').val()),
+        }
+    }
+    function getTotal() {
+        return {
+            netOsBalance: 0,
+            osBalance: 0,
+            prepaidAmount: 0,
+            overdueAmount1: 0,
+            overdueAmount2: 0,
+            overdueAmount3: 0,
+            overdueAmount4: 0,
+            overdueAmount5: 0
+        }
+    }
+    function handleData(items) {
+        const total = getTotal();
+        items.forEach(item => {
+            total.netOsBalance += item.outstandingAmount - item.prepaidDeposit;
+            total.osBalance += item.outstandingAmount;
+            total.prepaidAmount += item.prepaidDeposit;
+            total.overdueAmount1 += item.overdueAmount1;
+            total.overdueAmount2 += item.overdueAmount2;
+            total.overdueAmount3 += item.overdueAmount3;
+            total.overdueAmount4 += item.overdueAmount4;
+            total.overdueAmount5 += item.outstandingAmount - item.overdueAmount4 -
+                item.overdueAmount3 - item.overdueAmount2 - item.overdueAmount1;
+        });
+
+        return total
+    }
+
+    const store = new Vuex.Store({
+        state() {
+            return {
+                items: [],
+                params: getFormParams(),
+                nativeCurrency: '',
+                total: getTotal()
+            }
+        },
+        mutations: {
+            setItems(state, payload) {
+                const { items } = payload; 
+                state.items = items;
+                state.total = handleData(items);
+            },
+            setParams(state, payload) {
+                state.params = payload;
+            },
+            setNativeCurrency(state, payload) {
+                state.nativeCurrency = payload;
+            },
+        },
+        getters: {
+            items: (state) => state.items,
+            params: (state) => state.params,
+            nativeCurrency: (state) => state.nativeCurrency,
+            total: (state) => state.total,
+        }
+    })
+
+    initCompanySelect();
+    accounting.finance.accountingSetting.getNativeCurrency()
+        .then(result => store.commit('setNativeCurrency', result))
+
+    $(document).on('click', '#searchBtn', function () {
+        const params = getFormParams();
+        store.commit('setParams', params);
+        store.commit('setItems', { items: [] });
+        const busyEle = '.body';
+        abp.ui.setBusy(busyEle);
+        accounting.finance.reports.payableAgingReport.getAgingSummarySingleCurrencyList(params).then(function (result) {
+            store.commit('setItems', { items: result || [] });
+            abp.ui.clearBusy(busyEle);
+        }).catch(function () {
+            abp.ui.clearBusy(busyEle);
+        });
+    });
+
+    const headerTemplate = `
+    <div class="header">
+        <h3 class="text-center">{{l('PayableAgingReport')}}</h3>
+    </div>`;
+
+    const Header = {
+        template: headerTemplate,
+        methods: { 
+            l
+        }
+    }
+
+    const bodyTemplate = `
+    <div class="body"> 
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th colspan="3"></th>
+                   <th colspan="5" class="fw-bold border-bottom text-center">{{ l('OverdueDays') }}</th>
+                   <th colspan="3"></th>
+                </tr>
+                <tr class="border-bottom">
+                    <th class="fw-bold">{{ l('VendorCode') }}</th>
+                    <th class="fw-bold">{{ l('VendorName') }}</th>
+                    <th class="fw-bold text-end">{{ l('MaxOverdueDay') }}</th>
+                    <th class="fw-bold text-end">{{ params.agingDays * 3 + 1 }}+</th>
+                    <th class="fw-bold text-end">{{ params.agingDays * 2 + 1}} - {{ params.agingDays * 3 }}</th>
+                    <th class="fw-bold text-end">{{ params.agingDays + 1 }} - {{ params.agingDays * 2 }}</th>
+                    <th class="fw-bold text-end">1 - {{ params.agingDays }}</th>
+                    <th class="fw-bold text-end">{{ 0 }}</th>
+                    <th class="fw-bold text-end">{{ l('OsBalance') }}</th>
+                    <th class="fw-bold text-end">{{ l('PrepaidAmount') }}</th>
+                    <th class="fw-bold text-end">{{ l('NetOsBalance') }}</th>
+                </tr>
+                <tr>
+                    <th colspan="8"></th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
+                    <th class="text-end">{{ nativeCurrency }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <template  v-for="item in items" :key="item.code">
+                    <tr :key="item.subSubjectCode">
+                        <td>{{ item.subSubjectCode }}</td>
+                        <td>{{ item.companyName }}</td>
+                        <td class="text-end">{{ item.overDays }}</td>
+                        <td class="text-end">
+                            {{ renderAmount(item.outstandingAmount - item.overdueAmount4 -
+                                item.overdueAmount3 - item.overdueAmount2 - item.overdueAmount1)
+                            }}
+                        </td>
+                        <td class="text-end">{{ renderAmount(item.overdueAmount4) }}</td>
+                        <td class="text-end">{{ renderAmount(item.overdueAmount3) }}</td>
+                        <td class="text-end">{{ renderAmount(item.overdueAmount2) }}</td>
+                        <td class="text-end">{{ renderAmount(item.overdueAmount1) }}</td>
+                        <td class="text-end">{{ renderAmount(item.outstandingAmount) }}</td>
+                        <td class="text-end">{{ renderAmount(item.prepaidDeposit) }}</td>
+                        <td class="text-end">{{ renderAmount(item.outstandingAmount - item.prepaidDeposit) }}</td>
+                    </tr>
+                </template>
+            </tbody>
+            <tfoot v-if="items.length > 0">
+                <tr class="border-top text-end fw-bold">
+                    <th colspan="3">{{ l('Total') }}</th>
+                    <td>{{ renderAmount(total.overdueAmount5 )}}</td>
+                    <td>{{ renderAmount(total.overdueAmount4) }}</td>
+                    <td>{{ renderAmount(total.overdueAmount3) }}</td>
+                    <td>{{ renderAmount(total.overdueAmount2) }}</td>
+                    <td>{{ renderAmount(total.overdueAmount1) }}</td>
+                    <td>{{ renderAmount(total.osBalance) }}</td>
+                    <td>{{ renderAmount(total.prepaidAmount) }}</td>
+                    <td>{{ renderAmount(total.netOsBalance) }}</td>
+                 </tr>
+            </tfoot>
+        </table>
+    </div>`;
+
+    const Body = {
+        template: bodyTemplate,
+        computed: {
+            ...Vuex.mapGetters(['items', 'nativeCurrency', 'params', 'total'])
+        },
+        methods: {
+            l,
+            renderAmount,
+        }
+    }
+
+    const reportTemplate = `
+ <div class="report">
+    <Header />
+    <Body/>
+    <div v-if="items.length == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
+ </div>`;
+
+    const Report = {
+        components: { Header, Body },
+        template: reportTemplate,
+        computed: {
+            ...Vuex.mapGetters(['items'])
+        },
+        methods: {
+            l
+        }
+    } 
+
+    const app = new Vue({
+        components: { Report },
+        template: `<Report />`,
+        el: '#app',
+        store
+    });
+});

@@ -259,6 +259,24 @@ namespace Accounting.Web.Pages
                  {
                      toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingDetail);
                  });
+
+                options.Configure<Payable.CreditorAgingReports.IndexModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingSummarySingleCurrency);
+                  });
+
+                options.Configure<Payable.CreditorAgingReports.SummaryMultipleCurrencyReportModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingSummaryMultipleCurrency);
+                  });
+
+                options.Configure<Payable.CreditorAgingReports.DetailReportModel>(
+                 toolbar =>
+                 {
+                     toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingDetail);
+                 });
             });
         }
 
