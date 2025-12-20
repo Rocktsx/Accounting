@@ -377,6 +377,7 @@
     "Menu:ReceivableAgingReport": "借方賬齡分析表",
     "Menu:ReceivableAgingReport.AgingSummarySingleCurrency": " 借方賬齡分析汇总表(單貨幣)",
     "Menu:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方賬齡分析汇总表(多貨幣)",
+    "Menu:ReceivableAgingReport.AgingDetail": " 借方賬齡分析明細表",
     "Client": "客户",
     "AgingDay": "賬齡數",
     "OsBalance": "結欠金額",

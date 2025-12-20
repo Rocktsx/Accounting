@@ -419,6 +419,13 @@ public class AccountingMenuContributor : IMenuContributor
                 url: "/Receivable/DebtorAgingReports/SummaryMultipleCurrencyReport"
             ).RequirePermissions(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency));
 
+        agingReportMenu.AddItem(
+           new ApplicationMenuItem(
+               AccountingMenus.ReceivableAgingReports.AgingDetail,
+               l[AccountingMenus.DisplayNames.ReceivableAgingReports.AgingDetail],
+               url: "/Receivable/DebtorAgingReports/DetailReport"
+           ).RequirePermissions(AccountingPermissions.ReceivableAgingReports.AgingDetail));
+         
         if (agingReportMenu.Items.Count > 0)
         {
             receivableMenus.AddItem(agingReportMenu);

@@ -342,6 +342,7 @@
     "Menu:ReceivableAgingReport": "Debtor Aging Report",
     "Menu:ReceivableAgingReport.AgingSummarySingleCurrency": "Debtor Aging Summary Report(Single Currency)",
     "Menu:ReceivableAgingReport.AgingSummaryMultipleCurrency": "Debtor Aging Summary Report(Multiple Currency)",
+    "Menu:ReceivableAgingReport.AgingDetail": "Debtor Aging Detail Report",
     "Client": "Client",
     "AgingDay": "Aging Day",
     "OsBalance": "O/S Balance",

@@ -253,6 +253,12 @@ namespace Accounting.Web.Pages
                   {
                       toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency);
                   });
+
+                options.Configure<Receivable.DebtorAgingReports.DetailReportModel>(
+                 toolbar =>
+                 {
+                     toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingDetail);
+                 });
             });
         }
 
