@@ -116,6 +116,16 @@ public class AccountingMenus
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
 
+    private const string ReceivableAgingReportText = "ReceivableAgingReport";
+    private const string AgingSummarySingleCurrencyText = "AgingSummarySingleCurrency";
+    private const string AgingSummaryMultipleCurrencyText = "AgingSummaryMultipleCurrency";
+
+    public class ReceivableAgingReports {
+        public const string Name = Receivable + Dot + ReceivableAgingReportText;
+        public const string AgingSummarySingleCurrency = Name + Dot + AgingSummarySingleCurrencyText;
+        public const string AgingSummaryMultipleCurrency = Name + Dot + AgingSummaryMultipleCurrencyText;
+    }
+
     public const string Payable = Prefix + Dot + PayableText;
     public const string PayableVoucher = Payable + Dot + PayableVoucherText;
 
@@ -190,6 +200,13 @@ public class AccountingMenus
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;
         public const string ReceivableVoucher = DisplayNamePrefix + ReceivableVoucherText;
+
+        public class ReceivableAgingReports
+        {
+            public const string Name = DisplayNamePrefix + ReceivableAgingReportText;
+            public const string AgingSummarySingleCurrency = Name + Dot + AgingSummarySingleCurrencyText;
+            public const string AgingSummaryMultipleCurrency = Name + Dot + AgingSummaryMultipleCurrencyText;
+        }
 
         public const string Payable = DisplayNamePrefix + PayableText;
         public const string PayableVoucher = DisplayNamePrefix + PayableVoucherText;

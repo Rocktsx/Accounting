@@ -201,6 +201,9 @@ public class AccountingMenuContributor : IMenuContributor
                    url: "/Receivable/ReceivableVouchers"
                ).RequirePermissions(AccountingPermissions.ReceivableVouchers.Default)
          );
+
+        AddReceivableAgingReportMenus(l, receivableMenus);
+
         if (receivableMenus.Items.Count > 0)
         {
             context.Menu.AddItem(receivableMenus);
@@ -392,6 +395,33 @@ public class AccountingMenuContributor : IMenuContributor
         if (balanceSheeteMenu.Items.Count > 0)
         {
             generalLedgerMenu.AddItem(balanceSheeteMenu);
+        }
+    }
+
+    private static void AddReceivableAgingReportMenus(IStringLocalizer l, ApplicationMenuItem receivableMenus)
+    {
+        var agingReportMenu = new ApplicationMenuItem(
+                    AccountingMenus.ReceivableAgingReports.Name,
+                    l[AccountingMenus.DisplayNames.ReceivableAgingReports.Name],
+                    icon: "fas fa-chart-gantt");
+
+        agingReportMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.ReceivableAgingReports.AgingSummarySingleCurrency,
+                  l[AccountingMenus.DisplayNames.ReceivableAgingReports.AgingSummarySingleCurrency],
+                  url: "/Receivable/DebtorAgingReports"
+              ).RequirePermissions(AccountingPermissions.ReceivableAgingReports.AgingSummarySingleCurrency));
+
+        agingReportMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.ReceivableAgingReports.AgingSummaryMultipleCurrency,
+                l[AccountingMenus.DisplayNames.ReceivableAgingReports.AgingSummaryMultipleCurrency],
+                url: "/Receivable/DebtorAgingReports/SummaryMultipleCurrencyReport"
+            ).RequirePermissions(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency));
+
+        if (agingReportMenu.Items.Count > 0)
+        {
+            receivableMenus.AddItem(agingReportMenu);
         }
     }
 }

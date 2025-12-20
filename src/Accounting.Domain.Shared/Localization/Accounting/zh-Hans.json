@@ -372,6 +372,18 @@
     "ReceivableAgingReport": "借方账龄分析表",
     "Permission:ReceivableAgingReport": "借方账龄分析表",
     "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": " 借方账龄分析汇总表(单货币)",
-    "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方账龄分析汇总表(多货币)"
+    "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方账龄分析汇总表(多货币)",
+    "Menu:ReceivableAgingReport": "借方账龄分析表",
+    "Menu:ReceivableAgingReport.AgingSummarySingleCurrency": " 借方账龄分析汇总表(单货币)",
+    "Menu:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方账龄分析汇总表(多货币)",
+    "Client": "客户",
+    "AgingDay": "账龄数",
+    "OsBalance": "结欠金额",
+    "NetOsBalance": "净结欠金额",
+    "PrepaidAmount": "预缴金额",
+    "MaxOverdueDay": "最大过期日数",
+    "OverdueDays": "过期日",
+    "ClientCode": "客户编号",
+    "ClientName": "客户名称"
   }
 }

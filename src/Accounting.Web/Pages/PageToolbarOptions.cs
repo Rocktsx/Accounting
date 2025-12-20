@@ -241,6 +241,18 @@ namespace Accounting.Web.Pages
                   {
                       toolbar.AddSearchButton(AccountingPermissions.BalanceSheetReports.MonthToDateYearToDateReport);
                   });
+
+                options.Configure<Receivable.DebtorAgingReports.IndexModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingSummarySingleCurrency);
+                  });
+
+                options.Configure<Receivable.DebtorAgingReports.SummaryMultipleCurrencyReportModel>(
+                  toolbar =>
+                  {
+                      toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency);
+                  });
             });
         }
 
