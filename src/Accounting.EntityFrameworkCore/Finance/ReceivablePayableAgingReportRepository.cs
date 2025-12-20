@@ -48,7 +48,7 @@ namespace Accounting.Finance
                             grp.Key.Category,
                             DueDate = grp.Where(item => item.IsOriginal == true).Select(item => item.DueDate).FirstOrDefault(),
                             NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
-                            OverDays = grp.Max(item => item.DueDate == null ? 0 : EF.Functions.DateDiffDay(endDate.ToDateTime(TimeOnly.MinValue), item.DueDate.Value))
+                            OverDays = grp.Max(item => item.DueDate == null ? 0 : EF.Functions.DateDiffDay(item.DueDate.Value, endDate.ToDateTime(TimeOnly.MinValue)))
                         })
                         .GroupBy(item => new
                         {
@@ -125,7 +125,7 @@ namespace Accounting.Finance
                             grp.Key.CurrencyRate,
                             DueDate = grp.Where(item => item.IsOriginal == true).Select(item => item.DueDate).FirstOrDefault(),
                             NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
-                            OverDays = grp.Max(item => item.DueDate == null ? 0 : EF.Functions.DateDiffDay(endDate.ToDateTime(TimeOnly.MinValue), item.DueDate.Value))
+                            OverDays = grp.Max(item => item.DueDate == null ? 0 : EF.Functions.DateDiffDay(item.DueDate.Value, endDate.ToDateTime(TimeOnly.MinValue)))
                         })
                         .GroupBy(item => new
                         {
