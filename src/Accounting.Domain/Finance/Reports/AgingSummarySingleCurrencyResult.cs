@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Accounting.Finance.Reports
 {
     public class AgingSummarySingleCurrencyResult
@@ -14,6 +16,7 @@ namespace Accounting.Finance.Reports
         public decimal OverdueAmount2 { get; set; }
         public decimal OverdueAmount3 { get; set; }
         public decimal OverdueAmount4 { get; set; }
+        public DateTime? DueDate { get; set; }
         public AgingSummarySingleCurrencyResult()
         {
             SubSubjectCode = string.Empty;

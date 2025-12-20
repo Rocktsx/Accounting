@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Accounting.Finance.Reports
 {
     public class AgingSummaryMultipleCurrencyResult: AgingSummarySingleCurrencyResult

@@ -37,5 +37,35 @@ namespace Accounting.Finance
             result.ShouldNotBeNull();
             result.Count().ShouldBe(2);
         }
+        [Fact]
+        public async Task Can_Get_Aging_Summary_Single_Currency_List()
+        {
+            var input = new AgingReportRequestDto
+            {
+                EndDate = _testData.AccountingPeriodEndDate
+            };
+
+            // act
+            var result = await _agingReportAppService.GetAgingSummarySingleCurrencyListAsync(input);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(1);
+        }
+        [Fact]
+        public async Task Can_Get_Aging_Summary_Multiple_Currency_List()
+        {
+            var input = new AgingReportRequestDto
+            {
+                EndDate = _testData.AccountingPeriodEndDate
+            };
+
+            // act
+            var result = await _agingReportAppService.GetAgingSummaryMultipleCurrencyListAsync(input);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(2);
+        }
     }
 }
