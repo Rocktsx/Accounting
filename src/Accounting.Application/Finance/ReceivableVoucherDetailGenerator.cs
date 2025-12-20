@@ -153,7 +153,8 @@ namespace Accounting.Finance
                     NativeAmount = item.NativeAmount,
                     SubSubjectCode = Input.CreditorId,
                     PaymentReference = item.PaymentReference,
-                    Description = $"{DepositText} {item.PaymentReference}"
+                    Description = $"{DepositText} {item.PaymentReference}",
+                    IsOriginal = true
                 });
             }
         }
@@ -185,7 +186,8 @@ namespace Accounting.Finance
                 NativeAmount = balance,
                 SubSubjectCode = Input.CreditorId,
                 PaymentReference = paymentReference,
-                Description = $"{DepositText} {paymentReference}"
+                Description = $"{DepositText} {paymentReference}",
+                IsOriginal = true
             });
         }
         private decimal ValidatePaymentBalance()
