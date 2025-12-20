@@ -125,6 +125,7 @@ namespace Accounting.Finance
                             grp.Key.CurrencyRate,
                             DueDate = grp.Where(item => item.IsOriginal == true).Select(item => item.DueDate).FirstOrDefault(),
                             NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
+                            ForeignAmount = grp.Sum(item => item.ForeignAmount * (int)item.DebitorCreditor),
                             OverDays = grp.Max(item => item.DueDate == null ? 0 : EF.Functions.DateDiffDay(item.DueDate.Value, endDate.ToDateTime(TimeOnly.MinValue)))
                         })
                         .GroupBy(item => new
@@ -166,6 +167,29 @@ namespace Accounting.Finance
                                  (item.Category == AccountTypeTypes.Receivable ?
                                 (item.NativeAmount > 0 ? item.NativeAmount : 0)
                                 : (item.NativeAmount < 0 ? -item.NativeAmount : 0)) : 0),
+
+                            ForeignOutstandingAmount = grp.Sum(item => item.Category == AccountTypeTypes.Receivable ?
+                               (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
+                               : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)),
+                            ForeignPrepaidDeposit = grp.Sum(item => item.Category == AccountTypeTypes.Receivable ?
+                                (item.ForeignAmount < 0 ? item.ForeignAmount : 0)
+                                : (item.ForeignAmount > 0 ? -item.ForeignAmount : 0)),
+                            ForeignOverdueAmount1 = grp.Sum(item => item.OverDays <= 0 ?
+                                (item.Category == AccountTypeTypes.Receivable ?
+                                (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
+                                : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)) : 0),
+                            ForeignOverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 1 ?
+                                (item.Category == AccountTypeTypes.Receivable ?
+                                (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
+                                : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)) : 0),
+                            ForeignOverdueAmount3 = grp.Sum(item => item.OverDays <= agingDays * 2 && item.OverDays > agingDays ?
+                                 (item.Category == AccountTypeTypes.Receivable ?
+                                (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
+                                : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)) : 0),
+                            ForeignOverdueAmount4 = grp.Sum(item => item.OverDays <= agingDays * 3 && item.OverDays > agingDays * 2 ?
+                                 (item.Category == AccountTypeTypes.Receivable ?
+                                (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
+                                : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)) : 0),
                         });
 
             return await agingQueryable.ToListAsync(cancellationToken);
