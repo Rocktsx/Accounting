@@ -73,7 +73,7 @@ namespace Accounting.Finance
                                 (item.Category == AccountTypeTypes.Receivable ?
                                 (item.NativeAmount > 0 ? item.NativeAmount : 0)
                                 : (item.NativeAmount < 0 ? -item.NativeAmount : 0)) : 0),
-                            OverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 1 ?
+                            OverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 0 ?
                                 (item.Category == AccountTypeTypes.Receivable ?
                                 (item.NativeAmount > 0 ? item.NativeAmount : 0)
                                 : (item.NativeAmount < 0 ? -item.NativeAmount : 0)) : 0),
@@ -155,7 +155,7 @@ namespace Accounting.Finance
                                 (item.Category == AccountTypeTypes.Receivable ?
                                 (item.NativeAmount > 0 ? item.NativeAmount : 0)
                                 : (item.NativeAmount < 0 ? -item.NativeAmount : 0)) : 0),
-                            OverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 1 ?
+                            OverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 0 ?
                                 (item.Category == AccountTypeTypes.Receivable ?
                                 (item.NativeAmount > 0 ? item.NativeAmount : 0)
                                 : (item.NativeAmount < 0 ? -item.NativeAmount : 0)) : 0),
@@ -178,7 +178,7 @@ namespace Accounting.Finance
                                 (item.Category == AccountTypeTypes.Receivable ?
                                 (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
                                 : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)) : 0),
-                            ForeignOverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 1 ?
+                            ForeignOverdueAmount2 = grp.Sum(item => item.OverDays <= agingDays && item.OverDays > 0 ?
                                 (item.Category == AccountTypeTypes.Receivable ?
                                 (item.ForeignAmount > 0 ? item.ForeignAmount : 0)
                                 : (item.ForeignAmount < 0 ? -item.ForeignAmount : 0)) : 0),
@@ -226,7 +226,9 @@ namespace Accounting.Finance
                             grp.Key.Category,
                             DueDate = grp.Where(item => item.IsOriginal == true).Select(item => item.DueDate).FirstOrDefault(),
                             NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
-                            ForeignAmount = grp.Sum(item => item.ForeignAmount * (int)item.DebitorCreditor)
+                            ForeignAmount = grp.Sum(item => item.ForeignAmount * (int)item.DebitorCreditor),
+                            VoucherDate = grp.OrderByDescending(item => item.IsOriginal).Select(item => item.Voucher.VoucherDate).FirstOrDefault(),
+                            VoucherCode = grp.OrderByDescending(item => item.IsOriginal).Select(item => item.Voucher.Code).FirstOrDefault(),
                         }).Select( item => new AgingDetailResult
                         {
                             SubSubjectCode = item.SubSubjectCode,
@@ -235,6 +237,8 @@ namespace Accounting.Finance
                             DocNo = item.DocNo,
                             CurrencyCode = item.CurrencyCode,
                             DueDate = item.DueDate,
+                            VoucherCode = item.VoucherCode,
+                            VoucherDate = item.VoucherDate,
                             OutstandingAmount = item.Category == AccountTypeTypes.Receivable ?
                                 (item.NativeAmount > 0 ? item.NativeAmount : 0)
                                 : (item.NativeAmount < 0 ? -item.NativeAmount : 0),

@@ -5,7 +5,8 @@ namespace Accounting.Finance.Reports
     public class AgingDetailResultDto
     {
         public string SubSubjectCode { get; set; }
-        public DateOnly VoucherDate { get; set; }
+        public string VoucherCode{ get; set; }
+        public DateOnly? VoucherDate { get; set; }
 
         public string CompanyName { get; set; }
         public string CompanyOtherName { get; set; }
@@ -22,6 +23,7 @@ namespace Accounting.Finance.Reports
             CompanyOtherName = string.Empty;
             CurrencyCode = string.Empty;
             DocNo = string.Empty;
+            VoucherCode = string.Empty;
         }
     }
 }
