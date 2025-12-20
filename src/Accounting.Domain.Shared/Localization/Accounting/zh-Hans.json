@@ -386,6 +386,11 @@
     "MaxOverdueDay": "最大过期日数",
     "OverdueDays": "过期日",
     "ClientCode": "客户编号",
-    "ClientName": "客户名称"
+    "ClientName": "客户名称",
+    "PayableAgingReport": "贷方账龄分析表",
+    "Permission:PayableAgingReport": "贷方账龄分析表",
+    "Permission:PayableAgingReport.AgingSummarySingleCurrency": "贷方账龄分析汇总表(单货币)",
+    "Permission:PayableAgingReport.AgingSummaryMultipleCurrency": "贷方账龄分析汇总表(多货币)",
+    "Permission:PayableAgingReport.AgingDetail": "贷方账龄分析明细表"
   }
 }

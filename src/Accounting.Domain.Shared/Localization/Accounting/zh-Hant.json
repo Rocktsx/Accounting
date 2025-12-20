@@ -371,13 +371,13 @@
     "TotalText": "總",
     "ReceivableAgingReport": "借方賬齡分析表",
     "Permission:ReceivableAgingReport": "借方賬齡分析表",
-    "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": " 借方賬齡分析汇总表(單貨幣)",
-    "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方賬齡分析汇总表(多貨幣)",
-    "Permission:ReceivableAgingReport.AgingDetail": " 借方賬齡分析明細表",
+    "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": "借方賬齡分析汇总表(單貨幣)",
+    "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": "借方賬齡分析汇总表(多貨幣)",
+    "Permission:ReceivableAgingReport.AgingDetail": "借方賬齡分析明細表",
     "Menu:ReceivableAgingReport": "借方賬齡分析表",
-    "Menu:ReceivableAgingReport.AgingSummarySingleCurrency": " 借方賬齡分析汇总表(單貨幣)",
-    "Menu:ReceivableAgingReport.AgingSummaryMultipleCurrency": " 借方賬齡分析汇总表(多貨幣)",
-    "Menu:ReceivableAgingReport.AgingDetail": " 借方賬齡分析明細表",
+    "Menu:ReceivableAgingReport.AgingSummarySingleCurrency": "借方賬齡分析汇总表(單貨幣)",
+    "Menu:ReceivableAgingReport.AgingSummaryMultipleCurrency": "借方賬齡分析汇总表(多貨幣)",
+    "Menu:ReceivableAgingReport.AgingDetail": "借方賬齡分析明細表",
     "Client": "客户",
     "AgingDay": "賬齡數",
     "OsBalance": "結欠金額",
@@ -386,6 +386,11 @@
     "MaxOverdueDay": "最大過期日數",
     "OverdueDays": "過期 (日)",
     "ClientCode": "客户編號",
-    "ClientName": "客户名稱"
+    "ClientName": "客户名稱",
+    "PayableAgingReport": "貸方賬齡分析表",
+    "Permission:PayableAgingReport": "貸方賬齡分析表",
+    "Permission:PayableAgingReport.AgingSummarySingleCurrency": "貸方賬齡分析汇总表(單貨幣)",
+    "Permission:PayableAgingReport.AgingSummaryMultipleCurrency": "貸方賬齡分析汇总表(多貨幣)",
+    "Permission:PayableAgingReport.AgingDetail": "貸方賬齡分析明細表"
   }
 }

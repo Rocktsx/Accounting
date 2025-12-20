@@ -285,4 +285,22 @@ public static class AccountingPermissions
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
     }
+
+    /// <summary>
+    /// 付款传票帐龄分析报表
+    /// </summary>
+    public class PayableAgingReports
+    {
+        public const string Name = " PayableAgingReport";
+        public const string Default = PayableGroup + Dot + Name;
+        private const string DispalyName = PermissionPrefix + Name + Dot;
+        internal const string AgingSummarySingleCurrencyName = DispalyName + AgingSummarySingleCurrencyText;
+        public const string AgingSummarySingleCurrency = Default + AgingSummarySingleCurrencyText;
+
+        internal const string AgingSummaryMultipleCurrencyName = DispalyName + AgingSummaryMultipleCurrencyText;
+        public const string AgingSummaryMultipleCurrency = Default + AgingSummaryMultipleCurrencyText;
+
+        internal const string AgingDetailName = DispalyName + AgingDetailText;
+        public const string AgingDetail = Default + AgingDetailText;
+    }
 }

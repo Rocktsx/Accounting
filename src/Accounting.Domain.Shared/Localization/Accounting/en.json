@@ -334,7 +334,7 @@
     "Menu:BalanceSheetReport.MonthToDateYearToDateReport": "Balance Sheet(MTD YTD)",
     "NetAssets": "Net Assets",
     "TotalText": "Total",
-    "ReceivableAgingReport": "Receivable Aging Report",
+    "ReceivableAgingReport": "Debtor Aging Report",
     "Permission:ReceivableAgingReport": "Debtor Aging Report",
     "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": "Debtor Aging Summary Report(Single Currency)",
     "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": "Debtor Aging Summary Report(Multiple Currency)",
@@ -351,6 +351,10 @@
     "MaxOverdueDay": "Overdue (Max. day)",
     "OverdueDays": "Overdue (Days)",
     "ClientCode": "Client Code",
-    "ClientName": "Client Name"
+    "ClientName": "Client Name",
+    "PayableAgingReport": "Creditor Aging Report",
+    "Permission:PayableAgingReport.AgingSummarySingleCurrency": "Creditor Aging Summary Report(Single Currency)",
+    "Permission:PayableAgingReport.AgingSummaryMultipleCurrency": "Creditor Aging Summary Report(Multiple Currency)",
+    "Permission:PayableAgingReport.AgingDetail": "Creditor Aging Detail Report"
   }
 }
