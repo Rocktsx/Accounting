@@ -2,7 +2,7 @@
 
 namespace Accounting.Finance.Reports
 {
-    public class AgingSummarySingleCurrencyRequestDto
+    public class AgingReportRequestDto
     {
         public Guid? SubSubjectCode { get; set; }
         public DateOnly? EndDate { get; set; }

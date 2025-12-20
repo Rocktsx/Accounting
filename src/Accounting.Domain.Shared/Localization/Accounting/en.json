@@ -338,6 +338,7 @@
     "Permission:ReceivableAgingReport": "Debtor Aging Report",
     "Permission:ReceivableAgingReport.AgingSummarySingleCurrency": "Debtor Aging Summary Report(Single Currency)",
     "Permission:ReceivableAgingReport.AgingSummaryMultipleCurrency": "Debtor Aging Summary Report(Multiple Currency)",
+    "Permission:ReceivableAgingReport.AgingDetail": "Debtor Aging Detail Report",
     "Menu:ReceivableAgingReport": "Debtor Aging Report",
     "Menu:ReceivableAgingReport.AgingSummarySingleCurrency": "Debtor Aging Summary Report(Single Currency)",
     "Menu:ReceivableAgingReport.AgingSummaryMultipleCurrency": "Debtor Aging Summary Report(Multiple Currency)",

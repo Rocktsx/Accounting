@@ -79,6 +79,7 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group = context.AddGroup(ReceivableAgingReports.Default, L(PermissionPrefix + ReceivableAgingReports.Name));
         group.AddPermission(ReceivableAgingReports.AgingSummarySingleCurrency, L(ReceivableAgingReports.AgingSummarySingleCurrencyName));
         group.AddPermission(ReceivableAgingReports.AgingSummaryMultipleCurrency, L(ReceivableAgingReports.AgingSummaryMultipleCurrencyName));
+        group.AddPermission(ReceivableAgingReports.AgingDetail, L(ReceivableAgingReports.AgingDetailName));
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

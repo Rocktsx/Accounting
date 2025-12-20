@@ -18,7 +18,7 @@ namespace Accounting.Finance.Reports
         }
 
         [Authorize(AccountingPermissions.ReceivableAgingReports.AgingSummarySingleCurrency)]
-        public async Task<IEnumerable<AgingSummarySingleCurrencyResultDto>> GetAgingSummarySingleCurrencyListAsync(AgingSummarySingleCurrencyRequestDto input)
+        public async Task<IEnumerable<AgingSummarySingleCurrencyResultDto>> GetAgingSummarySingleCurrencyListAsync(AgingReportRequestDto input)
         {
             var list = await _agingReportRepository.GetAgingSummarySingleCurrencyListAsync(input.SubSubjectCode,
                 input.EndDate ?? DateOnly.FromDateTime(DateTime.Now), input.AgingDays ?? DefaultAgingDays);
@@ -28,12 +28,22 @@ namespace Accounting.Finance.Reports
 
         [Authorize(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency)]
         public async Task<IEnumerable<AgingSummaryMultipleCurrencyResultDto>> GetAgingSummaryMultipleCurrencyListAsync(
-           AgingSummarySingleCurrencyRequestDto input)
+           AgingReportRequestDto input)
         {
             var list = await _agingReportRepository.GetAgingSummaryMultipleCurrencyListAsync(input.SubSubjectCode,
                 input.EndDate ?? DateOnly.FromDateTime(DateTime.Now), input.AgingDays ?? DefaultAgingDays);
 
             return ObjectMapper.Map<IEnumerable<AgingSummaryMultipleCurrencyResult>, IEnumerable<AgingSummaryMultipleCurrencyResultDto>>(list);
+        }
+
+        [Authorize(AccountingPermissions.ReceivableAgingReports.AgingDetail)]
+        public async Task<IEnumerable<AgingDetailResultDto>> GetAgingDetailListAsync(
+           AgingReportRequestDto input)
+        {
+            var list = await _agingReportRepository.GetAgingDetailListAsync(input.SubSubjectCode,
+                input.EndDate ?? DateOnly.FromDateTime(DateTime.Now));
+
+            return ObjectMapper.Map<IEnumerable<AgingDetailResult>, IEnumerable<AgingDetailResultDto>>(list);
         }
     }
 }

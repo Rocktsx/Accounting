@@ -181,7 +181,7 @@ public static class AccountingPermissions
         internal const string MultipleCurrencySortByDateReportName = PermissionPrefix + Name + Dot + MultipleCurrencySortByDateReportText;
         public const string MultipleCurrencySortByDateReport = Default + Dot + MultipleCurrencySortByDateReportText;
     }
-     
+
     /// <summary>
     /// 试算表报表
     /// </summary>
@@ -196,7 +196,7 @@ public static class AccountingPermissions
         internal const string MonthToDateYearToDateReportName = PermissionPrefix + Name + Dot + MonthToDateYearToDateReportText;
         public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
     }
-     
+
     private const string TwelveMonthsReportText = "TwelveMonthsReport";
     /// <summary>
     /// 损益表报表
@@ -233,7 +233,7 @@ public static class AccountingPermissions
 
     private const string AgingSummarySingleCurrencyText = "AgingSummarySingleCurrency";
     private const string AgingSummaryMultipleCurrencyText = "AgingSummaryMultipleCurrency";
-
+    private const string AgingDetailText = "AgingDetail";
     /// <summary>
     /// 应收帐组
     /// </summary>
@@ -261,8 +261,11 @@ public static class AccountingPermissions
         internal const string AgingSummarySingleCurrencyName = PermissionPrefix + Name + Dot + AgingSummarySingleCurrencyText;
         public const string AgingSummarySingleCurrency = Default + AgingSummarySingleCurrencyText;
 
-        public const string AgingSummaryMultipleCurrency = Default + AgingSummaryMultipleCurrencyText;
         internal const string AgingSummaryMultipleCurrencyName = PermissionPrefix + Name + Dot + AgingSummaryMultipleCurrencyText;
+        public const string AgingSummaryMultipleCurrency = Default + AgingSummaryMultipleCurrencyText;
+
+        internal const string AgingDetailName = PermissionPrefix + Name + Dot + AgingDetailText;
+        public const string AgingDetail = Default + AgingDetailText;
     }
 
     /// <summary>

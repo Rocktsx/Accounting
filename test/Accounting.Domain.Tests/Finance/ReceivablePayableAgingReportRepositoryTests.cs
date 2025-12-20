@@ -1,7 +1,6 @@
 ﻿using Accounting.Finance.Reports;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Modularity;
@@ -41,5 +40,21 @@ namespace Accounting.Finance
         //    summary.OverdueAmount4.ShouldBe(0);
         //    summary.OutstandingAmount.ShouldBe(_testData.DocNo1NativeAmount + _testData.DocNo2NativeAmount - _testData.DocNo2PaidNativeAmount);
         //}
+        [Theory]
+        [InlineData(AccountTypeTypes.Receivable)]
+        [InlineData(AccountTypeTypes.Payable)]
+        public async Task Can_Get_Aging_Detail_List(AccountTypeTypes types)
+        {
+            // arrange
+            var endDate = _testData.AccountingPeriodEndDate;
+          
+            // act
+            var result = await _agingReportPepository.GetAgingDetailListAsync(
+                null, endDate, types);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(2);
+        }
     }
 }

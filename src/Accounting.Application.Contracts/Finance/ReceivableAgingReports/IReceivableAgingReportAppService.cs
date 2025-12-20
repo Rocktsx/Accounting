@@ -8,9 +8,12 @@ namespace Accounting.Finance.ReceivableAgingReports
     public interface IReceivableAgingReportAppService
     {
         Task<IEnumerable<AgingSummarySingleCurrencyResultDto>> GetAgingSummarySingleCurrencyListAsync(
-            AgingSummarySingleCurrencyRequestDto input);
+            AgingReportRequestDto input);
 
         Task<IEnumerable<AgingSummaryMultipleCurrencyResultDto>> GetAgingSummaryMultipleCurrencyListAsync(
-           AgingSummarySingleCurrencyRequestDto input);
+           AgingReportRequestDto input);
+
+        Task<IEnumerable<AgingDetailResultDto>> GetAgingDetailListAsync(
+           AgingReportRequestDto input);
     }
 }

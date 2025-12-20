@@ -260,4 +260,12 @@ namespace Accounting
 
         public override partial void Map(AgingSummaryMultipleCurrencyResult source, AgingSummaryMultipleCurrencyResultDto destination);
     }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class AgingDetailResultToAgingDetailResultDto : MapperBase<AgingDetailResult, AgingDetailResultDto>
+    {
+        public override partial AgingDetailResultDto Map(AgingDetailResult source);
+
+        public override partial void Map(AgingDetailResult source, AgingDetailResultDto destination);
+    }
 }

@@ -194,5 +194,57 @@ namespace Accounting.Finance
 
             return await agingQueryable.ToListAsync(cancellationToken);
         }
+
+        public async Task<IEnumerable<AgingDetailResult>> GetAgingDetailListAsync(Guid? subSubjectCode,
+          DateOnly endDate, AccountTypeTypes category = AccountTypeTypes.Receivable,
+          CancellationToken cancellationToken = default)
+        {
+            var queryable = await GetQueryableWithDetailsAsync();
+            var agingQueryable = queryable.Where(item => item.VoucherDate <= endDate)
+                        .SelectMany(item => item.Details)
+                        .WhereIf(subSubjectCode != null, item => item.SubSubjectCode == subSubjectCode)
+                        .Where(item => item.Subject.AccountType.Category == category)
+                        .GroupBy(item => new
+                        {
+                            item.SubSubjectCode,
+                            CompanyCode = item.Company.Code,
+                            CompanyName = item.Company.Name,
+                            CompanyOtherName = item.Company.OtherName,
+                            item.Subject.AccountType.Category,
+                            item.SubjectId,
+                            item.DocNo,
+                            item.CurrencyCode
+                        })
+                        .Where(grp => grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor) != 0)
+                        .Select(grp => new 
+                        {
+                            SubSubjectCode = grp.Key.CompanyCode,
+                            grp.Key.CompanyName,
+                            grp.Key.CompanyOtherName,
+                            grp.Key.DocNo,
+                            grp.Key.CurrencyCode,
+                            grp.Key.Category,
+                            DueDate = grp.Where(item => item.IsOriginal == true).Select(item => item.DueDate).FirstOrDefault(),
+                            NativeAmount = grp.Sum(item => item.NativeAmount * (int)item.DebitorCreditor),
+                            ForeignAmount = grp.Sum(item => item.ForeignAmount * (int)item.DebitorCreditor)
+                        }).Select( item => new AgingDetailResult
+                        {
+                            SubSubjectCode = item.SubSubjectCode,
+                            CompanyName = item.CompanyName,
+                            CompanyOtherName = item.CompanyOtherName,
+                            DocNo = item.DocNo,
+                            CurrencyCode = item.CurrencyCode,
+                            DueDate = item.DueDate,
+                            OutstandingAmount = item.Category == AccountTypeTypes.Receivable ?
+                                (item.NativeAmount > 0 ? item.NativeAmount : 0)
+                                : (item.NativeAmount < 0 ? -item.NativeAmount : 0),
+                            ForeignAmount  = item.Category == AccountTypeTypes.Receivable ? item.ForeignAmount : -item.ForeignAmount,
+                            PrepaidDeposit = item.Category == AccountTypeTypes.Receivable ?
+                                (item.NativeAmount < 0 ? item.NativeAmount : 0)
+                                : (item.NativeAmount > 0 ? -item.NativeAmount : 0),
+                        });
+
+            return await agingQueryable.ToListAsync(cancellationToken);
+        }
     }
 }
