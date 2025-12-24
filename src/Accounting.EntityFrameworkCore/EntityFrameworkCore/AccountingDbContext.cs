@@ -1,4 +1,17 @@
+using Accounting.BasicData;
+using Accounting.BasicData.Companies;
+using Accounting.BasicData.Currencies;
+using Accounting.Finance;
+using Accounting.Finance.AccountingPeriods;
+using Accounting.Finance.AccountTypes;
+using Accounting.Finance.BankReconciliations;
+using Accounting.Finance.SubjectCategories;
+using Accounting.Finance.Subjects;
+using Accounting.Finance.Vouchers;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -9,22 +22,11 @@ using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
+using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
-using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
-using System.Collections.Generic;
-using Accounting.BasicData;
-using System;
-using Accounting.Finance;
-using Accounting.Finance.Vouchers;
-using Accounting.Finance.AccountTypes;
-using Accounting.Finance.AccountingPeriods;
-using Accounting.Finance.Subjects;
-using Accounting.Finance.SubjectCategories;
-using Accounting.BasicData.Companies;
-using Accounting.BasicData.Currencies;
 
 namespace Accounting.EntityFrameworkCore;
 
@@ -114,6 +116,7 @@ public class AccountingDbContext :
         ConfigureSubject(builder);
         ConfigureVoucher(builder);
         ConfigureVoucherDetail(builder);
+        ConfigureBankReconciliation(builder);
     }
     protected static void ConfigureCurrency(ModelBuilder builder)
     {
@@ -149,7 +152,8 @@ public class AccountingDbContext :
             b.Property(x => x.CreditLimit).HasColumnType("decimal").HasPrecision(AccountingCommonConsts.AmountPrecision, AccountingCommonConsts.AmountScale);
         });
     }
-    protected static void ConfigureCompanyAddress(ModelBuilder builder) { 
+    protected static void ConfigureCompanyAddress(ModelBuilder builder)
+    {
         builder.Entity<CompanyAddress>(b =>
         {
             b.ToTable(AccountingConsts.DbTablePrefix + "CompanyAddresses", AccountingConsts.DbSchema);
@@ -204,7 +208,7 @@ public class AccountingDbContext :
             b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Id).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
-            b.Property(x => x.OtherName).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.Property(x => x.OtherName).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
             b.Property(x => x.Category).IsRequired().HasDefaultValue(AccountTypeTypes.Normal);
             b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
         });
@@ -217,7 +221,7 @@ public class AccountingDbContext :
             b.ConfigureByConvention();
             b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
-            b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength);
             b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
             b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId).OnDelete(DeleteBehavior.Restrict);
             b.HasMany(x => x.Subjects).WithOne(x => x.SubjectCategory).HasForeignKey(x => x.SubjectCategoryId).OnDelete(DeleteBehavior.Restrict);
@@ -232,7 +236,7 @@ public class AccountingDbContext :
             b.ConfigureByConvention();
             b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Name).IsRequired().HasMaxLength(AccountingCommonConsts.MaxNameLength);
-            b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength); 
+            b.Property(x => x.OtherName).HasMaxLength(AccountingCommonConsts.MaxNameLength);
             b.Property(x => x.CurrencyCode).IsRequired().HasMaxLength(CurrencyConsts.MaxCurrencyLength);
             b.Property(x => x.Description).HasMaxLength(AccountingCommonConsts.MaxDescriptionLength);
             b.HasOne(x => x.AccountType).WithMany().HasForeignKey(x => x.AccountTypeId).OnDelete(DeleteBehavior.Restrict);
@@ -249,7 +253,7 @@ public class AccountingDbContext :
             b.Property(x => x.Code).IsRequired().HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Prefix).IsRequired().HasMaxLength(AccountingCommonConsts.MaxPrefixLength);
             b.Property(x => x.VoucherDate).IsRequired().HasColumnType("date");
-            b.Property(x => x.VoucherType).IsRequired().HasDefaultValue(VoucherType.JournalVoucher); 
+            b.Property(x => x.VoucherType).IsRequired().HasDefaultValue(VoucherType.JournalVoucher);
             b.HasMany(x => x.Details).WithOne(x => x.Voucher).HasForeignKey(x => x.VoucherId).OnDelete(DeleteBehavior.Cascade);
             b.HasIndex(x => new { x.TenantId, x.Code }).IsUnique();
         });
@@ -270,9 +274,19 @@ public class AccountingDbContext :
             b.Property(x => x.Department).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Region).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.Property(x => x.Custom1).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
-            b.Property(x => x.Custom2).HasMaxLength(AccountingCommonConsts.MaxCodeLength); 
+            b.Property(x => x.Custom2).HasMaxLength(AccountingCommonConsts.MaxCodeLength);
             b.HasOne(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId).OnDelete(DeleteBehavior.Restrict);
             b.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.SubSubjectCode).OnDelete(DeleteBehavior.Restrict);
+        });
+    }
+    protected static void ConfigureBankReconciliation(ModelBuilder builder)
+    {
+        builder.Entity<BankReconciliation>(b =>
+        {
+            b.ToTable(AccountingConsts.DbTablePrefix + "BankReconciliations", AccountingConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.HasOne(x => x.VoucherDetail).WithOne(x => x.BankReconciliation).HasForeignKey<BankReconciliation>(e => e.VoucherDetailId)
+                 .IsRequired().OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

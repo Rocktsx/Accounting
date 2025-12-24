@@ -3,6 +3,7 @@ using Accounting.BasicData.Currencies;
 using Accounting.Finance;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
+using Accounting.Finance.BankReconciliations;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
 using Accounting.Finance.Vouchers;
@@ -30,6 +31,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
     private readonly ISubjectCategoryRepository _subjectCategoryRepository;
     private readonly ISubjectRepository _subjectRepository;
     private readonly IVoucherRepository _voucherRepository;
+    private readonly IBankReconciliationRepository _bankReconciliationRepository;
     private readonly AccountingTestData _testData;
     public AccountingTestDataSeedContributor(ICurrentTenant currentTenant,
         ICurrencyRepository currencyRepository,
@@ -40,6 +42,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             ISubjectCategoryRepository subjectCategoryRepository,
             ISubjectRepository subjectRepository,
             IVoucherRepository voucherRepository,
+            IBankReconciliationRepository bankReconciliationRepository,
             AccountingTestData testData)
     {
         _currentTenant = currentTenant;
@@ -52,6 +55,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
         _subjectRepository = subjectRepository;
         _voucherRepository = voucherRepository;
         _testData = testData;
+        _bankReconciliationRepository = bankReconciliationRepository;
     }
     public async Task SeedAsync(DataSeedContext context)
     {
@@ -65,6 +69,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             await SeedSubjectCategoryDataAsync(context);
             await SeedSubjectAsync(context);
             await SeedVoucherDataAsync(context);
+            await SeedBankReconciliationDataAsync(context);
         }
     }
 
@@ -182,7 +187,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             var voucher = new Voucher(_guidGenerator.Create(),
                 new DateOnly(year, 1, 1), VoucherType.JournalVoucher, context.TenantId);
             voucher.SetCode(_testData.VoucherCode, _testData.VoucherPrefix, 1);
-            voucher.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+            voucher.AddDetail(_testData.VoucherDetailId, _testData.SubjectBankId,
                 null, _testData.VoucherDescription, DebitorCreditor.Creditor,
                 _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
                 _testData.DocNo1NativeAmount, string.Empty, null, 0, true,
@@ -197,7 +202,16 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             var pvVouchers = GetPayableVouchers(context?.TenantId);
 
             await _voucherRepository.InsertManyAsync(
-                [voucher, .. rvVouchers, .. pvVouchers]);
+                [voucher, .. rvVouchers, .. pvVouchers], true);
+        }
+    }
+    private async Task SeedBankReconciliationDataAsync(DataSeedContext context)
+    {
+        if (await _bankReconciliationRepository.GetCountAsync(showVouchers: false) == 0)
+        {
+            var entity = new BankReconciliation(_testData.BankReconciliationId,
+                _testData.VoucherDetailId, true, context?.TenantId);
+            await _bankReconciliationRepository.InsertAsync(entity, true);
         }
     }
     private Voucher[] GetReceivableVouchers(Guid? tenantId)

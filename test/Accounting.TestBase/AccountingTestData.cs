@@ -108,5 +108,7 @@ namespace Accounting
 
         public int InsertedSubjectCount { get; } = 4;
         public int AgingDays { get; } = 7;
+        public Guid VoucherDetailId { get; } = Guid.NewGuid();
+        public Guid BankReconciliationId { get; } = Guid.NewGuid();
     }
 }

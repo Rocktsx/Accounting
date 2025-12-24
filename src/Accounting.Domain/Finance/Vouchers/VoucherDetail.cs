@@ -1,4 +1,5 @@
 using Accounting.BasicData.Companies;
+using Accounting.Finance.BankReconciliations;
 using Accounting.Finance.Subjects;
 using System;
 using Volo.Abp;
@@ -34,6 +35,7 @@ public class VoucherDetail : Entity<Guid>, IMultiTenant
     public virtual Subject? Subject { get; private set; }
     public virtual Company? Company { get; private set; }
 
+    public virtual BankReconciliation? BankReconciliation { get; private set; }
     private VoucherDetail()
     {
     }
