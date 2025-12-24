@@ -4,8 +4,8 @@ using Xunit;
 namespace Accounting.EntityFrameworkCore.Applications
 {
     [Collection(AccountingTestConsts.CollectionDefinitionName)]
-    public class EfCoreAccountingPeriodAppServiceTests: 
-        AccountingPeriodAppServiceTests<AccountingEntityFrameworkCoreTestModule>
+    public class EfCoreBankReconciliationAppServiceTests :
+        BankReconciliationAppServiceTests<AccountingEntityFrameworkCoreTestModule>
     {
     }
 }

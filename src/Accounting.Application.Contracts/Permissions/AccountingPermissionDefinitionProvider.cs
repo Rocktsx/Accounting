@@ -85,6 +85,9 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
         group.AddPermission(PayableAgingReports.AgingSummarySingleCurrency, L(PayableAgingReports.AgingSummarySingleCurrencyName));
         group.AddPermission(PayableAgingReports.AgingSummaryMultipleCurrency, L(PayableAgingReports.AgingSummaryMultipleCurrencyName));
         group.AddPermission(PayableAgingReports.AgingDetail, L(PayableAgingReports.AgingDetailName));
+
+        AddPermissionGroup(context, BankReconciliations.Default, BankReconciliations.Name,
+         BankReconciliations.Create, BankReconciliations.Delete, BankReconciliations.Update);
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

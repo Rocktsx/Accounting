@@ -231,6 +231,18 @@ public static class AccountingPermissions
         public const string MonthToDateYearToDateReport = Default + Dot + MonthToDateYearToDateReportText;
     }
 
+    /// <summary>
+    /// 银行对账单
+    /// </summary>
+    public class BankReconciliations
+    {
+        public const string Name = "BankReconciliation";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+        public const string Create = Default + Creation;
+        public const string Delete = Default + Deletion;
+        public const string Update = Default + Edit;
+    }
+
     private const string AgingSummarySingleCurrencyText = "AgingSummarySingleCurrency";
     private const string AgingSummaryMultipleCurrencyText = "AgingSummaryMultipleCurrency";
     private const string AgingDetailText = "AgingDetail";

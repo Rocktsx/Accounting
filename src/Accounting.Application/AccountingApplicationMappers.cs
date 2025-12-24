@@ -3,6 +3,7 @@ using Accounting.BasicData.Currencies;
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.AccountTypes;
 using Accounting.Finance.BalanceSheetReports;
+using Accounting.Finance.BankReconciliations;
 using Accounting.Finance.GeneralLedgerReports;
 using Accounting.Finance.JournalReports;
 using Accounting.Finance.PayableVouchers;
@@ -268,4 +269,33 @@ namespace Accounting
 
         public override partial void Map(AgingDetailResult source, AgingDetailResultDto destination);
     }
+
+    #region BankReconciliation
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class BankReconciliationToBankReconciliationDto : MapperBase<BankReconciliation, BankReconciliationDto>
+    {
+        public override partial BankReconciliationDto Map(BankReconciliation source);
+
+        public override partial void Map(BankReconciliation source, BankReconciliationDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class BankReconciliationPagedResultToBankBankReconciliationPagedResultDto : MapperBase<BankReconciliationPagedResult, BankReconciliationPagedResultDto>
+    {
+        public override partial BankReconciliationPagedResultDto Map(BankReconciliationPagedResult source);
+
+        public override partial void Map(BankReconciliationPagedResult source, BankReconciliationPagedResultDto destination);
+    }
+
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class BankReconciliationPagedRequestDtoToBankReconciliationFilterRequest : MapperBase<BankReconciliationPagedRequestDto, BankReconciliationFilterRequest>
+    {
+        public override partial BankReconciliationFilterRequest Map(BankReconciliationPagedRequestDto source);
+
+        public override partial void Map(BankReconciliationPagedRequestDto source, BankReconciliationFilterRequest destination);
+    }
+
+    #endregion
 }

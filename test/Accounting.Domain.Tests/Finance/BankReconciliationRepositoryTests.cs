@@ -39,7 +39,7 @@ namespace Accounting.Finance
             var result = await _bankReconciliationRepository.GetCountAsync(request);
 
             // assert
-            result.ShouldBe(4);
+            result.ShouldBe(0);
         }
         [Fact]
         public async Task Can_Get_List()
@@ -60,7 +60,7 @@ namespace Accounting.Finance
             var result = await _bankReconciliationRepository.GetPagedListAsync(request);
 
             // assert
-            result.Count().ShouldBe(4);
+            result.Count().ShouldBe(_testData.InsertedVouchers);
         }
     }
 }

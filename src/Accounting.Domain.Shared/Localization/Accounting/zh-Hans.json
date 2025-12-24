@@ -398,6 +398,8 @@
     "Menu:PayableAgingReport.AgingDetail": "贷方账龄分析明细表",
     "Vendor": "供应商",
     "VendorCode": "供应商编号",
-    "VendorName": "供应商名称"
+    "VendorName": "供应商名称",
+    "Permission:BankReconciliation": "银行对账单",
+    "BankReconciliation": "银行对账单"
   }
 }

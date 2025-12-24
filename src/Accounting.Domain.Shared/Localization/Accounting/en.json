@@ -362,6 +362,8 @@
     "Menu:PayableAgingReport.AgingDetail": "Creditor Aging Detail Report",
     "Vendor": "Vendor",
     "VendorCode": "Vendor Code",
-    "VendorName": "Vendor Name"
+    "VendorName": "Vendor Name",
+    "Permission:BankReconciliation": "Bank Reconciliation",
+    "BankReconciliation": "Bank Reconciliation"
   }
 }
