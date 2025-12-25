@@ -220,7 +220,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
         var arVoucher1 = new Voucher(_guidGenerator.Create(),
                 new DateOnly(year, 2, 12), VoucherType.JournalVoucher, tenantId);
         arVoucher1.SetCode(_testData.VoucherCode3, _testData.VoucherPrefix, 2);
-        arVoucher1.AddDetail(_guidGenerator.Create(), _testData.SubjectBankId,
+        arVoucher1.AddDetail(_testData.VoucherDetailId2, _testData.SubjectBankId,
             null, _testData.VoucherDescription, DebitorCreditor.Creditor,
             _testData.RmbCurrency, 1, _testData.DocNo1NativeAmount,
             _testData.DocNo1NativeAmount, string.Empty, null, 0, true,

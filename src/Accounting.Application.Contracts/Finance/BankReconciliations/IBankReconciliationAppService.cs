@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
 namespace Accounting.Finance.BankReconciliations
@@ -7,5 +10,6 @@ namespace Accounting.Finance.BankReconciliations
         ICrudAppService<BankReconciliationDto, BankReconciliationPagedResultDto, Guid, BankReconciliationPagedRequestDto, 
             BankReconciliationCreateDto, BankReconciliationUpdateDto>
     {
+        Task AddOrUpdateMany(IEnumerable<BankReconciliationAddOrUpdateDto> items);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Accounting.Finance.BankReconciliations;
 using Shouldly;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
@@ -9,7 +11,7 @@ using Xunit;
 
 namespace Accounting.Finance
 {
-    public abstract class BankReconciliationAppServiceTests<TStartupModule> : 
+    public abstract class BankReconciliationAppServiceTests<TStartupModule> :
         AccountingApplicationTestBase<TStartupModule> where TStartupModule : IAbpModule
     {
         private readonly IBankReconciliationAppService _bankReconciliationAppService;
@@ -28,7 +30,7 @@ namespace Accounting.Finance
         {
             // arrange
             var list = await _bankReconciliationRepository.GetPagedListAsync();
-            var voucherDetailItem = list.Where(item => item.VoucherDetailId != _testData.VoucherDetailId).First(); 
+            var voucherDetailItem = list.Where(item => item.VoucherDetailId != _testData.VoucherDetailId).First();
             var dto = new BankReconciliationCreateDto
             {
                 VoucherDetailId = voucherDetailItem.VoucherDetailId,
@@ -67,7 +69,7 @@ namespace Accounting.Finance
             {
                 await _bankReconciliationAppService.GetAsync(_testData.BankReconciliationId);
             });
-            exception.ShouldNotBeNull(); 
+            exception.ShouldNotBeNull();
         }
 
         [Fact]
@@ -86,6 +88,47 @@ namespace Accounting.Finance
             // assert
             result.ShouldNotBeNull();
             result.TotalCount.ShouldBe(7);
+        }
+
+        [Fact]
+        public async Task Can_Update_Bank_Reconciliation()
+        {
+            // arrange
+            var input = new BankReconciliationUpdateDto
+            {
+                IsPresented = false
+            };
+            // act
+            var dto = await _bankReconciliationAppService.UpdateAsync(_testData.BankReconciliationId, input);
+
+            // assert
+            var newDto = await _bankReconciliationRepository.GetAsync(_testData.BankReconciliationId);
+
+            newDto.IsPresented.ShouldBeFalse();
+        }
+
+        [Fact]
+        public async Task Can_Add_Or_Update_Many_Bank_Reconciliation()
+        {
+            // arrange
+            var inputs = new List<BankReconciliationAddOrUpdateDto>()
+            {
+                new BankReconciliationAddOrUpdateDto{
+                    Id = _testData.BankReconciliationId,
+                    IsPresented = false,
+                },
+                 new BankReconciliationAddOrUpdateDto{
+                    VoucherDetailId = _testData.VoucherDetailId2,
+                    IsPresented = true,
+                },
+            };
+            // act
+            await _bankReconciliationAppService.AddOrUpdateMany(inputs);
+
+            // assert
+            var newDto = await _bankReconciliationRepository.GetAsync(_testData.BankReconciliationId);
+
+            newDto.IsPresented.ShouldBeFalse();
         }
     }
 }

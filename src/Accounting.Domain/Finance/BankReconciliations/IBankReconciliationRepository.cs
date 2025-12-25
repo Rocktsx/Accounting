@@ -16,5 +16,8 @@ namespace Accounting.Finance.BankReconciliations
            CancellationToken cancellationToken = default);
         Task<long> GetCountAsync(BankReconciliationFilterRequest request = null,
             bool showVouchers = true, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<BankReconciliation>> GetListAsync(IEnumerable<Guid> ids, 
+            CancellationToken cancellationToken = default);
     }
 }

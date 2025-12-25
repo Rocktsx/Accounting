@@ -1,8 +1,10 @@
-﻿using Accounting.Finance.BankReconciliations;
+﻿using Accounting.Common;
+using Accounting.Finance.BankReconciliations;
 using Accounting.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
@@ -61,6 +63,35 @@ namespace Accounting.Finance
             entity = await _bankReconciliationRepository.UpdateAsync(entity);
 
             return ObjectMapper.Map<BankReconciliation, BankReconciliationDto>(entity);
+        }
+
+        [Authorize(AccountingPermissions.BankReconciliations.Update)]
+        public async Task AddOrUpdateMany(IEnumerable<BankReconciliationAddOrUpdateDto> items)
+        {
+            var ids = items.Where(item => !item.Id.IsEmptyOrNull()).Select(item => item.Id.Value);
+            var entities = (await _bankReconciliationRepository.GetListAsync(ids)).ToDictionary(item => item.Id, item => item);
+
+            var newItems = new List<BankReconciliation>(items.Count() - entities.Keys.Count);
+            foreach (var item in items)
+            {
+                if (item.Id.IsEmptyOrNull() && !item.VoucherDetailId.IsEmptyOrNull())
+                {
+                    newItems.Add(new BankReconciliation(GuidGenerator.Create(), item.VoucherDetailId.Value, item.IsPresented));
+                }
+                else if (!item.Id.IsEmptyOrNull())
+                {
+                    var entity = entities[item.Id.Value];
+                    entity.SetIsPresented(item.IsPresented);
+                }
+            }
+            if (newItems.Count > 0)
+            {
+                await _bankReconciliationRepository.InsertManyAsync(newItems);
+            }
+            if (entities.Values.Count() > 0)
+            {
+                await _bankReconciliationRepository.UpdateManyAsync(entities.Values);
+            }
         }
     }
 }

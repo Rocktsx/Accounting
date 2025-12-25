@@ -1,6 +1,8 @@
 ﻿using Accounting.Finance.BankReconciliations;
 using Shouldly;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Modularity;
@@ -61,6 +63,17 @@ namespace Accounting.Finance
 
             // assert
             result.Count().ShouldBe(_testData.InsertedVouchers);
+        }
+        [Fact]
+        public async Task Can_Get_List_By_Ids()
+        {
+            // arrange
+            IEnumerable<Guid> ids = [_testData.BankReconciliationId];
+            // act
+            var result = await _bankReconciliationRepository.GetListAsync(ids);
+
+            // assert
+            result.Count().ShouldBe(1);
         }
     }
 }

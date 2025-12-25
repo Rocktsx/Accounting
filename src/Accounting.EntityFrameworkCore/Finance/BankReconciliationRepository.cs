@@ -48,6 +48,13 @@ namespace Accounting.Finance
               });
             return await queryable.ToListAsync(cancellationToken);
         }
+
+        public async Task<IEnumerable<BankReconciliation>> GetListAsync(IEnumerable<Guid> ids,
+            CancellationToken cancellationToken = default)
+        {
+            var queryable = await GetQueryableAsync();
+            return await queryable.Where(item => ids.Contains(item.Id)).ToListAsync(cancellationToken);
+        }
         private async Task<IQueryable<VoucherDetail>> GetQueryableAsync(BankReconciliationFilterRequest request)
         {
             var queryable = (await GetDbContextAsync()).Set<Voucher>().AsQueryable()
