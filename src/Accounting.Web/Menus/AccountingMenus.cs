@@ -21,6 +21,7 @@ public class AccountingMenus
     private const string SubjectText = "Subject";
     private const string TransferVoucherText = "TransferVoucher";
     private const string VoucherStateText = "VoucherState";
+    private const string BankReconciliationText = "BankReconciliation";
 
     private const string GeneralLedgerReportText = "GeneralLedgerReport";
     private const string SingleCurrencyReportText = "SingleCurrencyReport";
@@ -58,6 +59,7 @@ public class AccountingMenus
     public const string Subject = GeneralLedger + Dot + SubjectText;
     public const string TransferVoucher = GeneralLedger + Dot + TransferVoucherText;
     public const string VoucherState = GeneralLedger + Dot + VoucherStateText;
+    public const string BankReconciliation = GeneralLedger + Dot + BankReconciliationText;
 
     /// <summary>
     /// General Ledger Report
@@ -111,7 +113,7 @@ public class AccountingMenus
         public const string Name = GeneralLedger + Dot + BalanceSheetReportText;
         public const string MonthToDateYearToDateReport = Name + Dot + MonthToDateYearToDateReportText;
         public const string YearToDateReport = Name + Dot + YearToDateReportText;
-    }
+    } 
 
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
@@ -154,6 +156,7 @@ public class AccountingMenus
         public const string Subject = DisplayNamePrefix + SubjectText;
         public const string TransferVoucher = DisplayNamePrefix + TransferVoucherText;
         public const string VoucherState = DisplayNamePrefix + VoucherStateText;
+        public const string BankReconciliation = DisplayNamePrefix + BankReconciliationText;
 
         /// <summary>
         /// General Ledger Report

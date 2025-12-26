@@ -277,6 +277,17 @@ namespace Accounting.Web.Pages
                  {
                      toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingDetail);
                  });
+
+                options.Configure<GeneralLedger.BankReconciliations.IndexModel>(
+                    toolbar =>
+                    {
+                        toolbar.AddSearchButton(AccountingPermissions.BankReconciliations.Default);
+                        toolbar.AddButton(
+                            L("Save"),
+                            icon: "fa-check",
+                            id: "saveBtn",
+                            requiredPolicyName: AccountingPermissions.BankReconciliations.Update);
+                    });
             });
         }
 

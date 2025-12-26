@@ -1,0 +1,104 @@
+﻿@page
+@using Accounting
+@using Accounting.Web
+@using Accounting.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Accounting.Web.Pages.GeneralLedger.BankReconciliations
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+@model Accounting.Web.Pages.GeneralLedger.BankReconciliations.IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.BankReconciliation].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.MenuItemName = AccountingMenus.BankReconciliation;
+}
+@section scripts
+{
+    <abp-script src="/libs/vue/vue.min.js"></abp-script>
+    <abp-script src="/libs/vuex/vuex.min.js"></abp-script>
+    <abp-script src="/libs/select2/js/i18n/@(Helpers.GetSelect2LanguageName()).js"></abp-script>
+    <abp-script src="/Pages/GeneralLedger/BankReconciliations/Index.cshtml.js"></abp-script>
+}
+<style>
+    .table thead th {
+        font-size: 1em;
+    }
+    
+    #details .items {
+        overflow: auto; 
+    } 
+</style>
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+<abp-card>
+    <abp-card-header> 
+        <form id="searchForm">
+            <abp-row class="mb-1">
+                <abp-column class="row">
+                    <label for="subjectId" class="form-label col-sm-3 text-end">@L["Subject"].Value</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="subjectId" name="subjectId"></select>
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="startDate" class="form-label col-sm-3 text-end">@L["VoucherDate"].Value</label>
+                    <div class="col-sm-9 row pe-0">
+                        <div class="col pe-1">
+                            <input type="date" class="form-control form-control-sm" id="startDate" name="startDate" value="@Model.CurrentPeriod.StartDate.ToString(AccountingCommonConsts.StandardDateFormat)">
+                        </div>
+                        <div class="col ps-1 pe-0">
+                            <input type="date" class="form-control form-control-sm" id="endDate" name="endDate" value="@Model.CurrentPeriod.EndDate.ToString(AccountingCommonConsts.StandardDateFormat)">
+                        </div>
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="isPresented" class="form-label col-sm-3 text-end">@L["IsPresented"].Value</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="isPresented" name="isPresented">
+                             <option value="">--</option>
+                            <option value="true">@L["Presented"].Value</option>
+                            <option value="false" selected>@L["Unpresented"].Value</option>
+                        </select>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column class="row">
+                    <label for="prefix" class="form-label col-sm-3 text-end">@L["Code"].Value</label>
+                    <div class="col-sm-9 row pe-0">
+                        <div class="col pe-1">
+                            <input type="text" class="form-control form-control-sm" id="prefix" name="prefix" placeholder="JV">
+                        </div>
+                        <div class="col px-1">
+                            <input type="text" class="form-control form-control-sm" id="startNo" name="startNo" placeholder="0">
+                        </div>
+                        <div class="col ps-1 pe-0">
+                            <input type="text" class="form-control form-control-sm" id="endNo" name="endNo" placeholder="99">
+                        </div>
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label for="referenceNo" class="form-label col-sm-3 text-end">@L["PaymentReference"].Value</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="referenceNo" name="referenceNo">
+                    </div>
+                </abp-column>
+                <abp-column class="row">
+                    <label class="form-label col-sm-3 text-end">&nbsp;</label>
+                    <div class="col-sm-9">
+                        <abp-button button-type="Primary" id="setAll">@L["SetAll"].Value</abp-button>
+                    </div>
+                </abp-column>
+            </abp-row>
+        </form>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table id="bankReconTable" striped-rows="true" />
+    </abp-card-body>
+</abp-card>

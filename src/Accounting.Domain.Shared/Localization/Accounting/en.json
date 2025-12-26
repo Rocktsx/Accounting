@@ -364,6 +364,11 @@
     "VendorCode": "Vendor Code",
     "VendorName": "Vendor Name",
     "Permission:BankReconciliation": "Bank Reconciliation",
-    "BankReconciliation": "Bank Reconciliation"
+    "BankReconciliation": "Bank Reconciliation",
+    "Menu:BankReconciliation": "Bank Reconciliation",
+    "IsPresented": "Presented",
+    "Presented": "Presented",
+    "Unpresented": "Unpresented",
+    "SetAll": "Set All"
   }
 }

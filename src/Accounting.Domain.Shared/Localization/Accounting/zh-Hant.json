@@ -400,6 +400,11 @@
     "VendorCode": "供應商编号",
     "VendorName": "供應商名称",
     "Permission:BankReconciliation": "銀行對賬單",
-    "BankReconciliation": "銀行對賬單"
+    "BankReconciliation": "銀行對賬單",
+    "Menu:BankReconciliation": "銀行對賬單",
+    "IsPresented": "已兌現",
+    "Presented": "已兌現",
+    "Unpresented": "未兌現",
+    "SetAll": "設置全部"
   }
 }

@@ -170,6 +170,16 @@ public class AccountingMenuContributor : IMenuContributor
                    url: "/GeneralLedger/VoucherStates"
                ).RequirePermissions(AccountingPermissions.VoucherStates.Default)
          );
+
+        generalLedgerMenu.AddItem(
+               new ApplicationMenuItem(
+                   AccountingMenus.BankReconciliation,
+                   l[AccountingMenus.DisplayNames.BankReconciliation],
+                   icon: "fas fa-money-check",
+                   url: "/GeneralLedger/BankReconciliations"
+               ).RequirePermissions(AccountingPermissions.BankReconciliations.Default)
+         );
+
         AddGeneralLedgerReportMenus(l, generalLedgerMenu);
 
         AddJournalReportMenus(l, generalLedgerMenu);

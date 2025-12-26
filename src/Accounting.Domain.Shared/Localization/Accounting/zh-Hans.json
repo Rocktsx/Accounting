@@ -400,6 +400,11 @@
     "VendorCode": "供应商编号",
     "VendorName": "供应商名称",
     "Permission:BankReconciliation": "银行对账单",
-    "BankReconciliation": "银行对账单"
+    "BankReconciliation": "银行对账单",
+    "Menu:BankReconciliation": "银行对账单",
+    "IsPresented": "已兑现",
+    "Presented": "已兑现",
+    "Unpresented": "未兑现",
+    "SetAll": "设置全部"
   }
 }
