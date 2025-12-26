@@ -1,6 +1,8 @@
 ﻿using Accounting.Finance.AccountingPeriods;
 using Accounting.Finance.BalanceSheetReports; 
 using Accounting.Finance.Vouchers;
+using Accounting.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace Accounting.Finance.Reports
             _periodRepository = periodRepository;
         }
 
+        [Authorize(AccountingPermissions.BalanceSheetReports.MonthToDateYearToDateReport)]
         public async Task<IEnumerable<BalanceSheetMonthToDateYearToDateResultDto>> GetMtdYtdListAsync(BalanceSheetMtdYtdRequestDto input)
         {
             var (period, endDate) = await HandleRequestDto(input);
@@ -41,6 +44,7 @@ namespace Accounting.Finance.Reports
             return result;
         }
 
+        [Authorize(AccountingPermissions.BalanceSheetReports.YearToDateReport)]
         public async Task<IEnumerable<BalanceSheetYearToDateResultDto>> GetYtdListAsync(BalanceSheetYearToDateRequestDto input)
         {
             var (period, endDate) = await HandleRequestDto(input);
