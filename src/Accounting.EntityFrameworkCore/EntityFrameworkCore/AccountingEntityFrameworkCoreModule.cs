@@ -1,4 +1,5 @@
 using Accounting.Finance;
+using Accounting.Finance.BankReconciliations;
 using Accounting.Finance.Reports;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -44,10 +45,11 @@ public class AccountingEntityFrameworkCoreModule : AbpModule
         context.Services.AddAbpDbContext<AccountingDbContext>(options =>
         {
             options.Services.AddScoped<IGeneralLedgerReportRepository, GeneralLedgerReportRepository>();
-            options.Services.AddScoped<IJournalReportRepository, JournalReportRepository>(); 
+            options.Services.AddScoped<IJournalReportRepository, JournalReportRepository>();
             options.Services.AddScoped<ITrialBalanceReportRepository, TrialBalanceReportRepository>();
             options.Services.AddScoped<IProfitAndLossReportRepository, ProfitAndLossReportRepository>();
             options.Services.AddScoped<IReceivablePayableAgingReportRepository, ReceivablePayableAgingReportRepository>();
+            options.Services.AddScoped<IBankReconciliationReportRepository, BankReconciliationReportRepository>();
         });
 
         if (AbpStudioAnalyzeHelper.IsInAnalyzeMode)

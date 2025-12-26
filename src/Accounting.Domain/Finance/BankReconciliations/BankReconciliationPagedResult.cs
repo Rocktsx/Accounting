@@ -19,5 +19,12 @@ namespace Accounting.Finance.BankReconciliations
 
         public decimal NativeAmount { get; set; }
         public DebitorCreditor DebitorCreditor { get; set; }
+
+        public BankReconciliationPagedResult()
+        {
+            VoucherCode = string.Empty;
+            Description = string.Empty;
+            PaymentReference = string.Empty;
+        }
     }
 }

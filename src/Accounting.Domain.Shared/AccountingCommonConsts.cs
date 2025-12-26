@@ -51,5 +51,10 @@ namespace Accounting
         public const string SystemGenCodeText = "SYS. GEN.";
         public const string SubjectName = "累计损益";
         public const string SubjectOtherName = "Cumulative Profit (Loss)";
+
+        public const string UnpresentedBalanceBf = "未列账期初余额";
+        public const string UnpresentedBalanceBfOther = "Unpresented Balance B/F";
+        public const string PresentedBalanceBf = "已列账期初余额";
+        public const string PresentedBalanceBfOther = "Presented Balance B/F";
     }
 }
