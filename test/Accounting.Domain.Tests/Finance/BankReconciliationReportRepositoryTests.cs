@@ -25,7 +25,7 @@ namespace Accounting.Finance
         {
             // act
             var result = await _reportRepository.GetReportListAsync(_testData.AccountingPeriodStartDate,
-                _testData.AccountingPeriodEndDate, _testData.SubjectBankId);
+                _testData.AccountingPeriodEndDate);
 
             // assert
             result.Count().ShouldBe(_testData.InsertedVouchers);
@@ -35,7 +35,7 @@ namespace Accounting.Finance
         {
             // act
             var result = await _reportRepository.GetUnpresentedReportListAsync(_testData.AccountingPeriodStartDate,
-                _testData.AccountingPeriodEndDate, _testData.SubjectBankId);
+                _testData.AccountingPeriodEndDate);
 
             // assert
             result.Count().ShouldBe(_testData.InsertedVouchers - 1);

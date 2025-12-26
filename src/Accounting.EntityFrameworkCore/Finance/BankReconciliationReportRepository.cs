@@ -25,6 +25,7 @@ namespace Accounting.Finance
             var presentedBeforeQueryable = queryable.Where(item => item.VoucherDate < startDate)
                 .SelectMany(item => item.Details)
                 .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
+                .Where(item => item.Subject.AccountType.Category == AccountTypeTypes.Bank)
                 .Where(item => item.BankReconciliation.IsPresented == true)
                 .GroupBy(item => new
                 {
@@ -53,6 +54,7 @@ namespace Accounting.Finance
                 .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
                 .Where(item => item.BankReconciliation == null ||
                         item.BankReconciliation.IsPresented == false)
+                .Where(item => item.Subject.AccountType.Category == AccountTypeTypes.Bank)
                 .GroupBy(item => new
                 {
                     item.SubjectId,
@@ -78,6 +80,7 @@ namespace Accounting.Finance
             var currentQueryable = queryable.Where(item => item.VoucherDate <= endDate && item.VoucherDate >= startDate)
                 .SelectMany(item => item.Details)
                 .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
+                .Where(item => item.Subject.AccountType.Category == AccountTypeTypes.Bank)
                 .Select(item => new BankReconciliationReportResult
                 {
                     SubjectCode = item.Subject.Code,
@@ -108,7 +111,8 @@ namespace Accounting.Finance
             var resultQueryable = queryable.Where(item => item.VoucherDate <= endDate && item.VoucherDate >= startDate)
                 .SelectMany(item => item.Details)
                 .WhereIf(subjectId != null, item => item.SubjectId == subjectId)
-                 .Where(item => item.BankReconciliation == null ||
+                .Where(item => item.Subject.AccountType.Category == AccountTypeTypes.Bank)
+                .Where(item => item.BankReconciliation == null ||
                         item.BankReconciliation.IsPresented == false)
                 .Select(item => new BankReconciliationUnpresentedReportResult
                 {
