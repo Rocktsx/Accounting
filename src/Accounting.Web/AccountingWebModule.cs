@@ -152,7 +152,6 @@ public class AccountingWebModule : AbpModule
         ConfigureUrls(configuration);
         ConfigureHealthChecks(context);
         ConfigureAuthentication(context);
-        //ConfigureAutoMapper();
         ConfigureVirtualFileSystem(hostingEnvironment);
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
@@ -214,14 +213,6 @@ public class AccountingWebModule : AbpModule
             options.IsDynamicClaimsEnabled = true;
         });
     }
-
-    //private void ConfigureAutoMapper()
-    //{
-    //    Configure<AbpAutoMapperOptions>(options =>
-    //    {
-    //        options.AddMaps<AccountingWebModule>();
-    //    });
-    //}
 
     private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
     {
