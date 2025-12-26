@@ -113,7 +113,21 @@ public class AccountingMenus
         public const string Name = GeneralLedger + Dot + BalanceSheetReportText;
         public const string MonthToDateYearToDateReport = Name + Dot + MonthToDateYearToDateReportText;
         public const string YearToDateReport = Name + Dot + YearToDateReportText;
-    } 
+    }
+
+    public const string BankReconciliationReportText = "BankReconciliationReport";
+    private const string ReportText = "Report";
+    private const string UnpresentedReportText = "UnpresentedReport";
+
+    /// <summary>
+    /// Bank Reconciliation Report
+    /// </summary>
+    public class BankReconciliationReports
+    {
+        public const string Name = GeneralLedger + Dot + BankReconciliationReportText;
+        public const string Report = Name + Dot + ReportText;
+        public const string UnpresentedReport = Name + Dot + UnpresentedReportText;
+    }
 
     public const string Receivable = Prefix + Dot + ReceivableText;
     public const string ReceivableVoucher = Receivable + Dot + ReceivableVoucherText;
@@ -210,6 +224,16 @@ public class AccountingMenus
             public const string MonthToDateYearToDateReport = Name + Dot + MonthToDateYearToDateReportText;
             public const string YearToDateReport = Name + Dot + YearToDateReportText;
             public const string TwelveMonthsReport = Name + Dot + TwelveMonthsReportText;
+        }
+
+        /// <summary>
+        /// Bank Reconciliation Report
+        /// </summary>
+        public class BankReconciliationReports
+        {
+            public const string Name = DisplayNamePrefix + BankReconciliationReportText;
+            public const string Report = Name + Dot + ReportText;
+            public const string UnpresentedReport = Name + Dot + UnpresentedReportText;
         }
 
         public const string Receivable = DisplayNamePrefix + ReceivableText;

@@ -372,6 +372,13 @@
     "SetAll": "Set All",
     "Permission:BankReconciliationReport": "Bank Reconciliation Report",
     "Permission:BankReconciliationReport.Report": "Bank Reconciliation Report",
-    "Permission:BankReconciliationReport.UnpresentedReport": "Bank Reconciliation Unpresented Report"
+    "Permission:BankReconciliationReport.UnpresentedReport": "Bank Reconciliation Unpresented Report",
+    "Menu:BankReconciliationReport": "Bank Reconciliation Report",
+    "Menu:BankReconciliationReport.Report": "Bank Reconciliation Report",
+    "Menu:BankReconciliationReport.UnpresentedReport": "Bank Reconciliation Unpresented Report",
+    "BookBalance": "Book Balance",
+    "BankBalance": "Bank Balance",
+    "RoundBracketLeft": "(",
+    "RoundBracketRight": ")"
   }
 }

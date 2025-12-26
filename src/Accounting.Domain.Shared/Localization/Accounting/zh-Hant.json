@@ -408,6 +408,13 @@
     "SetAll": "設置全部",
     "Permission:BankReconciliationReport": "銀行對賬單報表",
     "Permission:BankReconciliationReport.Report": "銀行對賬單報表",
-    "Permission:BankReconciliationReport.UnpresentedReport": "銀行對賬單未兌現報表"
+    "Permission:BankReconciliationReport.UnpresentedReport": "銀行對賬單未兌現報表",
+    "Menu:BankReconciliationReport": "銀行對賬單報表",
+    "Menu:BankReconciliationReport.Report": "銀行對賬單報表",
+    "Menu:BankReconciliationReport.UnpresentedReport": "銀行對賬單未兌現報表",
+    "BookBalance": "賬面餘額",
+    "BankBalance": "銀行餘額",
+    "RoundBracketLeft": "（",
+    "RoundBracketRight": "）"
   }
 }

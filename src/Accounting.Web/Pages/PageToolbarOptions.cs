@@ -288,6 +288,18 @@ namespace Accounting.Web.Pages
                             id: "saveBtn",
                             requiredPolicyName: AccountingPermissions.BankReconciliations.Update);
                     });
+
+                options.Configure<GeneralLedger.BankReconciliationReports.IndexModel>(
+                 toolbar =>
+                 {
+                     toolbar.AddSearchButton(AccountingPermissions.BankReconciliationReports.Report);
+                 });
+
+                options.Configure<GeneralLedger.BankReconciliationReports.UnpresentedReportModel>(
+                toolbar =>
+                {
+                    toolbar.AddSearchButton(AccountingPermissions.BankReconciliationReports.UnpresentedReport);
+                });
             });
         }
 

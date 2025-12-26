@@ -190,6 +190,8 @@ public class AccountingMenuContributor : IMenuContributor
 
         AddBalanceSheetReportMenus(l, generalLedgerMenu);
 
+        AddBankReconciliationReportMenus(l, generalLedgerMenu);
+
         if (generalLedgerMenu.Items.Count > 0)
         {
             context.Menu.AddItem(generalLedgerMenu);
@@ -475,6 +477,32 @@ public class AccountingMenuContributor : IMenuContributor
         if (agingReportMenu.Items.Count > 0)
         {
             payableMenus.AddItem(agingReportMenu);
+        }
+    }
+    private static void AddBankReconciliationReportMenus(IStringLocalizer l, ApplicationMenuItem generalLedgerMenu)
+    {
+        var bankReconciliationReportMenu = new ApplicationMenuItem(
+                    AccountingMenus.BankReconciliationReports.Name,
+                    l[AccountingMenus.DisplayNames.BankReconciliationReports.Name],
+                    icon: "fas fa-box-archive");
+
+        bankReconciliationReportMenu.AddItem(
+              new ApplicationMenuItem(
+                  AccountingMenus.BankReconciliationReports.Report,
+                  l[AccountingMenus.DisplayNames.BankReconciliationReports.Report],
+                  url: "/GeneralLedger/BankReconciliationReports"
+              ).RequirePermissions(AccountingPermissions.BankReconciliationReports.Report));
+
+        bankReconciliationReportMenu.AddItem(
+            new ApplicationMenuItem(
+                AccountingMenus.BankReconciliationReports.UnpresentedReport,
+                l[AccountingMenus.DisplayNames.BankReconciliationReports.UnpresentedReport],
+                url: "/GeneralLedger/BankReconciliationReports/UnpresentedReport"
+            ).RequirePermissions(AccountingPermissions.BankReconciliationReports.UnpresentedReport));
+
+        if (bankReconciliationReportMenu.Items.Count > 0)
+        {
+            generalLedgerMenu.AddItem(bankReconciliationReportMenu);
         }
     }
 }
