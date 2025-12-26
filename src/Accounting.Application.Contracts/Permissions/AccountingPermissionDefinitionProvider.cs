@@ -88,6 +88,11 @@ public class AccountingPermissionDefinitionProvider : PermissionDefinitionProvid
 
         AddPermissionGroup(context, BankReconciliations.Default, BankReconciliations.Name,
          BankReconciliations.Create, BankReconciliations.Delete, BankReconciliations.Update);
+
+        group = context.AddGroup(BankReconciliationReports.Default, L(PermissionPrefix + BankReconciliationReports.Name));
+        group.AddPermission(BankReconciliationReports.Report, L(BankReconciliationReports.ReportName));
+        group.AddPermission(BankReconciliationReports.UnpresentedReport, L(BankReconciliationReports.UnpresentedReportName));
+        
     }
 
     private static PermissionDefinition AddPermission(PermissionGroupDefinition group, string permissionName,

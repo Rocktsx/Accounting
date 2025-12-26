@@ -405,6 +405,9 @@
     "IsPresented": "已兑现",
     "Presented": "已兑现",
     "Unpresented": "未兑现",
-    "SetAll": "设置全部"
+    "SetAll": "设置全部",
+    "Permission:BankReconciliationReport": "银行对账单报表",
+    "Permission:BankReconciliationReport.Report": "银行对账单报表",
+    "Permission:BankReconciliationReport.UnpresentedReport": "银行对账单未兑现报表"
   }
 }

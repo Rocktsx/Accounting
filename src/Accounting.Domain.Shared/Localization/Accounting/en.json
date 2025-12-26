@@ -369,6 +369,9 @@
     "IsPresented": "Presented",
     "Presented": "Presented",
     "Unpresented": "Unpresented",
-    "SetAll": "Set All"
+    "SetAll": "Set All",
+    "Permission:BankReconciliationReport": "Bank Reconciliation Report",
+    "Permission:BankReconciliationReport.Report": "Bank Reconciliation Report",
+    "Permission:BankReconciliationReport.UnpresentedReport": "Bank Reconciliation Unpresented Report"
   }
 }

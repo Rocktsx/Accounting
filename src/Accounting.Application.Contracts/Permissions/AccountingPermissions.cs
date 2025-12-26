@@ -243,6 +243,23 @@ public static class AccountingPermissions
         public const string Update = Default + Edit;
     }
 
+    private const string ReportText = "Report";
+    private const string UnpresentedReportText = "UnpresentedReport";
+    /// <summary>
+    /// 银行对账单报表
+    /// </summary>
+    public class BankReconciliationReports
+    {
+        public const string Name = "BankReconciliationReport";
+        public const string Default = GeneralLedgerGroup + Dot + Name;
+
+        internal const string ReportName = PermissionPrefix + Name + Dot + ReportText;
+        public const string Report = Default + Dot + ReportText;
+
+        internal const string UnpresentedReportName = PermissionPrefix + Name + Dot + UnpresentedReportText;
+        public const string UnpresentedReport = Default + Dot + UnpresentedReportText;
+    }
+
     private const string AgingSummarySingleCurrencyText = "AgingSummarySingleCurrency";
     private const string AgingSummaryMultipleCurrencyText = "AgingSummaryMultipleCurrency";
     private const string AgingDetailText = "AgingDetail";

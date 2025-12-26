@@ -298,4 +298,24 @@ namespace Accounting
     }
 
     #endregion
+
+    #region  Bank Reconciliation Report
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class BankReconciliationReportResultToBankReconciliationReportResultDto : MapperBase<BankReconciliationReportResult, BankReconciliationReportResultDto>
+    {
+        public override partial BankReconciliationReportResultDto Map(BankReconciliationReportResult source);
+
+        public override partial void Map(BankReconciliationReportResult source, BankReconciliationReportResultDto destination);
+    }
+
+    [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+    public partial class BankReconciliationUnpresentedReportResultToBankReconciliationUnpresentedReportResultDto : MapperBase<BankReconciliationUnpresentedReportResult, BankReconciliationUnpresentedReportResultDto>
+    {
+        public override partial BankReconciliationUnpresentedReportResultDto Map(BankReconciliationUnpresentedReportResult source);
+
+        public override partial void Map(BankReconciliationUnpresentedReportResult source, BankReconciliationUnpresentedReportResultDto destination);
+    }
+
+    #endregion
 }
