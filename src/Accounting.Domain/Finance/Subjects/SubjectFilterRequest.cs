@@ -12,5 +12,7 @@ namespace Accounting.Finance.Subjects
         public bool? IsIncludeAccountType { get; set; }
 
         public bool? IsPaymentMethod { get; set; }
+
+        public AccountTypeTypes? AccountTypeCategory { get; set; }
     }
 }

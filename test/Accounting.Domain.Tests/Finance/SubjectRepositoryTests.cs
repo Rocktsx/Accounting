@@ -80,5 +80,20 @@ namespace Accounting.Finance
             result.ShouldNotBeNull();
             result.Count().ShouldBe(1);
         }
+        [Fact]
+        public async Task Can_Get_List_With_Category_Filter()
+        {
+            // arrange
+            var request = new SubjectFilterRequest
+            {
+                AccountTypeCategory = AccountTypeTypes.Bank
+            };
+            // act
+            var result = await _subjectPepository.GetPagedListAsync(request);
+
+            // assert
+            result.ShouldNotBeNull();
+            result.Count().ShouldBe(1);
+        }
     }
 }

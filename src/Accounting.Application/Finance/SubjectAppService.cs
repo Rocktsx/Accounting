@@ -144,7 +144,8 @@ namespace Accounting.Finance
                 SubjectCategoryId = input.SubjectCategoryId,
                 SubjectIds = input.SubjectIds,
                 IsIncludeAccountType = input.IsIncludeAccountType,
-                IsPaymentMethod = input.IsPaymentMethod
+                IsPaymentMethod = input.IsPaymentMethod,
+                AccountTypeCategory = input.AccountTypeCategory
             };
 
             var list = await Repository.GetPagedListAsync(request, input.Sorting,

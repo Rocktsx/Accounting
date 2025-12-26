@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core; 
+using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
@@ -35,7 +35,7 @@ namespace Accounting.Finance
         private async Task<IQueryable<Subject>> GetQueryable(SubjectFilterRequest request)
         {
             var queryable = (await GetDbSetAsync()).AsQueryable();
-            if(request == null)
+            if (request == null)
             {
                 return queryable;
             }
@@ -49,7 +49,8 @@ namespace Accounting.Finance
              .WhereIf(request.SubjectCategoryId != null, item => item.SubjectCategoryId == request.SubjectCategoryId)
              .WhereIf(request.SubjectIds != null && request.SubjectIds.Count() > 0, item => request.SubjectIds.Contains(item.Id))
              .WhereIf(request.Codes != null && request.Codes.Count() > 0, item => request.Codes.Contains(item.Code))
-             .WhereIf(request.IsPaymentMethod != null, item => item.IsPayMethod == request.IsPaymentMethod);
+             .WhereIf(request.IsPaymentMethod != null, item => item.IsPayMethod == request.IsPaymentMethod)
+             .WhereIf(request.AccountTypeCategory != null, item => item.AccountType.Category == request.AccountTypeCategory);
         }
     }
 }

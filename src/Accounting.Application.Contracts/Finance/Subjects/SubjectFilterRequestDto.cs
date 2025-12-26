@@ -23,6 +23,7 @@ namespace Accounting.Finance.Subjects
         /// </summary>
         public bool? IsIncludePayableSubject { get; set; }
 
+        public AccountTypeTypes? AccountTypeCategory { get; set; }
         public void AddSubjectId(string subjectId)
         {
             if (!string.IsNullOrWhiteSpace(subjectId) &&
