@@ -1,4 +1,5 @@
 ﻿using Accounting.Finance;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
@@ -31,6 +32,8 @@ namespace Accounting.Web.ViewModels
         public bool IsSubSubjectType { get; set; }
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
+
+        [HiddenInput]
         public int? SeqCode { get; set; }
 
         public CreateSubjectViewModel()
