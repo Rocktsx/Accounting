@@ -19,11 +19,11 @@ namespace Accounting.Finance
         {
         }
 
-        public async Task<long> GetCountAsync(BankReconciliationFilterRequest request = null, 
+        public async Task<long> GetCountAsync(BankReconciliationFilterRequest request = null,
             bool showVouchers = true, CancellationToken cancellationToken = default)
         {
-            if(showVouchers)
-            { 
+            if (showVouchers)
+            {
                 return await (await GetQueryableAsync(request)).LongCountAsync(cancellationToken);
             }
             return await (await GetQueryableAsync()).LongCountAsync(cancellationToken);
@@ -36,12 +36,12 @@ namespace Accounting.Finance
               .Skip(skipCount).Take(maxResultCount)
               .Select(item => new BankReconciliationPagedResult
               {
-                  Id = item.BankReconciliation == null ? null :  item.BankReconciliation.Id,
+                  Id = item.BankReconciliation == null ? null : item.BankReconciliation.Id,
                   VoucherDetailId = item.Id,
                   IsPresented = item.BankReconciliation != null && item.BankReconciliation.IsPresented,
                   VoucherDate = item.Voucher.VoucherDate,
                   VoucherCode = item.Voucher.Code,
-                  PaymentReference =item.PaymentReference,
+                  PaymentReference = item.PaymentReference,
                   DebitorCreditor = item.DebitorCreditor,
                   NativeAmount = item.NativeAmount,
                   Description = item.Description,
@@ -75,8 +75,10 @@ namespace Accounting.Finance
                 .WhereIf(request.SubjectId != null, item => item.SubjectId == request.SubjectId)
                 .WhereIf(!string.IsNullOrWhiteSpace(request.ReferenceNo),
                     item => item.PaymentReference.Contains(request.ReferenceNo))
-                .WhereIf(request.IsPresented != null && request.IsPresented != false,
-                    item => item.BankReconciliation.IsPresented == request.IsPresented);
+                .WhereIf(request.IsPresented != null,
+                    item => request.IsPresented == false ?
+                    item.BankReconciliation == null || item.BankReconciliation.IsPresented == false
+                    : item.BankReconciliation.IsPresented == true);
         }
     }
 }

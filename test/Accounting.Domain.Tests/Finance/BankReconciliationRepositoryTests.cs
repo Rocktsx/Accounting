@@ -62,7 +62,7 @@ namespace Accounting.Finance
             var result = await _bankReconciliationRepository.GetPagedListAsync(request);
 
             // assert
-            result.Count().ShouldBe(_testData.InsertedVouchers);
+            result.Count().ShouldBe(_testData.InsertedVouchers - 1);
         }
         [Fact]
         public async Task Can_Get_List_By_Ids()
