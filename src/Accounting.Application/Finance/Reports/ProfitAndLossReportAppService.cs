@@ -67,7 +67,7 @@ namespace Accounting.Finance.Reports
         }
         private async Task<(AccountingPeriod period, DateOnly endDate)> HandleRequestDto(ProfitAndLossYearToDateRequestDto input)
         {
-            Check.NotDefaultOrNull(input.PeriodId, nameof(input.PeriodId));
+            CheckPeriodId(input.PeriodId);
 
             var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException(VoucherErrorCodes.AccountingPeriodNotFound);
 

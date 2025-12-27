@@ -415,6 +415,7 @@
     "BookBalance": "賬面餘額",
     "BankBalance": "銀行餘額",
     "RoundBracketLeft": "（",
-    "RoundBracketRight": "）"
+    "RoundBracketRight": "）",
+    "Accounting:AccountingPeriodIdCanNotNull": "會計年度不能為空。"
   }
 }

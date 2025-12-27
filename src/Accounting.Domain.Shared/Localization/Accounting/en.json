@@ -379,6 +379,7 @@
     "BookBalance": "Book Balance",
     "BankBalance": "Bank Balance",
     "RoundBracketLeft": "(",
-    "RoundBracketRight": ")"
+    "RoundBracketRight": ")",
+    "Accounting:AccountingPeriodIdCanNotNull": "PeriodId can not be null or empty."
   }
 }

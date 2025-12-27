@@ -1,12 +1,14 @@
 ﻿using Accounting.Common;
 using Accounting.Finance.AccountTypes;
 using Accounting.Finance.Reports;
+using Accounting.Finance.Vouchers;
 using Accounting.Localization;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace Accounting;
@@ -68,6 +70,13 @@ public abstract class AccountingAppService : ApplicationService
             dto.SecondaryGroupCode = group.SecondaryRootItem?.Code ?? string.Empty;
             dto.SecondaryGroupName = group.SecondaryRootItem?.Name ?? string.Empty;
             dto.SecondaryGroupOtherName = group.SecondaryRootItem?.OtherName ?? string.Empty;
+        }
+    }
+    protected static void CheckPeriodId(Guid? periodId)
+    {
+        if (periodId.IsEmptyOrNull())
+        {
+            throw new BusinessException(VoucherErrorCodes.AccountingPeriodIdCanNotNull);
         }
     }
 }

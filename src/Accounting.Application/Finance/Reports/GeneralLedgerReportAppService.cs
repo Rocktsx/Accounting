@@ -49,7 +49,7 @@ namespace Accounting.Finance.Reports
 
         private async Task<(AccountingPeriod period, DateOnly startDate, DateOnly endDate)> HandleRequestDto(GeneralLedgerReportRequestDto input)
         {
-            Check.NotDefaultOrNull(input.PeriodId, nameof(input.PeriodId));
+            CheckPeriodId(input.PeriodId);
 
             var period = await _periodRepository.FindAsync(input.PeriodId.Value) ?? throw new BusinessException(VoucherErrorCodes.AccountingPeriodNotFound);
             var startDate = period.GetStartDate(input.StartDate);

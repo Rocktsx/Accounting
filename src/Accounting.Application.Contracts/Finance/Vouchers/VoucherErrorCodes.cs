@@ -14,5 +14,6 @@ namespace Accounting.Finance.Vouchers
         public const string PleaseEnterArSubjectInSetting = "Accounting:PleaseEnterArSubjectInSetting";
         public const string PleaseEnterApSubjectInSetting = "Accounting:PleaseEnterApSubjectInSetting";
         public const string AccountingPeriodNotFound = "Accounting:AccountingPeriodNotFound";
+        public const string AccountingPeriodIdCanNotNull = "Accounting:AccountingPeriodIdCanNotNull";
     }
 }
