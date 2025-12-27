@@ -380,6 +380,6 @@
     "BankBalance": "Bank Balance",
     "RoundBracketLeft": "(",
     "RoundBracketRight": ")",
-    "Accounting:AccountingPeriodIdCanNotNull": "PeriodId can not be null or empty."
+    "Accounting:AccountingPeriodIdCanNotNull": "Accounting Period can not be null or empty."
   }
 }
