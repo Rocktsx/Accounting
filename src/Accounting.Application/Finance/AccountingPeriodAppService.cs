@@ -47,7 +47,11 @@ namespace Accounting.Finance
                 StartDate = grp.Min(x => x.StartDate),
                 EndDate = grp.Max(x => x.EndDate)
             });
-            return queryable.FirstOrDefault() ?? new CurrentAccountingPeriodDto();
+            return queryable.FirstOrDefault() ?? new CurrentAccountingPeriodDto()
+            {
+                StartDate = DateOnly.FromDateTime(DateTime.Now),
+                EndDate = DateOnly.FromDateTime(DateTime.Now)
+            };
         }
         [Authorize(AccountingPermissions.AccountingPeriods.Default)]
         public async Task<PagedResultDto<AccountingPeriodDto>> GetListAsync(FilteredPagedAndSortedResultRequestDto input)
