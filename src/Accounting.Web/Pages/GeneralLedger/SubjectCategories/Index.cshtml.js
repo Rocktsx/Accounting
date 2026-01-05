@@ -128,4 +128,10 @@
         var l = abp.localization.getResource('Accounting');
         abp.notify.success(l('SavedSuccessfully'));
     });
+    $('#subjectCategoryTable').on('preXhr.dt', function () {
+        abp.ui.setBusy('#subjectCategoryTable')
+    });
+    $('#subjectCategoryTable').on('xhr.dt', function (e) {
+        abp.ui.clearBusy('#subjectCategoryTable')
+    });
 });

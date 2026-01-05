@@ -459,7 +459,7 @@
         const bodySelector = '#importCompanyForm .modal-body';
         abp.ui.setBusy(bodySelector)
         abp.ajax({
-            url:  form.action,
+            url: form.action,
             processData: false,
             contentType: false,
             method: 'POST',
@@ -473,5 +473,11 @@
                 abp.ui.clearBusy(bodySelector)
             }
         });
-    })
+    });
+    $('#companyTable').on('preXhr.dt', function () {
+        abp.ui.setBusy('#companyTable')
+    });
+    $('#companyTable').on('xhr.dt', function (e) {
+        abp.ui.clearBusy('#companyTable')
+    });
 });

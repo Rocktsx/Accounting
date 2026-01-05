@@ -92,4 +92,10 @@
         var l = abp.localization.getResource('Accounting');
         abp.notify.success(l('SavedSuccessfully'));
     });
+    $('#accountingPeriodTable').on('preXhr.dt', function () {
+        abp.ui.setBusy('#accountingPeriodTable')
+    });
+    $('#accountingPeriodTable').on('xhr.dt', function (e) {
+        abp.ui.clearBusy('#accountingPeriodTable')
+    });
 });

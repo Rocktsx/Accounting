@@ -99,4 +99,10 @@
     editModal.onResult(function () {
         dataTable.ajax.reload();
     });
+    $('#currencyTable').on('preXhr.dt', function () {
+        abp.ui.setBusy('#currencyTable')
+    });
+    $('#currencyTable').on('xhr.dt', function (e) {
+        abp.ui.clearBusy('#currencyTable')
+    });
 });

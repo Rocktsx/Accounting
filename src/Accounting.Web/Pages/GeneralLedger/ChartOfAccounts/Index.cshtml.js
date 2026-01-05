@@ -244,5 +244,11 @@
                 abp.ui.clearBusy(bodySelector)
             }
         });
-    })
+    });
+    $('#subjectTable').on('preXhr.dt', function () {
+        abp.ui.setBusy('#subjectTable')
+    });
+    $('#subjectTable').on('xhr.dt', function (e) {
+        abp.ui.clearBusy('#subjectTable')
+    });
 });

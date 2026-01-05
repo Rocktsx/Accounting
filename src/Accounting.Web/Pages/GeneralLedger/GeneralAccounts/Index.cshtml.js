@@ -145,5 +145,11 @@
                 abp.ui.clearBusy('#importDataForm .modal-body')
             }
         });
-    })
+    });
+    $('#generalAccountTable').on('preXhr.dt', function () {
+        abp.ui.setBusy('#generalAccountTable')
+    });
+    $('#generalAccountTable').on('xhr.dt', function (e) {
+        abp.ui.clearBusy('#generalAccountTable')
+    });
 });
