@@ -20,3 +20,10 @@ function renderAmount(amount, scale) {
 
     return arr[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + dot + arr[1];
 }
+
+$(function () {
+    $.each($('.lpx-menu-item .lpx-menu-item-text'), function (idx, item) {
+        const $this = $(item);
+        $this.attr('title', $this.text());
+    });
+});
