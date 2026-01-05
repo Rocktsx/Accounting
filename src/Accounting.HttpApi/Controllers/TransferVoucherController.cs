@@ -22,6 +22,7 @@ namespace Accounting.Controllers
         {
             _importVoucherAppService = importVoucherAppService;
         }
+        [HttpPost]
         [Authorize(AccountingPermissions.TransferVouchers.Import)]
         public async Task<IResult> ImportData(IFormFile file, VoucherImportType? importType, string? subjectCode)
         {
