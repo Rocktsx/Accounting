@@ -61,6 +61,7 @@ using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.MailKit;
 
 namespace Accounting.Web;
 
@@ -80,7 +81,8 @@ namespace Accounting.Web;
 )]
 [DependsOn(typeof(AbpDistributedLockingModule))]
 [DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
-public class AccountingWebModule : AbpModule
+[DependsOn(typeof(AbpMailKitModule))]
+    public class AccountingWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
