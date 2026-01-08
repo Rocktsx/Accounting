@@ -1,0 +1,55 @@
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=latesT@ddPwrd2025
+    ports:
+      - 1433:1433
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+
+  db-migrator:
+    image: accounting-db-migrator:latest
+    container_name: db-migrator
+    build:
+      context: ../../
+      dockerfile: src/Accounting.DbMigrator/Dockerfile
+    environment:
+      - OpenIddict__Applications__Accounting_Web__RootUrl=https://localhost:8080            
+      - ConnectionStrings__Default=Data Source=sql-server;Initial Catalog=AccountingDemos;User Id=sa;Password=latesT@ddPwrd2025;MultipleActiveResultSets=true;TrustServerCertificate=True;            
+    depends_on:     
+      - sql-server    
+
+  accounting-web:
+    image: accounting-web:latest
+    container_name: accounting-web
+    hostname: accounting-web
+    build:
+      context: ../../
+      dockerfile: src/Accounting.Web/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=https://+:8080;http://+:8090;
+      - Kestrel__Certificates__Default__Path=/app/certificate/localhost.pfx
+      - Kestrel__Certificates__Default__Password=BB7BBDD7-5D33-48D6-9B6F-C49E3EF468ED
+      - App__SelfUrl=https://localhost:8080
+      - AuthServer__RequireHttpsMetadata=false
+      - AuthServer__Authority=http://localhost:8080
+      - App__HealthCheckUrl=http://localhost:8090/health-status
+      - Redis__IsEnabled=true
+      - Redis__Configuration=redis
+      - ConnectionStrings__Default=Data Source=sql-server;Initial Catalog=AccountingDemos;User Id=sa;Password=latesT@ddPwrd2025;MultipleActiveResultSets=true;TrustServerCertificate=True;			
+    ports:
+      - "44369:8080"
+    restart: on-failure
+    volumes:
+      - ./certs:/app/certificate
+    depends_on:
+      - redis
+      - sql-server
+      - db-migrator

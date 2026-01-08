@@ -25,6 +25,8 @@ RUN dotnet restore "./src/Accounting.Web/Accounting.Web.csproj"
 COPY . .
 WORKDIR "/src/src/Accounting.Web"
 RUN dotnet build "./Accounting.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR /app/build
+RUN dotnet dev-certs https -v -ep authserver.pfx -p BB7BBDD7-5D33-48D6-9B6F-C49E3EF468ED
 
 # 此阶段用于发布要复制到最终阶段的服务项目
 FROM build AS publish
