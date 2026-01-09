@@ -10,22 +10,23 @@ namespace Accounting.Web
 {
     public static class Helpers
     {
+        public const string EnLanguage = "en";
         public static Dictionary<string, string> Select2Languages { get; set; } =
         new Dictionary<string, string>
         {
-            { "en", "en" },
+            { EnLanguage, EnLanguage },
             { "zh-Hans", "zh-CN" },
             { "zh-Hant", "zh-TW" }
         };
-        public static string EmptyText = "--";
+        public const string EmptyText = "--";
         public static string GetSelect2LanguageName()
         {
             var lang = CultureInfo.CurrentCulture.Name;
-            return Select2Languages.ContainsKey(lang) ? Select2Languages[lang] : "en";
+            return Select2Languages.ContainsKey(lang) ? Select2Languages[lang] : EnLanguage;
         }
         public static string GetText(string code, string name, string otherName)
         {
-            return $"{code} - {name}" + (string.IsNullOrWhiteSpace(otherName) ? "" : $" ({otherName})");
+            return $"{code} - {name}" + (string.IsNullOrWhiteSpace(otherName) ? string.Empty : $" ({otherName})");
         }
         public static List<SelectListItem> ToSelectListItems<T>(this IEnumerable<T> items, Func<T, string> getValue, Func<T, string> getText, bool insertEmpty = true)
         {
