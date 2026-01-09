@@ -122,9 +122,10 @@
         const subjectStore = useSubjectStore();
         const companyStore = useCompanyStore();
         const currencyStore = useCurrencyStore();
-         
+
         const setEditItem = (payload) => {
             const { details, ...others } = payload.item || getVoucher();
+            const isClearData = payload.isClearData;
             let debitorId = '';
             const newDetails = details.map(item => {
                 if (item.subSubjectCode && !debitorId) {
@@ -141,8 +142,10 @@
             });
             editItem.value = { ...others, details: newDetails, debitorId };
             editItem.value.voucherDate = formatDate(editItem.value.voucherDate);
-            payments.value = [];
-            receipts.value = getEmptyReceipts();
+            if (isClearData !== false) { 
+                payments.value = [];
+                receipts.value = getEmptyReceipts();
+            }
         }
         const saveDetailItem = (payload) => {
             const { item } = payload;
@@ -159,8 +162,10 @@
                 editItem.value.details.splice(index, 1);
             }
         }
-        const setDetails = () => {
-            payments.value = [];
+        const setDetails = ({ isClearData }) => {
+            if (isClearData !== false) {
+                payments.value = [];
+            }
             (editItem.value.details || []).forEach(item => {
                 const subject = subjectStore.subjectMap[item.subjectId];
                 if (subject) {
@@ -169,7 +174,7 @@
                     item.isSubSubjectType = isSubSubjectType;
                     item.accountTypeCategory = category;
                     item.subjectName = code + ' - ' + name;
-                    if (category != accountTypes.receivable && category != accountTypes.payable) {
+                    if (isClearData !== false && category != accountTypes.receivable && category != accountTypes.payable) {
                         payments.value.push({ ...item });
                     }
                 }
@@ -200,6 +205,11 @@
             subjectStore.setSubjects(paymentMethods.value);
         }
 
+        const clearData = () => {
+            payments.value = [];
+            addPaymentItem();
+            receipts.value = getEmptyReceipts();
+        }
         const totalDebitorAmount = computed(() => {
             return (editItem.value.details || []).reduce((init, item) =>
                 init + (item.debitorCreditor === debitCredit.debitor ?
@@ -225,7 +235,7 @@
             payments, receipts, paymentMethods, totalPaymentAmount, totalReceiptAmount,
             setEditItem, saveDetailItem, removeDetailItem, setDetails, setReceipts,
             addPaymentItem, setPayments, setPayments, removePaymentItem,
-            removePaymentItem, setPaymentMethods
+            removePaymentItem, setPaymentMethods, clearData
         }
     });
 
@@ -258,7 +268,7 @@
         let zIndex = parseInt($(modal).css('z-index')) + openedModals
         modal.style.zIndex = zIndex;
     }
-  
+
     function getSelect2Language() {
         const languageMap = { 'zh-Hans': 'zh-CN', 'zh-Hant': 'zh-TW' }
         const cultureName = abp.localization.currentCulture.cultureName;
@@ -875,10 +885,10 @@
                 };
                 voucherRequests.generateDetails
                     (param).then(result => {
-                        setEditItem({ item: { ...editItem.value, details: result || [] } });
-                        setDetails();
+                        setEditItem({ item: { ...editItem.value, details: result || [] }, isClearData: false });
+                        setDetails({ isClearData: false });
                     }).catch(() => {
-                        setEditItem({ item: { ...editItem.value, details: [] } });
+                        setEditItem({ item: { ...editItem.value, details: [] }, isClearData: false });
                     })
             }
 
@@ -1185,7 +1195,6 @@
 
             onMounted(() => {
                 initSubjectSelect()
-                //setTimeout(() => initSubjectSelect(), 0)
                 if (props.item.isSubSubjectType) {
                     nextTick(() => initItemCompanySelect(props.item.accountTypeCategory == accountTypes.receivable))
                 }
@@ -1270,7 +1279,7 @@
             const { setCompanies } = companyStore;
 
             const voucherStore = useVoucherStore();
-            const { editItem } = storeToRefs(voucherStore);
+            const { editItem, clearData } = storeToRefs(voucherStore);
 
             onMounted(() => {
                 nextTick(() => {
@@ -1278,6 +1287,7 @@
                         e => {
                             editItem.value.debitorId = e.params.data.id;
                             emit('creditor-change', 1);
+                            voucherStore.clearData();
                         }, setCompanies);
                 })
             });
@@ -1362,7 +1372,7 @@
         emits: ['add-detail', 'show-detail', 'delete-detail'],
         setup(props, { emit }) {
             const voucherStore = useVoucherStore();
-            const { editItem, totalDebitorAmount, totalCreditorAmount, isDraftStatus } = storeToRefs(voucherStore); 
+            const { editItem, totalDebitorAmount, totalCreditorAmount, isDraftStatus } = storeToRefs(voucherStore);
 
             const currencyStore = useCurrencyStore();
             const { nativeCurrency } = storeToRefs(currencyStore);
@@ -1426,7 +1436,7 @@
     const EditModal = {
         components: { Modal, EditHeader, VoucherDetails, EditDetail, PayableDetail },
         template: editModalTemplate,
-        data() {
+        setup() {
             const isShowDetail = ref(false);
             const showDetailModal = ref(false);
             const item = ref(getDefaultDetail());
@@ -1441,7 +1451,7 @@
             const voucherStore = useVoucherStore();
             const { editItem, totalDebitorAmount, totalCreditorAmount, isDraftStatus } = storeToRefs(voucherStore);
             const { saveDetailItem, removeDetailItem, setReceipts } = voucherStore;
-             
+
             watch(isShowDetail, (value) => {
                 nextTick(() => { showDetailModal.value = value })
             });
@@ -1540,7 +1550,7 @@
             }
             const getDetailsByDebitor = (newPage) => {
                 const params = {
-                    debitorId: this.editItem.debitorId,
+                    debitorId: editItem.value.debitorId,
                     maxResultCount,
                     skipCount: ((newPage || 1) - 1) * maxResultCount
                 };
@@ -1551,10 +1561,10 @@
                     }).catch(() => { });
             }
 
-            const changeReceiptPage = (newPage) =>{
+            const changeReceiptPage = (newPage) => {
                 getDetailsByDebitor(newPage);
             }
-           
+
             const formatInputDate = (value) => {
                 return formatDate(value)
             }
