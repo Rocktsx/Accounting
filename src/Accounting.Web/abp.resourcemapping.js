@@ -4,6 +4,7 @@ module.exports = {
     },
     mappings: {
         "@node_modules/bootstrap-treeview/dist/**/*": "@libs/bootstrap-treeview/",
-        "@node_modules/vuex/dist/**/*": "@libs/vuex/"
+        "@node_modules/vue/dist/vue.global*.js": "@libs/vue/",
+        "@node_modules/pinia/dist/pinia.iife*.js": "@libs/pinia/",
     }
 };
