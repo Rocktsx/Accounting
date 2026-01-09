@@ -64,3 +64,6 @@ form label.error {
 .report .table td, .report .table th {
     padding: 3px;
 }
+.select2-selection__rendered {
+    width: calc(100% - 5px);
+}
