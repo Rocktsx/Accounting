@@ -26,7 +26,7 @@ $(function () {
         enableCustom2: abp.features.isEnabled('AccountingFeature.Custom2Function')
     }
 
-    const { createApp, ref, computed, onMounted, watch, nextTick, useTemplateRef, onBeforeUnmount, markRaw, toValue } = Vue;
+    const { createApp, ref, computed, onMounted, watch, nextTick, useTemplateRef, onBeforeUnmount, markRaw } = Vue;
     const { defineStore, storeToRefs, createPinia } = Pinia;
 
     const useCompanyStore = defineStore('company', () => {
@@ -645,7 +645,7 @@ $(function () {
             }, { immediate: true });
 
             onMounted(() => {
-                setTimeout(() => initSubjectSelect(), 300)
+                setTimeout(() => initSubjectSelect(), 0)
                 if (props.item.isSubSubjectType) {
                     nextTick(() => initCompanySelect(props.item.accountTypeCategory == accountTypes.receivable))
                 }
@@ -811,7 +811,7 @@ $(function () {
     const EditModal = {
         components: { Modal, EditDetail },
         template: editModalTemplate,
-        setup(props, { emit }) {
+        setup() {
             const isShowDetail = ref(false);
             const showDetailModal = ref(false);
             const item = ref(getDefaultDetail());
@@ -966,7 +966,6 @@ $(function () {
                 debitCredit,
                 ...features,
                 isShowModal,
-                showModal,
                 editItem,
                 totalDebitorAmount,
                 totalCreditorAmount,
