@@ -67,3 +67,6 @@ form label.error {
 .select2-selection__rendered {
     width: calc(100% - 5px);
 }
+.lpx-topbar-container{
+    background-color:transparent;
+}
