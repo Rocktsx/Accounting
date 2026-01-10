@@ -1,5 +1,7 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
+    const { createApp, ref, markRaw, computed } = Vue;
+    const { defineStore, storeToRefs, createPinia } = Pinia;
 
     function getFormParams() {
         return {
@@ -21,13 +23,13 @@
             const code = current.voucherCode;
             let group = prev[code];
             if (!group) {
-                group = {
+                group = markRaw({
                     code: code,
                     item: current,
                     items: [],
                     debitor: 0,
                     creditor: 0,
-                }
+                });
                 prev[code] = group;
                 groups.push(group);
             }
@@ -43,50 +45,24 @@
         }, {});
         return groups;
     }
-    const store = new Vuex.Store({
-        state() {
-            return {
-                items: [],
-                params: getFormParams(),
-                nativeCurrency: ''
-            }
-        },
-        mutations: {
-            setItems(state, payload) {
-                const { items } = payload;
-                state.items = handleData(items);
-            },
-            setParams(state, payload) {
-                state.params = payload;
-            },
-            setNativeCurrency(state, payload) {
-                state.nativeCurrency = payload;
-            },
-        },
-        getters: {
-            items: (state) => state.items,
-            params: (state) => state.params,
-            nativeCurrency: (state) => state.nativeCurrency,
+    const useReportStore = defineStore('report', () => {
+        const params = ref({})
+        const items = ref([])
+        const nativeCurrency = ref('')
+
+        const count = computed(() => items.value.length);
+
+        const setItems = (payload) => {
+            items.value = handleData(payload.items);
         }
-    })
+        const setParams = (payload) => {
+            params.value = payload;
+        }
+        const setNativeCurrency = (payload) => {
+            nativeCurrency.value = payload;
+        }
 
-
-    accounting.finance.accountingSetting.getNativeCurrency()
-        .then(result => store.commit('setNativeCurrency', result))
-        .catch(() => { });
-
-    $(document).on('click', '#searchBtn', function () {
-        const params = getFormParams();
-        store.commit('setParams', params);
-        store.commit('setItems', { items: [] });
-        const busyEle = '.body';
-        abp.ui.setBusy(busyEle);
-        accounting.finance.reports.journalReport.getSingleCurrencySortByDateList(params).then(function (result) {
-            store.commit('setItems', { items: result || [] });
-            abp.ui.clearBusy(busyEle);
-        }).catch(function () {
-            abp.ui.clearBusy(busyEle);
-        });
+        return { items, params, nativeCurrency, count, setItems, setParams, setNativeCurrency }
     });
 
     const headerTemplate = `
@@ -97,12 +73,14 @@
 
     const Header = {
         template: headerTemplate,
-        computed: {
-            ...Vuex.mapGetters(['params'])
-        },
-        methods: {
-            formatDate,
-            l
+        setup() {
+            const reportStore = useReportStore();
+            const { params } = storeToRefs(reportStore);
+            return {
+                params,
+                formatDate,
+                l
+            }
         }
     }
 
@@ -126,7 +104,7 @@
             </thead>
             <tbody>
                 <template  v-for="item in items" :key="item.code"> 
-                    <tr v-for="(subItem, index) in item.items" :key="subItem.voucherCode + index">
+                    <tr v-for="(subItem, index) in item.items" :key="subItem.voucherCode">
                         <td>{{ index == 0 ? subItem.voucherCode  : '' }}</td>
                         <td>{{ index == 0 ? formatDate(subItem.voucherDate) : ''}}</td>
                         <td  v-if="index == 0" :rowspan="item.items.length">
@@ -137,7 +115,7 @@
                         <td class="text-end">{{ subItem.debitorCreditor == debitCredit.debitor ? renderAmount(subItem.nativeAmount): '' }}</td>
                         <td class="text-end">{{ subItem.debitorCreditor == debitCredit.creditor ? renderAmount(subItem.nativeAmount): '' }}</td>
                     </tr>
-                    <tr :key="item.code + 'total'" class="border-top fw-bold"> 
+                    <tr class="border-top fw-bold"> 
                         <td class="text-end" colspan="4">{{ l('SubTotal') }}</td>
                         <td class="text-end">{{ renderAmount(item.debitor) }}</td>
                         <td class="text-end">{{ renderAmount(item.creditor) }}</td>
@@ -149,18 +127,17 @@
 
     const Body = {
         template: bodyTemplate,
-        data() {
+        setup() {
+            const reportStore = useReportStore();
+            const { items, nativeCurrency } = storeToRefs(reportStore);
             return {
-                debitCredit
+                items,
+                nativeCurrency,
+                formatDate,
+                renderAmount,
+                debitCredit,
+                l,
             }
-        },
-        computed: {
-            ...Vuex.mapGetters(['items', 'nativeCurrency'])
-        },
-        methods: {
-            formatDate,
-            l,
-            renderAmount,
         }
     }
 
@@ -168,24 +145,45 @@
  <div class="report">
     <Header />
     <Body/>
-    <div v-if="items.length == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
+    <div v-if="count == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
  </div>`;
 
     const Report = {
         components: { Header, Body },
         template: reportTemplate,
-        computed: {
-            ...Vuex.mapGetters(['items'])
-        },
-        methods: {
-            l
+        setup() {
+            const reportStore = useReportStore();
+            const { count } = storeToRefs(reportStore);
+            return {
+                count,
+                l
+            }
         }
     }
 
-    const app = new Vue({
-        components: { Report },
-        template: `<Report />`,
-        el: '#app',
-        store
+    const app = createApp(Report);
+    app.use(createPinia());
+    app.mount('#app');
+
+    const reportStore = useReportStore();
+
+    reportStore.setParams(getFormParams());
+
+    accounting.finance.accountingSetting.getNativeCurrency()
+        .then(result => reportStore.setNativeCurrency(result))
+        .catch(() => { });
+
+    $(document).on('click', '#searchBtn', function () {
+        const params = getFormParams();
+        reportStore.setParams(params);
+        reportStore.setItems({ items: [] });
+        const busyEle = '.body';
+        abp.ui.setBusy(busyEle);
+        accounting.finance.reports.journalReport.getSingleCurrencySortByDateList(params).then(function (result) {
+            reportStore.setItems({ items: result || [] });
+            abp.ui.clearBusy(busyEle);
+        }).catch(function () {
+            abp.ui.clearBusy(busyEle);
+        });
     });
 });

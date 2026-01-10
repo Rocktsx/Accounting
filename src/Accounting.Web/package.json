@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@abp/aspnetcore.mvc.ui.theme.leptonxlite": "~4.3.5",
-    "@abp/vue": "^9.3.5",
     "bootstrap-treeview": "1.2.0",
+    "pinia": "^3.0.4",
     "select2": "^4.0.13",
-    "vuex": "^3.6.2"
+    "vue": "^3.5.26"
   },
   "devDependencies": {
     "bower": "1.8.14",

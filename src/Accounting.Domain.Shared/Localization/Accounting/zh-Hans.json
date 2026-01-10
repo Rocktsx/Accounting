@@ -165,7 +165,7 @@
     "Accounting:ForeignExchangeRateMatchNativeAmount": "外币金额乘以汇率必须等于本币金额",
     "Accounting:VoucherDoesNotBalance": "传票不平",
     "Accounting:SubjectIdCanNotBeEmpty": "科目Id不能为空",
-    "Accounting:VoucherDateIsNotInCurrentPeriodRange": "凭证日期不在当前会计年度的范围内。",
+    "Accounting:VoucherDateIsNotInCurrentPeriodRange": "传票日期不在当前会计年度的范围内。",
     "Accounting:SubSubjectCodeCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，辅助科目（SubSubjectCode）字段不能为空",
     "Accounting:DocNoCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，文档编号（DocNo）字段不能为空",
     "Accounting:DueDateCanNotBeEmpty": "当一个科目是应付科目或者应收科目时，到期日期（DueDate）字段不能为空",
