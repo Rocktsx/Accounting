@@ -45,13 +45,17 @@
         }
     }
     const currentPeriodSortOrder = 3;
+
+    const { createApp, ref, markRaw, computed } = Vue;
+    const { defineStore, storeToRefs, createPinia } = Pinia;
+
     function handleData(items) {
         const groups = [];
         items.reduce((prev, current) => {
             const code = current.subjectCode;
             let group = prev[code];
             if (!group) {
-                group = {
+                group = markRaw({
                     code: code,
                     item: current,
                     items: [],
@@ -60,7 +64,7 @@
                     creditor: 0,
                     currentPeriodBalance: 0,
                     currentPeriodVouchers: 0,
-                }
+                });
                 prev[code] = group;
                 groups.push(group);
             }
@@ -84,58 +88,24 @@
         }, {});
         return groups;
     }
-    const store = new Vuex.Store({
-        state() {
-            return {
-                items: [],
-                params: getFormParams(),
-                nativeCurrency: ''
-            }
-        },
-        mutations: {
-            setItems(state, payload) {
-                const { items } = payload;
-                state.items = handleData(items);
-            },
-            setParams(state, payload) {
-                state.params = payload;
-            },
-            setNativeCurrency(state, payload) {
-                state.nativeCurrency = payload;
-            },
-        },
-        getters: {
-            items: (state) => state.items,
-            params: (state) => state.params,
-            nativeCurrency: (state) => state.nativeCurrency,
+    const useReportStore = defineStore('report', () => {
+        const params = ref({})
+        const items = ref([])
+        const nativeCurrency = ref('')
+
+        const count = computed(() => items.value.length);
+
+        const setItems = (payload) => {
+            items.value = handleData(payload.items);
         }
-    })
+        const setParams = (payload) => {
+            params.value = payload;
+        }
+        const setNativeCurrency = (payload) => {
+            nativeCurrency.value = payload;
+        }
 
-    initSubjectSelect();
-    accounting.finance.accountingSetting.getNativeCurrency()
-        .then(result => store.commit('setNativeCurrency', result))
-        .catch(() => { });
-
-    $(document).on('click', '#searchBtn', function () {
-        const params = getFormParams();
-        store.commit('setParams', params);
-        store.commit('setItems', { items: [] });
-        const busyEle = '.body';
-        abp.ui.setBusy(busyEle);
-        accounting.finance.reports.generalLedgerReport.getMultipleCurrencyList(params).then(function (result) {
-            store.commit('setItems', { items: result || [] });
-            abp.ui.clearBusy(busyEle);
-        }).catch(function () {
-            abp.ui.clearBusy(busyEle);
-        });
-    });
-    $(document).on('change', '#periodId', function (e) {
-        const $this = $(this);
-        const $option = $this.find('option:selected');
-        const startDate = $option.attr('data-start-date');
-        const endDate = $option.attr('data-end-date');
-        $('#startDate').val(startDate);
-        $('#endDate').val(endDate);
+        return { items, params, nativeCurrency, count, setItems, setParams, setNativeCurrency }
     });
 
     const headerTemplate = `
@@ -146,12 +116,14 @@
 
     const Header = {
         template: headerTemplate,
-        computed: {
-            ...Vuex.mapGetters(['params'])
-        },
-        methods: {
-            formatDate,
-            l
+        setup() {
+            const reportStore = useReportStore();
+            const { params } = storeToRefs(reportStore);
+            return {
+                params,
+                l,
+                formatDate
+            }
         }
     }
 
@@ -181,11 +153,11 @@
             </thead>
             <tbody>
                 <template  v-for="item in items" :key="item.code">
-                    <tr :key="item.code + 'code'" class="fw-bold">
+                    <tr class="fw-bold">
                         <td>{{ l('SubjectCode') }}</td>
                         <td colspan="9">{{ item.item.subjectCode }}</td>
                     </tr>
-                     <tr :key="item.code + 'name'" class="fw-bold">
+                     <tr class="fw-bold">
                         <td>{{ l('SubjectName') }}</td>
                         <td colspan="9">{{ item.item.subjectName }}</td>
                     </tr>
@@ -201,7 +173,7 @@
                         <td class="text-end">{{ renderAmount(Math.abs(subItem.balance)) }}</td>
                         <td>{{ subItem.balance >= 0 ? 'DR': 'CR' }}</td>
                     </tr>
-                    <tr :key="item.code + 'total'" class="border-top fw-bold">
+                    <tr class="border-top fw-bold">
                         <td class="text-end">{{ l('CurrentVouchers') }}</td>
                         <td>{{ item.currentPeriodVouchers  }}</td>
                         <td  colspan="4" class="text-end">{{ l('Total') }}</td>
@@ -210,7 +182,7 @@
                         <td class="text-end">{{ renderAmount(Math.abs(item.balance)) }}</td>
                         <td>{{ item.balance >= 0 ? 'DR': 'CR' }}</td>
                     </tr>
-                    <tr :key="item.code + 'balance'" class="fw-bold">
+                    <tr class="fw-bold">
                         <td colspan="6" class="text-end">{{ l('PeriodMovement') }}</td>
                         <td :class="{'border-bottom': item.currentPeriodBalance >= 0 }"  class="text-end">{{ item.currentPeriodBalance >= 0 ? renderAmount(item.currentPeriodBalance): '' }}</td>
                         <td :class="{'border-bottom': item.currentPeriodBalance < 0 }"  class="text-end">{{ item.currentPeriodBalance < 0 ? renderAmount(Math.abs(item.currentPeriodBalance)): '' }}</td>
@@ -223,13 +195,16 @@
 
     const Body = {
         template: bodyTemplate,
-        computed: {
-            ...Vuex.mapGetters(['items', 'nativeCurrency'])
-        },
-        methods: {
-            formatDate,
-            l,
-            renderAmount,
+        setup() {
+            const reportStore = useReportStore();
+            const { items, nativeCurrency } = storeToRefs(reportStore);
+            return {
+                items,
+                nativeCurrency,
+                formatDate,
+                l,
+                renderAmount,
+            }
         }
     }
 
@@ -237,24 +212,56 @@
  <div class="report">
     <Header />
     <Body/>
-    <div v-if="items.length == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
+    <div v-if="count == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
  </div>`;
 
     const Report = {
         components: { Header, Body },
         template: reportTemplate,
-        computed: {
-            ...Vuex.mapGetters(['items'])
-        },
-        methods: {
-            l
+        setup() {
+            const reportStore = useReportStore();
+            const { count } = storeToRefs(reportStore);
+            return {
+                count,
+                l
+            }
         }
     }
 
-    const app = new Vue({
-        components: { Report },
-        template: `<Report />`,
-        el: '#app',
-        store
+    const app = createApp(Report);
+    app.use(createPinia());
+    app.mount('#app');
+
+    const reportStore = useReportStore();
+
+    reportStore.setParams(getFormParams());
+
+    initSubjectSelect();
+
+    accounting.finance.accountingSetting.getNativeCurrency()
+        .then(result => reportStore.setNativeCurrency(result))
+        .catch(() => { });
+
+    $(document).on('click', '#searchBtn', function () {
+        const params = getFormParams();
+        reportStore.setParams(params);
+        reportStore.setItems({ items: [] });
+        const busyEle = '.body';
+        abp.ui.setBusy(busyEle);
+        accounting.finance.reports.generalLedgerReport.getMultipleCurrencyList(params).then(function (result) {
+            reportStore.setItems({ items: result || [] });
+            abp.ui.clearBusy(busyEle);
+        }).catch(function () {
+            abp.ui.clearBusy(busyEle);
+        });
+    });
+
+    $(document).on('change', '#periodId', function (e) {
+        const $this = $(this);
+        const $option = $this.find('option:selected');
+        const startDate = $option.attr('data-start-date');
+        const endDate = $option.attr('data-end-date');
+        $('#startDate').val(startDate);
+        $('#endDate').val(endDate);
     });
 });
