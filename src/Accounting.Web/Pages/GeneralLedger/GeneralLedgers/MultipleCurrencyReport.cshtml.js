@@ -232,9 +232,7 @@
     app.use(createPinia());
     app.mount('#app');
 
-    const reportStore = useReportStore();
-
-    reportStore.setParams(getFormParams());
+    const reportStore = useReportStore(); 
 
     initSubjectSelect();
 
@@ -242,7 +240,7 @@
         .then(result => reportStore.setNativeCurrency(result))
         .catch(() => { });
 
-    $(document).on('click', '#searchBtn', function () {
+    function search() {
         const params = getFormParams();
         reportStore.setParams(params);
         reportStore.setItems({ items: [] });
@@ -254,6 +252,11 @@
         }).catch(function () {
             abp.ui.clearBusy(busyEle);
         });
+    }
+    search();
+
+    $(document).on('click', '#searchBtn', function () {
+        search();
     });
 
     $(document).on('change', '#periodId', function (e) {
