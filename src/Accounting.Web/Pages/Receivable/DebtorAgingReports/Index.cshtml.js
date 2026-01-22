@@ -1,6 +1,8 @@
 ﻿$(function () {
     const l = abp.localization.getResource('Accounting');
-    
+    const { createApp, ref, computed } = Vue;
+    const { defineStore, storeToRefs, createPinia } = Pinia;
+
     function initCompanySelect() {
         const $target = $('#clientId');
         const url = '/api/app/client';
@@ -70,55 +72,26 @@
 
         return total
     }
-
-    const store = new Vuex.Store({
-        state() {
-            return {
-                items: [],
-                params: getFormParams(),
-                nativeCurrency: '',
-                total: getTotal()
-            }
-        },
-        mutations: {
-            setItems(state, payload) {
-                const { items } = payload; 
-                state.items = items;
-                state.total = handleData(items);
-            },
-            setParams(state, payload) {
-                state.params = payload;
-            },
-            setNativeCurrency(state, payload) {
-                state.nativeCurrency = payload;
-            },
-        },
-        getters: {
-            items: (state) => state.items,
-            params: (state) => state.params,
-            nativeCurrency: (state) => state.nativeCurrency,
-            total: (state) => state.total,
+    const useReportStore = defineStore('report', () => {
+        const params = ref({})
+        const items = ref([])
+        const total = ref(getTotal())
+        const nativeCurrency = ref('')
+        const setItems = (payload) => {
+            items.value = payload.items;
+            total.value = handleData(payload.items);
         }
-    })
+        const setParams = (payload) => {
+            params.value = payload;
+        }
+        const setNativeCurrency = (payload) => {
+            nativeCurrency.value = payload;
+        }
+        const count = computed(() => items.value.length);
 
-    initCompanySelect();
-    accounting.finance.accountingSetting.getNativeCurrency()
-        .then(result => store.commit('setNativeCurrency', result))
-
-    $(document).on('click', '#searchBtn', function () {
-        const params = getFormParams();
-        store.commit('setParams', params);
-        store.commit('setItems', { items: [] });
-        const busyEle = '.body';
-        abp.ui.setBusy(busyEle);
-        accounting.finance.reports.receivableAgingReport.getAgingSummarySingleCurrencyList(params).then(function (result) {
-            store.commit('setItems', { items: result || [] });
-            abp.ui.clearBusy(busyEle);
-        }).catch(function () {
-            abp.ui.clearBusy(busyEle);
-        });
+        return { items, params, total, nativeCurrency, setItems, setParams, setNativeCurrency, count }
     });
-
+     
     const headerTemplate = `
     <div class="header">
         <h3 class="text-center">{{l('ReceivableAgingReport')}}</h3>
@@ -126,8 +99,10 @@
 
     const Header = {
         template: headerTemplate,
-        methods: { 
-            l
+        setup() {
+            return {
+                l
+            }
         }
     }
 
@@ -163,7 +138,7 @@
             </thead>
             <tbody>
                 <template  v-for="item in items" :key="item.code">
-                    <tr :key="item.subSubjectCode">
+                    <tr>
                         <td>{{ item.subSubjectCode }}</td>
                         <td>{{ item.companyName }}</td>
                         <td class="text-end">{{ item.overDays }}</td>
@@ -200,12 +175,17 @@
 
     const Body = {
         template: bodyTemplate,
-        computed: {
-            ...Vuex.mapGetters(['items', 'nativeCurrency', 'params', 'total'])
-        },
-        methods: {
-            l,
-            renderAmount,
+        setup() {
+            const reportStore = useReportStore();
+            const { items, nativeCurrency, total, params } = storeToRefs(reportStore);
+            return {
+                items,
+                total,
+                params,
+                nativeCurrency,
+                renderAmount,
+                l,
+            }
         }
     }
 
@@ -213,24 +193,51 @@
  <div class="report">
     <Header />
     <Body/>
-    <div v-if="items.length == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
+    <div v-if="count == 0" class="text-center">{{ l('NoDataAvailable') }}</div>
  </div>`;
 
     const Report = {
         components: { Header, Body },
         template: reportTemplate,
-        computed: {
-            ...Vuex.mapGetters(['items'])
-        },
-        methods: {
-            l
+        setup() {
+            const reportStore = useReportStore();
+            const { count } = storeToRefs(reportStore);
+            return {
+                count,
+                l,
+            }
         }
     } 
 
-    const app = new Vue({
-        components: { Report },
-        template: `<Report />`,
-        el: '#app',
-        store
+    const app = createApp(Report);
+    app.use(createPinia());
+    app.mount('#app');
+
+    const reportStore = useReportStore();
+
+    accounting.finance.accountingSetting.getNativeCurrency()
+        .then(result => reportStore.setNativeCurrency(result))
+        .catch(() => { });
+         
+    initCompanySelect(); 
+
+    function search() {
+        const params = getFormParams();
+        reportStore.setParams(params);
+        reportStore.setItems({ items: [] });
+        const busyEle = '.body';
+        abp.ui.setBusy(busyEle);
+        accounting.finance.reports.receivableAgingReport.getAgingSummarySingleCurrencyList(params).then(function (result) {
+            reportStore.setItems({ items: result || [] });
+            abp.ui.clearBusy(busyEle);
+        }).catch(function () {
+            abp.ui.clearBusy(busyEle);
+        });
+    }
+
+    search();
+
+    $(document).on('click', '#searchBtn', function () {
+        search();
     });
 });
