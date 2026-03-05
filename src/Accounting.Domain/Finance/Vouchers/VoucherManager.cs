@@ -20,6 +20,7 @@ namespace Accounting.Finance.Vouchers
         private string _voucherDateFormat;
         public VoucherManager(IAccountingPeriodRepository accountingPeriodRepository)
         {
+            _voucherDateFormat = string.Empty;
             _accountingPeriodRepository = accountingPeriodRepository;
         }
 
