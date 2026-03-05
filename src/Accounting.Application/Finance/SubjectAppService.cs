@@ -137,7 +137,7 @@ namespace Accounting.Finance
         [Authorize(AccountingPermissions.Subjects.Default)]
         public async Task<PagedResultDto<SubjectFilterResultDto>> GetListAsync(SubjectFilterRequestDto input)
         {
-            HandleFilter(input);
+            await HandleFilter(input);
             var request = new SubjectFilterRequest
             {
                 Filter = input.Filter,
