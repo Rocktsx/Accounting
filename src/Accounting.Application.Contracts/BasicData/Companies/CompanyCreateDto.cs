@@ -29,5 +29,17 @@ namespace Accounting.BasicData.Companies
 
         public List<CompanyAddressCreateDto> Addresses { get; set; } = [];
         public List<CompanyContactCreateDto> Contacts { get; set; } = [];
+
+        public CompanyCreateDto()
+        {
+            Code = string.Empty;
+            Prefix = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            NickName = string.Empty;
+            Currency = string.Empty;
+            PaymentTerm = string.Empty;
+            TradeTerm = string.Empty;
+        }
     }
 }

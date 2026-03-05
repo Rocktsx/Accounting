@@ -42,5 +42,12 @@ namespace Accounting.Finance.ReceivableVouchers
 
         public DateOnly? DueDate { get; set; }
         public AccountTypeTypes AccTypeCategory { get; set; }
+
+        public ReceivableDetailDto()
+        {
+            DocNo = string.Empty;
+            CurrencyCode = string.Empty;
+            AccType = string.Empty;
+        }
     }
 }

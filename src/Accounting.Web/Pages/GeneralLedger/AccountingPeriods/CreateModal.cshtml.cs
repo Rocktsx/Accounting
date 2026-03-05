@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace Accounting.Web.Pages.GeneralLedger.AccountingPeriods
 {
     public class CreateModalModel : AccountingPageModel
-    {
-        private IAccountingPeriodAppService _service;
+    { 
         private readonly IServiceProvider _serviceProvider;
         [BindProperty]
         public CreateAccountingPeriodViewModel Item { get; set; }
@@ -18,6 +17,7 @@ namespace Accounting.Web.Pages.GeneralLedger.AccountingPeriods
         public CreateModalModel(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            Item = new CreateAccountingPeriodViewModel();
         }
         public void OnGet()
         {
@@ -29,9 +29,9 @@ namespace Accounting.Web.Pages.GeneralLedger.AccountingPeriods
         }
         public async Task<IActionResult> OnPost()
         {
-            _service = _serviceProvider.GetRequiredService<IAccountingPeriodAppService>();
+            var service = _serviceProvider.GetRequiredService<IAccountingPeriodAppService>();
             var dto = ObjectMapper.Map<CreateAccountingPeriodViewModel, AccountingPeriodCreateDto>(Item);
-            await _service.CreateAsync(dto);
+            await service.CreateAsync(dto);
             return NoContent();
         }
     }

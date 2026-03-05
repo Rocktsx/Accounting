@@ -23,5 +23,14 @@ namespace Accounting.Finance.Subjects
         public bool IsPayMethod { get; set; }
         public int? SeqCode { get; set; }
         public AccountTypeSimpleDto? AccountType { get; set; }
+
+        public SubjectFilterResultDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+            CurrencyCode = string.Empty;
+        }
     }
 }

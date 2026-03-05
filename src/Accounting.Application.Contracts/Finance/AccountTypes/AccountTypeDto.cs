@@ -42,5 +42,12 @@ namespace Accounting.Finance.AccountTypes
         public AccountTypeTypes Category { get; set; }
 
         public AccountTypeSimpleDto? Parent { get; set; }
+
+        public AccountTypeDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+        }
     }
 }

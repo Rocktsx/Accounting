@@ -46,4 +46,9 @@ public class VoucherDetailCreateDto
 
     [MaxLength(AccountingCommonConsts.MaxCommonTextFieldLength)]
     public string? PaymentReference { get; set; }
+
+    public VoucherDetailCreateDto()
+    {
+        CurrencyCode = string.Empty;
+    }
 }

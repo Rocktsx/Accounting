@@ -7,6 +7,13 @@ namespace Accounting.Finance.Subjects
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public string OtherName { get; set; }  
+        public string OtherName { get; set; }
+
+        public SubjectSimpleDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+        }
     }
 }

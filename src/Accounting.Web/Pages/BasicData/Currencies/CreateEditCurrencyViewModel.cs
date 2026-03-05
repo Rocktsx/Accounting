@@ -33,6 +33,8 @@ namespace Accounting.Web.Pages.BasicData.Currencies
         public CreateEditCurrencyViewModel()
         {
             IsActive = true;
+            SourceCurrency = string.Empty;
+            TargetCurrency = string.Empty;
         }
     }
 }

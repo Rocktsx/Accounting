@@ -18,5 +18,17 @@ namespace Accounting.BasicData.Companies
         public string Fax { get; set; }
         public string Email { get; set; }
         public string Remark { get; set; }
+
+        public CompanyContactDto()
+        {
+            ContactName = string.Empty;
+            Department = string.Empty;
+            Position = string.Empty;
+            DirectLine = string.Empty;
+            Telephone = string.Empty;
+            Fax = string.Empty;
+            Email = string.Empty;
+            Remark = string.Empty;
+        }
     }
 }

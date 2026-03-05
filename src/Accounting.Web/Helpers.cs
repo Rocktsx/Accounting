@@ -50,11 +50,15 @@ namespace Accounting.Web
             var list = new List<SelectListItem>(items.Length);
             foreach (int item in items)
             {
-                list.Add(new SelectListItem
+                var name = Enum.GetName(type, item);
+                if (name != null)
                 {
-                    Value = item.ToString(),
-                    Text = localizer[Enum.GetName(type, item)].Value
-                });
+                    list.Add(new SelectListItem
+                    {
+                        Value = item.ToString(),
+                        Text = localizer[name].Value
+                    });
+                }
             }
 
             if (insertEmpty)

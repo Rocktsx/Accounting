@@ -17,6 +17,7 @@ namespace Accounting.Web.Pages.BasicData.Currencies
         public EditModal(ICurrencyAppService currencyAppService)
         {
             _currencyAppService = currencyAppService;
+            Currency = new CreateEditCurrencyViewModel();
         }
         public async Task OnGet()
         {

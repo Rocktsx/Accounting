@@ -14,6 +14,8 @@ namespace Accounting.Web.Pages.GeneralLedger.Journals
         public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
+            CurrentPeriod = new CurrentAccountingPeriodDto();
+            VoucherTypes = [];
         }
         public async Task OnGet()
         {

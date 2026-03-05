@@ -8,9 +8,9 @@ namespace Accounting.Web.Pages.GeneralLedger.Components
 {
     public class UpdateStatusModalModel : AccountingPageModel
     {
-        public List<SelectListItem> VoucherStates { get; set; }
+        public List<SelectListItem> VoucherStates { get; set; } = [];
         public void OnGet()
-        { 
+        {
             VoucherStates = Helpers.GetEnumSelectList(typeof(VoucherStatus), L);
         }
     }

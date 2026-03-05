@@ -4,8 +4,8 @@ namespace Accounting.Common
 {
     public class AccountTypeRoot
     {
-        public AccountType Item { get; set; }
-        public AccountType RootItem { get; set; }
-        public AccountType SecondaryRootItem { get; set; }
+        public AccountType? Item { get; set; }
+        public AccountType? RootItem { get; set; }
+        public AccountType? SecondaryRootItem { get; set; }
     }
 }

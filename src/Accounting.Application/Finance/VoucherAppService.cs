@@ -31,6 +31,12 @@ public class VoucherAppService : AccountingAppService, IVoucherAppService
     public VoucherAppService(IVoucherRepository repository)
     {
         Repository = repository;
+        DeletePolicyName = AccountingPermissions.TransferVouchers.Delete;
+        GetListPolicyName = AccountingPermissions.TransferVouchers.Default;
+        GetPolicyName = AccountingPermissions.TransferVouchers.Default;
+        UpdatePolicyName = AccountingPermissions.TransferVouchers.Update;
+        CreatePolicyName = AccountingPermissions.TransferVouchers.Create;
+        UpdateStatuePolicyName = AccountingPermissions.TransferVouchers.UpdateStatus;
     }
 
     protected async Task ValidateAsync(Voucher voucher, VoucherManager manager)

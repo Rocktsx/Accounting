@@ -22,5 +22,17 @@ namespace Accounting.BasicData.Companies
         public string ConcurrencyStamp { get; set; }
         public IEnumerable<CompanyAddressDto> Addresses { get; set; } = [];
         public IEnumerable<CompanyContactDto> Contacts { get; set; } = [];
+
+        public CompanyDto()
+        {
+            Code = string.Empty;
+            Prefix = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            NickName = string.Empty;
+            Currency = string.Empty;
+            PaymentTerm = string.Empty;
+            TradeTerm = string.Empty;
+        }
     }
 }

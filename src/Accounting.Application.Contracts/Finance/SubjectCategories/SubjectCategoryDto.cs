@@ -18,5 +18,13 @@ namespace Accounting.Finance.SubjectCategories
         public int Level { get; set; }
 
         public string ConcurrencyStamp { get; set; }
+
+        public SubjectCategoryDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+        }
     }
 }

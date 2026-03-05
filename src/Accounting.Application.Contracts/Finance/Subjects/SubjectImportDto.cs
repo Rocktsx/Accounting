@@ -18,5 +18,16 @@ namespace Accounting.Finance.Subjects
         public bool IsActive { get; set; }
         public bool IsPayMethod { get; set; }
         public int? SeqCode { get; set; }
+
+        public SubjectImportDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            SubjectCategoryCode = string.Empty;
+            AccountTypeCode = string.Empty;
+            CurrencyCode = string.Empty;
+            Description = string.Empty;
+        }
     }
 }

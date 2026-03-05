@@ -12,5 +12,10 @@ namespace Accounting.Finance.AccountingPeriods
         [Required]
         public DateOnly EndDate { get; set; }
         public bool IsCurrentPeriod { get; set; }
+
+        public AccountingPeriodCreateDto()
+        {
+            Code = string.Empty;
+        }
     }
 }

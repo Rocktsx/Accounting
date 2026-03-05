@@ -22,6 +22,8 @@ namespace Accounting.Web.Pages.BasicData.Companies
         public CreateModal(ICurrencyAppService currencyAppService)
         {
             _currencyAppService = currencyAppService;
+            Company = new CreateOrEditCompanyViewModel();
+            Currencies = [];
         }
         public async Task OnGet()
         {

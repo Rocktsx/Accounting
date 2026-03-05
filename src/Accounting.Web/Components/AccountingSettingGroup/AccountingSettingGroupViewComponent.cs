@@ -26,6 +26,9 @@ public class AccountingSettingGroupViewComponent : AbpViewComponent
         _currencyAppService = currencyAppService;
         _subjectAppService = subjectAppService;
         _accountingSettingAppService = accountingSettingAppService;
+        Currencies = [];
+        Subjects = [];
+        Setting = new AccountingSettingViewModel();
     }
 
     public virtual async Task<IViewComponentResult> InvokeAsync()

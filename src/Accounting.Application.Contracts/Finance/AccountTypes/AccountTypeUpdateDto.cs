@@ -49,5 +49,12 @@ namespace Accounting.Finance.AccountTypes
         public string ConcurrencyStamp { get; set; }
 
         public AccountTypeTypes Category { get; set; }
+
+        public AccountTypeUpdateDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+        }
     }
 }

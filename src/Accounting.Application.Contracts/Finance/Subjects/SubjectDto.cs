@@ -20,5 +20,14 @@ namespace Accounting.Finance.Subjects
         public int? SeqCode { get; set; }
 
         public string ConcurrencyStamp { get; set; }
+
+        public SubjectDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+            CurrencyCode = string.Empty; 
+        }
     }
 }

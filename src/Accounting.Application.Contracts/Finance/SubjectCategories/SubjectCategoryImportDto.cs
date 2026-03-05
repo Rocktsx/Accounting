@@ -15,5 +15,13 @@ namespace Accounting.Finance.SubjectCategories
         public bool ShowDetail { get; set; }
         public string? Description { get; set; }
         public int Level { get; set; }
+
+        public SubjectCategoryImportDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+        }
     }
 }

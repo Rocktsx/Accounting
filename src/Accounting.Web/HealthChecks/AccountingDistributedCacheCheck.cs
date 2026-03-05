@@ -17,8 +17,13 @@ namespace Accounting.Web.HealthChecks
         }
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
+            var server = _configuration["Redis:Configuration"];
+            if (string.IsNullOrWhiteSpace(server))
+            {
+                return HealthCheckResult.Unhealthy("Redis is not connected.");
+            }
             var connection = await ConnectionMultiplexer
-               .ConnectAsync(_configuration["Redis:Configuration"]);
+               .ConnectAsync(server);
             if (connection.IsConnected)
             {
                 return HealthCheckResult.Healthy("Redis is connected.");

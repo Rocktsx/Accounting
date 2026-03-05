@@ -21,4 +21,24 @@ public class AccountingSettingDto
     public string ReceivableVoucherDateFormat { get; set; }
 
     public string PayableVoucherDateFormat { get; set; }
+
+    public AccountingSettingDto()
+    {
+        CompanyName = string.Empty;
+        CompanyOtherName = string.Empty;
+        CompanyAddress = string.Empty;
+        CompanyOtherAddress = string.Empty;
+        CompanyContact = string.Empty;
+        NativeCurrency = string.Empty;
+        AccountReceivableSubjectCode = string.Empty;
+        AccountPayableSubjectCode = string.Empty;
+        PurchaseExpensesSubjectCode = string.Empty;
+        SalesInvoiceSubjectCode = string.Empty;
+        StatementNote = string.Empty;
+        StatementReminder = string.Empty;
+        FinalReminder = string.Empty;
+        TransferVoucherDateFormat = string.Empty;
+        ReceivableVoucherDateFormat = string.Empty;
+        PayableVoucherDateFormat = string.Empty;
+    }
 }

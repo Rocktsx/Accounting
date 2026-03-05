@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Accounting.Web.Pages.GeneralLedger.GeneralAccounts
 {
     public class CreateModalModel : AccountingPageModel
-    { 
+    {
         private readonly ISubjectCategoryAppService _service;
         [BindProperty]
         public CreateSubjectCategoryViewModel Item { get; set; }
@@ -19,6 +19,9 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralAccounts
         public CreateModalModel(ISubjectCategoryAppService service)
         {
             _service = service;
+            Item = new CreateSubjectCategoryViewModel();
+            AccountTypes = [];
+            Categories = [];
         }
         public async Task OnGet()
         {
@@ -33,14 +36,14 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralAccounts
                  item => Helpers.GetText(item.Code, item.Name, item.OtherName));
             var categoryDtos = await _service.GetSimpleListAsync();
             Categories = categoryDtos.ToSelectListItems(
-                 item => item.Id.ToString(),
+                 item => item?.Id?.ToString() ?? string.Empty,
                  item => Helpers.GetText(item.Code, item.Name, item.OtherName));
         }
         public async Task<IActionResult> OnPost()
         {
-            var dto = ObjectMapper.Map<CreateSubjectCategoryViewModel, SubjectCategoryCreateDto>(Item); 
+            var dto = ObjectMapper.Map<CreateSubjectCategoryViewModel, SubjectCategoryCreateDto>(Item);
             await _service.CreateAsync(dto);
             return NoContent();
-        } 
+        }
     }
 }

@@ -46,5 +46,12 @@ namespace Accounting.Finance.AccountTypes
         public int BalanceSheetGroup { get; set; }
 
         public AccountTypeTypes Category { get; set; }
+
+        public AccountTypeCreateDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+        }
     }
 }

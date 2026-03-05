@@ -38,5 +38,12 @@ namespace Accounting.Finance.PayableVouchers
 
         public DateOnly? DueDate { get; set; }
         public AccountTypeTypes AccTypeCategory { get; set; }
+
+        public PayableDetailDto()
+        {
+            DocNo = string.Empty;
+            CurrencyCode = string.Empty;
+            AccType = string.Empty;
+        }
     }
 }

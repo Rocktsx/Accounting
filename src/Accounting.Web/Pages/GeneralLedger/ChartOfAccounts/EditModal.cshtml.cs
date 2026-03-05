@@ -27,6 +27,10 @@ namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
         public EditModalModel(ISubjectAppService service)
         {
             _service = service;
+            Item = new EditSubjectViewModel();
+            AccountTypes = [];
+            Categories = [];
+            Currencies = [];
         }
         public async Task OnGet()
         {
@@ -40,7 +44,7 @@ namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
             var categoryService = LazyServiceProvider.GetRequiredService<ISubjectCategoryAppService>();
             var categoryDtos = await categoryService.GetSimpleListAsync();
             Categories = categoryDtos.ToSelectListItems(
-                item => item.Id.ToString(),
+                item => item?.Id?.ToString() ?? string.Empty,
                 item => Helpers.GetText(item.Code, item.Name, item.OtherName));
             var currencyAppService = LazyServiceProvider.GetRequiredService<ICurrencyAppService>();
             var currencies = await currencyAppService.GetActiveListAsync();

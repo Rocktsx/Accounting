@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 
@@ -16,4 +17,10 @@ public class VoucherDto  : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     public VoucherStatus Status { get; set; }
     public string ConcurrencyStamp { get; set; }
     public IEnumerable<VoucherDetailDto> Details { get; set; } = [];
+
+    public VoucherDto()
+    {
+        Code = string.Empty;
+        Prefix = string.Empty;
+    }
 }

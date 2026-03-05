@@ -9,5 +9,11 @@ namespace Accounting.Dtos
         [MaxLength(AccountingCommonConsts.MaxPrefixLength)]
         public string Prefix { get; set; }
         public int GenNo { get; set; } 
+
+        public GenerateCodeDto()
+        {
+            Code = string.Empty;
+            Prefix = string.Empty;
+        }
     }
 }

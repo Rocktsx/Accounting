@@ -17,6 +17,8 @@ namespace Accounting.Web.Pages.GeneralLedger.BalanceSheets
         public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
+            CurrentPeriod = new CurrentAccountingPeriodDto();
+            Periods = [];
         }
         public async Task OnGet()
         {
@@ -25,7 +27,7 @@ namespace Accounting.Web.Pages.GeneralLedger.BalanceSheets
             var items = dtos.Items.OrderByDescending(item => item.StartDate);
             Periods = items;
 
-            if (items.Count() > 0)
+            if (items.Any())
             {
                 var first = items.First();
                 PeriodId = first.Id;

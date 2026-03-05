@@ -33,5 +33,19 @@ namespace Accounting.BasicData.Companies
         public string Region { get; set; }
         [MaxLength(CompanyConsts.CommonMaxLength)]
         public string District { get; set; }
+
+        public CompanyAddressUpdateDto()
+        {
+            Name = string.Empty;
+            Address = string.Empty;
+            ContactPerson = string.Empty;
+            Telephone = string.Empty;
+            Fax = string.Empty;
+            Email = string.Empty;
+            Remark = string.Empty;
+            Country = string.Empty;
+            Region = string.Empty;
+            District = string.Empty;
+        }
     }
 }

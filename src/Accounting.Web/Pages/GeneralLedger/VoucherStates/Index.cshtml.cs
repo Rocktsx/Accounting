@@ -12,9 +12,9 @@ namespace Accounting.Web.Pages.GeneralLedger.VoucherStates
 {
     public class IndexModel : AccountingPageModel
     {
-        public List<SelectListItem> VoucherTypes { get; set; }
-        public List<SelectListItem> VoucherStates { get; set; } 
-      
+        public List<SelectListItem> VoucherTypes { get; set; } = [];
+        public List<SelectListItem> VoucherStates { get; set; } = [];
+
         public void OnGet()
         {
             VoucherTypes = Helpers.GetEnumSelectList(typeof(VoucherType), L);

@@ -27,6 +27,8 @@ namespace Accounting.Web.Pages.BasicData.Companies
         {
             _currencyAppService = currencyAppService;
             _companyAppService = (ICompanyAppService?)serviceProvider.GetService(IsVendor ? typeof(IVendorAppService):typeof( IClientAppService));
+            Company = new CreateOrEditCompanyViewModel();
+            Currencies = [];
         }
         public async Task OnGet()
         {

@@ -22,5 +22,13 @@ namespace Accounting.Finance.SubjectCategories
         public string Description { get; set; }
 
         public string ConcurrencyStamp { get; set; }
+
+        public SubjectCategoryUpdateDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+        }
     }
 }

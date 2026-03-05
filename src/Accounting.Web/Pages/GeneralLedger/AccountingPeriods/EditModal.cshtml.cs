@@ -14,6 +14,7 @@ namespace Accounting.Web.Pages.GeneralLedger.AccountingPeriods
         public EditModalModel(IAccountingPeriodAppService service)
         {
             _service = service;
+            Item = new EditAccountingPeriodViewModel();
         }
         [BindProperty(SupportsGet = true)]
         public Guid Id { get; set; }

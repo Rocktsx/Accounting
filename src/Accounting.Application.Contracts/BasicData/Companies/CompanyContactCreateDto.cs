@@ -26,5 +26,17 @@ namespace Accounting.BasicData.Companies
         public string Email { get; set; }
         [MaxLength(CompanyConsts.MaxRemarkLength)]
         public string Remark { get; set; }
+
+        public CompanyContactCreateDto()
+        {
+            ContactName = string.Empty;
+            Department = string.Empty;
+            Position = string.Empty;
+            DirectLine = string.Empty;
+            Telephone = string.Empty;
+            Fax = string.Empty;
+            Email = string.Empty;
+            Remark = string.Empty; 
+        }
     }
 }

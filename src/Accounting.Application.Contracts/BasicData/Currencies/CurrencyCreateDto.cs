@@ -25,5 +25,11 @@ namespace Accounting.BasicData.Currencies
         public decimal ExchangeRate { get; set; }
         public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }
+
+        public CurrencyCreateDto()
+        {
+            SourceCurrency = string.Empty;
+            TargetCurrency = string.Empty;
+        }
     }
 }

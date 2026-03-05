@@ -1,3 +1,4 @@
+using Accounting.Finance;
 using Accounting.Finance.AccountingPeriods;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,6 +18,8 @@ namespace Accounting.Web.Pages.GeneralLedger.TrialBalances
         public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
+            CurrentPeriod = new CurrentAccountingPeriodDto();
+            Periods = [];
         }
         public async Task OnGet()
         {
@@ -25,7 +28,7 @@ namespace Accounting.Web.Pages.GeneralLedger.TrialBalances
             var items = dtos.Items.OrderByDescending(item => item.StartDate);
             Periods = items;
 
-            if (items.Count() > 0)
+            if (items.Any())
             {
                 var first = items.First();
                 PeriodId = first.Id;

@@ -22,6 +22,9 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralAccounts
         public EditModalModel(ISubjectCategoryAppService service)
         {
             _service = service;
+            Item = new EditSubjectCategoryViewModel();
+            AccountTypes = [];
+            Categories = [];
         }
         public async Task OnGet()
         {
@@ -34,7 +37,7 @@ namespace Accounting.Web.Pages.GeneralLedger.GeneralAccounts
                  item => Helpers.GetText(item.Code, item.Name, item.OtherName));
             var categoryDtos = await _service.GetSimpleListAsync();
             Categories = categoryDtos.ToSelectListItems(
-                 item => item.Id.ToString(),
+                 item => item?.Id?.ToString() ?? string.Empty,
                  item => Helpers.GetText(item.Code, item.Name, item.OtherName));
         }
         public async Task<IActionResult> OnPostAsync()

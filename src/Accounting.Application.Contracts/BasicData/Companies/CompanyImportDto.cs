@@ -34,5 +34,16 @@ namespace Accounting.BasicData.Companies
         public string? Department { get; set; }
         public string? Position { get; set; }
         public string? DirectLine { get; set; }
+
+        public CompanyImportDto()
+        {
+            Code = string.Empty; 
+            Name = string.Empty;
+            OtherName = string.Empty;
+            NickName = string.Empty;
+            Currency = string.Empty;
+            PaymentTerm = string.Empty;
+            TradeTerm = string.Empty;
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace Accounting.Web.Pages.GeneralLedger.SubjectCategories
         public EditModalModel(IAccountTypeAppService service)
         {
             _service = service;
+            Item = new EditAccountTypeViewModel();
+            AccountTypes = [];
         }
         public async Task OnGet()
         {

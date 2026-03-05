@@ -20,9 +20,13 @@ namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
         public CreateSubjectViewModel Item { get; set; }
         [BindProperty(SupportsGet = true)]
         public Guid? SubjectCategoryId { get; set; }
-        public List<SelectListItem> AccountTypes { get; set; }
-        public List<SelectListItem> Categories { get; set; }
-        public List<SelectListItem> Currencies { get; set; }
+        public List<SelectListItem> AccountTypes { get; set; } = [];
+        public List<SelectListItem> Categories { get; set; } = [];
+        public List<SelectListItem> Currencies { get; set; } = [];
+        public CreateModalModel()
+        {
+            Item = new CreateSubjectViewModel();
+        }
         public async Task OnGet()
         {
             Item = new CreateSubjectViewModel
@@ -38,7 +42,7 @@ namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
             var categoryService = LazyServiceProvider.GetRequiredService<ISubjectCategoryAppService>();
             var categoryDtos = await categoryService.GetSimpleListAsync();
             Categories = categoryDtos.ToSelectListItems(
-                item => item.Id.ToString(),
+                item => item?.Id?.ToString() ?? string.Empty,
                 item => Helpers.GetText(item.Code, item.Name, item.OtherName));
             var currencyAppService = LazyServiceProvider.GetRequiredService<ICurrencyAppService>();
             var currencies = await currencyAppService.GetActiveListAsync();

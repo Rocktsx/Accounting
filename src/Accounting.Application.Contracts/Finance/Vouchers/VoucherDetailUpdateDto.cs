@@ -47,4 +47,9 @@ public class VoucherDetailUpdateDto : EntityDto<Guid>
 
     [MaxLength(AccountingCommonConsts.MaxCommonTextFieldLength)]
     public string? PaymentReference { get; set; }
+
+    public VoucherDetailUpdateDto()
+    {
+        CurrencyCode = string.Empty;
+    }
 }

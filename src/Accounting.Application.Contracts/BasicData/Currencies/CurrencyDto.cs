@@ -14,5 +14,11 @@ namespace Accounting.BasicData.Currencies
         public DateOnly? EffectiveDate { get; set; }
         public bool IsActive { get; set; }
         public string ConcurrencyStamp { get; set; }
+
+        public CurrencyDto()
+        {
+            SourceCurrency = string.Empty;
+            TargetCurrency = string.Empty;
+        }
     }
 }

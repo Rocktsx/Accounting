@@ -14,6 +14,8 @@ namespace Accounting.Web.Pages.GeneralLedger.Journals
         public SingleCurrencySortByDateReport(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
+            CurrentPeriod = new CurrentAccountingPeriodDto();
+            VoucherTypes = [];
         }
         public async Task OnGet()
         {

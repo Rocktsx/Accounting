@@ -17,4 +17,9 @@ public class VoucherCreateDto
     public VoucherType VoucherType { get; set; } 
 
     public IEnumerable<VoucherDetailCreateDto> Details { get; set; } = [];
+
+    public VoucherCreateDto()
+    {
+        Prefix = string.Empty;
+    }
 }

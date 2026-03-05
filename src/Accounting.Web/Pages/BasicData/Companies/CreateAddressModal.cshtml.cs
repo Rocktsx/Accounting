@@ -6,8 +6,8 @@ namespace Accounting.Web.Pages.BasicData.Companies
 {
     public class CreateAddressModalModel : PageModel
     {
-        public CreateOrEditCompanyAddressViewModel Address; 
-        public void OnGet()
+        public CreateOrEditCompanyAddressViewModel Address;
+        public CreateAddressModalModel()
         {
             Address = new CreateOrEditCompanyAddressViewModel()
             {

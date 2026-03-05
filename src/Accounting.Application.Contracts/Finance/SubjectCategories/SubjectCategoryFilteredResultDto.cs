@@ -21,5 +21,13 @@ namespace Accounting.Finance.SubjectCategories
         public int Level { get; set; }
         public AccountTypeSimpleDto? AccountType { get; set; }
         public SubjectCategorySimpleDto? Parent { get; set; }
+
+        public SubjectCategoryFilteredResultDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+        }
     }
 }

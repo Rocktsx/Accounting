@@ -24,4 +24,17 @@ public class VoucherDetailDto: EntityDto<Guid>
     public int ItemQty { get; set; }
     public bool IsOriginal { get; set; }
     public string PaymentReference { get; set; }
+
+    public VoucherDetailDto()
+    {
+        CurrencyCode = string.Empty;
+        Description = string.Empty;
+        DocNo = string.Empty;
+        Project = string.Empty;
+        Department = string.Empty;
+        Region = string.Empty;
+        Custom1 = string.Empty;
+        Custom2 = string.Empty;
+        PaymentReference = string.Empty;
+    }
 }

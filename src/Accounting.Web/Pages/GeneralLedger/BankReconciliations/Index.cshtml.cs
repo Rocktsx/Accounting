@@ -12,6 +12,7 @@ namespace Accounting.Web.Pages.GeneralLedger.BankReconciliations
         public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
+            CurrentPeriod = new CurrentAccountingPeriodDto();
         }
         public async Task OnGet()
         {

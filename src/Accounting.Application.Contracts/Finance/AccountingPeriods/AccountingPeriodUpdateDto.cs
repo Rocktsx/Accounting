@@ -17,5 +17,10 @@ namespace Accounting.Finance.AccountingPeriods
         public bool IsCurrentPeriod { get; set; }
 
         public string ConcurrencyStamp { get; set; }
+
+        public AccountingPeriodUpdateDto()
+        {
+            Code = string.Empty;
+        }
     }
 }

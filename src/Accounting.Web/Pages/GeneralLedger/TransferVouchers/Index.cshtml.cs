@@ -1,3 +1,4 @@
+using Accounting.Finance;
 using Accounting.Finance.AccountingPeriods;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +13,7 @@ namespace Accounting.Web.Pages.GeneralLedger.TransferVouchers
         public IndexModel(IAccountingPeriodAppService accountingPeriodAppService)
         {
             _accountingPeriodAppService = accountingPeriodAppService;
+            CurrentPeriod = new CurrentAccountingPeriodDto(); 
         }
         public async Task OnGet()
         {

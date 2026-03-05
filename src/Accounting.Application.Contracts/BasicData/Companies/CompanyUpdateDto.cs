@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 
 namespace Accounting.BasicData.Companies
@@ -29,5 +25,15 @@ namespace Accounting.BasicData.Companies
         public string ConcurrencyStamp { get; set; }
         public List<CompanyAddressUpdateDto> Addresses { get; set; } = [];
         public List<CompanyContactUpdateDto> Contacts { get; set; } = [];
+
+        public CompanyUpdateDto()
+        { 
+            Name = string.Empty;
+            OtherName = string.Empty;
+            NickName = string.Empty;
+            Currency = string.Empty;
+            PaymentTerm = string.Empty;
+            TradeTerm = string.Empty;
+        }
     }
 }

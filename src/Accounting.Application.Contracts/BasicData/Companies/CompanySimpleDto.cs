@@ -6,5 +6,10 @@ namespace Accounting.BasicData.Companies
     public class CompanySimpleDto: SimpleDto<Guid>
     {
         public string Currency { get; set; }
+
+        public CompanySimpleDto()
+        {
+            Currency = string.Empty;
+        }
     }
 }

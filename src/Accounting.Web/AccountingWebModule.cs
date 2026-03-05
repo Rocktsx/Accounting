@@ -82,7 +82,7 @@ namespace Accounting.Web;
 [DependsOn(typeof(AbpDistributedLockingModule))]
 [DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
 [DependsOn(typeof(AbpMailKitModule))]
-    public class AccountingWebModule : AbpModule
+public class AccountingWebModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -283,10 +283,11 @@ namespace Accounting.Web;
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
             var isEnabled = configuration.GetValue<bool>("Redis:IsEnabled");
-            if (isEnabled)
+            var server = configuration["Redis:Configuration"];
+            if (isEnabled && !string.IsNullOrWhiteSpace(server))
             {
                 var connection = ConnectionMultiplexer
-               .Connect(configuration["Redis:Configuration"]);
+               .Connect(server);
                 return new
                     RedisDistributedSynchronizationProvider(connection.GetDatabase());
             }

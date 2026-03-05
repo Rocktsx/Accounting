@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
 namespace Accounting.Finance.Subjects
@@ -17,5 +13,14 @@ namespace Accounting.Finance.Subjects
         public bool IsSubSubjectType { get; set; }
         public bool IsPayMethod { get; set; }
         public string AccountTypeCode { get; set; }
+
+        public SubjectVoucherSimpleDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            CurrencyCode = string.Empty;
+            AccountTypeCode = string.Empty;
+        }
     }
 }

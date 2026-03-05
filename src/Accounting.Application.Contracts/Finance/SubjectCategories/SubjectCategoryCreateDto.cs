@@ -19,5 +19,13 @@ namespace Accounting.Finance.SubjectCategories
         public bool ShowDetail { get; set; }
         [MaxLength(AccountingCommonConsts.MaxDescriptionLength)]
         public string Description { get; set; }
+
+        public SubjectCategoryCreateDto()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+            OtherName = string.Empty;
+            Description = string.Empty;
+        }
     }
 }

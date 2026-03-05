@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Accounting.BasicData.Companies
 {
@@ -26,5 +22,17 @@ namespace Accounting.BasicData.Companies
         public string Email { get; set; }
         [MaxLength(CompanyConsts.MaxRemarkLength)]
         public string Remark { get; set; }
+
+        public CompanyContactUpdateDto()
+        {
+            ContactName = string.Empty;
+            Department = string.Empty;
+            Position = string.Empty;
+            DirectLine = string.Empty;
+            Telephone = string.Empty;
+            Fax = string.Empty;
+            Email = string.Empty;
+            Remark = string.Empty;
+        }
     }
 }
