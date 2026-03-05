@@ -17,14 +17,17 @@ namespace Accounting.Controllers
     [Route("api/companies")]
     public class CompaniesController : AccountingController
     {
-        private ICompanyAppService _companyAppService = null;
+        private ICompanyAppService _companyAppService;
 
+        public CompaniesController(ICompanyAppService companyAppService)
+        {
+            _companyAppService = companyAppService;
+        }
         [HttpPost]
         [Route("clients/import")]
         [Authorize(AccountingPermissions.Clients.Import)]
         public async Task<IResult> ImportClientData(IFormFile file)
         {
-            _companyAppService = LazyServiceProvider.LazyGetRequiredService<IClientAppService>();
             return await ImportCompanyData(file);
         }
         [HttpPost]
@@ -32,7 +35,6 @@ namespace Accounting.Controllers
         [Authorize(AccountingPermissions.Vendors.Import)]
         public async Task<IResult> ImportVendorData(IFormFile file)
         {
-            _companyAppService = LazyServiceProvider.LazyGetRequiredService<IVendorAppService>();
             return await ImportCompanyData(file);
         }
         private async Task<IResult> ImportCompanyData(IFormFile file)

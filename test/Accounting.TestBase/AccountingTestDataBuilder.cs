@@ -83,7 +83,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
                 _testData.SubjectCategoryCode, _testData.SubjectCategoryName,
                 _testData.SubjectCategoryOtherName, null,
                 DebitorCreditor.Debitor, nonCurrentAccountType?.Id, true,
-                string.Empty, context.TenantId);
+                string.Empty, context?.TenantId);
 
             await _subjectCategoryRepository.InsertAsync(subjectCategory, true);
         }
@@ -95,7 +95,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             var year = _testData.AccountingPeriodYear;
             var accountingPeriod = new AccountingPeriod(_testData.AccountingPeriodYearId,
                 year.ToString(), _testData.AccountingPeriodStartDate,
-               _testData.AccountingPeriodEndDate, true, context.TenantId);
+               _testData.AccountingPeriodEndDate, true, context?.TenantId);
             await _accountingPeriodRepository.InsertAsync(accountingPeriod);
         }
     }
@@ -106,10 +106,10 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             await _currencyRepository.InsertManyAsync([
                 new Currency(_guidGenerator.Create(), _testData.RmbCurrency,
                     _testData.RmbCurrency, 1, 1, 1,
-                    DateOnly.FromDateTime(DateTime.Now), true, context.TenantId),
+                    DateOnly.FromDateTime(DateTime.Now), true, context?.TenantId),
                 new Currency(_guidGenerator.Create(), _testData.RmbCurrency,
                     _testData.UsdCurrency, 720, 100, 7.2m,
-                    DateOnly.FromDateTime(DateTime.Now), true, context.TenantId)
+                    DateOnly.FromDateTime(DateTime.Now), true, context?.TenantId)
             ]);
         }
     }
@@ -120,7 +120,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             var company = new Company(_testData.ClientId, _testData.ClientName,
                 _testData.ClientOtherName, _testData.ClientNickName,
                 _testData.RmbCurrency, 0, string.Empty, string.Empty, true,
-                false, context.TenantId);
+                false, context?.TenantId);
 
             company.SetCode(_testData.ClientCode, _testData.ClientCode, 1);
 
@@ -139,7 +139,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
             var company2 = new Company(_testData.VendorId, _testData.VendorName,
                 _testData.VendorOtherName, _testData.VendorNickName,
                 _testData.RmbCurrency, 0, string.Empty, string.Empty, false,
-                true, context.TenantId);
+                true, context?.TenantId);
             company2.SetCode(_testData.VendorCode, _testData.VendorCode, 1);
 
             await _companyRepository.InsertManyAsync([company, company2]);
@@ -185,7 +185,7 @@ public class AccountingTestDataSeedContributor : IDataSeedContributor, ITransien
         {
             var year = _testData.AccountingPeriodYear;
             var voucher = new Voucher(_guidGenerator.Create(),
-                new DateOnly(year, 1, 1), VoucherType.JournalVoucher, context.TenantId);
+                new DateOnly(year, 1, 1), VoucherType.JournalVoucher, context?.TenantId);
             voucher.SetCode(_testData.VoucherCode, _testData.VoucherPrefix, 1);
             voucher.AddDetail(_testData.VoucherDetailId, _testData.SubjectBankId,
                 null, _testData.VoucherDescription, DebitorCreditor.Creditor,

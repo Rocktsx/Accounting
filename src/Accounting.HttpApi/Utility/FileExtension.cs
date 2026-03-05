@@ -14,7 +14,7 @@ namespace Accounting.Utility
         public const string XslxFileExtension = ".xlsx";
         public static IImporter GetImporter(this IFormFile file, IStringLocalizer localizer, IAbpLazyServiceProvider lazyServiceProvider)
         {
-            IImporter importer = null;
+            IImporter importer;
             if (file.FileName.EndsWith(CsvFileExtension))
             {
                 importer = (IImporter)lazyServiceProvider.LazyGetRequiredService<ICsvImporter>();

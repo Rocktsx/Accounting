@@ -83,5 +83,11 @@ namespace Accounting.Models
 
         [ImporterHeader(Name = "Direct Line")]
         public string? DirectLine { get; set; }
+
+        public CompanyImportModel()
+        {
+            Code = string.Empty;
+            Name = string.Empty;
+        }
     }
 }
