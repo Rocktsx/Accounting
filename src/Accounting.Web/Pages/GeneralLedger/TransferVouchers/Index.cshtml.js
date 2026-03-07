@@ -231,7 +231,7 @@ $(function () {
 
     const modalTemplate = `
 <form ref="form"  class="needs-validation" novalidate>
-    <div ref="modal" :class="[value ? 'show d-block' : '']" :id="modalId" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(157, 159, 160, 0.8);">
+    <div ref="modal" :class="[value ? 'show d-block' : '']" :id="modalId" role="dialog" aria-modal="true" class="modal fade" tabindex="-1"  style="background:rgba(108, 108, 108, 0.65);">
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -279,6 +279,8 @@ $(function () {
             onMounted(() => {
                 nextTick(() => {
                     document.body.classList.add('modal-open');
+                    document.body.classList.add('overflow-hidden');
+                    document.body.style.paddingRight = '15px';
                     document.body.appendChild(formRef.value);
                     setZIndex(modalRef.value)
                 })
@@ -286,6 +288,8 @@ $(function () {
 
             onBeforeUnmount(() => {
                 document.body.classList.remove('modal-open');
+                document.body.classList.remove('overflow-hidden');
+                document.body.style.paddingRight = null;
                 document.body.removeChild(formRef.value);
             });
 

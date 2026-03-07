@@ -394,6 +394,8 @@
             onMounted(() => {
                 nextTick(() => {
                     document.body.classList.add('modal-open');
+                    document.body.classList.add('overflow-hidden');
+                    document.body.style.paddingRight = '15px';
                     document.body.appendChild(formRef.value);
                     setZIndex(modalRef.value)
                 })
@@ -401,6 +403,8 @@
 
             onBeforeUnmount(() => {
                 document.body.classList.remove('modal-open');
+                document.body.classList.remove('overflow-hidden');
+                document.body.style.paddingRight = null;
                 document.body.removeChild(formRef.value);
             });
 
