@@ -2,11 +2,11 @@
   "id": "69c9040b-16f2-42c9-9475-bece53adb358",
   "template": "app",
   "versions": {
-    "AbpFramework": "10.2.0",
-    "AbpStudio": "2.2.4",
+    "AbpFramework": "10.3.0",
+    "AbpStudio": "2.2.7",
     "TargetDotnetFramework": "net9.0",
-    "AbpCommercial": "10.2.0",
-    "LeptonX": "5.2.0"
+    "AbpCommercial": "10.3.0",
+    "LeptonX": "5.3.0"
   },
   "modules": {
     "Accounting": {
