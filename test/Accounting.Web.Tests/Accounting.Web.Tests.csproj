@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="10.3.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="10.4.0" />
     <ProjectReference Include="..\Accounting.Application.Tests\Accounting.Application.Tests.csproj" />
     <ProjectReference Include="..\..\src\Accounting.Web\Accounting.Web.csproj" />
     <ProjectReference Include="..\Accounting.EntityFrameworkCore.Tests\Accounting.EntityFrameworkCore.Tests.csproj" />
