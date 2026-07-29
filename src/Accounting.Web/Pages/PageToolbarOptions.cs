@@ -284,7 +284,7 @@ namespace Accounting.Web.Pages
                         toolbar.AddSearchButton(AccountingPermissions.BankReconciliations.Default);
                         toolbar.AddButton(
                             L("Save"),
-                            icon: "fa-check",
+                            icon: "check",
                             id: "saveBtn",
                             requiredPolicyName: AccountingPermissions.BankReconciliations.Update);
                     });
