@@ -1,4 +1,5 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.TrialBalances
 {
+    [Authorize(Permissions.AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport)]
     public class MtdYtdReportModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

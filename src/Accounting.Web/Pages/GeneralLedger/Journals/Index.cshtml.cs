@@ -1,11 +1,13 @@
 using Accounting.Finance;
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.Journals
 {
+    [Authorize(Permissions.AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport)]
     public class IndexModel : AccountingPageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

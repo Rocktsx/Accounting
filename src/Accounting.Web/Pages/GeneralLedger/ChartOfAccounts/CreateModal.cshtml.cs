@@ -3,6 +3,7 @@ using Accounting.Finance.AccountTypes;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Finance.Subjects;
 using Accounting.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.ChartOfAccounts
 {
+    [Authorize(Permissions.AccountingPermissions.Subjects.Create)]
     public class CreateModalModel : AccountingPageModel
     {
         [BindProperty]

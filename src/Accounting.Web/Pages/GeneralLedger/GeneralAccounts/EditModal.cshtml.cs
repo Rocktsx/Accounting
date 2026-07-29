@@ -1,6 +1,7 @@
 using Accounting.Finance.AccountTypes;
 using Accounting.Finance.SubjectCategories;
 using Accounting.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.GeneralAccounts
 {
+    [Authorize(Permissions.AccountingPermissions.GeneralAccounts.Update)]
     public class EditModalModel : AccountingPageModel
     {
         private readonly ISubjectCategoryAppService _service;

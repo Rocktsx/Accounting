@@ -1,10 +1,12 @@
 using Accounting.BasicData.Currencies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.BasicData.Currencies
 {
+    [Authorize(Permissions.AccountingPermissions.Currencies.Update)]
     public class EditModal : AccountingPageModel
     {
         private readonly ICurrencyAppService _currencyAppService;

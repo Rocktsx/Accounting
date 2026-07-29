@@ -1,5 +1,6 @@
 using Accounting.Finance;
 using Accounting.Finance.Vouchers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using System.ComponentModel;
 
 namespace Accounting.Web.Pages.GeneralLedger.VoucherStates
 {
+    [Authorize(Permissions.AccountingPermissions.VoucherStates.Default)]
     public class IndexModel : AccountingPageModel
     {
         public List<SelectListItem> VoucherTypes { get; set; } = [];

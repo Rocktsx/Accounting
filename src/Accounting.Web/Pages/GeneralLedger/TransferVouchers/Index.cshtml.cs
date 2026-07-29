@@ -1,11 +1,12 @@
-using Accounting.Finance;
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.TransferVouchers
 {
+    [Authorize(Permissions.AccountingPermissions.TransferVouchers.Default)]
     public class IndexModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

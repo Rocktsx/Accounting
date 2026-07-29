@@ -1,5 +1,6 @@
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.AccountingPeriods
 {
+    [Authorize(Permissions.AccountingPermissions.AccountingPeriods.Create)]
     public class CreateModalModel : AccountingPageModel
     { 
         private readonly IServiceProvider _serviceProvider;

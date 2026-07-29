@@ -1,5 +1,6 @@
 using Accounting.Finance.AccountingPeriods;
 using Accounting.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.AccountingPeriods
 {
+    [Authorize(Permissions.AccountingPermissions.AccountingPeriods.Update)]
     public class EditModalModel : AccountingPageModel
     {
         private readonly IAccountingPeriodAppService _service;

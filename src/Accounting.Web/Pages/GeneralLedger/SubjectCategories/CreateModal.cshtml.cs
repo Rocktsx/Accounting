@@ -1,5 +1,6 @@
 using Accounting.Finance.AccountTypes;
 using Accounting.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.SubjectCategories
 {
+    [Authorize(Permissions.AccountingPermissions.SubjectCategories.Create)]
     public class CreateModalModel : AccountingPageModel
     {
         private IAccountTypeAppService _service; 

@@ -1,12 +1,14 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.BankReconciliationReports
 {
+    [Authorize(Permissions.AccountingPermissions.BankReconciliationReports.UnpresentedReport)]
     public class UnpresentedReportModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

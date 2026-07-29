@@ -1,13 +1,14 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections;
-using System.Linq;
+using System; 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgers
 {
+    [Authorize(Permissions.AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport)]
     public class IndexModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

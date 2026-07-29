@@ -1,4 +1,5 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.GeneralLedgers
 {
+    [Authorize(Permissions.AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport)]
     public class MultipleCurrencyGroupReportModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

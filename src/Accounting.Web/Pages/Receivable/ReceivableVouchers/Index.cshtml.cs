@@ -1,10 +1,12 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.Receivable.ReceivableVouchers
 {
+    [Authorize(Permissions.AccountingPermissions.ReceivableVouchers.Default)]
     public class IndexModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;

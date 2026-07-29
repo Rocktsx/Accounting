@@ -1,10 +1,12 @@
 using Accounting.Finance.AccountingPeriods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
 namespace Accounting.Web.Pages.GeneralLedger.BankReconciliations
 {
+    [Authorize(Permissions.AccountingPermissions.BankReconciliations.Default)]
     public class IndexModel : PageModel
     {
         private readonly IAccountingPeriodAppService _accountingPeriodAppService;
