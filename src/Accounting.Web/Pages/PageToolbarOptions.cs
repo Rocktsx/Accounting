@@ -161,19 +161,19 @@ namespace Accounting.Web.Pages
                 options.Configure<GeneralLedger.GeneralLedgers.IndexModel>(
                     toolbar =>
                     {
-                        toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport);
+                        toolbar.AddSearchAndPrintButton(AccountingPermissions.GeneralLedgerReports.SingleCurrencyReport);
                     });
 
                 options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyReportModel>(
                     toolbar =>
                     {
-                        toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport);
+                        toolbar.AddSearchAndPrintButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyReport);
                     });
 
                 options.Configure<GeneralLedger.GeneralLedgers.MultipleCurrencyGroupReportModel>(
                    toolbar =>
                    {
-                       toolbar.AddSearchButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport);
+                       toolbar.AddSearchAndPrintButton(AccountingPermissions.GeneralLedgerReports.MultipleCurrencyGroupReport);
                    });
 
                 options.Configure<GeneralLedger.Journals.IndexModel>(
@@ -310,6 +310,16 @@ namespace Accounting.Web.Pages
                 icon: "magnifying-glass",
                 id: "searchBtn",
                 requiredPolicyName: permission
+            );
+        }
+        private static void AddSearchAndPrintButton(this PageToolbar toolbar, string searchPermission, string printPermission = "")
+        {
+            toolbar.AddSearchButton(searchPermission);
+            toolbar.AddButton(
+                L("Print"),
+                icon: "print",
+                id: "printBtn",
+                requiredPolicyName: string.IsNullOrEmpty(printPermission) ? searchPermission : printPermission
             );
         }
         private static LocalizableString L(string name)

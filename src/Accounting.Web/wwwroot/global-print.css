@@ -1,0 +1,29 @@
+﻿@media print {
+
+    body {
+        width: 210mm;
+        height: 297mm;
+        font-family: 'Arial' !important;
+        font-size: 10pt !important;
+    }
+
+    .table thead th {
+        font-size: var(--bs-body-font-size);
+    }
+
+    .report .table td, .report .table th {
+        padding: 3px;
+    }
+}
+
+@page {
+    margin: 10mm;
+    width: 210mm;
+    height: 297mm;
+    font-family: 'Arial' !important;
+    font-size: 10pt !important;
+
+    @bottom-center {
+        content: counter(page); /* 设置页脚内容，包含页码 */ 
+    }
+}
