@@ -231,4 +231,14 @@
         const endDate = $option.attr('data-end-date');
         $('#endDate').val(endDate);
     });
+
+    $("#printBtn").on("click", function () {  
+        printJS({
+            printable: 'app', // 要打印的元素的ID
+            type: 'html', // 打印类型，这里是HTML
+            scanStyles: false,
+            style: '', // 打印样式表
+            css: [$('[href*="bootstrap-dim.css"]').attr('href'), $('[href*="global-print.css"]').attr('href')]
+        });
+    });
 });

@@ -179,103 +179,103 @@ namespace Accounting.Web.Pages
                 options.Configure<GeneralLedger.Journals.IndexModel>(
                    toolbar =>
                    {
-                       toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport);
+                       toolbar.AddSearchAndPrintButton(AccountingPermissions.JournalReports.SingleCurrencySortByCodeReport);
                    });
 
                 options.Configure<GeneralLedger.Journals.SingleCurrencySortByDateReport>(
                      toolbar =>
                      {
-                         toolbar.AddSearchButton(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport);
+                         toolbar.AddSearchAndPrintButton(AccountingPermissions.JournalReports.SingleCurrencySortByDateReport);
                      });
 
                 options.Configure<GeneralLedger.Journals.MultipleCurrencySortByCodeReportModel>(
                     toolbar =>
                     {
-                        toolbar.AddSearchButton(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport);
+                        toolbar.AddSearchAndPrintButton(AccountingPermissions.JournalReports.MultipleCurrencySortByCodeReport);
                     });
 
                 options.Configure<GeneralLedger.Journals.MultipleCurrencySortByDateReportModel>(
                    toolbar =>
                    {
-                       toolbar.AddSearchButton(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport);
+                       toolbar.AddSearchAndPrintButton(AccountingPermissions.JournalReports.MultipleCurrencySortByDateReport);
                    });
 
                 options.Configure<GeneralLedger.TrialBalances.IndexModel>(
                    toolbar =>
                    {
-                       toolbar.AddSearchButton(AccountingPermissions.TrialBalanceReports.YearToDateReport);
+                       toolbar.AddSearchAndPrintButton(AccountingPermissions.TrialBalanceReports.YearToDateReport);
                    });
 
                 options.Configure<GeneralLedger.TrialBalances.MtdYtdReportModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.TrialBalanceReports.MonthToDateYearToDateReport);
                   });
 
                 options.Configure<GeneralLedger.IncomeStatements.IndexModel>(
                    toolbar =>
                    {
-                       toolbar.AddSearchButton(AccountingPermissions.ProfitAndLossReports.YearToDateReport);
+                       toolbar.AddSearchAndPrintButton(AccountingPermissions.ProfitAndLossReports.YearToDateReport);
                    });
 
                 options.Configure<GeneralLedger.IncomeStatements.MtdYtdReportModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.ProfitAndLossReports.MonthToDateYearToDateReport);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.ProfitAndLossReports.MonthToDateYearToDateReport);
                   });
 
                 options.Configure<GeneralLedger.IncomeStatements.TwelveMonthsReportModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.ProfitAndLossReports.TwelveMonthsReport);
                   });
 
                 options.Configure<GeneralLedger.BalanceSheets.IndexModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.BalanceSheetReports.YearToDateReport);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.BalanceSheetReports.YearToDateReport);
                   });
 
                 options.Configure<GeneralLedger.BalanceSheets.MtdYtdReportModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.BalanceSheetReports.MonthToDateYearToDateReport);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.BalanceSheetReports.MonthToDateYearToDateReport);
                   });
 
                 options.Configure<Receivable.DebtorAgingReports.IndexModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingSummarySingleCurrency);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.ReceivableAgingReports.AgingSummarySingleCurrency);
                   });
 
                 options.Configure<Receivable.DebtorAgingReports.SummaryMultipleCurrencyReportModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.ReceivableAgingReports.AgingSummaryMultipleCurrency);
                   });
 
                 options.Configure<Receivable.DebtorAgingReports.DetailReportModel>(
                  toolbar =>
                  {
-                     toolbar.AddSearchButton(AccountingPermissions.ReceivableAgingReports.AgingDetail);
+                     toolbar.AddSearchAndPrintButton(AccountingPermissions.ReceivableAgingReports.AgingDetail);
                  });
 
                 options.Configure<Payable.CreditorAgingReports.IndexModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingSummarySingleCurrency);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.PayableAgingReports.AgingSummarySingleCurrency);
                   });
 
                 options.Configure<Payable.CreditorAgingReports.SummaryMultipleCurrencyReportModel>(
                   toolbar =>
                   {
-                      toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingSummaryMultipleCurrency);
+                      toolbar.AddSearchAndPrintButton(AccountingPermissions.PayableAgingReports.AgingSummaryMultipleCurrency);
                   });
 
                 options.Configure<Payable.CreditorAgingReports.DetailReportModel>(
                  toolbar =>
                  {
-                     toolbar.AddSearchButton(AccountingPermissions.PayableAgingReports.AgingDetail);
+                     toolbar.AddSearchAndPrintButton(AccountingPermissions.PayableAgingReports.AgingDetail);
                  });
 
                 options.Configure<GeneralLedger.BankReconciliations.IndexModel>(
@@ -292,13 +292,13 @@ namespace Accounting.Web.Pages
                 options.Configure<GeneralLedger.BankReconciliationReports.IndexModel>(
                  toolbar =>
                  {
-                     toolbar.AddSearchButton(AccountingPermissions.BankReconciliationReports.Report);
+                     toolbar.AddSearchAndPrintButton(AccountingPermissions.BankReconciliationReports.Report);
                  });
 
                 options.Configure<GeneralLedger.BankReconciliationReports.UnpresentedReportModel>(
                 toolbar =>
                 {
-                    toolbar.AddSearchButton(AccountingPermissions.BankReconciliationReports.UnpresentedReport);
+                    toolbar.AddSearchAndPrintButton(AccountingPermissions.BankReconciliationReports.UnpresentedReport);
                 });
             });
         }
