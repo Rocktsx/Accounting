@@ -132,7 +132,7 @@
             <thead>
                 <tr class="border-bottom">
                     <th class="fw-bold">{{ l('VoucherDate') }}</th>
-                    <th class="fw-bold">{{ l('VoucherCode') }}</th>
+                    <th class="fw-bold voucher-code">{{ l('VoucherCode') }}</th>
                     <th class="fw-bold">{{ l('Description') }}</th>
                     <th class="fw-bold text-end">{{ l('Debitor') }}</th>
                     <th class="fw-bold text-end">{{ l('Creditor') }}</th>
@@ -246,5 +246,17 @@
         const endDate = $option.attr('data-end-date');
         $('#startDate').val(startDate);
         $('#endDate').val(endDate);
+    });
+
+    $("#printBtn").on("click", function () {
+        const style = `.voucher-code{ min-width: 130px !important; }`
+
+        printJS({
+            printable: 'app', // 要打印的元素的ID
+            type: 'html', // 打印类型，这里是HTML
+            scanStyles: false,
+            style: style, // 打印样式表
+            css: [$('[href*="bootstrap-dim.css"]').attr('href'), $('[href*="global-print.css"]').attr('href')]
+        });
     });
 });
