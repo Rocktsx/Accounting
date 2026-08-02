@@ -381,6 +381,9 @@
     "BankBalance": "Bank Balance",
     "RoundBracketLeft": "(",
     "RoundBracketRight": ")",
-    "Accounting:AccountingPeriodIdCanNotNull": "Accounting Period can not be null or empty."
+    "Accounting:AccountingPeriodIdCanNotNull": "Accounting Period can not be null or empty.",
+    "PreparedBy": "Prepared by",
+    "CheckedBy": "Checked by",
+    "ApprovedBy": "Approved by"
   }
 }

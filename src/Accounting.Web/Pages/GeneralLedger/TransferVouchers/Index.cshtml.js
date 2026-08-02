@@ -1187,7 +1187,15 @@ $(function () {
                                                 dataTable.ajax.reload();
                                             });
                                     }
-                                }
+                                },
+                                {
+                                    text: l('Print'),
+                                    iconClass: '',
+                                    action: function (data) {
+                                        window.open('/GeneralLedger/TransferVouchers/Printout?id=' + data.record.id)
+                                    },
+                                    visible: abp.auth.isGranted('Accounting.GeneralLedger.TransferVoucher.Print')
+                                },
                             ]
                     }
                 },

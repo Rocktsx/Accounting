@@ -1,0 +1,151 @@
+﻿@page "{id}"
+@using Accounting.Finance
+@using Accounting.Web.Menus
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Accounting.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@model Accounting.Web.Pages.GeneralLedger.TransferVouchers.PrintoutModel
+@inject IStringLocalizer<AccountingResource> L
+@inject IAuthorizationService AuthorizationService
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L[AccountingMenus.DisplayNames.TransferVoucher].Value;
+    PageLayout.Content.BreadCrumb.Add(L[AccountingMenus.DisplayNames.GeneralLedger]);
+    PageLayout.Content.MenuItemName = AccountingMenus.TransferVoucher;
+}
+@section styles {
+    <abp-style src="/libs/print-js/print.css" />
+    <abp-style src="/global-print.css" />
+}
+@section scripts
+{
+    <abp-script src="/libs/print-js/print.js"></abp-script>
+    <script>
+        $(function(){
+             $("#print").on("click", function () {
+                printJS({
+                    printable: 'printout', // 要打印的元素的ID
+                    type: 'html', // 打印类型，这里是HTML
+                    scanStyles: false,
+                    style: '', // 打印样式表
+                    css: [$('[href*="bootstrap-dim.css"]').attr('href'), $('[href*="global-print.css"]').attr('href')]
+                });
+            });
+        });
+    </script>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-button button-type="Primary" icon="print" text="@L["Print"]" id="print"></abp-button>
+    </abp-card-header>
+    <abp-card-body>
+        <div class="report">
+            <table id="printout" class="table table-borderless mb-0">
+                <thead>
+                    <tr>
+                        <td colspan="4">
+                            <table class="table table-borderless mb-0">
+                                <tr>
+                                    <td colspan="6"><h4>@(Model.CompanySetting?.CompanyName)</h4></td>
+                                </tr>
+                                @if (!string.IsNullOrWhiteSpace(Model.CompanySetting?.CompanyOtherName))
+                                {
+                                    <tr>
+                                        <td colspan="6"><h4>@(Model.CompanySetting?.CompanyOtherName)</h4></td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="6">@(Model.CompanySetting?.CompanyAddress)</td>
+                                </tr>
+                                @if (!string.IsNullOrWhiteSpace(Model.CompanySetting?.CompanyOtherAddress))
+                                {
+                                    <tr>
+                                        <td colspan="6">@(Model.CompanySetting?.CompanyOtherAddress)</td>
+                                    </tr>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Model.CompanySetting?.CompanyContact))
+                                {
+                                    <tr>
+                                        <td colspan="6">@(Model.CompanySetting?.CompanyContact)</td>
+                                    </tr>
+                                }
+                                <tr><td colspan="6" class="text-center"><h5>@L["Voucher"]</h5></td></tr>
+                                <tr>
+                                    <td>@L["VoucherCode"]</td>
+                                    <td>@(Model.Voucher?.Code)</td>
+                                    <td>@L["VoucherDate"]</td>
+                                    <td>@(Model.Voucher?.VoucherDate)</td>
+                                    <td>@L["VoucherType"]</td>
+                                    <td>@(Model.Voucher?.VoucherType)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td>@L["Status"]</td>
+                                    <td>@(Model.Voucher?.Status)</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th>@L["Subject"]</th>
+                        <th>@L["Description"]</th>
+                        <th class="text-end">@L["Debitor"] </th>
+                        <th class="text-end">@L["Creditor"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Voucher != null)
+                    {
+                        @foreach (var item in Model.Voucher.Details)
+                        {
+                            <tr>
+                                <td>
+                                    @(Model.Subjects.ContainsKey(item.SubjectId) ? Model.Subjects[item.SubjectId].Code : "")
+                                    <br />
+                                    @(Model.Subjects.ContainsKey(item.SubjectId) ? Model.Subjects[item.SubjectId].Name : "")
+                                </td>
+                                <td>
+                                    @(item.Description)
+                                </td>
+                                <td class="text-end">
+                                    @(item.DebitorCreditor.IsDebitor() ? item.NativeAmount.ToString(Accounting.AccountingCommonConsts.AmountFormat)
+                                     : "")
+                                </td>
+                                <td class="text-end">
+                                    @(item.DebitorCreditor.IsCreditor() ? item.NativeAmount.ToString(Accounting.AccountingCommonConsts.AmountFormat) : "")
+                                </td>
+                            </tr>
+                        }
+                        <tr class="border-top fw-bold">
+                            <td class="text-end">
+                                項目合計
+                            </td>
+                            <td>
+                                @(Model.Voucher.Details.Count())
+                            </td>
+                            <td class="text-end">
+                                @((Model.Voucher.Details.Sum(item => item.NativeAmount)/2).ToString(Accounting.AccountingCommonConsts.AmountFormat))
+                            </td>
+                            <td class="text-end">
+                                @((Model.Voucher.Details.Sum(item => item.NativeAmount) / 2).ToString(Accounting.AccountingCommonConsts.AmountFormat))
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="4">
+                            <table class="table table-borderless mb-0">
+                                <tr class="fw-bold">
+                                    <td>@L["ApprovedBy"]&nbsp;&nbsp;__________________</td>
+                                    <td>@L["CheckedBy"]&nbsp;&nbsp;__________________</td>
+                                    <td>@L["PreparedBy"]&nbsp;&nbsp;@Model.User?.Identity?.Name</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </abp-card-body>
+</abp-card>

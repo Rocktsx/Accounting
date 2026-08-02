@@ -18,7 +18,7 @@ namespace Accounting
         public const int AmountRoundScale = 2;
 
         public const string StandardDateFormat = "yyyy-MM-dd";
-
+        public const string AmountFormat = "#,###.00";
         /// <summary>
         /// 截至上年结转余额排序
         /// </summary>

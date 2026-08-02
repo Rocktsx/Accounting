@@ -24,5 +24,14 @@ namespace Accounting.Finance
             return debitorCreditor == DebitorCreditor.Creditor ?
                 DebitorCreditorConst.Creditor : DebitorCreditorConst.Debitor;
         }
+
+        public static bool IsDebitor(this DebitorCreditor debitorCreditor)
+        {
+            return debitorCreditor == DebitorCreditor.Debitor;
+        }
+        public static bool IsCreditor(this DebitorCreditor debitorCreditor)
+        {
+            return debitorCreditor == DebitorCreditor.Creditor;
+        }
     }
 }

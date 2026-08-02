@@ -20,6 +20,7 @@ public static class AccountingPermissions
     public const string Imports = Dot + ImportText;
     public const string Exports = Dot + ExportText;
     public const string UpdateStatusDot = Dot + UpdateStatusText;
+    public const string Prints = Dot + PrintText;
 
     public const string CreationDisplayName = PermissionPrefix + CreationText;
     public const string DeletionDisplayName = PermissionPrefix + DeletionText;
@@ -124,6 +125,7 @@ public static class AccountingPermissions
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
         public const string Import = Default + Imports;
+        public const string Print = Default + Prints;
     }
 
     /// <summary>
@@ -314,7 +316,7 @@ public static class AccountingPermissions
         public const string Update = Default + Edit;
         public const string UpdateStatus = Default + UpdateStatusDot;
     }
-    
+
     /// <summary>
     /// 付款传票帐龄分析报表
     /// </summary>
